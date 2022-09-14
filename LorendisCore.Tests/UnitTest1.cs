@@ -1,5 +1,5 @@
-﻿using Xunit;
-using LorendisCore.Common.Damage;
+using System;
+using Xunit;
 
 namespace LorendisCore.Common.Damage.Tests
 {
@@ -81,12 +81,12 @@ namespace LorendisCore.Common.Damage.Tests
         {
             var damage = new SimpleDamage(DamageType.Generic, amount, duration);
 
-            int expectedDps = (int)Math.Floor((float)amount / duration);
-            int expectedOneTimeDamage = amount - expectedDps * duration;
-            int expectedDealt = 0;
-            int expectedRemaining = amount;
-            int timePassed = 0;
-            int timeRemaining = duration;
+            var expectedDps = (int)Math.Floor((float)amount / duration);
+            var expectedOneTimeDamage = amount - expectedDps * duration;
+            var expectedDealt = 0;
+            var expectedRemaining = amount;
+            var timePassed = 0;
+            var timeRemaining = duration;
 
             while (!damage.IsDone)
             {
@@ -99,7 +99,7 @@ namespace LorendisCore.Common.Damage.Tests
                 timePassed++;
                 timeRemaining--;
                 var tick = damage.Tick();
-                int expectedTick = timePassed == 1
+                var expectedTick = timePassed == 1
                 ? expectedDps + expectedOneTimeDamage
                 : expectedDps;
                 expectedDealt += expectedTick;
