@@ -17,8 +17,8 @@ namespace LorendisCore.Common.Damage
         public int OneTimeDamage => _oneTime;
         public int DPS => _dps;
 
-        protected int _oneTime;
-        protected int _dps;
+        protected int _oneTime; // TODO: remove
+        protected int _dps; // TODO: store as float and add each tick, dealing when it rolls over to full
 
         /// <summary>
         ///   Creates a <see cref="Damage"/> that deals damage at a constant rate.
@@ -46,47 +46,10 @@ namespace LorendisCore.Common.Damage
         }
 
 
-        public override string ToDataString()
-        {
-            return $"[{ProgressString()}]@[{DpsString()}{LeftoverString()}]+[{LeftoverString()}]";
+        public override string ToDataString() 
+            => $"({Dealt}/{_total}){Type.GetName()}/({_time}/{_duration})s@{_dps}/s";
 
-
-            // LOCAL FX
-            string ProgressString()
-            {
-                return $"({Dealt}/{_total}){Type.GetName()}/({_time}/{_duration})s";
-            }
-            string DpsString()
-            {
-                return _dps + "/s";
-            }
-            string LeftoverString()
-            {
-                return _oneTime > 0 
-                    ? $"+{_oneTime}" 
-                    : string.Empty;
-            }
-        }
-
-        protected override string ChildInfoString()
-        {
-            return _oneTime > 0
-              ? SimpleString() + LeftoverString()
-              : SimpleString();
-
-
-            // LOCAL FX
-            string SimpleString()
-            {
-                var sb = new StringBuilder($"{Total} {Type.GetName()} damage/{Duration}s");
-                if (_time > 0)
-                    sb.Append($" ({Dealt} dealt, time={TimePassed})");
-                return sb.Append($" at {_dps}dps").ToString();
-            }
-            string LeftoverString()
-            {
-                return $", plus {OneTimeDamage} on the first tick";
-            }
-        }
+        protected override string ChildInfoString() 
+            => $"{Dealt}/{Total} {Type.GetName()} damage dealt over {TimePassed}/{Duration} seconds at {_dps}DPS.";
     }
 }

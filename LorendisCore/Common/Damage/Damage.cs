@@ -31,6 +31,7 @@ namespace LorendisCore.Common.Damage
         /// <summary>
         ///     Sets <see cref="Type"/> and internal trackers.
         /// </summary>
+        /// <param name="type">  The type of damage dealt.  </param>
         /// <param name="total">  
         ///     Total damage dealt over the unit's lifetime. 
         ///     Throws an <see cref="ArgumentException"/> if 0 or lower.  
@@ -60,7 +61,10 @@ namespace LorendisCore.Common.Damage
         /// </summary>
         public int Tick()
         {
-            int amount = IsDone ? 0 : CalculateTick();
+            if (IsDone)
+                return 0;
+
+            var amount = CalculateTick();
             _time++;
             _remaining -= amount;
             return amount;
@@ -69,7 +73,7 @@ namespace LorendisCore.Common.Damage
         /// <summary>
         ///     Calculates the damage to be dealt that second.
         ///     Called only by <see cref="Tick"/>, which tracks internal values and progresses the event.
-        ///     Thus, calculations done may be irreversable.
+        ///     Thus, calculations done may be irreversible.
         /// </summary>
         protected abstract int CalculateTick();
 
