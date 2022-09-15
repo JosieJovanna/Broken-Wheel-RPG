@@ -8,10 +8,8 @@ namespace LorendisCore.Common.Damage
 
 
         /// <summary>
-        ///   Creates an instant damage event with a duration of 0, which is to be 
+        ///     Creates an instant damage event with a duration of 0, which is to be 
         /// </summary>
-        /// <param name="type"></param>
-        /// <param name="amount"></param>
         public InstantDamage(DamageType type, int amount)
             : base(type, amount, 0) { }
 
@@ -22,7 +20,6 @@ namespace LorendisCore.Common.Damage
             return Total;
         }
 
-        #region ToString
         public override string ToDataString()
         {
             return $"[({Total}){Type.GetName()}]";
@@ -32,6 +29,5 @@ namespace LorendisCore.Common.Damage
         {
             return $"{Total} instant {Type.GetName()} damage";
         }
-        #endregion
     }
 }
