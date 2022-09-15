@@ -20,7 +20,7 @@ namespace LorendisCore.Common.Damage
             : base(type, total, 1)
         {
             Coefficients = coefficients;
-            _duration = TimeToFinish();
+            Duration = TimeToFinish();
             SnubUnresolvableDamage();
         }
         /// <summary>
@@ -34,8 +34,8 @@ namespace LorendisCore.Common.Damage
             : base(type, 1, duration)
         {
             Coefficients = factors;
-            _total = Fx(_duration);
-            _remaining = _total;
+            Total = Fx(Duration); // TODO: make total readonly and move polynomial math to utility class
+            Remaining = Total;
             SnubUnresolvableDamage();
         }
         private void SnubUnresolvableDamage()
@@ -50,9 +50,9 @@ namespace LorendisCore.Common.Damage
         /// </summary>
         protected override int CalculateTick()
         {
-            if (_time == 0)
+            if (TimePassed == 0)
                 return NonNegative(GetConstant());
-            return Fx(_time) - Fx(_time - 1);
+            return Fx(TimePassed) - Fx(TimePassed - 1);
         }
 
         #region Strings
@@ -90,8 +90,8 @@ namespace LorendisCore.Common.Damage
         /// </summary>
         private int Fx(int x)
         {
-            int y = 0;
-            for (int exponent = 0; exponent < Coefficients.Length; exponent++)
+            var y = 0;
+            for (var exponent = 0; exponent < Coefficients.Length; exponent++)
                 y += CalculateTerm(x, exponent);
             return NonNegative(y);
         }
@@ -110,9 +110,9 @@ namespace LorendisCore.Common.Damage
         }
         private int TimeToFinish(int start = 0)
         {
-            int damageAtT = 0;
+            var damageAtT = 0;
             int t;
-            for (t = start; damageAtT < _remaining; t++)
+            for (t = start; damageAtT < Remaining; t++)
                 damageAtT = Fx(t);
             return t;
         }
@@ -130,12 +130,12 @@ namespace LorendisCore.Common.Damage
               : 0;
         }
 
-        private int Ceiling(double value)
+        private static int Ceiling(double value)
         {
             return (int)Math.Ceiling(value);
         }
 
-        private int NonNegative(int value)
+        private static int NonNegative(int value)
         {
             return Math.Max(0, value);
         }

@@ -7,25 +7,14 @@ namespace LorendisCore.Common.Damage
     /// </summary>
     public abstract class Damage
     {
-        public DamageType Type { get; }
-
-        #region Queries
-        public int Total => _total;
-        public int Duration => _duration;
-
-        public int Dealt => _total - _remaining;
-        public int Remaining => _remaining;
-
-        public int TimePassed => _time;
-        public int TimeRemaining => _duration - _time;
-
+        public readonly DamageType Type;
+        public /*readonly*/ int Total { get; protected set; } // TODO: make readonly and move polynomial math to utility class
+        public /*readonly*/ int Duration { get; protected set; } // TODO: make readonly and move polynomial math to utility class
+        public int Remaining { get; protected set; }
+        public int TimePassed { get; protected set; } = 0;
+        public int Dealt => Total - Remaining;
+        public int TimeRemaining => Duration - TimePassed;
         public bool IsDone => IsDoneCondition();
-        #endregion
-
-        protected int _total;
-        protected int _duration;
-        protected int _remaining;
-        protected int _time = 0;
 
 
         /// <summary>
@@ -48,27 +37,11 @@ namespace LorendisCore.Common.Damage
                 throw new ArgumentException("Damage duration must be positive.");
 
             Type = type;
-            _total = total;
-            _remaining = _total;
-            _duration = duration;
+            Total = total;
+            Duration = duration;
+            Remaining = Total;
         }
 
-
-        /// <summary> 
-        ///     <b>Irreversibly</b> advances the <see cref="Damage"/> by one second.
-        ///     Gets one second's worth of damage from the abstract <see cref="CalculateTick"/> method, 
-        ///     then tracks remaining damage and time and returns damage dealt that second.
-        /// </summary>
-        public int Tick()
-        {
-            if (IsDone)
-                return 0;
-
-            var amount = CalculateTick();
-            _time++;
-            _remaining -= amount;
-            return amount;
-        }
 
         /// <summary>
         ///     Calculates the damage to be dealt that second.
@@ -81,9 +54,25 @@ namespace LorendisCore.Common.Damage
         /// <summary>
         ///     The condition for <see cref="IsDone"/> to return true; can be overriden.
         /// </summary>
-        protected virtual bool IsDoneCondition() => _remaining <= 0;
+        protected virtual bool IsDoneCondition() => Remaining <= 0;
 
-        #region ToString
+        /// <summary> 
+        ///     <b>Irreversibly</b> advances the <see cref="Damage"/> by one second.
+        ///     Gets one second's worth of damage from the abstract <see cref="CalculateTick"/> method, 
+        ///     then tracks remaining damage and time and returns damage dealt that second.
+        /// </summary>
+        public virtual int Tick()
+        {
+            if (IsDone)
+                return 0;
+
+            var amount = CalculateTick();
+            TimePassed++;
+            Remaining -= amount;
+            return amount;
+        }
+
+        
         /// <returns>  A string verbosely describing the <see cref="Damage"/>.  </returns>
         public override string ToString() => ChildInfoString();
 
@@ -92,6 +81,5 @@ namespace LorendisCore.Common.Damage
         
         /// <returns>  A string containing the variables of the extending class.  </returns>
         protected abstract string ChildInfoString();
-        #endregion
     }
 }

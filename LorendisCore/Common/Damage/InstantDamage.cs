@@ -13,14 +13,13 @@ namespace LorendisCore.Common.Damage
         /// <param name="type"></param>
         /// <param name="amount"></param>
         public InstantDamage(DamageType type, int amount)
-            : base(type, amount, 0)
-        { }
+            : base(type, amount, 0) { }
 
 
         protected override int CalculateTick()
         {
             _isDone = true;
-            return _total;
+            return Total;
         }
 
         #region ToString

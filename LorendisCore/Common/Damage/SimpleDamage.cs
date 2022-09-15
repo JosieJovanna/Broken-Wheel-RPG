@@ -3,20 +3,17 @@ using System;
 namespace LorendisCore.Common.Damage
 {
     /// <summary>
-    ///   A type of damage event for linear damage rates; the most common type.
-    ///   Durations of 0 or below throw a <see cref="ArgumentException"/>.
-    ///   Damage values are in absolutes; values below 0 will be 0.
-    ///   When damage calculations are made, rounds down the DPS, and applies any extra damage first.
+    ///     A type of damage event for linear damage rates; the most common type.
+    ///     Durations of 0 or below throw a <see cref="ArgumentException"/>.
+    ///     Damage values are in absolutes; values below 0 will be 0.
+    ///     When damage calculations are made, rounds down the DPS, and applies any extra damage first.
     /// </summary>
     public class SimpleDamage : Damage
     {
         public double DPS => _dps.ToDouble();
 
         private readonly Fraction _dps;
-        /// <summary>
-        ///     The fraction of 1 full int of damage.
-        /// </summary>
-        private Fraction _progress = new Fraction();
+        private Fraction _fractionDamage = new Fraction();
 
         /// <summary>
         ///     Creates a <see cref="Damage"/> that deals damage at a constant rate.
@@ -30,22 +27,20 @@ namespace LorendisCore.Common.Damage
 
             _dps = new Fraction(amount, duration);
         }
-
-
+        
         protected override int CalculateTick()
         {
             if (IsDone)
                 return 0;
             
-            var temp = _progress + _dps;
+            var temp = _fractionDamage + _dps;
             var amount = (int) Math.Floor(temp.ToDouble());
-            _progress = temp - amount;
+            _fractionDamage = temp - amount;
             return amount;
         }
 
-
         public override string ToDataString() 
-            => $"({Dealt}/{_total}){Type.GetName()}/({_time}/{_duration})s@{_dps}/s";
+            => $"({Dealt}/{Total}){Type.GetName()}/({TimePassed}/{Duration})s@{_dps}DPS";
 
         protected override string ChildInfoString() 
             => $"{Dealt}/{Total} {Type.GetName()} damage dealt over {TimePassed}/{Duration} seconds at {_dps}DPS.";
