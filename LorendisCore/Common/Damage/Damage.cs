@@ -55,7 +55,7 @@ namespace LorendisCore.Common.Damage
 
 
         /// <summary> 
-        ///     <b>Irreversably</b> advances the <see cref="Damage"/> by one second.
+        ///     <b>Irreversibly</b> advances the <see cref="Damage"/> by one second.
         ///     Gets one second's worth of damage from the abstract <see cref="CalculateTick"/> method, 
         ///     then tracks remaining damage and time and returns damage dealt that second.
         /// </summary>

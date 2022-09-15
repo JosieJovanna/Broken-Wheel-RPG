@@ -9,24 +9,21 @@ using System.Globalization;
  * Time: 10:54 AM
  *
  */
-namespace LorendisCore.Utilities
+namespace LorendisCore.Common
 {
     /// <summary>
     /// Exception class for Fraction, derived from System.Exception
     /// </summary>
     public class FractionException : Exception
     {
-        public FractionException() : base()
-        {
-        }
+        public FractionException() 
+            : base() { }
 
-        public FractionException(string message) : base(message)
-        {
-        }
+        public FractionException(string message) 
+            : base(message) { }
 
-        public FractionException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
+        public FractionException(string message, Exception innerException) 
+            : base(message, innerException) { }
     }
 
     /*
@@ -162,7 +159,7 @@ namespace LorendisCore.Utilities
         /// </summary>
         public Fraction Duplicate()
         {
-            Fraction frac = new Fraction();
+            var frac = new Fraction();
             frac.Numerator = Numerator;
             frac.Denominator = Denominator;
             return frac;
@@ -341,16 +338,16 @@ namespace LorendisCore.Utilities
                 {
                     var iNumerator = frac1.Numerator * frac2.Denominator + frac2.Numerator * frac1.Denominator;
                     var iDenominator = frac1.Denominator * frac2.Denominator;
-                    return (new Fraction(iNumerator, iDenominator));
+                    return new Fraction(iNumerator, iDenominator);
                 }
             }
-            catch (OverflowException)
+            catch (OverflowException ex)
             {
-                throw new FractionException("Overflow occurred while performing arithmetic operation");
+                throw new FractionException("Overflow occurred while performing arithmetic operation", ex);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new FractionException("An error occurred while performing arithmetic operation");
+                throw new FractionException("An error occurred while performing arithmetic operation", ex);
             }
         }
 
@@ -362,7 +359,7 @@ namespace LorendisCore.Utilities
                 {
                     var iNumerator = frac1.Numerator * frac2.Numerator;
                     var iDenominator = frac1.Denominator * frac2.Denominator;
-                    return (new Fraction(iNumerator, iDenominator));
+                    return new Fraction(iNumerator, iDenominator);
                 }
             }
             catch (OverflowException)

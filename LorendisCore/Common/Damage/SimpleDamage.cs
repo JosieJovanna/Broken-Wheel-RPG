@@ -1,5 +1,4 @@
 using System;
-using System.Text;
 
 namespace LorendisCore.Common.Damage
 {
@@ -11,38 +10,37 @@ namespace LorendisCore.Common.Damage
     /// </summary>
     public class SimpleDamage : Damage
     {
-        /// <summary>
-        ///   Damage dealt on the first tick.
-        /// </summary>
-        public int OneTimeDamage => _oneTime;
-        public int DPS => _dps;
+        public double DPS => _dps.ToDouble();
 
-        protected int _oneTime; // TODO: remove
-        protected int _dps; // TODO: store as float and add each tick, dealing when it rolls over to full
+        private readonly Fraction _dps;
+        /// <summary>
+        ///     The fraction of 1 full int of damage.
+        /// </summary>
+        private Fraction _progress = new Fraction();
 
         /// <summary>
-        ///   Creates a <see cref="Damage"/> that deals damage at a constant rate.
-        ///   When rounding DPS, extra damage will be dealt on the first tick.
+        ///     Creates a <see cref="Damage"/> that deals damage at a constant rate.
+        ///     When rounding DPS, extra damage will be dealt on the first tick.
         /// </summary>
-        /// <param name="type"></param>
-        /// <param name="amount"></param>
-        /// <param name="duration"></param>
         public SimpleDamage(DamageType type, int amount, int duration)
             : base(type, amount, duration)
         {
             if (duration < 1)
                 throw new ArgumentException("Damage duration must be non-zero; only instant damage may have a duration of 0.");
 
-            _dps = (int)Math.Floor((float)amount / duration);
-            _oneTime = amount - _dps * duration;
+            _dps = new Fraction(amount, duration);
         }
 
 
         protected override int CalculateTick()
         {
-            return _time == 0 
-                ? _dps + _oneTime 
-                : _dps;
+            if (IsDone)
+                return 0;
+            
+            var temp = _progress + _dps;
+            var amount = (int) Math.Floor(temp.ToDouble());
+            _progress = temp - amount;
+            return amount;
         }
 
 

@@ -16,7 +16,7 @@ public class SimpleDamageTests
         // setup
         var type = DamageType.Generic;
         var damage = new SimpleDamage(type, amount, duration);
-        var expectedDps = (int)Math.Floor((float)amount / duration);
+        var expectedDps = new Fraction(amount, duration);
 
         // test
         Assert.Equal(amount, damage.Total);
@@ -27,22 +27,8 @@ public class SimpleDamageTests
         Assert.Equal(duration, damage.TimeRemaining);
         Assert.Equal(0, damage.TimePassed);
 
-        Assert.Equal(expectedDps, damage.DPS);
+        Assert.Equal(expectedDps.ToDouble(), damage.DPS);
         Assert.Equal(type, damage.Type);
-    }
-
-    [Fact]
-    public void Constructor_OneTimeDamage_IsZeroOnRationalRatios()
-    {
-        var damage = new SimpleDamage(DamageType.Generic, 4, 4);
-        Assert.Equal(0, damage.OneTimeDamage);
-    }
-
-    [Fact]
-    public void Constructor_OneTimeDamage_IsSetOnIrrationalRatios()
-    {
-        var damage = new SimpleDamage(DamageType.Generic, 4, 3);
-        Assert.Equal(1, damage.OneTimeDamage);
     }
 
     [Theory]
@@ -91,10 +77,8 @@ public class SimpleDamageTests
         // setup
         var damage = new SimpleDamage(DamageType.Generic, amount, duration);
 
-        var expectedDps = (int)Math.Floor((float)amount / duration); // TODO: DPS as float, multiply by time for check, round down
-        var expectedOneTimeDamage = amount - expectedDps * duration;
+        var expectedDps = new Fraction(amount, duration);
         var expectedDealt = 0;
-        var expectedRemaining = amount;
         var timePassed = 0;
         var timeRemaining = duration;
 
@@ -105,11 +89,10 @@ public class SimpleDamageTests
             timePassed++;
             timeRemaining--;
             var tick = damage.Tick();
-            var expectedTick = timePassed == 1
-                ? expectedDps + expectedOneTimeDamage
-                : expectedDps;
-            expectedDealt += expectedTick;
-            expectedRemaining -= expectedTick;
+            var newExpectedDealt = (int) Math.Floor((expectedDps * timePassed).ToDouble());
+            var expectedTick = newExpectedDealt - expectedDealt;
+            var expectedRemaining = amount - newExpectedDealt;
+            expectedDealt = newExpectedDealt;
 
             // test
             Assert.Equal(expectedTick, tick);
@@ -157,8 +140,9 @@ public class SimpleDamageTests
     {
         // setup
         var damage = new SimpleDamage(type, amount, duration);
-        var expectedDps = (int)Math.Floor((float)amount / duration); // TODO: DPS as float, multiply by time for check, round down
-        var expectedDealt = expectedDps * Math.Min(duration, time); // TODO: round down
+        var expectedTime = Math.Min(duration, time);
+        var expectedDps = new Fraction(amount, duration);
+        var expectedDealt = (int) Math.Floor(expectedDps.ToDouble() * expectedTime);
             
         // execute
         for (var i = 0; i < time; i++)
@@ -171,7 +155,7 @@ public class SimpleDamageTests
         Assert.Contains(duration.ToString(), result);
         Assert.Contains(expectedDps.ToString(), result);
         Assert.Contains(expectedDealt.ToString(), result);
-        Assert.Contains(time.ToString(), result);
+        Assert.Contains(expectedTime.ToString(), result);
     }
 
     [Theory]
@@ -187,8 +171,9 @@ public class SimpleDamageTests
     {
         // setup
         var damage = new SimpleDamage(type, amount, duration);
-        var expectedDps = (int)Math.Floor((float)amount / duration); // TODO: DPS as float, multiply by time for check, round down
-        var expectedDealt = expectedDps * Math.Min(duration, time); // TODO: round down
+        var expectedTime = Math.Min(duration, time);
+        var expectedDps = new Fraction(amount, duration);
+        var expectedDealt = (int) Math.Floor(expectedDps.ToDouble() * expectedTime);
             
         // execute
         for (var i = 0; i < time; i++)
