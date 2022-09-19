@@ -3,7 +3,7 @@
 namespace LorendisCore.Common.Stats.Attributes
 {
     /// <summary>
-    ///     The grouping of stats with similar areas of effect, more specific than Attribute/Skill/Proficiency.
+    /// The grouping of stats with similar areas of effect, more specific than Attribute/Skill/Proficiency.
     /// </summary>
     [AttributeUsage(AttributeTargets.Field)]
     public class CategoryAttribute : Attribute

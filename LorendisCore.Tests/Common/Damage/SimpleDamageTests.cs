@@ -124,7 +124,7 @@ public class SimpleDamageTests
         Assert.Equal(amount, damage.Dealt);
         Assert.Equal(0, damage.Remaining);
         Assert.Equal(0, damage.TimeRemaining);
-        Assert.Equal(duration, damage.TimePassed);
+        Assert.Equal(duration + 1, damage.TimePassed);
     }
 
     [Theory]

@@ -3,7 +3,7 @@
 namespace LorendisCore.Common.Damage.Processing
 {
     /// <summary>
-    ///     The default implementation of <see cref="DamageCalculator"/>.
+    /// The default implementation of <see cref="DamageCalculator"/>.
     /// </summary>
     public class DamageCalculatorImpl : DamageCalculator
     {
@@ -88,12 +88,12 @@ namespace LorendisCore.Common.Damage.Processing
 
 
         /// <summary>
-        ///     Calculates the damage dealt per second. 
-        ///     This process is irreversable.
+        /// Calculates the damage dealt per second. 
+        /// This process is irreversable.
         /// </summary>
         /// <returns>
-        ///     A dictionary with <see cref="DamageType"/> as the key, and the raw <see cref="Common.Damage"/> as the value. 
-        ///     Will not include any <see cref="DamageType"/>s without any damage to deal.
+        /// A dictionary with <see cref="DamageType"/> as the key, and the raw <see cref="Common.Damage"/> as the value. 
+        /// Will not include any <see cref="DamageType"/>s without any damage to deal.
         /// </returns>
         private void CalculateTick()
         {

@@ -6,7 +6,7 @@ using System.Globalization;
 namespace LorendisCore.Common
 {
     /// <summary>
-    ///     Exception class for Fraction, derived from System.Exception
+    /// Exception class for Fraction, derived from System.Exception
     /// </summary>
     public class FractionException : Exception
     {
@@ -147,8 +147,8 @@ namespace LorendisCore.Common
         }
 
         /// <summary>
-        ///     The function reduces(simplifies) a Fraction object by dividing both its numerator 
-        ///     and denominator by their GCD
+        /// The function reduces(simplifies) a Fraction object by dividing both its numerator 
+        /// and denominator by their GCD
         /// </summary>
         public static void ReduceFraction(Fraction frac)
         {
@@ -188,7 +188,7 @@ namespace LorendisCore.Common
         }
 
         /// <summary>
-        ///     The function returns Greatest Common Denominator of two numbers (used for reducing a Fraction)
+        /// The function returns Greatest Common Denominator of two numbers (used for reducing a Fraction)
         /// </summary>
         private static long GreatestCommonDenominator(long iNo1, long iNo2)
         {
@@ -212,7 +212,7 @@ namespace LorendisCore.Common
         }
 
         /// <summary>
-        ///     The function returns the current Fraction object as double
+        /// The function returns the current Fraction object as double
         /// </summary>
         public double ToDouble()
         {
@@ -220,9 +220,9 @@ namespace LorendisCore.Common
         }
 
         /// <summary>
-        ///     The function takes an string as an argument and returns its corresponding reduced fraction
-        ///     the string can be an in the form of and integer, double or fraction.
-        ///     e.g it can be like "123" or "123.321" or "123/456"
+        /// The function takes an string as an argument and returns its corresponding reduced fraction
+        /// the string can be an in the form of and integer, double or fraction.
+        /// e.g it can be like "123" or "123.321" or "123/456"
         /// </summary>
         public static Fraction ToFraction(string strValue)
         {
@@ -247,8 +247,8 @@ namespace LorendisCore.Common
 
 
         /// <summary>
-        ///     The function takes a floating point number as an argument 
-        ///     and returns its corresponding reduced fraction
+        /// The function takes a floating point number as an argument 
+        /// and returns its corresponding reduced fraction
         /// </summary>
         public static Fraction ToFraction(double dValue)
         {
@@ -379,7 +379,7 @@ namespace LorendisCore.Common
 
         #region Object Overrides
         /// <summary>
-        ///     The function returns the current Fraction object as a string
+        /// The function returns the current Fraction object as a string
         /// </summary>
         public override string ToString()
         {
@@ -392,7 +392,7 @@ namespace LorendisCore.Common
         }
 
         /// <summary>
-        ///     Checks whether two fractions are equal
+        /// Checks whether two fractions are equal
         /// </summary>
         public override bool Equals(object obj)
         {
@@ -401,7 +401,7 @@ namespace LorendisCore.Common
         }
 
         /// <summary>
-        ///     Returns a hash code for this fraction
+        /// Returns a hash code for this fraction
         /// </summary>
         public override int GetHashCode()
         {

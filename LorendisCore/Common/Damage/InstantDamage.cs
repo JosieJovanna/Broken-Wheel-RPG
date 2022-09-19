@@ -8,7 +8,7 @@ namespace LorendisCore.Common.Damage
 
 
         /// <summary>
-        ///     Creates an instant damage event with a duration of 0, which is to be 
+        /// Creates an instant damage event with a duration of 0, which is to be 
         /// </summary>
         public InstantDamage(DamageType type, int amount)
             : base(type, amount, 0) { }

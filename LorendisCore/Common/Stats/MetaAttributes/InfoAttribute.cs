@@ -3,7 +3,7 @@
 namespace LorendisCore.Common.Stats.Attributes
 {
     /// <summary>
-    ///     A basic attribute used to describe stats in text.
+    /// A basic attribute used to describe stats in text.
     /// </summary>
     [AttributeUsage(AttributeTargets.Field)]
     public class InfoAttribute : Attribute

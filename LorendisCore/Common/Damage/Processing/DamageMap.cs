@@ -6,23 +6,23 @@ using System.Collections.Generic;
 namespace LorendisCore.Common.Damage.Processing
 {
     /// <summary>
-    ///     Acts as a dictionary of <see cref="DamageType"/>s to damage amounts, with less freedom.
-    ///     Only positive values can be added, and it will return 0 if damage is unspecified.
-    ///     Extends <see cref="IEnumerable"/>
+    /// Acts as a dictionary of <see cref="DamageType"/>s to damage amounts, with less freedom.
+    /// Only positive values can be added, and it will return 0 if damage is unspecified.
+    /// Extends <see cref="IEnumerable"/>
     /// </summary>
     public class DamageMap : IEnumerable<KeyValuePair<DamageType, int>>
     {
         private readonly IDictionary<DamageType, int> _map = new Dictionary<DamageType, int>();
 
         /// <summary>
-        ///     Creates an empty <see cref="DamageMap"/>.
+        /// Creates an empty <see cref="DamageMap"/>.
         /// </summary>
         public DamageMap()
         { }
 
         /// <summary>
-        ///     Creates a damage map from a <see cref="DamageType"/> to amount (int) dictionary by copying values.
-        ///     Will not include non-positive values.
+        /// Creates a damage map from a <see cref="DamageType"/> to amount (int) dictionary by copying values.
+        /// Will not include non-positive values.
         /// </summary>
         public DamageMap(IDictionary<DamageType, int> map)
         {
@@ -36,7 +36,7 @@ namespace LorendisCore.Common.Damage.Processing
 
 
         /// <summary>
-        ///     Whether the specified <see cref="DamageType"/> has a nonzero amount of damage.
+        /// Whether the specified <see cref="DamageType"/> has a nonzero amount of damage.
         /// </summary>
         public bool ContainsType(DamageType key)
         {
@@ -44,7 +44,7 @@ namespace LorendisCore.Common.Damage.Processing
         }
 
         /// <summary>
-        ///     Gets the amount of damage for the given type, or 0 if unspecified.
+        /// Gets the amount of damage for the given type, or 0 if unspecified.
         /// </summary>
         public int Get(DamageType type)
         {
@@ -55,8 +55,8 @@ namespace LorendisCore.Common.Damage.Processing
 
 
         /// <summary>
-        ///     Adds the damage amount to the dictionary, modifying the value instead if the key already exists.
-        ///     Negative amounts will not be added.
+        /// Adds the damage amount to the dictionary, modifying the value instead if the key already exists.
+        /// Negative amounts will not be added.
         /// </summary>
         public void Add(DamageType type, int amount)
         {
@@ -70,8 +70,8 @@ namespace LorendisCore.Common.Damage.Processing
         }
 
         /// <summary>
-        ///     Adds another damage map's value to <b>this map</b>.
-        ///     Does not modify other map.
+        /// Adds another damage map's value to <b>this map</b>.
+        /// Does not modify other map.
         /// </summary>
         /// <returns>  The map the action is performed on, for fluid calling.  </returns>
         public DamageMap Add(DamageMap other)
@@ -83,7 +83,7 @@ namespace LorendisCore.Common.Damage.Processing
         }
 
         /// <summary>
-        ///     Removes the value for the specified <see cref="DamageType"/>.
+        /// Removes the value for the specified <see cref="DamageType"/>.
         /// </summary>
         public void Remove(DamageType type)
         {
@@ -93,8 +93,8 @@ namespace LorendisCore.Common.Damage.Processing
 
 
         /// <summary>
-        ///     Creates a new map for interpolating damage over time.
-        ///     Damage is rounded down.
+        /// Creates a new map for interpolating damage over time.
+        /// Damage is rounded down.
         /// </summary>
         /// <param name="deltaTime">  Fraction of a second. Must be less than or equal to one.  </param>
         /// <returns>  A new <see cref="DamageMap"/>.  </returns>
@@ -109,9 +109,9 @@ namespace LorendisCore.Common.Damage.Processing
         }
 
         /// <summary>
-        ///     Returns the amount of damage by type <i>present in this map</i> that has not been adequately dealt by the other.
-        ///     The other map is expected to have the same keys and smaller values than this one;
-        ///     any damage that would come out negative is set to 0.
+        /// Returns the amount of damage by type <i>present in this map</i> that has not been adequately dealt by the other.
+        /// The other map is expected to have the same keys and smaller values than this one;
+        /// any damage that would come out negative is set to 0.
         /// </summary>
         /// <returns>  The difference between this <see cref="DamageMap"/> and another map, as a new object.  </returns>
         public DamageMap Difference(DamageMap other)

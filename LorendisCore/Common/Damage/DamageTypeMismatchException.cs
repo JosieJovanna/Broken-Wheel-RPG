@@ -3,7 +3,7 @@
 namespace LorendisCore.Common.Damage
 {
     /// <summary>
-    ///   Thrown when math is performed on damages of different types.
+    /// Thrown when math is performed on damages of different types.
     /// </summary>
     [Serializable]
     public class DamageTypeMismatchException : Exception

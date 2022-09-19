@@ -6,7 +6,7 @@ namespace LorendisCore.Common.Stats
     public enum Stat
     {
         /// <summary>
-        ///     An unspecified stat, which must be checked using string matching on the dynamic stat table.
+        /// An unspecified stat, which must be checked using string matching on the dynamic stat table.
         /// </summary>
         Unspecified,
 
