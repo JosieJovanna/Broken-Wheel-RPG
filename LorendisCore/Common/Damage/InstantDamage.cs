@@ -5,15 +5,13 @@ namespace LorendisCore.Common.Damage
     {
         private bool _isDone = false;
         protected override bool IsDoneCondition() => _isDone;
-
-
+        
         /// <summary>
         /// Creates an instant damage event with a duration of 0, which is to be 
         /// </summary>
         public InstantDamage(DamageType type, int amount)
             : base(type, amount, 0) { }
-
-
+        
         protected override int CalculateTick()
         {
             _isDone = true;

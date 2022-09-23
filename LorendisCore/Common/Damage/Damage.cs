@@ -32,9 +32,12 @@ namespace LorendisCore.Common.Damage
         protected Damage(DamageType type, int total, int duration)
         {
             if (total <= 0)
-                throw new ArgumentException("Damage amount must be positive; non-damages are to be filtered out during the processing of damage events.");
+                throw new ArgumentException("Damage amount must be positive; non-damages are to be filtered " +
+                                            "out during the processing of damage events. " +
+                                            $"({nameof(Total)}={total})");
             if (duration < 0)
-                throw new ArgumentException("Damage duration must be positive.");
+                throw new ArgumentException("Damage duration must be positive. " +
+                                            $"({nameof(Duration)}={duration})");
 
             Type = type;
             Total = total;

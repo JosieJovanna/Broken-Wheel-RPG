@@ -34,8 +34,7 @@ namespace LorendisCore.Common
         {
             if (exponent < 0 || exponent >= _coefficients.Length)
                 return 0;
-            else
-                return _coefficients[exponent];
+            return _coefficients[exponent];
         }
         
         

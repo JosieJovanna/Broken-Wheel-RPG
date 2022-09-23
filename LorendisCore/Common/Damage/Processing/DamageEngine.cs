@@ -11,6 +11,9 @@ namespace LorendisCore.Common.Damage.Processing
     /// </summary>
     public interface DamageEngine
     {
-        
+        // takes damage events and queues them
+        // continuously calculates and applies damage
+        // tracks values on the stat bars
+        // calls events when stats cross zero
     }
 }
