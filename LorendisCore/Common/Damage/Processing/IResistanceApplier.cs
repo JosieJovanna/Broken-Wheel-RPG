@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 namespace LorendisCore.Common.Damage.Processing
 {
     /// <summary>
-    /// Filters damage into HP, SP, and WP and applies to the respective complex stat, to later be referenced by the UI.
+    /// Takes in damage events and applies a player's weaknesses and strengths, before calculating damage with <see cref="IDamageCalculator"/>.
     /// </summary>
-    interface DamageApplier
+    public interface IResistanceApplier
     {
     }
 }

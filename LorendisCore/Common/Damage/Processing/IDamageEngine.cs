@@ -7,9 +7,9 @@ namespace LorendisCore.Common.Damage.Processing
 {
     /// <summary>
     /// Handles the pipeline of damage from start to finish.
-    /// Processes <see cref="ResistanceApplier"/> to <see cref="DamageCalculator"/> to <see cref="DamageApplier"/>.
+    /// Processes <see cref="IResistanceApplier"/> to <see cref="IDamageCalculator"/> to <see cref="IDamageApplier"/>.
     /// </summary>
-    public interface DamageEngine
+    public interface IDamageEngine
     {
         // takes damage events and queues them
         // continuously calculates and applies damage

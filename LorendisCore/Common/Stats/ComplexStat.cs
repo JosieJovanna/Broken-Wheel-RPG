@@ -42,20 +42,21 @@ namespace LorendisCore.Common.Stats
         public int GetEffectiveValue() => Math.Min(GetTotal(), _val);
 
         /// <summary>
-        /// Sets the value of the stat.
+        /// Sets the effective value of the stat.
         /// Since there is no modifier applied to the stat but rather the total,
         /// this is equivalent to <see cref="SetValue"/>.
         /// </summary>
         public void SetEffectiveValue(int val) => SetValue(val);
 
         /// <summary>
-        /// Sets the effective value of the stat.
+        /// Sets the value of the stat.
         /// Cannot be greater than the maximum, including modifier and exhaustion.
         /// </summary>
         public void SetValue(int val) => _val = Math.Min(GetTotal(), val);
 
         /// <summary>
-        /// 
+        /// Modifies the value of the stat.
+        /// Result will not be greater than the maximum, including modifier and exhaustion.
         /// </summary>
         public void AddValue(int add) => SetValue(_val + add);
 

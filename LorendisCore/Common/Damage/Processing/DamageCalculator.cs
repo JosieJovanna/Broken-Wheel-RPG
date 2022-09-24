@@ -3,41 +3,113 @@
 namespace LorendisCore.Common.Damage.Processing
 {
     /// <summary>
-    /// Calculated damage per second and interpolates it so that it can be applied by tick.
-    /// Keeping track of progress through a second is handled by the calculator.
-    /// Will lump every type of damage into one struct so that they can be applied neatly by a <see cref="DamageCalculator"/>.
-    /// Used in the process of processing and applying damages, which is managed by a <see cref="DamageEngine"/>.
+    /// The default implementation of <see cref="IDamageCalculator"/>.
     /// </summary>
-    public interface DamageCalculator
+    public class DamageCalculator : IDamageCalculator
     {
-        /// <summary>
-        /// Adds damage to the group to be calculated to completion.
-        /// <see cref="Damage"/>s will not leave the queue until they deal all damage.
-        /// </summary>
-        void AddToQueue(Damage damage);
+        protected readonly List<Damage> _queue = new List<Damage>();
+        protected readonly List<Damage> _instants = new List<Damage>();
+        protected readonly List<DamageMap> _lastTicks = new List<DamageMap>();
+        protected DamageMap _dmgDone = new DamageMap();
+        protected DamageMap _dmgTick = new DamageMap();
+        protected double _time = 0;
+        protected bool _justTicked = false;
+
+
+        public void AddToQueue(Damage damage)
+        {
+            if (damage.GetType() != typeof(InstantDamage))
+                _queue.Add(damage);
+            else
+                _instants.Add(damage);
+        }
+
+        public void ClearQueue()
+        {
+            _queue.Clear();
+        }
+
+        public List<DamageMap> DpsMapIfJustTicked()
+        {
+            return _justTicked
+                ? _lastTicks
+                : new List<DamageMap>();
+        }
+
+        #region Calculation
+        public DamageMap Calculate(double delta)
+        {
+            _time += delta;
+            _justTicked = false;
+
+            var deal = GetInitialDamageToDeal();
+            return CalculateFractionAndTrack(deal);
+        }
+
+        private DamageMap GetInitialDamageToDeal()
+        {
+            var init = new DamageMap();
+            CalculateInstantDamage(init);
+            CompleteTickIfSecondPassed(init);
+            return init;
+        }
+
+        private void CalculateInstantDamage(DamageMap deal)
+        {
+            foreach (var dmg in _instants)
+                deal.Add(dmg.Type, dmg.Tick());
+            _instants.Clear();
+        }
+
+        private void CompleteTickIfSecondPassed(DamageMap deal)
+        {
+            while (_time > 1)
+            {
+                deal.Add(_dmgTick - _dmgDone);
+                CalculateTick();
+                TrackThatJustTicked();
+            }
+        }
+
+        private void TrackThatJustTicked()
+        {
+            _time -= 1;
+            _lastTicks.Clear();
+            _justTicked = true;
+            _lastTicks.Add(_dmgTick);
+        }
+
+        private DamageMap CalculateFractionAndTrack(DamageMap deal)
+        {
+            deal.Add(_dmgTick.Fraction(_time));
+            _dmgDone.Add(deal);
+            return deal;
+        }
+
 
         /// <summary>
-        /// Clears the damage queue and stops processing.
-        /// </summary>
-        void ClearQueue();
-
-        /// <summary>
-        /// Returns a (potentially-empty but non-null) list of <see cref="DamageMap"/>s.
-        /// If during the last time <see cref="Calculate(double)"/> was run a full second passed,
-        /// (or in rare cases, more than one, thus the list), the damage map of the full second is returned.
-        /// This is so that when calculating frame-by-frame, the full DPS numbers can be tracked.
-        /// </summary>
-        List<DamageMap> DpsMapIfJustTicked();
-
-        /// <summary>
-        /// Calculates the damage for the game tick, interpolating DPS based on the fraction of the second.
+        /// Calculates the damage dealt per second. 
         /// This process is irreversable.
         /// </summary>
-        /// <param name="delta"> The fraction of a second that has passed since the last tick. </param>
-        /// <returns> 
-        /// A dictionary with <see cref="DamageType"/> as the key, and the raw damage amount as the value. 
+        /// <returns>
+        /// A dictionary with <see cref="DamageType"/> as the key, and the raw <see cref="Common.Damage"/> as the value. 
         /// Will not include any <see cref="DamageType"/>s without any damage to deal.
         /// </returns>
-        DamageMap Calculate(double delta);
+        private void CalculateTick()
+        {
+            _dmgTick = new DamageMap();
+            _dmgDone = new DamageMap();
+            foreach (var damage in _queue)
+                CaculateDamage(damage);
+        }
+
+        private void CaculateDamage(Damage damage)
+        {
+            if (damage.IsDone)
+                _queue.Remove(damage);
+            else
+                _dmgTick.Add(damage.Type, damage.Tick());
+        }
+        #endregion
     }
 }
