@@ -1,4 +1,5 @@
 ﻿using System;
+using LorendisCore.Utilities;
 
 namespace LorendisCore.Common.Stats
 {
@@ -23,7 +24,7 @@ namespace LorendisCore.Common.Stats
         /// Gets the effective value of the stat, including the modifier.
         /// Cannot be less than zero.
         /// </summary>
-        public int GetEffectiveValue() => Math.Max(0, _val + _mod);
+        public int GetEffectiveValue() => Util.NonNeg(_val + _mod);
 
         /// <summary>
         /// Sets the effective value of the stat to the given value minus the modifier.
@@ -31,7 +32,7 @@ namespace LorendisCore.Common.Stats
         public void SetEffectiveValue(int val) => SetValue(val - _mod);
 
         public int GetValue() => _val;
-        public void SetValue(int val) => _val = val;
+        public void SetValue(int val) => _val = Util.NonNeg(val);
         public void AddValue(int add) => SetValue(_val + add);
 
         public int GetModifier() => _mod;

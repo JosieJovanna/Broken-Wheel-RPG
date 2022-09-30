@@ -1,4 +1,5 @@
 ﻿using System;
+using LorendisCore.Utilities;
 
 namespace LorendisCore.Common.Stats
 {
@@ -71,7 +72,7 @@ namespace LorendisCore.Common.Stats
         /// </summary>
         public void SetMaximum(int val)
         {
-            _max = Math.Max(0, val);
+            _max = Util.NonNeg(val);
             SetValue(_val); // ensure is under total
         }
         
@@ -85,7 +86,7 @@ namespace LorendisCore.Common.Stats
         /// <summary>
         /// Sets the exhaustion. Cannot be negative.
         /// </summary>
-        public void SetExhaustion(int val) => _exh = Math.Max(0, val);
+        public void SetExhaustion(int val) => _exh = Util.NonNeg(val);
         
         /// <summary>
         /// Modifies the exhaustion. Result will not be less than zero.

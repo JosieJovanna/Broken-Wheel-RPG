@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using System.Globalization;
+using LorendisCore.Utilities;
 
 namespace LorendisCore.Common.Damage
 {
@@ -32,7 +33,7 @@ namespace LorendisCore.Common.Damage
             double Fx()
             {
                 var result = _func.Fx(TimePassed);
-                return Math.Max(0, result); // no negative damage
+                return Util.NonNeg(result); // no negative damage
             }
             int WithOverflow()
             {
@@ -81,7 +82,7 @@ namespace LorendisCore.Common.Damage
             var f = new Polynomial(coefficients);
             var ttl = 0.0;
             for (var i = 1; i <= x; i++)
-                ttl += Math.Max(0, f.Fx(i));
+                ttl += Util.NonNeg(f.Fx(i));
             return (int) Math.Floor(ttl);
         }
     }
