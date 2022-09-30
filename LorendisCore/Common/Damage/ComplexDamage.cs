@@ -33,7 +33,7 @@ namespace LorendisCore.Common.Damage
             double Fx()
             {
                 var result = _func.Fx(TimePassed);
-                return Util.NonNeg(result); // no negative damage
+                return Util.NonNeg(result);
             }
             int WithOverflow()
             {
