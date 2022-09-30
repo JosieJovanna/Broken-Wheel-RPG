@@ -6,10 +6,10 @@ namespace LorendisCore.Common.Damage.Tests;
 public class SimpleDamageTests
 {
     [Theory]
-    [InlineData(1   , 1   )]
-    [InlineData(999 , 4   )]
-    [InlineData(1000, 3   )]
-    [InlineData(100 , 10  )]
+    [InlineData(1, 1)]
+    [InlineData(999, 4)]
+    [InlineData(1000, 3)]
+    [InlineData(100, 10)]
     [InlineData(1000, 1000)]
     public void Constructor_Passes(int amount, int duration)
     {
@@ -54,24 +54,24 @@ public class SimpleDamageTests
     {
         // setup
         var damage = new SimpleDamage(DamageType.Generic, 10, 1);
-    
+
         // execute
         damage.Tick();
         Assert.True(damage.IsDone);
         var nextTick = damage.Tick();
-        
+
         // test
         Assert.Equal(0, nextTick);
         Assert.Equal(10, damage.Dealt);
     }
 
     [Theory]
-    [InlineData(10 , 1  )]
-    [InlineData(40 , 3  )]
-    [InlineData(100, 10 )]
+    [InlineData(10, 1)]
+    [InlineData(40, 3)]
+    [InlineData(100, 10)]
     [InlineData(999, 120)]
-    [InlineData(40 , 120)]
-    [InlineData(1  , 99 )]
+    [InlineData(40, 120)]
+    [InlineData(1, 99)]
     public void Tick_Properties_CorrectWhileRunning(int amount, int duration)
     {
         // setup
@@ -89,7 +89,7 @@ public class SimpleDamageTests
             timePassed++;
             timeRemaining--;
             var tick = damage.Tick();
-            var newExpectedDealt = (int) Math.Floor((expectedDps * timePassed).ToDouble());
+            var newExpectedDealt = (int)Math.Floor((expectedDps * timePassed).ToDouble());
             var expectedTick = newExpectedDealt - expectedDealt;
             var expectedRemaining = amount - newExpectedDealt;
             expectedDealt = newExpectedDealt;
@@ -104,12 +104,12 @@ public class SimpleDamageTests
     }
 
     [Theory]
-    [InlineData(10 , 1  )]
-    [InlineData(40 , 3  )]
-    [InlineData(100, 10 )]
+    [InlineData(10, 1)]
+    [InlineData(40, 3)]
+    [InlineData(100, 10)]
     [InlineData(999, 120)]
-    [InlineData(40 , 120)]
-    [InlineData(1  , 99 )]
+    [InlineData(40, 120)]
+    [InlineData(1, 99)]
     public void Tick_Properties_CorrectAfterCompletion(int amount, int duration)
     {
         // setup
@@ -128,22 +128,22 @@ public class SimpleDamageTests
     }
 
     [Theory]
-    [InlineData(DamageType.Generic  , 10  , 5 , 0 )]
-    [InlineData(DamageType.Stamina  , 100 , 3 , 0 )]
-    [InlineData(DamageType.Willpower, 800 , 4 , 2 )]
-    [InlineData(DamageType.Bleed    , 6894, 3 , 5 )]
-    [InlineData(DamageType.Slash    , 123 , 3 , 5 )]
-    [InlineData(DamageType.Shock    , 8   , 12, 5 )]
-    [InlineData(DamageType.Corrosion, 8   , 12, 12)]
-    [InlineData(DamageType.Necrotic , 8   , 12, 13)]
+    [InlineData(DamageType.Generic, 10, 5, 0)]
+    [InlineData(DamageType.Stamina, 100, 3, 0)]
+    [InlineData(DamageType.Willpower, 800, 4, 2)]
+    [InlineData(DamageType.Bleed, 6894, 3, 5)]
+    [InlineData(DamageType.Slash, 123, 3, 5)]
+    [InlineData(DamageType.Shock, 8, 12, 5)]
+    [InlineData(DamageType.Corrosion, 8, 12, 12)]
+    [InlineData(DamageType.Necrotic, 8, 12, 13)]
     public void ToString_Contains_RelevantInfo(DamageType type, int amount, int duration, int time)
     {
         // setup
         var damage = new SimpleDamage(type, amount, duration);
         var expectedTime = Math.Min(duration, time);
         var expectedDps = new Fraction(amount, duration);
-        var expectedDealt = (int) Math.Floor(expectedDps.ToDouble() * expectedTime);
-            
+        var expectedDealt = (int)Math.Floor(expectedDps.ToDouble() * expectedTime);
+
         // execute
         for (var i = 0; i < time; i++)
             damage.Tick();
@@ -159,22 +159,22 @@ public class SimpleDamageTests
     }
 
     [Theory]
-    [InlineData(DamageType.Generic  , 10  , 5 , 0 )]
-    [InlineData(DamageType.Stamina  , 100 , 3 , 0 )]
-    [InlineData(DamageType.Willpower, 800 , 4 , 2 )]
-    [InlineData(DamageType.Bleed    , 6894, 3 , 5 )]
-    [InlineData(DamageType.Slash    , 123 , 3 , 5 )]
-    [InlineData(DamageType.Shock    , 8   , 12, 5 )]
-    [InlineData(DamageType.Corrosion, 8   , 12, 12)]
-    [InlineData(DamageType.Necrotic , 8   , 12, 13)]
+    [InlineData(DamageType.Generic, 10, 5, 0)]
+    [InlineData(DamageType.Stamina, 100, 3, 0)]
+    [InlineData(DamageType.Willpower, 800, 4, 2)]
+    [InlineData(DamageType.Bleed, 6894, 3, 5)]
+    [InlineData(DamageType.Slash, 123, 3, 5)]
+    [InlineData(DamageType.Shock, 8, 12, 5)]
+    [InlineData(DamageType.Corrosion, 8, 12, 12)]
+    [InlineData(DamageType.Necrotic, 8, 12, 13)]
     public void ToDataString_Contains_RelevantInfo(DamageType type, int amount, int duration, int time)
     {
         // setup
         var damage = new SimpleDamage(type, amount, duration);
         var expectedTime = Math.Min(duration, time);
         var expectedDps = new Fraction(amount, duration);
-        var expectedDealt = (int) Math.Floor(expectedDps.ToDouble() * expectedTime);
-            
+        var expectedDealt = (int)Math.Floor(expectedDps.ToDouble() * expectedTime);
+
         // execute
         for (var i = 0; i < time; i++)
             damage.Tick();

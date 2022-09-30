@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using LorendisCore.Utilities;
 
 namespace LorendisCore.Common.Damage.Processing
 {
@@ -105,7 +106,7 @@ namespace LorendisCore.Common.Damage.Processing
 
             return new DamageMap(_map.ToDictionary(
                 k => k.Key, 
-                v => (int)Math.Floor(v.Value * deltaTime)));
+                v => Util.FloorDouble(v.Value * deltaTime)));
         }
 
         /// <summary>

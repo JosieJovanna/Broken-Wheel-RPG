@@ -10,7 +10,8 @@ namespace LorendisCore.Utilities
                 throw new ArgumentNullException($"{nameOfValue} cannot be null.");
             return value;
         }
-        
+
+        #region Strings
         public static string ThrowIfNullOrEmpty(string value, string nameOfValue = "String")
         {
             if (string.IsNullOrWhiteSpace(value))
@@ -24,6 +25,7 @@ namespace LorendisCore.Utilities
                 throw new ArgumentException($"{nameOfValue} cannot be null or whitespace.");
             return value;
         }
+        #endregion
 
         #region Non-Zero Values
         public static int ThrowIfZero(int value, string nameOfValue = "Integer") 

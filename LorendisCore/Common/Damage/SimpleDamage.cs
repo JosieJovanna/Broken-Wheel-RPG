@@ -1,4 +1,5 @@
 using System;
+using LorendisCore.Utilities;
 
 namespace LorendisCore.Common.Damage
 {
@@ -31,7 +32,7 @@ namespace LorendisCore.Common.Damage
         protected override int CalculateTick()
         {
             var temp = _overflow + _dps;
-            var amount = (int) Math.Floor(temp.ToDouble());
+            var amount = Util.FloorDouble(temp.ToDouble());
             _overflow = temp - amount;
             return amount;
         }

@@ -26,7 +26,7 @@ namespace LorendisCore.Common.Damage
         protected override int CalculateTick()
         {
             var y = Fx();
-            var amount = (int)Math.Floor(y);
+            var amount = Util.FloorDouble(y);
             return WithOverflow();
 
             // LOCAL FX
@@ -83,7 +83,7 @@ namespace LorendisCore.Common.Damage
             var ttl = 0.0;
             for (var i = 1; i <= x; i++)
                 ttl += Util.NonNeg(f.Fx(i));
-            return (int) Math.Floor(ttl);
+            return Util.FloorDouble(ttl);
         }
     }
 }
