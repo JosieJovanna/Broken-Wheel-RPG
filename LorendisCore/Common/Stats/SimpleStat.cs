@@ -5,16 +5,14 @@ namespace LorendisCore.Common.Stats
 {
     public class SimpleStat : IStatObject
     {
-        public readonly string _name;
+        private readonly string _name;
         private int _val;
         private int _mod;
 
         public SimpleStat(string name, int value, int mod)
         {
-            if (string.IsNullOrWhiteSpace(name))
-                throw new ArgumentException($"{nameof(_name)} must not be null or whitespace.");
-            _name = name;
-            _val = value;
+            _name = Validate.ThrowIfNullOrWhitespace(name, nameof(name));
+            _val = Validate.ThrowIfNegative(value, nameof(value));
             _mod = mod;
         }
 

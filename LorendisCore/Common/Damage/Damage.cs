@@ -1,4 +1,5 @@
 using System;
+using LorendisCore.Utilities;
 
 namespace LorendisCore.Common.Damage
 {
@@ -14,7 +15,9 @@ namespace LorendisCore.Common.Damage
         public int TimePassed { get; protected set; } = 0;
         public bool IsDone => IsDoneCondition();
         public int Dealt => Total - Remaining;
-        public int TimeRemaining => IsDone ? 0 : Duration - TimePassed;
+        public int TimeRemaining => IsDone 
+            ? 0 
+            : Duration - TimePassed;
 
 
         /// <summary>
@@ -23,25 +26,19 @@ namespace LorendisCore.Common.Damage
         /// <param name="type">  The type of damage dealt.  </param>
         /// <param name="total">  
         /// Total damage dealt over the unit's lifetime. 
-        /// Throws an <see cref="ArgumentException"/> if 0 or lower.  
+        /// Throws an <see cref="ArgumentException"/> if 0 or lower;
+        /// such values should be filtered out during processing of damage events.
         /// </param>
         /// <param name="duration">
         /// How long it takes to deal the total damage, in seconds.
-        /// Throws an <see cref="ArgumentException"/> if 0 or lower.  
+        /// Throws an <see cref="ArgumentException"/> if 0 or lower;
+        /// such values should be filtered out during processing of damage events.
         /// </param>
         protected Damage(DamageType type, int total, int duration)
         {
-            if (total <= 0)
-                throw new ArgumentException("Damage amount must be positive; non-damages are to be filtered " +
-                                            "out during the processing of damage events. " +
-                                            $"({nameof(Total)}={total})");
-            if (duration < 0)
-                throw new ArgumentException("Damage duration must be positive. " +
-                                            $"({nameof(Duration)}={duration})");
-
             Type = type;
-            Total = total;
-            Duration = duration;
+            Total = Validate.ThrowIfNotPositive(total, nameof(Total));
+            Duration = Validate.ThrowIfNegative(duration, nameof(Duration));
             Remaining = Total;
         }
 

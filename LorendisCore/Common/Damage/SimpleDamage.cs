@@ -20,11 +20,19 @@ namespace LorendisCore.Common.Damage
         /// Creates a <see cref="Damage"/> that deals damage at a constant rate.
         /// When rounding DPS, extra damage will be dealt on the first tick.
         /// </summary>
+        /// <param name="type">  The type of damage dealt.  </param>
+        /// <param name="amount">
+        /// The amount of damage dealt.
+        /// Cannot be zero or less than zero; such values should be filtered out when processing damage events.
+        /// </param>
+        /// <param name="duration">
+        /// The amount of time it takes for the damage to resolve.
+        /// Cannot be less than 1; such values should be <see cref="InstantDamage"/>.
+        /// </param>
         public SimpleDamage(DamageType type, int amount, int duration)
             : base(type, amount, duration)
         {
-            if (duration < 1)
-                throw new ArgumentException("Damage duration must be non-zero; only instant damage may have a duration of 0.");
+            Validate.ThrowIfNotPositive(duration, nameof(Duration));
 
             _dps = new Fraction(amount, duration);
         }

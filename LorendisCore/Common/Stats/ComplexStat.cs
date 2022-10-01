@@ -5,7 +5,7 @@ namespace LorendisCore.Common.Stats
 {
     public class ComplexStat : IStatObject
     {
-        public readonly string _name;
+        private readonly string _name;
         private int _val;
         private int _mod;
         private int _max;
@@ -13,24 +13,22 @@ namespace LorendisCore.Common.Stats
 
         public ComplexStat(string name, int value, int mod, int max, int exhaustion)
         {
-            if (string.IsNullOrWhiteSpace(name))
-                throw new ArgumentException($"{nameof(_name)} must not be null or whitespace.");
-            _name = name;
-            _val = value;
+            _name = Validate.ThrowIfNullOrWhitespace(name, nameof(name));
+            _val = Validate.ThrowIfNegative(value, nameof(value));
             _mod = mod;
-            _max = max;
-            _exh = exhaustion;
+            _max = Validate.ThrowIfNegative(max, nameof(max));
+            _exh = Validate.ThrowIfNegative(exhaustion, nameof(exhaustion));
         }
 
         /// <summary>
         /// Gets the effective maximum the stat can be raised to, including modifier and exhaustion.
         /// </summary>
-        public int GetTotal() => _max + _mod - _exh;
+        public int GetTotal() => Util.NonNeg(_max + _mod - _exh);
 
         /// <summary>
         /// Gets the maximum the stat can be raised to, including modifier but <i>not</i> exhaustion.
         /// </summary>
-        public int GetModifiedMaximum() => _max + _mod;
+        public int GetModifiedMaximum() => Util.NonNeg(_max + _mod);
 
         public string GetStatName() => _name;
         
@@ -53,7 +51,7 @@ namespace LorendisCore.Common.Stats
         /// Sets the value of the stat.
         /// Cannot be greater than the maximum, including modifier and exhaustion.
         /// </summary>
-        public void SetValue(int val) => _val = Math.Min(GetTotal(), val);
+        public void SetValue(int val) => _val = Util.NonNeg(Math.Min(GetTotal(), val));
 
         /// <summary>
         /// Modifies the value of the stat.
