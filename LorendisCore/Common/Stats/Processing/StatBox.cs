@@ -1,4 +1,6 @@
-namespace LorendisCore.Common.Stats
+using LorendisCore.Common.Stats.Enum;
+
+namespace LorendisCore.Common.Stats.Processing
 {
     public class StatBox : IStatBox
     {

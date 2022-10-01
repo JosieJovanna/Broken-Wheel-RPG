@@ -1,4 +1,4 @@
-namespace LorendisCore.Common.Stats
+namespace LorendisCore.Common.Stats.Processing
 {
     public interface IStatBox
     {

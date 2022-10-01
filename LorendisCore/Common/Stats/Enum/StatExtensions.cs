@@ -2,7 +2,7 @@
 using System.Linq;
 using LorendisCore.Common.Stats.Attributes;
 
-namespace LorendisCore.Common.Stats
+namespace LorendisCore.Common.Stats.Enum
 {
     public static class StatExtensions
     {
@@ -10,7 +10,7 @@ namespace LorendisCore.Common.Stats
         {
             var menuNameAttribute = stat.GetAttribute<MenuNameAttribute>();
             return menuNameAttribute == null 
-                ? Enum.GetName(typeof(Stat), stat) 
+                ? System.Enum.GetName(typeof(Stat), stat) 
                 : menuNameAttribute.MenuName;
         }
 
