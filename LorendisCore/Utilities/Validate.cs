@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace LorendisCore.Utilities
 {
@@ -7,6 +9,13 @@ namespace LorendisCore.Utilities
         public static object ThrowIfNull(object value, string nameOfValue = "Value")
         {
             return value ?? throw new ArgumentNullException($"{nameOfValue} cannot be null.");
+        }
+        
+        public static IEnumerable<object> ThrowIfEmpty(IEnumerable<object> value, string nameOfValue = "Value")
+        {
+            if (value == null || !value.Any())
+                throw new ArgumentNullException($"{nameOfValue} cannot be null.");
+            return value;
         }
 
         #region Strings

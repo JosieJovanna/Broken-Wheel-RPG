@@ -16,6 +16,12 @@ namespace LorendisCore.Common.Damage.Processing
         protected bool _justTicked = false;
 
 
+        public void AddToQueue(IEnumerable<Damage> damages)
+        {
+            foreach (var dmg in damages)
+                AddToQueue(dmg);
+        }
+        
         public void AddToQueue(Damage damage)
         {
             if (damage.GetType() != typeof(InstantDamage))
