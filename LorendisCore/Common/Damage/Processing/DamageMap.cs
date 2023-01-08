@@ -106,7 +106,7 @@ namespace LorendisCore.Common.Damage.Processing
 
             return new DamageMap(_map.ToDictionary(
                 k => k.Key, 
-                v => Util.FloorDouble(v.Value * deltaTime)));
+                v => MathUtil.FloorDouble(v.Value * deltaTime)));
         }
 
         /// <summary>

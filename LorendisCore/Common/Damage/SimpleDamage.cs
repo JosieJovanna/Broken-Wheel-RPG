@@ -40,7 +40,7 @@ namespace LorendisCore.Common.Damage
         protected override int CalculateTick()
         {
             var temp = _overflow + _dps;
-            var amount = Util.FloorDouble(temp.ToDouble());
+            var amount = MathUtil.FloorDouble(temp.ToDouble());
             _overflow = temp - amount;
             return amount;
         }

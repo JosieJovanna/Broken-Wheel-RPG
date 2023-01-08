@@ -23,7 +23,7 @@ namespace LorendisCore.Common.Stats
         /// Cannot be less than zero.
         /// </summary>
         public int GetEffectiveValue() 
-            => Util.NonNeg(_val + _mod);
+            => MathUtil.NonNeg(_val + _mod);
 
         /// <summary>
         /// Sets the effective value of the stat to the given value minus the modifier.
@@ -34,7 +34,7 @@ namespace LorendisCore.Common.Stats
         public int GetValue() 
             => _val;
         public void SetValue(int val) 
-            => _val = Util.NonNeg(val);
+            => _val = MathUtil.NonNeg(val);
         public void AddValue(int add) 
             => SetValue(_val + add);
 

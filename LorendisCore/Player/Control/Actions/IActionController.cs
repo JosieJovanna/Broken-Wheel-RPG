@@ -1,6 +1,6 @@
-﻿using LorendisCore.Player.Behaviors;
+﻿using LorendisCore.Player.Control.Actions.Behaviors;
 
-namespace LorendisCore.Player
+namespace LorendisCore.Player.Control.Actions
 {
     /// <summary>
     /// The object which is controlled by the player. Separate from reading input.

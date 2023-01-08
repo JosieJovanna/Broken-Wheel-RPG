@@ -24,13 +24,13 @@ namespace LorendisCore.Common.Stats
         /// Gets the effective maximum the stat can be raised to, including modifier and exhaustion.
         /// </summary>
         public int GetTotal() 
-            => Util.NonNeg(_max + _mod - _exh);
+            => MathUtil.NonNeg(_max + _mod - _exh);
 
         /// <summary>
         /// Gets the maximum the stat can be raised to, including modifier but <i>not</i> exhaustion.
         /// </summary>
         public int GetModifiedMaximum() 
-            => Util.NonNeg(_max + _mod);
+            => MathUtil.NonNeg(_max + _mod);
 
         public string GetStatName() 
             => _name;
@@ -58,7 +58,7 @@ namespace LorendisCore.Common.Stats
         /// Cannot be greater than the maximum, including modifier and exhaustion.
         /// </summary>
         public void SetValue(int val) 
-            => _val = Util.NonNeg(Math.Min(GetTotal(), val));
+            => _val = MathUtil.NonNeg(Math.Min(GetTotal(), val));
 
         /// <summary>
         /// Modifies the value of the stat.
@@ -82,7 +82,7 @@ namespace LorendisCore.Common.Stats
         /// </summary>
         public void SetMaximum(int val)
         {
-            _max = Util.NonNeg(val);
+            _max = MathUtil.NonNeg(val);
             SetValue(_val); // ensure is under total
         }
         
@@ -98,7 +98,7 @@ namespace LorendisCore.Common.Stats
         /// Sets the exhaustion. Cannot be negative.
         /// </summary>
         public void SetExhaustion(int val) 
-            => _exh = Util.NonNeg(val);
+            => _exh = MathUtil.NonNeg(val);
         
         /// <summary>
         /// Modifies the exhaustion. Result will not be less than zero.

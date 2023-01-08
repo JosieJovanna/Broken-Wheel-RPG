@@ -26,14 +26,14 @@ namespace LorendisCore.Common.Damage
         protected override int CalculateTick()
         {
             var y = Fx();
-            var amount = Util.FloorDouble(y);
+            var amount = MathUtil.FloorDouble(y);
             return WithOverflow();
 
             // LOCAL FX
             double Fx()
             {
                 var result = _func.Fx(TimePassed);
-                return Util.NonNeg(result);
+                return MathUtil.NonNeg(result);
             }
             int WithOverflow()
             {
@@ -82,8 +82,8 @@ namespace LorendisCore.Common.Damage
             var f = new Polynomial(coefficients);
             var ttl = 0.0;
             for (var i = 1; i <= x; i++)
-                ttl += Util.NonNeg(f.Fx(i));
-            return Util.FloorDouble(ttl);
+                ttl += MathUtil.NonNeg(f.Fx(i));
+            return MathUtil.FloorDouble(ttl);
         }
     }
 }
