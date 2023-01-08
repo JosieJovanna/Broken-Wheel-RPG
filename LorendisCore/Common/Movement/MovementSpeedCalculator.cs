@@ -4,7 +4,7 @@
     {
         public double GetWalkSpeed()
         {
-            
+            throw new System.NotImplementedException();
         }
     }
 }
