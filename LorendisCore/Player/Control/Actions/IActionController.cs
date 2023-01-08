@@ -24,6 +24,8 @@ namespace LorendisCore.Player.Control.Actions
         IActionBehavior ReadyWeaponBehavior { get; set; }
         IActionBehavior AbilityBehavior { get; set; }
         IActionBehavior KickBehavior { get; set; }
+        IActionBehavior GrabBehavior { get; set; }
+
 
         /// <summary> Main-hand primary action, usually the left mouse button. </summary>
         void MainPrimary(ButtonPressData buttonPress);
@@ -51,5 +53,8 @@ namespace LorendisCore.Player.Control.Actions
 
         /// <summary> Kicks, usually just a normal kick but can be replaced or could be using other fighting style. </summary>
         void Kick(ButtonPressData buttonPress);
+
+        /// <summary> Grabs a nearby entity, ladder, etc. </summary>
+        void Grab(ButtonPressData buttonPress);
     }
 }

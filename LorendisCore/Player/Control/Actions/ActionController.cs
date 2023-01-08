@@ -17,6 +17,7 @@ namespace LorendisCore.Player.Control.Actions
         public IActionBehavior ReadyWeaponBehavior { get; set; }
         public IActionBehavior AbilityBehavior { get; set; }
         public IActionBehavior KickBehavior { get; set; }
+        public IActionBehavior GrabBehavior { get; set; }
 
 
         public void MainPrimary(ButtonPressData buttonPress) 
@@ -46,5 +47,8 @@ namespace LorendisCore.Player.Control.Actions
 
         public void Kick(ButtonPressData buttonPress) 
             => KickBehavior?.Act(buttonPress);
+
+        public void Grab(ButtonPressData buttonPress)
+            => GrabBehavior?.Act(buttonPress);
     }
 }
