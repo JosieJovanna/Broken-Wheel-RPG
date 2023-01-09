@@ -9,8 +9,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Player\Control\Actions\Behaviors\Weapons\" />
     <Folder Include="Player\Control\Movement\" />
+    <Folder Include="Weapons\OneHanded\" />
   </ItemGroup>
 
 </Project>
