@@ -1,4 +1,6 @@
-﻿namespace LorendisCore.Player.Control.Actions
+﻿using LorendisCore.Player.Control.Actions.Models;
+
+namespace LorendisCore.Player.Control.Actions
 {
     /// <summary>
     /// The default implementation of <see cref="IActionController"/>
@@ -35,8 +37,8 @@
         public void Interact(ButtonPressData buttonPress) 
             => Behaviors.Interact?.Act(buttonPress);
 
-        public void ReadyWeapon(ButtonPressData buttonPress) 
-            => Behaviors.ReadyWeapon?.Act(buttonPress);
+        public void Reload(ButtonPressData buttonPress) 
+            => Behaviors.Reload?.Act(buttonPress);
 
         public void UseAbility(ButtonPressData buttonPress) 
             => Behaviors.Ability?.Act(buttonPress);

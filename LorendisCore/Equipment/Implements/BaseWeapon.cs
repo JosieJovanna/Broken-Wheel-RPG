@@ -1,4 +1,5 @@
 ﻿using LorendisCore.Player.Control.Actions;
+using LorendisCore.Player.Control.Actions.Models;
 
 namespace LorendisCore.Equipment.Implements
 {

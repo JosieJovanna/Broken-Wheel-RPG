@@ -1,6 +1,6 @@
 ﻿namespace LorendisCore.Equipment.Implements
 {
-    class OneHander
+    class TwoHandedImplement
     {
     }
 }

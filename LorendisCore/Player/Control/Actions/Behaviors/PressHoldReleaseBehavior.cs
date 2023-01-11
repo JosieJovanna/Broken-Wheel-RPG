@@ -8,17 +8,17 @@ namespace LorendisCore.Player.Control.Actions.Behaviors
     /// These delegates must not have data passed in or out, and is located in instances of classes
     /// which have access to the relevant data via different means.
     /// </summary>
-    public class DelegatedActionBehavior : BaseActionBehavior
+    public class PressHoldReleaseBehavior : BaseActionBehavior
     {
         protected SimpleDelegate OnInitialPress;
         protected SimpleDelegate OnRelease;
         protected SimpleDelegate OnHeld;
 
-        public DelegatedActionBehavior(double holdTime) 
+        public PressHoldReleaseBehavior(double holdTime) 
             : base(holdTime)
         { }
 
-        public DelegatedActionBehavior(double holdTime,
+        public PressHoldReleaseBehavior(double holdTime,
             SimpleDelegate onInitialPress, SimpleDelegate onRelease, SimpleDelegate onHeld)
             : base(holdTime)
         {
