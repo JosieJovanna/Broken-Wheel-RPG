@@ -1,6 +1,6 @@
 ﻿using LorendisCore.Player.Control.Actions;
 
-namespace LorendisCore.Weapons
+namespace LorendisCore.Equipment.Implements
 {
     /// <summary>
     /// A piece of equipment which may be held in the hand, modifying behaviors along with it.

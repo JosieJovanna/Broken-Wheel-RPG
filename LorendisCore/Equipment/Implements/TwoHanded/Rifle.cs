@@ -1,7 +1,7 @@
 ﻿using LorendisCore.Player.Control.Actions;
 using LorendisCore.Player.Control.Actions.Behaviors;
 
-namespace LorendisCore.Weapons.TwoHanded
+namespace LorendisCore.Equipment.Implements.TwoHanded
 {
     public class Rifle : BaseWeapon
     {

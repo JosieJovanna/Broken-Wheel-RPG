@@ -1,6 +1,6 @@
 ﻿using LorendisCore.Player.Control.Actions;
 
-namespace LorendisCore.Weapons
+namespace LorendisCore.Equipment.Implements
 {
     public abstract class BaseWeapon
     {
