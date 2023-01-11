@@ -1,54 +1,50 @@
-﻿using LorendisCore.Player.Control.Actions.Behaviors;
-
-namespace LorendisCore.Player.Control.Actions
+﻿namespace LorendisCore.Player.Control.Actions
 {
     /// <summary>
     /// The default implementation of <see cref="IActionController"/>
     /// </summary>
     public class ActionController : IActionController
     {
-        public IActionBehavior MainPrimaryBehavior { get; set; }
-        public IActionBehavior MainSecondaryBehavior { get; set; }
-        public IActionBehavior OffhandPrimaryBehavior { get; set; }
-        public IActionBehavior OffhandSecondaryBehavior { get; set; }
-        public IActionBehavior SpecialBehavior { get; set; }
+        public ActionBehaviorMap Behaviors { get; set; }
 
-        public IActionBehavior InteractBehavior { get; set; }
-        public IActionBehavior ReadyWeaponBehavior { get; set; }
-        public IActionBehavior AbilityBehavior { get; set; }
-        public IActionBehavior KickBehavior { get; set; }
-        public IActionBehavior GrabBehavior { get; set; }
+        public ActionController()
+        {
+            Behaviors = new ActionBehaviorMap();
+        }
 
+        public ActionController(ActionBehaviorMap behaviors)
+        {
+            Behaviors = behaviors;
+        }
 
         public void MainPrimary(ButtonPressData buttonPress) 
-            => MainPrimaryBehavior?.Act(buttonPress);
+            => Behaviors.MainPrimary?.Act(buttonPress);
 
         public void MainSecondary(ButtonPressData buttonPress) 
-            => MainSecondaryBehavior?.Act(buttonPress);
+            => Behaviors.MainSecondary?.Act(buttonPress);
 
         public void OffhandPrimary(ButtonPressData buttonPress) 
-            => OffhandPrimaryBehavior?.Act(buttonPress);
+            => Behaviors.OffhandPrimary?.Act(buttonPress);
 
         public void OffhandSecondary(ButtonPressData buttonPress) 
-            => OffhandSecondaryBehavior?.Act(buttonPress);
+            => Behaviors.OffhandSecondary?.Act(buttonPress);
 
         public void Special(ButtonPressData buttonPress) 
-            => SpecialBehavior?.Act(buttonPress);
-
+            => Behaviors.Special?.Act(buttonPress);
 
         public void Interact(ButtonPressData buttonPress) 
-            => InteractBehavior?.Act(buttonPress);
+            => Behaviors.Interact?.Act(buttonPress);
 
         public void ReadyWeapon(ButtonPressData buttonPress) 
-            => ReadyWeaponBehavior?.Act(buttonPress);
+            => Behaviors.ReadyWeapon?.Act(buttonPress);
 
         public void UseAbility(ButtonPressData buttonPress) 
-            => AbilityBehavior?.Act(buttonPress);
+            => Behaviors.Ability?.Act(buttonPress);
 
         public void Kick(ButtonPressData buttonPress) 
-            => KickBehavior?.Act(buttonPress);
+            => Behaviors.Kick?.Act(buttonPress);
 
         public void Grab(ButtonPressData buttonPress)
-            => GrabBehavior?.Act(buttonPress);
+            => Behaviors.Grab?.Act(buttonPress);
     }
 }

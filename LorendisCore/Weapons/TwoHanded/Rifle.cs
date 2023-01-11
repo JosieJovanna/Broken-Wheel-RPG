@@ -42,11 +42,11 @@ namespace LorendisCore.Weapons.TwoHanded
 
         protected override void EquipWeapon()
         {
-            Controller.MainPrimaryBehavior = OnFireBehavior;
-            Controller.MainSecondaryBehavior = OnFireBehavior;
-            Controller.OffhandPrimaryBehavior = AimBehavior;
-            Controller.OffhandSecondaryBehavior = AimBehavior;
-            Controller.SpecialBehavior = BashBehavior;
+            Controller.Behaviors.MainPrimary = OnFireBehavior;
+            Controller.Behaviors.MainSecondary = OnFireBehavior;
+            Controller.Behaviors.OffhandPrimary = AimBehavior;
+            Controller.Behaviors.OffhandSecondary = AimBehavior;
+            Controller.Behaviors.Special = BashBehavior;
         }
     }
 }

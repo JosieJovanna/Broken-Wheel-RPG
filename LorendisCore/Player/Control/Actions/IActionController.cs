@@ -14,18 +14,7 @@ namespace LorendisCore.Player.Control.Actions
     /// </summary>
     public interface IActionController
     {
-        IActionBehavior MainPrimaryBehavior { get; set; }
-        IActionBehavior MainSecondaryBehavior { get; set; }
-        IActionBehavior OffhandPrimaryBehavior { get; set; }
-        IActionBehavior OffhandSecondaryBehavior { get; set; }
-        IActionBehavior SpecialBehavior { get; set; }
-
-        IActionBehavior InteractBehavior { get; set; }
-        IActionBehavior ReadyWeaponBehavior { get; set; }
-        IActionBehavior AbilityBehavior { get; set; }
-        IActionBehavior KickBehavior { get; set; }
-        IActionBehavior GrabBehavior { get; set; }
-
+        ActionBehaviorMap Behaviors { get; set; }
 
         /// <summary> Main-hand primary action, usually the left mouse button. </summary>
         void MainPrimary(ButtonPressData buttonPress);

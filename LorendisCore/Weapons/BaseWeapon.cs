@@ -4,6 +4,8 @@ namespace LorendisCore.Weapons
 {
     public abstract class BaseWeapon
     {
+        public ActionBehaviorMap Behaviors;
+
         protected IActionController Controller;
 
         private bool _isInOffhand = false;
