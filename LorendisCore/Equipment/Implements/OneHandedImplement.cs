@@ -4,82 +4,82 @@ namespace LorendisCore.Equipment.Implements
 {
     public abstract class OneHandedImplement : IImplement
     {
-        private readonly ActionBehaviorMap _activeBehaviors;
         private bool _offhanded;
         
         public OneHandedBehaviorMap Behaviors { get; }
 
-        protected OneHandedImplement(OneHandedBehaviorMap behaviors, ActionBehaviorMap activeBehaviorsToModify)
+        protected OneHandedImplement() { }
+
+        protected OneHandedImplement(OneHandedBehaviorMap behaviors)
         {
             Behaviors = behaviors;
-            _activeBehaviors = activeBehaviorsToModify;
         }
         
-        public void Equip(bool offhand = false)
+        public void Equip(ActionBehaviorMap behaviorsToSet, bool offhand = false)
         {
             _offhanded = offhand;
             if (_offhanded)
-                SetOffHand();
+                SetOffHand(behaviorsToSet);
             else
-                SetMainHand();
-            SetOthers();
+                SetMainHand(behaviorsToSet);
+            SetOthers(behaviorsToSet);
         }
 
-        public void Unequip()
+        public void Unequip(ActionBehaviorMap behaviorsToSet)
         {
             if (_offhanded)
-                ResetMainHand();
+                ResetMainHand(behaviorsToSet);
             else
-                ResetOffHand();
-            ResetOthers();
+                ResetOffHand(behaviorsToSet);
+            ResetOthers(behaviorsToSet);
         }
 
-        private void SetMainHand()
+        private void SetMainHand(ActionBehaviorMap behaviorsToSet)
         {
             if (Behaviors.Primary != null)
-                _activeBehaviors.MainPrimary = Behaviors.Primary;
+                behaviorsToSet.MainPrimary = Behaviors.Primary;
             if (Behaviors.Secondary != null)
-                _activeBehaviors.MainSecondary = Behaviors.Secondary;
+                behaviorsToSet.MainSecondary = Behaviors.Secondary;
         }
 
-        private void ResetMainHand()
+        private void ResetMainHand(ActionBehaviorMap behaviorsToSet)
         {
             if (Behaviors.Primary != null)
-                _activeBehaviors.MainPrimary = null;
+                behaviorsToSet.MainPrimary = null;
             if (Behaviors.Secondary != null)
-                _activeBehaviors.MainSecondary = null;
+                behaviorsToSet.MainSecondary = null;
         }
 
-        private void SetOffHand()
+        private void SetOffHand(ActionBehaviorMap behaviorsToSet)
         {
             if (Behaviors.Primary != null)
-                _activeBehaviors.OffhandPrimary = Behaviors.Primary;
+                behaviorsToSet.OffhandPrimary = Behaviors.Primary;
             if (Behaviors.Secondary != null)
-                _activeBehaviors.OffhandSecondary = Behaviors.Secondary;
+                behaviorsToSet.OffhandSecondary = Behaviors.Secondary;
         }
 
-        private void ResetOffHand()
+        private void ResetOffHand(ActionBehaviorMap behaviorsToSet)
         {
             if (Behaviors.Primary != null)
-                _activeBehaviors.OffhandPrimary = null;
+                behaviorsToSet.OffhandPrimary = null;
             if (Behaviors.Secondary != null)
-                _activeBehaviors.OffhandSecondary = null;
+                behaviorsToSet.OffhandSecondary = null;
         }
 
-        private void SetOthers()
+        private void SetOthers(ActionBehaviorMap behaviorsToSet)
         {
             if (Behaviors.Special != null)
-                _activeBehaviors.Special = Behaviors.Special;
+                behaviorsToSet.Special = Behaviors.Special;
             if (Behaviors.Reload != null)
-                _activeBehaviors.AddReloadDelegate(Behaviors.Reload);
+                behaviorsToSet.AddReloadDelegate(Behaviors.Reload);
         }
 
-        private void ResetOthers()
+        private void ResetOthers(ActionBehaviorMap behaviorsToSet)
         {
             if (Behaviors.Special != null)
-                _activeBehaviors.Special = null;
+                behaviorsToSet.Special = null;
             if (Behaviors.Reload != null)
-                _activeBehaviors.RemoveReloadDelegate(Behaviors.Reload);
+                behaviorsToSet.RemoveReloadDelegate(Behaviors.Reload);
         }
     }
 }
