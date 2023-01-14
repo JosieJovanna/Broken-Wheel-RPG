@@ -1,4 +1,8 @@
-﻿namespace LorendisCore.Player.Control.Actions.Models
+﻿using LorendisCore.Common.Delegates;
+using LorendisCore.Player.Control.Actions.Behaviors;
+using LorendisCore.Settings;
+
+namespace LorendisCore.Player.Control.Actions.Models
 {
     /// <summary>
     /// A class which contains all of the behaviors which regularly change depending on equipment.
@@ -12,11 +16,23 @@
         public IActionBehavior OffhandPrimary;
         public IActionBehavior OffhandSecondary;
         public IActionBehavior Special;
+        
+        
+        public IActionBehavior MainPrimaryOverride;
+        public IActionBehavior MainSecondaryOverride;
+        public IActionBehavior OffhandPrimaryOverride;
+        public IActionBehavior OffhandSecondaryOverride;
+        public IActionBehavior SpecialOverride;
 
         public IActionBehavior Interact;
-        public IActionBehavior Reload; // TODO: make reload capable of reloading both sides. Or no dual wield guns?
         public IActionBehavior Ability;
         public IActionBehavior Kick;
         public IActionBehavior Grab;
+
+        private readonly ClickMuxBehavior _reload = new ClickMuxBehavior(StaticSettings.Controls.HoldToReadyWeapon);
+
+        public void AddReloadDelegate(SimpleDelegate onReload) => _reload.OnReleaseClick += onReload;
+
+        public void RemoveReloadDelegate(SimpleDelegate onReload) => _reload.OnReleaseClick -= onReload;
     }
 }

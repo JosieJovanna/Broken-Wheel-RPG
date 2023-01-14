@@ -1,3 +1,5 @@
+using LorendisCore.Common.Delegates;
+
 namespace LorendisCore.Player.Control.Actions.Models
 {
     public class OneHandedBehaviorMap
@@ -5,6 +7,6 @@ namespace LorendisCore.Player.Control.Actions.Models
         public IActionBehavior Primary;
         public IActionBehavior Secondary;
         public IActionBehavior Special;
-        public IActionBehavior Reload;
+        public SimpleDelegate Reload;
     }
 }

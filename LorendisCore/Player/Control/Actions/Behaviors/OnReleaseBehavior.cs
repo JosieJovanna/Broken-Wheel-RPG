@@ -4,17 +4,17 @@ namespace LorendisCore.Player.Control.Actions.Behaviors
 {
     public class OnReleaseBehavior : IActionBehavior
     {
-        protected SimpleDelegate StopAimingDelegate;
+        protected SimpleDelegate OnRelease;
 
-        public OnReleaseBehavior(SimpleDelegate stopAimingDelegate) 
+        public OnReleaseBehavior(SimpleDelegate onRelease) 
         {
-            StopAimingDelegate = stopAimingDelegate;
+            OnRelease = onRelease;
         }
 
-        public void Act(ButtonPressData buttonPressData)
+        public void Act(ButtonData buttonData)
         {
-            if (!buttonPressData.IsPressed)
-                StopAimingDelegate?.Invoke();
+            if (buttonData.Type == ButtonPressType.Released)
+                OnRelease?.Invoke();
         }
     }
 }

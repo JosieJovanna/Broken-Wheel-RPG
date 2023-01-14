@@ -18,33 +18,33 @@ namespace LorendisCore.Player.Control.Actions
         ActionBehaviorMap Behaviors { get; set; }
 
         /// <summary> Main-hand primary action, usually the left mouse button. </summary>
-        void MainPrimary(ButtonPressData buttonPress);
+        void MainPrimary(ButtonData button);
 
         /// <summary> Main-hand secondary action, usually shift + LMB. </summary>
-        void MainSecondary(ButtonPressData buttonPress);
+        void MainSecondary(ButtonData button);
 
         /// <summary> Off-hand primary action, usually the right mouse button. </summary>
-        void OffhandPrimary(ButtonPressData buttonPress);
+        void OffhandPrimary(ButtonData button);
 
         /// <summary> Off-hand secondary action, usually shift + RMB. </summary>
-        void OffhandSecondary(ButtonPressData buttonPress);
+        void OffhandSecondary(ButtonData button);
 
         /// <summary> Special weapon attack, which may be either hand. Often stuff like an overhead attack. </summary>
-        void Special(ButtonPressData buttonPress);
+        void Special(ButtonData button);
 
         /// <summary> Main action, usually performed with 'E'. Opening doors, talking, etc. </summary>
-        void Interact(ButtonPressData buttonPress);
+        void Interact(ButtonData button);
 
         /// <summary> Readys weapon, reloads, etc. Likely 'R'. Holding is raising and lowering weapons, always </summary>
-        void Reload(ButtonPressData buttonPress);
+        void Reload(ButtonData button);
 
         /// <summary> Uses the special ability, usually class specific, or granted by an item. </summary>
-        void UseAbility(ButtonPressData buttonPress);
+        void UseAbility(ButtonData button);
 
         /// <summary> Kicks, usually just a normal kick but can be replaced or could be using other fighting style. </summary>
-        void Kick(ButtonPressData buttonPress);
+        void Kick(ButtonData button);
 
         /// <summary> Grabs a nearby entity, ladder, etc. </summary>
-        void Grab(ButtonPressData buttonPress);
+        void Grab(ButtonData button);
     }
 }

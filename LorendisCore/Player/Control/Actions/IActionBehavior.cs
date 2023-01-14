@@ -10,6 +10,6 @@
     /// </summary>
     public interface IActionBehavior
     {
-        void Act(ButtonPressData buttonPressData);
+        void Act(ButtonData buttonData);
     }
 }

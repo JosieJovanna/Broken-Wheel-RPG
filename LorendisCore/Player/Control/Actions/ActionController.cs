@@ -19,34 +19,36 @@ namespace LorendisCore.Player.Control.Actions
             Behaviors = behaviors;
         }
 
-        public void MainPrimary(ButtonPressData buttonPress) 
-            => Behaviors.MainPrimary?.Act(buttonPress);
+        public void MainPrimary(ButtonData button) 
+            => (Behaviors.MainPrimaryOverride ?? Behaviors.MainPrimary)?.Act(button);
 
-        public void MainSecondary(ButtonPressData buttonPress) 
-            => Behaviors.MainSecondary?.Act(buttonPress);
+        public void MainSecondary(ButtonData button) 
+            => (Behaviors.MainSecondaryOverride ?? Behaviors.MainSecondary)?.Act(button);
 
-        public void OffhandPrimary(ButtonPressData buttonPress) 
-            => Behaviors.OffhandPrimary?.Act(buttonPress);
+        public void OffhandPrimary(ButtonData button) 
+            => (Behaviors.OffhandPrimaryOverride ?? Behaviors.OffhandPrimary)?.Act(button);
 
-        public void OffhandSecondary(ButtonPressData buttonPress) 
-            => Behaviors.OffhandSecondary?.Act(buttonPress);
+        public void OffhandSecondary(ButtonData button) 
+            => (Behaviors.OffhandSecondaryOverride ?? Behaviors.OffhandSecondary)?.Act(button);
 
-        public void Special(ButtonPressData buttonPress) 
-            => Behaviors.Special?.Act(buttonPress);
+        public void Special(ButtonData button) 
+            => (Behaviors.SpecialOverride ?? Behaviors.Special)?.Act(button);
 
-        public void Interact(ButtonPressData buttonPress) 
-            => Behaviors.Interact?.Act(buttonPress);
+        public void Interact(ButtonData button) 
+            => Behaviors.Interact?.Act(button);
 
-        public void Reload(ButtonPressData buttonPress) 
-            => Behaviors.Reload?.Act(buttonPress);
+        public void UseAbility(ButtonData button) 
+            => Behaviors.Ability?.Act(button);
 
-        public void UseAbility(ButtonPressData buttonPress) 
-            => Behaviors.Ability?.Act(buttonPress);
+        public void Kick(ButtonData button) 
+            => Behaviors.Kick?.Act(button);
 
-        public void Kick(ButtonPressData buttonPress) 
-            => Behaviors.Kick?.Act(buttonPress);
+        public void Grab(ButtonData button)
+            => Behaviors.Grab?.Act(button);
 
-        public void Grab(ButtonPressData buttonPress)
-            => Behaviors.Grab?.Act(buttonPress);
+        public void Reload(ButtonData button)
+        {
+            
+        }
     }
 }

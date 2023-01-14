@@ -1,5 +1,6 @@
 ﻿using LorendisCore.Player.Control.Actions;
 using LorendisCore.Player.Control.Actions.Behaviors;
+using LorendisCore.Settings;
 
 namespace LorendisCore.Equipment.Implements.TwoHanded
 {
@@ -14,7 +15,7 @@ namespace LorendisCore.Equipment.Implements.TwoHanded
         public Rifle(IActionController actionController) : base(actionController)
         {
             OnFireBehavior = new OnPressBehavior(Fire);
-            AimBehavior = new ToggleOrHoldBehavior(StartAiming, StopAiming);
+            AimBehavior = new ToggleOrHoldBehavior(StaticSettings.Controls.HoldToToggleAim, StartAiming, StopAiming);
             BashBehavior = new OnPressBehavior(Bash);
         }
 

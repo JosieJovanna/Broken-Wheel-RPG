@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -31,11 +32,18 @@ namespace LorendisCore.Player.Control.Actions.Models
 
         // TODO: setters and unsetters for each behavior
         
-        private void AddBehavior(ICollection<IActionBehavior> behaviorList, IActionBehavior newBehavior)
+        private void PushBehavior(ICollection<IActionBehavior> behaviorList, IActionBehavior newBehavior)
         {
             if (newBehavior == null)
                 return;
             behaviorList.Add(newBehavior);
+        }
+
+        private void PopBehavior(IList behaviorList)
+        {
+            var lastIdx = behaviorList.Count - 1;
+            if (lastIdx >= 0)
+                behaviorList.RemoveAt(lastIdx);
         }
     }
 }

@@ -32,7 +32,7 @@ namespace LorendisCore.Equipment.Implements
             if (Behaviors.Special != null)
                 _activeBehaviors.Special = Behaviors.Special;
             if (Behaviors.Reload != null) 
-                _activeBehaviors.Reload = Behaviors.Reload;
+                _activeBehaviors.AddReloadDelegate(Behaviors.Reload);
         }
     }
 }

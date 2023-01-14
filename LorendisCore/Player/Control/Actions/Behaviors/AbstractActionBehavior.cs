@@ -7,20 +7,25 @@
     /// and when the button has been released.
     /// These actions are abstract methods which must be individually implemented.
     /// </summary>
-    public abstract class BaseActionBehavior : IActionBehavior
+    public abstract class AbstractActionBehavior : IActionBehavior
     {
         private readonly double _holdTime;
         private double _heldFor = 0;
 
-        protected BaseActionBehavior(double holdTime)
+        protected AbstractActionBehavior(double holdTime)
         {
             _holdTime = holdTime;
         }
 
-        public void Act(ButtonPressData buttonPressData)
+        protected abstract void InitialPress();
+        protected abstract void Held();
+        protected abstract void ReleaseClick();
+        protected abstract void ReleaseHold();
+        
+        public void Act(ButtonData buttonData)
         {
-            _heldFor += buttonPressData.DeltaTime;
-            var type = buttonPressData.GetButtonPressType();
+            _heldFor += buttonData.DeltaTime;
+            var type = buttonData.Type;
 
             Ex(type);
         }
@@ -33,18 +38,27 @@
                     InitialPress();
                     break;
                 case ButtonPressType.Released:
-                    _heldFor = 0;
-                    Release();
+                    ReleaseClickOrHold();
                     break;
                 case ButtonPressType.Held:
-                    if (_heldFor >= _holdTime)
-                        Held();
+                    HoldIfLongEnough();
                     break;
             }
         }
 
-        protected abstract void InitialPress();
-        protected abstract void Release();
-        protected abstract void Held();
+        private void ReleaseClickOrHold()
+        {
+            if (_heldFor >= _holdTime)
+                ReleaseHold();
+            else
+                ReleaseClick();
+            _heldFor = 0;
+        }
+
+        private void HoldIfLongEnough()
+        {
+            if (_heldFor >= _holdTime)
+                Held();
+        }
     }
 }
