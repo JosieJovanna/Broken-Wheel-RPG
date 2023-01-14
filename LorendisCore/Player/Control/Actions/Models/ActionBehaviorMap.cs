@@ -1,6 +1,6 @@
-﻿using LorendisCore.Common.Delegates;
+﻿using LorendisCore.Settings;
+using LorendisCore.Common.Delegates;
 using LorendisCore.Player.Control.Actions.Behaviors;
-using LorendisCore.Settings;
 
 namespace LorendisCore.Player.Control.Actions.Models
 {
@@ -11,6 +11,8 @@ namespace LorendisCore.Player.Control.Actions.Models
     /// </summary>
     public class ActionBehaviorMap
     {
+        private readonly ClickMuxBehavior _reload = new ClickMuxBehavior(StaticSettings.Controls.HoldToReadyWeapon);
+        
         public IActionBehavior MainPrimary;
         public IActionBehavior MainSecondary;
         public IActionBehavior OffhandPrimary;
@@ -29,7 +31,7 @@ namespace LorendisCore.Player.Control.Actions.Models
         public IActionBehavior Kick;
         public IActionBehavior Grab;
 
-        private readonly ClickMuxBehavior _reload = new ClickMuxBehavior(StaticSettings.Controls.HoldToReadyWeapon);
+        public IActionBehavior Reload => _reload;
 
         public void AddReloadDelegate(SimpleDelegate onReload) => _reload.OnReleaseClick += onReload;
 

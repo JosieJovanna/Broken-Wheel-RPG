@@ -4,7 +4,7 @@ using LorendisCore.Settings;
 
 namespace LorendisCore.Equipment.Implements.TwoHanded
 {
-    public class Rifle : BaseWeapon
+    public class Rifle : TwoHandedImplement
     {
         private bool _isAiming = false;
 
@@ -41,7 +41,7 @@ namespace LorendisCore.Equipment.Implements.TwoHanded
             // pow
         }
 
-        protected override void EquipWeapon()
+        protected override void Equip()
         {
             Controller.Behaviors.MainPrimary = OnFireBehavior;
             Controller.Behaviors.MainSecondary = OnFireBehavior;

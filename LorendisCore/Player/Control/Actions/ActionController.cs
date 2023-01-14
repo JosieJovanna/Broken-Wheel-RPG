@@ -34,21 +34,14 @@ namespace LorendisCore.Player.Control.Actions
         public void Special(ButtonData button) 
             => (Behaviors.SpecialOverride ?? Behaviors.Special)?.Act(button);
 
-        public void Interact(ButtonData button) 
-            => Behaviors.Interact?.Act(button);
+        public void Interact(ButtonData button) => Behaviors.Interact?.Act(button);
 
-        public void UseAbility(ButtonData button) 
-            => Behaviors.Ability?.Act(button);
+        public void UseAbility(ButtonData button) => Behaviors.Ability?.Act(button);
 
-        public void Kick(ButtonData button) 
-            => Behaviors.Kick?.Act(button);
+        public void Kick(ButtonData button) => Behaviors.Kick?.Act(button);
 
-        public void Grab(ButtonData button)
-            => Behaviors.Grab?.Act(button);
+        public void Grab(ButtonData button) => Behaviors.Grab?.Act(button);
 
-        public void Reload(ButtonData button)
-        {
-            
-        }
+        public void Reload(ButtonData button) => Behaviors.Reload.Act(button);
     }
 }

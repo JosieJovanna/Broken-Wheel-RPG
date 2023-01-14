@@ -6,8 +6,13 @@
     public interface IImplement
     {
         /// <summary>
-        /// Equips the implement and changes appropriate behaviors. This implementation is handled 
+        /// Equips the implement and changes appropriate behaviors.
         /// </summary>
         void Equip(bool offhand = false);
+        
+        /// <summary>
+        /// Unequips the implement and resets the appropriate behaviors.
+        /// </summary>
+        void Unequip();
     }
 }
