@@ -1,14 +1,13 @@
-﻿using LorendisCore.Player.Control.Actions.Models;
+﻿using System.Security.Cryptography;
+using LorendisCore.Player.Control.Actions.Models;
 
 namespace LorendisCore.Equipment.Implements
 {
     public abstract class TwoHandedImplement : IImplement
     {
-        public TwoHandedBehaviorMap Behaviors { get; }
+        protected TwoHandedBehaviorMap Behaviors = new TwoHandedBehaviorMap();
 
-        protected TwoHandedImplement()
-        {
-        }
+        protected TwoHandedImplement() { }
 
         protected TwoHandedImplement(TwoHandedBehaviorMap behaviors)
         {

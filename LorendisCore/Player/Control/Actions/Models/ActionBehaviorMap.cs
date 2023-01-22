@@ -11,7 +11,7 @@ namespace LorendisCore.Player.Control.Actions.Models
     /// </summary>
     public class ActionBehaviorMap
     {
-        private readonly ClickMuxBehavior _reload = new ClickMuxBehavior(StaticSettings.Controls.HoldToReadyWeapon);
+        private readonly MuxBehavior _reload = new MuxBehavior(StaticSettings.Controls.HoldToReadyWeapon);
         
         public IActionBehavior MainPrimary;
         public IActionBehavior MainSecondary;

@@ -5,8 +5,8 @@ namespace LorendisCore.Equipment.Implements
     public abstract class OneHandedImplement : IImplement
     {
         private bool _offhanded;
-        
-        public OneHandedBehaviorMap Behaviors { get; }
+
+        protected OneHandedBehaviorMap Behaviors = new OneHandedBehaviorMap();
 
         protected OneHandedImplement() { }
 

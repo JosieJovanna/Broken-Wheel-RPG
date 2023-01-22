@@ -8,14 +8,14 @@ namespace LorendisCore.Player.Control.Actions.Behaviors
     /// These delegates must not have data passed in or out, and is located in instances of classes
     /// which have access to the relevant data via different means.
     /// </summary>
-    public class ClickMuxBehavior : AbstractActionBehavior
+    public class MuxBehavior : AbstractActionBehavior
     {
         public SimpleDelegate OnInitialPress;
         public SimpleDelegate OnHeld;
         public SimpleDelegate OnReleaseClick;
         public SimpleDelegate OnReleaseHold;
 
-        public ClickMuxBehavior(double holdTime) : base(holdTime) { }
+        public MuxBehavior(double holdTime) : base(holdTime) { }
 
         protected override void InitialPress() => OnInitialPress?.Invoke();
         protected override void Held() => OnHeld?.Invoke();
