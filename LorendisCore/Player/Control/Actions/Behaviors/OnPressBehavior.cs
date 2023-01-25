@@ -11,7 +11,7 @@ namespace LorendisCore.Player.Control.Actions.Behaviors
             OnInitialPress = onInitialPress;
         }
 
-        public void Act(ButtonData buttonData)
+        public void Execute(ButtonData buttonData)
         {
             if (buttonData.Type == ButtonPressType.Pressed)
                 OnInitialPress?.Invoke();

@@ -20,28 +20,28 @@ namespace LorendisCore.Player.Control.Actions
         }
 
         public void MainPrimary(ButtonData button) 
-            => (Behaviors.MainPrimaryOverride ?? Behaviors.MainPrimary)?.Act(button);
+            => (Behaviors.MainPrimaryOverride ?? Behaviors.MainPrimary)?.Execute(button);
 
         public void MainSecondary(ButtonData button) 
-            => (Behaviors.MainSecondaryOverride ?? Behaviors.MainSecondary)?.Act(button);
+            => (Behaviors.MainSecondaryOverride ?? Behaviors.MainSecondary)?.Execute(button);
 
         public void OffhandPrimary(ButtonData button) 
-            => (Behaviors.OffhandPrimaryOverride ?? Behaviors.OffhandPrimary)?.Act(button);
+            => (Behaviors.OffhandPrimaryOverride ?? Behaviors.OffhandPrimary)?.Execute(button);
 
         public void OffhandSecondary(ButtonData button) 
-            => (Behaviors.OffhandSecondaryOverride ?? Behaviors.OffhandSecondary)?.Act(button);
+            => (Behaviors.OffhandSecondaryOverride ?? Behaviors.OffhandSecondary)?.Execute(button);
 
         public void Special(ButtonData button) 
-            => (Behaviors.SpecialOverride ?? Behaviors.Special)?.Act(button);
+            => (Behaviors.SpecialOverride ?? Behaviors.Special)?.Execute(button);
 
-        public void Interact(ButtonData button) => Behaviors.Interact?.Act(button);
+        public void Interact(ButtonData button) => Behaviors.Interact?.Execute(button);
 
-        public void UseAbility(ButtonData button) => Behaviors.Ability?.Act(button);
+        public void UseAbility(ButtonData button) => Behaviors.Ability?.Execute(button);
 
-        public void Kick(ButtonData button) => Behaviors.Kick?.Act(button);
+        public void Kick(ButtonData button) => Behaviors.Kick?.Execute(button);
 
-        public void Grab(ButtonData button) => Behaviors.Grab?.Act(button);
+        public void Grab(ButtonData button) => Behaviors.Grab?.Execute(button);
 
-        public void Reload(ButtonData button) => Behaviors.Reload.Act(button);
+        public void Reload(ButtonData button) => Behaviors.Reload.Execute(button);
     }
 }

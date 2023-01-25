@@ -22,7 +22,7 @@
         protected abstract void ReleaseClick();
         protected abstract void ReleaseHold();
         
-        public void Act(ButtonData buttonData)
+        public void Execute(ButtonData buttonData)
         {
             _heldFor += buttonData.DeltaTime;
             var type = buttonData.Type;
