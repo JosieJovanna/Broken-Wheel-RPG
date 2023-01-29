@@ -7,14 +7,8 @@ namespace LorendisCore.Equipment.Implements
     /// </summary>
     public interface IImplement
     {
-        /// <summary>
-        /// Equips the implement and changes appropriate behaviors.
-        /// </summary>
-        void Equip(ActionBehaviorMap behaviorsToSet, bool offhand = false);
+        bool IsTwoHanded { get; }
         
-        /// <summary>
-        /// Unequips the implement and resets the appropriate behaviors.
-        /// </summary>
-        void Unequip(ActionBehaviorMap behaviorsToSet);
+        
     }
 }

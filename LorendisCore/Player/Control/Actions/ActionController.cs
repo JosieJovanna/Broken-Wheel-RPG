@@ -1,4 +1,5 @@
 ﻿using LorendisCore.Player.Control.Actions.Models;
+using LorendisCore.Player.Inventory;
 
 namespace LorendisCore.Player.Control.Actions
 {
@@ -7,32 +8,41 @@ namespace LorendisCore.Player.Control.Actions
     /// </summary>
     public class ActionController : IActionController
     {
-        public ActionBehaviorMap Behaviors { get; set; }
-
-        public ActionController()
+        private readonly EquipmentModel _equipment;
+        
+        public ActionController(EquipmentModel equipmentModel)
         {
-            Behaviors = new ActionBehaviorMap();
+            _equipment = equipmentModel;
         }
 
-        public ActionController(ActionBehaviorMap behaviors)
+        public void MainPrimary(ButtonData button)
         {
-            Behaviors = behaviors;
+            if (_equipment.IsTwoHanded)
+            {
+                _equipment.TwoHand
+            }
+            else
+            {
+                
+            }
         }
 
-        public void MainPrimary(ButtonData button) 
-            => (Behaviors.MainPrimaryOverride ?? Behaviors.MainPrimary)?.Execute(button);
+        public void MainSecondary(ButtonData button)
+        {
+            (Behaviors.MainSecondaryOverride ?? Behaviors.MainSecondary)?.Execute(button);
+        }
 
-        public void MainSecondary(ButtonData button) 
-            => (Behaviors.MainSecondaryOverride ?? Behaviors.MainSecondary)?.Execute(button);
+        public void OffhandPrimary(ButtonData button)
+        {
+            (Behaviors.OffhandPrimaryOverride ?? Behaviors.OffhandPrimary)?.Execute(button);
+        }
 
-        public void OffhandPrimary(ButtonData button) 
-            => (Behaviors.OffhandPrimaryOverride ?? Behaviors.OffhandPrimary)?.Execute(button);
+        public void OffhandSecondary(ButtonData button)
+        {
+            (Behaviors.OffhandSecondaryOverride ?? Behaviors.OffhandSecondary)?.Execute(button);
+        }
 
-        public void OffhandSecondary(ButtonData button) 
-            => (Behaviors.OffhandSecondaryOverride ?? Behaviors.OffhandSecondary)?.Execute(button);
-
-        public void Special(ButtonData button) 
-            => (Behaviors.SpecialOverride ?? Behaviors.Special)?.Execute(button);
+        public void Special(ButtonData button) => (Behaviors.SpecialOverride ?? Behaviors.Special)?.Execute(button);
 
         public void Interact(ButtonData button) => Behaviors.Interact?.Execute(button);
 
