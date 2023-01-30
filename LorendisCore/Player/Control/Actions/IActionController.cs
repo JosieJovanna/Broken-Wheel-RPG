@@ -35,9 +35,6 @@ namespace LorendisCore.Player.Control.Actions
         /// <summary> Main action, usually performed with 'E'. Opening doors, talking, etc. </summary>
         void Interact(ButtonData button);
 
-        /// <summary> Readys weapon, reloads, etc. Likely 'R'. Holding is raising and lowering weapons, always </summary>
-        void Reload(ButtonData button);
-
         /// <summary> Uses the special ability, usually class specific, or granted by an item. </summary>
         void UseAbility(ButtonData button);
 
@@ -46,5 +43,8 @@ namespace LorendisCore.Player.Control.Actions
 
         /// <summary> Grabs a nearby entity, ladder, etc. </summary>
         void Grab(ButtonData button);
+
+        /// <summary> Readys weapon, reloads, etc. Likely 'R'. Holding is raising and lowering weapons, always </summary>
+        void Reload(ButtonData button);
     }
 }

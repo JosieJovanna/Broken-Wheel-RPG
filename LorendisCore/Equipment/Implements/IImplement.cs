@@ -1,4 +1,5 @@
-﻿using LorendisCore.Player.Control.Actions.Models;
+﻿using LorendisCore.Player.Control;
+using LorendisCore.Player.Control.Actions.Models;
 
 namespace LorendisCore.Equipment.Implements
 {
@@ -7,8 +8,8 @@ namespace LorendisCore.Equipment.Implements
     /// </summary>
     public interface IImplement
     {
-        bool IsTwoHanded { get; }
-        
-        
+        bool TryPrimary(ButtonData buttonData);
+        bool TrySecondary(ButtonData buttonData);
+        bool TrySpecial(ButtonData buttonData);
     }
 }
