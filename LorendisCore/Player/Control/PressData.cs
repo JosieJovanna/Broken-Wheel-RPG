@@ -7,7 +7,7 @@ namespace LorendisCore.Player.Control
     /// For example, holding left click to aim a rifle and releasing to fire, versus
     /// tapping to hip-fire.
     /// </summary>
-	public readonly struct ButtonData
+	public readonly struct PressData
 	{
 		/// <summary>
 		/// Time passed in seconds since the last event happened.
@@ -17,19 +17,19 @@ namespace LorendisCore.Player.Control
 		/// <summary>
 		/// The type of event. More useful than getting booleans and 
 		/// </summary>
-		public ButtonPressType Type { get; }
+		public PressType Type { get; }
 
 
-		public ButtonData(double deltaTime, bool isPressed, bool isHeld)
+		public PressData(double deltaTime, bool isPressed, bool isHeld)
         {
             DeltaTime = deltaTime;
             Type = Util.GetButtonPressTypeFromBooleans(isPressed, isHeld);
         }
 
-        public ButtonData(double deltaTime, ButtonPressType buttonPressType)
+        public PressData(double deltaTime, PressType pressType)
         {
             DeltaTime = deltaTime;
-            Type = buttonPressType;
+            Type = pressType;
         }
 	}
 }

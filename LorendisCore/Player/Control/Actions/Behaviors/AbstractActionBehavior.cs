@@ -22,25 +22,25 @@
         protected abstract void ReleaseClick();
         protected abstract void ReleaseHold();
         
-        public void Execute(ButtonData buttonData)
+        public void Execute(PressData pressData)
         {
-            _heldFor += buttonData.DeltaTime;
-            var type = buttonData.Type;
+            _heldFor += pressData.DeltaTime;
+            var type = pressData.Type;
 
             Ex(type);
         }
 
-        private void Ex(ButtonPressType type)
+        private void Ex(PressType type)
         {
             switch (type)
             {
-                case ButtonPressType.Pressed:
+                case PressType.Clicked:
                     InitialPress();
                     break;
-                case ButtonPressType.Released:
+                case PressType.Released:
                     ReleaseClickOrHold();
                     break;
-                case ButtonPressType.Held:
+                case PressType.Held:
                     HoldIfLongEnough();
                     break;
             }

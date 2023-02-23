@@ -1,15 +1,33 @@
 ﻿using LorendisCore.Player.Control;
-using LorendisCore.Player.Control.Actions.Models;
 
 namespace LorendisCore.Equipment.Implements
 {
     /// <summary>
-    /// A piece of equipment which may be held in the hand, modifying behaviors along with it.
+    /// The object which maps input to items for use. Behaviors vary greatly by item.
     /// </summary>
     public interface IImplement
     {
-        bool TryPrimary(ButtonData buttonData);
-        bool TrySecondary(ButtonData buttonData);
-        bool TrySpecial(ButtonData buttonData);
+        bool HasSpecial { get; }
+        
+        /// <summary>
+        /// Attempts to perform the primary action(s) of the implement, which may depend on the type of button press.
+        /// </summary>
+        /// <returns>Whether or not any action could be taken.</returns>
+        bool TryPrimaryPress(PressData press);
+        
+        /// <summary>
+        /// Attempts to perform the alternate primary action(s) of the implement,
+        /// which may depend on the type of button press.
+        /// If there is no alternate primary, it will use the normal primary.
+        /// </summary>
+        /// <returns>Whether or not any action could be taken.</returns>
+        bool TryAltPrimaryPress(PressData press);
+        
+        /// <summary>
+        /// Attempts to perform the special action(s) of the implement, which may depend on the type of button press.
+        /// May not 
+        /// </summary>
+        /// <returns>Whether or not any action could be taken.</returns>
+        bool TrySpecialPress(PressData press);
     }
 }

@@ -1,6 +1,9 @@
 ﻿namespace LorendisCore.Player.Control
 {
-    public enum ButtonPressType
+    /// <summary>
+    /// A button press's input state.
+    /// </summary>
+    public enum PressType
     {
         /// <summary>
         /// Not pressed and not held last frame.
@@ -10,7 +13,7 @@
         /// <summary>
         /// Pressed but not held last frame.
         /// </summary>
-        Pressed,
+        Clicked,
 
         /// <summary>
         /// Pressed and held last frame.

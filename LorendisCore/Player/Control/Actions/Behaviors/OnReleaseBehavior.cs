@@ -11,9 +11,9 @@ namespace LorendisCore.Player.Control.Actions.Behaviors
             OnRelease = onRelease;
         }
 
-        public void Execute(ButtonData buttonData)
+        public void Execute(PressData pressData)
         {
-            if (buttonData.Type == ButtonPressType.Released)
+            if (pressData.Type == PressType.Released)
                 OnRelease?.Invoke();
         }
     }

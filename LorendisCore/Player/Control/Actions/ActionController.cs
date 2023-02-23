@@ -15,43 +15,43 @@ namespace LorendisCore.Player.Control.Actions
             _equipment = equipmentModel;
         }
 
-        public void MainPrimary(ButtonData button)
+        public void MainPrimary(PressData press)
         {
             if (_equipment.IsTwoHanded)
             {
-                _equipment.TwoHand
+                _equipment.TwoHand.TryPrimaryPress(press);
             }
             else
             {
-                
+                _equipment.MainHand.TryPrimary(press);
             }
         }
 
-        public void MainSecondary(ButtonData button)
+        public void MainSecondary(PressData press)
         {
-            (Behaviors.MainSecondaryOverride ?? Behaviors.MainSecondary)?.Execute(button);
+            (Behaviors.MainSecondaryOverride ?? Behaviors.MainSecondary)?.Execute(press);
         }
 
-        public void OffhandPrimary(ButtonData button)
+        public void OffhandPrimary(PressData press)
         {
-            (Behaviors.OffhandPrimaryOverride ?? Behaviors.OffhandPrimary)?.Execute(button);
+            (Behaviors.OffhandPrimaryOverride ?? Behaviors.OffhandPrimary)?.Execute(press);
         }
 
-        public void OffhandSecondary(ButtonData button)
+        public void OffhandSecondary(PressData press)
         {
-            (Behaviors.OffhandSecondaryOverride ?? Behaviors.OffhandSecondary)?.Execute(button);
+            (Behaviors.OffhandSecondaryOverride ?? Behaviors.OffhandSecondary)?.Execute(press);
         }
 
-        public void Special(ButtonData button) => (Behaviors.SpecialOverride ?? Behaviors.Special)?.Execute(button);
+        public void Special(PressData press) => (Behaviors.SpecialOverride ?? Behaviors.Special)?.Execute(press);
 
-        public void Interact(ButtonData button) => Behaviors.Interact?.Execute(button);
+        public void Interact(PressData press) => Behaviors.Interact?.Execute(press);
 
-        public void UseAbility(ButtonData button) => Behaviors.Ability?.Execute(button);
+        public void UseAbility(PressData press) => Behaviors.Ability?.Execute(press);
 
-        public void Kick(ButtonData button) => Behaviors.Kick?.Execute(button);
+        public void Kick(PressData press) => Behaviors.Kick?.Execute(press);
 
-        public void Grab(ButtonData button) => Behaviors.Grab?.Execute(button);
+        public void Grab(PressData press) => Behaviors.Grab?.Execute(press);
 
-        public void Reload(ButtonData button) => Behaviors.Reload.Execute(button);
+        public void Reload(PressData press) => Behaviors.Reload.Execute(press);
     }
 }

@@ -1,10 +1,10 @@
-﻿using System.Security.Cryptography;
-using LorendisCore.Player.Control.Actions.Models;
+﻿using LorendisCore.Player.Control;
 
 namespace LorendisCore.Equipment.Implements
 {
-    public abstract class TwoHandedImplement : IImplement
+    public interface TwoHandedImplement : IImplement
     {
-        
+        bool TryOffHandPrimary(PressData pressData);
+        bool TryOffHandSecondary(PressData pressData);
     }
 }

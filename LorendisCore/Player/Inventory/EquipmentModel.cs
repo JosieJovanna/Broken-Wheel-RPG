@@ -10,34 +10,26 @@ namespace LorendisCore.Player.Inventory
     /// </summary>
     public class EquipmentModel
     {
-        private OneHandedImplement _mainHand;
-        private OneHandedImplement _offHand;
-
         /// <summary>
-        /// Whether a two-handed weapon is equipped. When that's the case, singular hands will be null.
+        /// Whether a two-handed weapon is equipped.
         /// </summary>
         public bool IsTwoHanded => TwoHand != null;
-        
-        /// <summary>
-        /// The dominant hand, whether that be left or right. Returns null if there is a two-handed implement equipped.
-        /// </summary>
-        public OneHandedImplement MainHand
-        {
-            get => TwoHand != null ? null : _mainHand;
-            set => _mainHand = value;
-        }
 
         /// <summary>
-        /// The non-dominant hand, whether that be left or right. Returns null if there is a two-handed implement equipped.
+        /// The dominant hand, whether that be left or right.
         /// </summary>
-        public OneHandedImplement OffHand
-        {
-            get => TwoHand != null ? null : _offHand;
-            set => _offHand = value;
-        }
+        public OneHandedImplement MainHand;
+
+        /// <summary>
+        /// The non-dominant hand, whether that be left or right.
+        /// </summary>
+        public OneHandedImplement OffHand;
         
+        /// <summary>
+        /// A weapon held in both hands. 
+        /// </summary>
         public TwoHandedImplement TwoHand;
         
-        // kicks, armor, clothes, etc....
+        // TODO: kicks, armor, clothes, etc....
     }
 }

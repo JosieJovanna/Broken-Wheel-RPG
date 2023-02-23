@@ -18,33 +18,33 @@ namespace LorendisCore.Player.Control.Actions
         ActionBehaviorMap Behaviors { get; set; }
 
         /// <summary> Main-hand primary action, usually the left mouse button. </summary>
-        void MainPrimary(ButtonData button);
+        void MainPrimary(PressData press);
 
         /// <summary> Main-hand secondary action, usually shift + LMB. </summary>
-        void MainSecondary(ButtonData button);
+        void MainSecondary(PressData press);
 
         /// <summary> Off-hand primary action, usually the right mouse button. </summary>
-        void OffhandPrimary(ButtonData button);
+        void OffhandPrimary(PressData press);
 
         /// <summary> Off-hand secondary action, usually shift + RMB. </summary>
-        void OffhandSecondary(ButtonData button);
+        void OffhandSecondary(PressData press);
 
         /// <summary> Special weapon attack, which may be either hand. Often stuff like an overhead attack. </summary>
-        void Special(ButtonData button);
+        void Special(PressData press);
 
         /// <summary> Main action, usually performed with 'E'. Opening doors, talking, etc. </summary>
-        void Interact(ButtonData button);
+        void Interact(PressData press);
 
         /// <summary> Uses the special ability, usually class specific, or granted by an item. </summary>
-        void UseAbility(ButtonData button);
+        void UseAbility(PressData press);
 
         /// <summary> Kicks, usually just a normal kick but can be replaced or could be using other fighting style. </summary>
-        void Kick(ButtonData button);
+        void Kick(PressData press);
 
         /// <summary> Grabs a nearby entity, ladder, etc. </summary>
-        void Grab(ButtonData button);
+        void Grab(PressData press);
 
         /// <summary> Readys weapon, reloads, etc. Likely 'R'. Holding is raising and lowering weapons, always </summary>
-        void Reload(ButtonData button);
+        void Reload(PressData press);
     }
 }

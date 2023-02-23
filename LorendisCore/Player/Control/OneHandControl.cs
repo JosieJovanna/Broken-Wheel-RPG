@@ -10,19 +10,19 @@ namespace LorendisCore.Player.Control
         public readonly IActionBehavior SecondaryBehavior;
         public readonly IActionBehavior SpecialBehavior;
 
-        public void Primary(ButtonData buttonData)
+        public void Primary(PressData pressData)
         {
-            PrimaryBehavior?.Execute(buttonData);
+            PrimaryBehavior?.Execute(pressData);
         }
 
-        public void Secondary(ButtonData buttonData)
+        public void Secondary(PressData pressData)
         {
-            SecondaryBehavior?.Execute(buttonData);
+            SecondaryBehavior?.Execute(pressData);
         }
 
-        public void Special(ButtonData buttonData)
+        public void Special(PressData pressData)
         {
-            SpecialBehavior?.Execute(buttonData);
+            SpecialBehavior?.Execute(pressData);
         }
     }
 }

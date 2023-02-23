@@ -4,28 +4,28 @@ namespace LorendisCore.Utilities
 {
     public static class Util
     {
-        public static ButtonPressType GetButtonPressTypeFromBooleans(bool isPressed, bool isHeld)
+        public static PressType GetButtonPressTypeFromBooleans(bool isPressed, bool isHeld)
         {
             if (isPressed)
                 return isHeld
-                    ? ButtonPressType.Held
-                    : ButtonPressType.Pressed;
+                    ? PressType.Held
+                    : PressType.Clicked;
             else
                 return isHeld
-                    ? ButtonPressType.Released
-                    : ButtonPressType.NotHeld;
+                    ? PressType.Released
+                    : PressType.NotHeld;
         }
 
-        public static bool ButtonPressTypeWasJustPressed(ButtonPressType type)
+        public static bool ButtonPressTypeWasJustPressed(PressType type)
         {
-            return type == ButtonPressType.Pressed 
-                || type == ButtonPressType.Held;
+            return type == PressType.Clicked 
+                || type == PressType.Held;
         }
 
-        public static bool ButtonPressTypeWasHeldLast(ButtonPressType type)
+        public static bool ButtonPressTypeWasHeldLast(PressType type)
         {
-            return type == ButtonPressType.Held
-                || type == ButtonPressType.Released;
+            return type == PressType.Held
+                || type == PressType.Released;
         }
     }
 }
