@@ -24,8 +24,11 @@
         /// <summary> Off-hand secondary action, usually shift + RMB. </summary>
         void OffhandSecondary(PressData press);
 
-        /// <summary> Special weapon attack, which may be either hand. Often stuff like an overhead attack. </summary>
+        /// <summary> Special weapon attack, checking main hand first. Often stuff like an overhead attack. </summary>
         void Special(PressData press);
+
+        /// <summary> Special weapon attack, checking offhand first. Often stuff like an overhead attack. </summary>
+        void AltSpecial(PressData press);
 
         /// <summary> Main action, usually performed with 'E'. Opening doors, talking, etc. </summary>
         void Interact(PressData press);
@@ -40,6 +43,6 @@
         void Grab(PressData press);
 
         /// <summary> Readys weapon, reloads, etc. Likely 'R'. Holding is raising and lowering weapons, always </summary>
-        void Reload(PressData press);
+        void ReloadOrReady(PressData press);
     }
 }

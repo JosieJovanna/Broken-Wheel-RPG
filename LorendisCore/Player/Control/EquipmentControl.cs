@@ -1,11 +1,12 @@
 using LorendisCore.Equipment.Implements;
 
-namespace LorendisCore.Player.Inventory
+namespace LorendisCore.Player.Control
 {
     /// <summary>
-    /// The object which tracks which weapons, armor, etc. are currently used by the player.
+    /// The object which tracks controls for weapons, actions etc. that are currently available to the player.
     /// This is separate from stuff like the inventory and belt (hotbar), which are what handle the jobs of equipping,
     /// unequipping, donning and doffing, along with restraints like one-handed or two-handed not being both equippable.
+    /// Should be populated by the equipment tracker which holds data for the actual concrete items.
     /// It is a POCO, and should not do anything with its data.
     /// </summary>
     public class EquipmentControl

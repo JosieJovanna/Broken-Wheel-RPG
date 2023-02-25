@@ -1,6 +1,4 @@
-﻿using LorendisCore.Player.Inventory;
-
-namespace LorendisCore.Player.Control.Actions
+﻿namespace LorendisCore.Player.Control.Actions
 {
     /// <summary>
     /// The default implementation of <see cref="IActionController"/>
@@ -35,6 +33,11 @@ namespace LorendisCore.Player.Control.Actions
             throw new System.NotImplementedException();
         }
 
+        public void AltSpecial(PressData press)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public void Interact(PressData press)
         {
             throw new System.NotImplementedException();
@@ -55,7 +58,7 @@ namespace LorendisCore.Player.Control.Actions
             throw new System.NotImplementedException();
         }
 
-        public void Reload(PressData press)
+        public void ReloadOrReady(PressData press)
         {
             throw new System.NotImplementedException();
         }
