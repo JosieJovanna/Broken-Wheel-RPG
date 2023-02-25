@@ -1,18 +1,19 @@
 ﻿using LorendisCore.Equipment.Implements.WeaponTypes;
+using LorendisCore.Player.Control;
 using LorendisCore.Settings;
 using LorendisCore.Player.Control.Actions;
 using LorendisCore.Player.Control.Actions.Behaviors;
-using LorendisCore.Player.Control.Actions.Models;
 
 namespace LorendisCore.Equipment.Implements.TwoHanded
 {
-    public class Rifle : TwoHandedImplement, ITriggerWeapon
+    public class Rifle : ITwoHandedImplement, ITriggerWeapon
     {
         private bool _isAiming = false;
 
         protected IActionBehavior FireBehavior;
         protected IActionBehavior AimBehavior;
         protected IActionBehavior BashBehavior;
+        private bool _isAiming1;
 
         public Rifle()
         {
@@ -23,6 +24,8 @@ namespace LorendisCore.Equipment.Implements.TwoHanded
         }
 
         public bool IsAiming() => _isAiming;
+
+        bool IAimable.IsAiming => _isAiming1;
 
         public void StartAiming()
         {
@@ -49,15 +52,46 @@ namespace LorendisCore.Equipment.Implements.TwoHanded
             // pow
         }
 
-        private void SetBehaviorMap()
+        public bool TryPrimaryPress(PressData press)
         {
-            Behaviors = new TwoHandedBehaviorMap
-            {
-                MainPrimary = FireBehavior,
-                MainSecondary = AimBehavior,
-                Special = BashBehavior,
-                Reload = Reload
-            };
+            throw new System.NotImplementedException();
+        }
+
+        public bool TryAltPrimaryPress(PressData press)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public bool TryOffHandPrimary(PressData pressData)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public bool TryOffHandSecondary(PressData pressData)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public bool IsReloading { get; }
+        public bool CanReload { get; }
+        public void StartReloading()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void FinishReloading()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void CancelReloading()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void KeepReloading(double deltaTime)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

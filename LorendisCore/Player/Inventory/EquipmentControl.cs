@@ -8,28 +8,20 @@ namespace LorendisCore.Player.Inventory
     /// unequipping, donning and doffing, along with restraints like one-handed or two-handed not being both equippable.
     /// It is a POCO, and should not do anything with its data.
     /// </summary>
-    public class EquipmentModel
+    public class EquipmentControl
     {
-        /// <summary>
-        /// Whether a two-handed weapon is equipped.
-        /// </summary>
-        public bool IsTwoHanded => TwoHand != null;
-
+        public bool WeaponsDrawn;
+        
         /// <summary>
         /// The dominant hand, whether that be left or right.
         /// </summary>
-        public OneHandedImplement MainHand;
+        public IImplement MainHand;
 
         /// <summary>
         /// The non-dominant hand, whether that be left or right.
         /// </summary>
-        public OneHandedImplement OffHand;
-        
-        /// <summary>
-        /// A weapon held in both hands. 
-        /// </summary>
-        public TwoHandedImplement TwoHand;
-        
+        public IImplement OffHand;
+
         // TODO: kicks, armor, clothes, etc....
     }
 }

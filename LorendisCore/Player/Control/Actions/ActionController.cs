@@ -1,5 +1,4 @@
-﻿using LorendisCore.Player.Control.Actions.Models;
-using LorendisCore.Player.Inventory;
+﻿using LorendisCore.Player.Inventory;
 
 namespace LorendisCore.Player.Control.Actions
 {
@@ -8,50 +7,57 @@ namespace LorendisCore.Player.Control.Actions
     /// </summary>
     public class ActionController : IActionController
     {
-        private readonly EquipmentModel _equipment;
+        private readonly EquipmentControl _equipment;
         
-        public ActionController(EquipmentModel equipmentModel)
+        public ActionController(EquipmentControl equipmentControl)
         {
-            _equipment = equipmentModel;
+            _equipment = equipmentControl;
         }
 
         public void MainPrimary(PressData press)
         {
-            if (_equipment.IsTwoHanded)
-            {
-                _equipment.TwoHand.TryPrimaryPress(press);
-            }
-            else
-            {
-                _equipment.MainHand.TryPrimary(press);
-            }
         }
 
         public void MainSecondary(PressData press)
         {
-            (Behaviors.MainSecondaryOverride ?? Behaviors.MainSecondary)?.Execute(press);
         }
 
         public void OffhandPrimary(PressData press)
         {
-            (Behaviors.OffhandPrimaryOverride ?? Behaviors.OffhandPrimary)?.Execute(press);
         }
 
         public void OffhandSecondary(PressData press)
         {
-            (Behaviors.OffhandSecondaryOverride ?? Behaviors.OffhandSecondary)?.Execute(press);
         }
 
-        public void Special(PressData press) => (Behaviors.SpecialOverride ?? Behaviors.Special)?.Execute(press);
+        public void Special(PressData press)
+        {
+            throw new System.NotImplementedException();
+        }
 
-        public void Interact(PressData press) => Behaviors.Interact?.Execute(press);
+        public void Interact(PressData press)
+        {
+            throw new System.NotImplementedException();
+        }
 
-        public void UseAbility(PressData press) => Behaviors.Ability?.Execute(press);
+        public void UseAbility(PressData press)
+        {
+            throw new System.NotImplementedException();
+        }
 
-        public void Kick(PressData press) => Behaviors.Kick?.Execute(press);
+        public void Kick(PressData press)
+        {
+            throw new System.NotImplementedException();
+        }
 
-        public void Grab(PressData press) => Behaviors.Grab?.Execute(press);
+        public void Grab(PressData press)
+        {
+            throw new System.NotImplementedException();
+        }
 
-        public void Reload(PressData press) => Behaviors.Reload.Execute(press);
+        public void Reload(PressData press)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

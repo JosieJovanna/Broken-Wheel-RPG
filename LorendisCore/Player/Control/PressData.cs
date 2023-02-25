@@ -15,7 +15,7 @@ namespace LorendisCore.Player.Control
 		public double DeltaTime { get; }
 
 		/// <summary>
-		/// The type of event. More useful than getting booleans and 
+		/// The <see cref="PressType"/> of the input.
 		/// </summary>
 		public PressType Type { get; }
 

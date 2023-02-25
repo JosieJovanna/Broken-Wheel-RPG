@@ -12,6 +12,7 @@
     <Folder Include="Equipment\" />
     <Folder Include="Equipment\Apparel\Clothes" />
     <Folder Include="Equipment\Apparel\Equipment" />
+    <Folder Include="Equipment\Weapons" />
     <Folder Include="Player\Control\Movement\" />
   </ItemGroup>
 

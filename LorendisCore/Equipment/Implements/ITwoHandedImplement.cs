@@ -2,7 +2,7 @@
 
 namespace LorendisCore.Equipment.Implements
 {
-    public interface TwoHandedImplement : IImplement
+    public interface ITwoHandedImplement : IImplement
     {
         bool TryOffHandPrimary(PressData pressData);
         bool TryOffHandSecondary(PressData pressData);

@@ -7,8 +7,6 @@ namespace LorendisCore.Equipment.Implements
     /// </summary>
     public interface IImplement
     {
-        bool HasSpecial { get; }
-        
         /// <summary>
         /// Attempts to perform the primary action(s) of the implement, which may depend on the type of button press.
         /// </summary>
@@ -22,12 +20,5 @@ namespace LorendisCore.Equipment.Implements
         /// </summary>
         /// <returns>Whether or not any action could be taken.</returns>
         bool TryAltPrimaryPress(PressData press);
-        
-        /// <summary>
-        /// Attempts to perform the special action(s) of the implement, which may depend on the type of button press.
-        /// May not 
-        /// </summary>
-        /// <returns>Whether or not any action could be taken.</returns>
-        bool TrySpecialPress(PressData press);
     }
 }

@@ -1,7 +1,4 @@
-﻿using LorendisCore.Player.Control.Actions.Behaviors;
-using LorendisCore.Player.Control.Actions.Models;
-
-namespace LorendisCore.Player.Control.Actions
+﻿namespace LorendisCore.Player.Control.Actions
 {
     /// <summary>
     /// The object which is controlled by the player. Separate from reading input.
@@ -15,8 +12,6 @@ namespace LorendisCore.Player.Control.Actions
     /// </summary>
     public interface IActionController
     {
-        ActionBehaviorMap Behaviors { get; set; }
-
         /// <summary> Main-hand primary action, usually the left mouse button. </summary>
         void MainPrimary(PressData press);
 
