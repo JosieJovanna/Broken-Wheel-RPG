@@ -11,15 +11,9 @@ namespace LorendisCore.Equipment.Implements
         bool IsTwoHandedGrip { get; }
         
         /// <summary>
-        /// Sets the grip of the implement.
-        /// </summary>
-        /// <param name="twoHanded">True to hold two-handed, False to hold one-handed.</param>
-        void SetGrip(bool twoHanded);
-        
-        /// <summary>
         /// Toggles the grip of the implement between one- and two-handed.
         /// </summary>
         /// <returns>True if two-handed, False if one-handed.</returns>
-        bool ToggleGrip();
+        bool TryToggleGrip();
     }
 }

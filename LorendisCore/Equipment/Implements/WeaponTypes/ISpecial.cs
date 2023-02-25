@@ -12,6 +12,6 @@ namespace LorendisCore.Equipment.Implements.WeaponTypes
         /// May not 
         /// </summary>
         /// <returns>Whether or not any action could be taken.</returns>
-        bool TrySpecialPress(PressData press);
+        bool TrySpecial(PressData press);
     }
 }

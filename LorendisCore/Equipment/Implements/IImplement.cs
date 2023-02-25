@@ -11,7 +11,7 @@ namespace LorendisCore.Equipment.Implements
         /// Attempts to perform the primary action(s) of the implement, which may depend on the type of button press.
         /// </summary>
         /// <returns>Whether or not any action could be taken.</returns>
-        bool TryPrimaryPress(PressData press);
+        bool TryPrimary(PressData press);
         
         /// <summary>
         /// Attempts to perform the alternate primary action(s) of the implement,
@@ -19,6 +19,6 @@ namespace LorendisCore.Equipment.Implements
         /// If there is no alternate primary, it will use the normal primary.
         /// </summary>
         /// <returns>Whether or not any action could be taken.</returns>
-        bool TryAltPrimaryPress(PressData press);
+        bool TryAltPrimary(PressData press);
     }
 }

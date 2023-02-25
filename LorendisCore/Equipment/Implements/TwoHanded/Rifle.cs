@@ -52,22 +52,22 @@ namespace LorendisCore.Equipment.Implements.TwoHanded
             // pow
         }
 
-        public bool TryPrimaryPress(PressData press)
+        public bool TryPrimary(PressData press)
         {
             throw new System.NotImplementedException();
         }
 
-        public bool TryAltPrimaryPress(PressData press)
+        public bool TryAltPrimary(PressData press)
         {
             throw new System.NotImplementedException();
         }
 
-        public bool TryOffHandPrimary(PressData pressData)
+        public bool TrySecondary(PressData pressData)
         {
             throw new System.NotImplementedException();
         }
 
-        public bool TryOffHandSecondary(PressData pressData)
+        public bool TryAltSecondary(PressData pressData)
         {
             throw new System.NotImplementedException();
         }

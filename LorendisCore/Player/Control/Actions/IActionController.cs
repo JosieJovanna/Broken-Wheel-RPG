@@ -1,28 +1,27 @@
 ﻿namespace LorendisCore.Player.Control.Actions
 {
     /// <summary>
-    /// The object which is controlled by the player. Separate from reading input.
-    /// This may control the player character, a beast, a foe, or any manner of things.
+    /// The object which maps actions and their input to control.
     /// It dictates which actions are performed by clicking, such as swinging swords, blocking, etc.
     /// The behavior itself may have restrictions placed upon it, such as attack rate.
     /// These behaviors can be changed: the inventory system mainly, looking at things, effects, etc.
-    /// There should only ever be one controller active, however, one could feasably an entirely new
+    /// There should only ever be one controller active, however, one could feasibly an entirely new
     /// controller to temporarily replace the main one, rather than individually changing each behavior
-    /// (i.e. in cases of posession or transformation).
+    /// (i.e. in cases of possession or transformation).
     /// </summary>
     public interface IActionController
     {
         /// <summary> Main-hand primary action, usually the left mouse button. </summary>
-        void MainPrimary(PressData press);
+        void MainHand(PressData press);
 
         /// <summary> Main-hand secondary action, usually shift + LMB. </summary>
-        void MainSecondary(PressData press);
+        void AltMainHand(PressData press);
 
         /// <summary> Off-hand primary action, usually the right mouse button. </summary>
-        void OffhandPrimary(PressData press);
+        void OffHand(PressData press);
 
         /// <summary> Off-hand secondary action, usually shift + RMB. </summary>
-        void OffhandSecondary(PressData press);
+        void AltOffHand(PressData press);
 
         /// <summary> Special weapon attack, checking main hand first. Often stuff like an overhead attack. </summary>
         void Special(PressData press);

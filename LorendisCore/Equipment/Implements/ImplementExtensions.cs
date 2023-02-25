@@ -9,6 +9,7 @@ namespace LorendisCore.Equipment.Implements
     {
         public static bool IsTwoHanded(this IImplement implement)
         {
+            if (implement == null) return false;
             var implementsTwoHandedInterface = implement.ImplementsInterface<ITwoHandedImplement>();
             var isVersatile = implement.TryCastToInterface<IVersatileImplement>(out var versatileImplement);
             return !isVersatile
@@ -63,6 +64,8 @@ namespace LorendisCore.Equipment.Implements
         /// <exception cref="InvalidOperationException">Thrown if T is not an interface.</exception>
         public static bool ImplementsInterface<T>(this IImplement implement)
         {
+            if (implement == null)
+                return false;
             if (!typeof(T).IsInterface)
                 throw new InvalidOperationException($"Type '{typeof(T)}' is not an interface.");
             return implement.GetInterfaces().Contains(typeof(T));
