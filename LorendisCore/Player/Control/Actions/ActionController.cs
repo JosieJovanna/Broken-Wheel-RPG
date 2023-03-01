@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using LorendisCore.Equipment.Implements;
 using LorendisCore.Equipment.Implements.WeaponTypes;
+using LorendisCore.Player.Context;
 
 namespace LorendisCore.Player.Control.Actions
 {
@@ -12,22 +13,45 @@ namespace LorendisCore.Player.Control.Actions
     public class ActionController : IActionController
     {
         private readonly EquipmentControl _equipment;
-        
-        public ActionController(EquipmentControl equipmentControl)
+        private readonly IContextControlChecker _context;
+
+        public ActionController(EquipmentControl equipmentControl, IContextControlChecker contextControlChecker)
         {
-            _equipment = equipmentControl;
+            _equipment = equipmentControl ?? throw new ArgumentNullException(nameof(equipmentControl));
+            _context = contextControlChecker ?? throw new ArgumentNullException(nameof(contextControlChecker));
         }
 
-        #region Implements
+        #region Context-Sensitive Controls
+
+        public void Interact(PressData press)
+        {
+            _context.GetInteractControl()?.TryPrimary(press);
+        }
+
+        public void Grab(PressData press)
+        {
+            _context.GetInteractControl()?.TryPrimary(press);
+        }
+
+        public void ReloadOrReady(PressData press)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        #endregion
+
+        #region Equippable Controls
+
         public void MainHand(PressData press) => GetImplementForPrimary()?.TryPrimary(press);
 
         public void AltMainHand(PressData press) => GetImplementForPrimary()?.TryAltPrimary(press);
 
         private IImplement GetImplementForPrimary()
         {
-            var shouldUseOffHand = _equipment.OffHand != null 
-                                   && !_equipment.MainHand.IsTwoHanded() 
-                                   && _equipment.OffHand.IsTwoHanded();
+            var hasOffhand = _equipment.OffHand != null;
+            var isOneHandedMainHand = !_equipment.MainHand.IsTwoHanded();
+            var isTwoHandedOffhand = _equipment.OffHand.IsTwoHanded();
+            var shouldUseOffHand = hasOffhand && isOneHandedMainHand && isTwoHandedOffhand;
             return shouldUseOffHand ? _equipment.OffHand : _equipment.MainHand;
         }
 
@@ -72,36 +96,23 @@ namespace LorendisCore.Player.Control.Actions
 
         private static void AddImplementToListIfSpecial(IImplement implement, IList<ISpecial> list)
         {
-            if (list == null) 
+            if (list == null)
                 throw new ArgumentNullException(nameof(list));
+            
             if (implement.ImplementsInterface<ISpecial>())
                 list.Add((ISpecial)implement);
-        }
-        
-        public void ReloadOrReady(PressData press)
-        {
-            throw new System.NotImplementedException();
-        }
-        #endregion
-
-        public void Interact(PressData press)
-        {
-            throw new System.NotImplementedException();
         }
 
         public void UseAbility(PressData press)
         {
-            throw new System.NotImplementedException();
+            _equipment.Ability?.TryPrimary(press);
         }
 
         public void Kick(PressData press)
         {
-            throw new System.NotImplementedException();
+            _equipment.Kick?.TryPrimary(press);
         }
 
-        public void Grab(PressData press)
-        {
-            throw new System.NotImplementedException();
-        }
+        #endregion
     }
 }

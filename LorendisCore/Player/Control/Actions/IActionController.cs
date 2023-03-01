@@ -11,6 +11,15 @@
     /// </summary>
     public interface IActionController
     {
+        /// <summary> Main action, usually performed with 'E'. Opening doors, talking, etc. </summary>
+        void Interact(PressData press);
+
+        /// <summary> Grabs a nearby entity, ladder, etc. </summary>
+        void Grab(PressData press);
+
+        /// <summary> Readys weapon, reloads, etc. Likely 'R'. Holding is raising and lowering weapons, always </summary>
+        void ReloadOrReady(PressData press);
+        
         /// <summary> Main-hand primary action, usually the left mouse button. </summary>
         void MainHand(PressData press);
 
@@ -29,19 +38,10 @@
         /// <summary> Special weapon attack, checking offhand first. Often stuff like an overhead attack. </summary>
         void AltSpecial(PressData press);
 
-        /// <summary> Main action, usually performed with 'E'. Opening doors, talking, etc. </summary>
-        void Interact(PressData press);
-
         /// <summary> Uses the special ability, usually class specific, or granted by an item. </summary>
         void UseAbility(PressData press);
 
         /// <summary> Kicks, usually just a normal kick but can be replaced or could be using other fighting style. </summary>
         void Kick(PressData press);
-
-        /// <summary> Grabs a nearby entity, ladder, etc. </summary>
-        void Grab(PressData press);
-
-        /// <summary> Readys weapon, reloads, etc. Likely 'R'. Holding is raising and lowering weapons, always </summary>
-        void ReloadOrReady(PressData press);
     }
 }
