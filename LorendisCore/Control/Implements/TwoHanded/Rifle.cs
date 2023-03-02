@@ -1,12 +1,13 @@
-﻿using LorendisCore.Equipment.Implements.WeaponTypes;
-using LorendisCore.Player.Control;
-using LorendisCore.Settings;
-using LorendisCore.Player.Control.Actions;
-using LorendisCore.Player.Control.Actions.Behaviors;
+﻿using LorendisCore.Settings;
+using LorendisCore.Control.Models;
+using LorendisCore.Control.Actions;
+using LorendisCore.Control.Actions.Behaviors;
+using LorendisCore.Control.Implements.WeaponTypes;
+using LorendisCore.Equipment.Implements.WeaponTypes;
 
-namespace LorendisCore.Equipment.Implements.TwoHanded
+namespace LorendisCore.Control.Implements.TwoHanded
 {
-    public class Rifle : ITwoHandedImplement, ITriggerWeapon
+    public class Rifle : ITwoHandedImplementCtrl, ITriggerWeapon
     {
         private bool _isAiming = false;
 

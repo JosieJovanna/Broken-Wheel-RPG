@@ -1,4 +1,4 @@
-﻿using LorendisCore.Player.Control;
+﻿using LorendisCore.Control.Models;
 
 namespace LorendisCore.Utilities
 {

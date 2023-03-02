@@ -1,11 +1,11 @@
-﻿using LorendisCore.Player.Control;
+﻿using LorendisCore.Control.Models;
 
-namespace LorendisCore.Equipment.Implements
+namespace LorendisCore.Control.Implements
 {
     /// <summary>
     /// The object which maps input to items for use. Behaviors vary greatly by item.
     /// </summary>
-    public interface IImplement
+    public interface IImplementCtrl
     {
         /// <summary>
         /// Attempts to perform the primary action(s) of the implement, which may depend on the type of button press.

@@ -1,4 +1,4 @@
-namespace LorendisCore.Equipment.Implements.WeaponTypes
+namespace LorendisCore.Control.Implements.WeaponTypes
 {
     public interface IAimable
     {

@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+using LorendisCore.Control.Implements;
+using LorendisCore.Control.Implements.WeaponTypes;
+using LorendisCore.Control.Models;
 using LorendisCore.Equipment.Implements;
 using LorendisCore.Equipment.Implements.WeaponTypes;
-using LorendisCore.Player.Context;
+using LorendisCore.Player;
 
-namespace LorendisCore.Player.Control.Actions
+namespace LorendisCore.Control.Actions
 {
     /// <summary>
     /// The default implementation of <see cref="IActionController"/>
@@ -46,7 +49,7 @@ namespace LorendisCore.Player.Control.Actions
 
         public void AltMainHand(PressData press) => GetImplementForPrimary()?.TryAltPrimary(press);
 
-        private IImplement GetImplementForPrimary()
+        private IImplementCtrl GetImplementForPrimary()
         {
             var hasOffhand = _equipment.OffHand != null;
             var isOneHandedMainHand = !_equipment.MainHand.IsTwoHanded();
@@ -73,12 +76,12 @@ namespace LorendisCore.Player.Control.Actions
                 _equipment.OffHand?.TryAltPrimary(press);
         }
 
-        private ITwoHandedImplement GetTwoHandedImplement()
+        private ITwoHandedImplementCtrl GetTwoHandedImplement()
         {
             if (_equipment.MainHand.IsTwoHanded())
-                return _equipment.MainHand.CastToInterface<ITwoHandedImplement>();
+                return _equipment.MainHand.CastToInterface<ITwoHandedImplementCtrl>();
             if (_equipment.OffHand.IsTwoHanded())
-                return _equipment.OffHand.CastToInterface<ITwoHandedImplement>();
+                return _equipment.OffHand.CastToInterface<ITwoHandedImplementCtrl>();
             return null;
         }
 
@@ -94,13 +97,13 @@ namespace LorendisCore.Player.Control.Actions
             return specials;
         }
 
-        private static void AddImplementToListIfSpecial(IImplement implement, IList<ISpecial> list)
+        private static void AddImplementToListIfSpecial(IImplementCtrl implementCtrl, IList<ISpecial> list)
         {
             if (list == null)
                 throw new ArgumentNullException(nameof(list));
             
-            if (implement.ImplementsInterface<ISpecial>())
-                list.Add((ISpecial)implement);
+            if (implementCtrl.ImplementsInterface<ISpecial>())
+                list.Add((ISpecial)implementCtrl);
         }
 
         public void UseAbility(PressData press)

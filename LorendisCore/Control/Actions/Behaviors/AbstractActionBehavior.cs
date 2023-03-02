@@ -1,4 +1,6 @@
-﻿namespace LorendisCore.Player.Control.Actions.Behaviors
+﻿using LorendisCore.Control.Models;
+
+namespace LorendisCore.Control.Actions.Behaviors
 {
     /// <summary>
     /// The simplest type of <see cref="IActionBehavior"/>, where a different action 

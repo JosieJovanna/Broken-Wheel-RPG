@@ -1,7 +1,6 @@
-﻿using LorendisCore.Settings;
-using LorendisCore.Common.Delegates;
+﻿using LorendisCore.Common.Delegates;
 
-namespace LorendisCore.Player.Control.Actions.Behaviors
+namespace LorendisCore.Control.Actions.Behaviors
 {
     /// <summary>
     /// Aiming can be held, or toggled on/off.

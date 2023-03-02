@@ -1,6 +1,6 @@
 ﻿using LorendisCore.Utilities;
 
-namespace LorendisCore.Player.Control
+namespace LorendisCore.Control.Models
 {
     /// <summary>
     /// When a button is pressed, different actions might be performed based on context.

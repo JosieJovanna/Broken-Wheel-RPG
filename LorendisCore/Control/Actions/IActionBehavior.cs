@@ -1,4 +1,6 @@
-﻿namespace LorendisCore.Player.Control.Actions
+﻿using LorendisCore.Control.Models;
+
+namespace LorendisCore.Control.Actions
 {
     /// <summary>
     /// A behavior for some kind of player action -- usually an attack. Does not control movement.

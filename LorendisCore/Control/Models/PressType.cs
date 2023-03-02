@@ -1,4 +1,4 @@
-﻿namespace LorendisCore.Player.Control
+﻿namespace LorendisCore.Control.Models
 {
     /// <summary>
     /// A button press's input state.
