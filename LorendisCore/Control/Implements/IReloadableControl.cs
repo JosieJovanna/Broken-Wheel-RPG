@@ -6,5 +6,6 @@
         bool CanReload { get; }
 
         bool TryReload();
+        bool AbortReload();
     }
 }

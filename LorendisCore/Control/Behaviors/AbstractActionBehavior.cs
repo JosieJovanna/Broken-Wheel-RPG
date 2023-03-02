@@ -18,7 +18,7 @@ namespace LorendisCore.Control.Behaviors
 
         protected AbstractActionBehavior(double holdTime)
         {
-            _holdTime = holdTime;
+            _holdTime = holdTime; // TODO: make it so the control can actually change without spinning up new control objects?
         }
 
         protected abstract void InitialPress(bool isAltPress);

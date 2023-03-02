@@ -24,7 +24,7 @@ namespace LorendisCore.Control
 
         private AltMuxBehavior CreateBehavior()
         {
-            return new AltMuxBehavior(StaticSettings.Controls.HoldToReadyWeapon) // TODO: make it so the control can actually change without spinning up new control objects?
+            return new AltMuxBehavior(StaticSettings.Controls.HoldToReadyWeapon) 
             {
                 OnReleaseHold = ReadyWeapon,
                 OnAltReleaseHold = ReadyWeapon,
@@ -40,13 +40,10 @@ namespace LorendisCore.Control
         private void Reload()
         {
             var reloadableList = GetReloadableControls();
-            if (!CanAnyBeReloadedInList(reloadableList))
+            if (!reloadableList.Any())
                 return;
             
-            foreach (var reloadable in reloadableList)
-            {
-                
-            }
+            
         }
 
         private void AltReload()
@@ -54,13 +51,16 @@ namespace LorendisCore.Control
             
         }
 
-        private static bool CanAnyBeReloadedInList(IReadOnlyCollection<IReloadableControl> reloadableList)
+        private void TryFirstThenSecond(IBaseControl ctrlOne, IBaseControl ctrlTwo)
         {
-            if (reloadableList == null || !reloadableList.Any())
-                return false;
-            var areAnyReloadable = reloadableList.Any(r => r.CanReload);
-            var noneAreReloading = reloadableList.All(r => !r.IsReloading);
-            return areAnyReloadable && noneAreReloading;
+            var shouldTryTwo = TryReloadingIfOtherDoesntOverride(ctrlOne, ctrlTwo);
+
+
+        }
+
+        private bool TryReloadingIfOtherDoesntOverride(IBaseControl ctrlMain, IBaseControl ctrlOther)
+        {
+            return false;
         }
 
         private List<IReloadableControl> GetReloadableControls()
@@ -68,7 +68,7 @@ namespace LorendisCore.Control
             var list = new List<IReloadableControl>();
             AddToListIfReloadable(list, _equipment.MainHand);
             AddToListIfReloadable(list, _equipment.OffHand);
-            return list;
+            return list.Where(rc => rc.CanReload).ToList();
         }
 
         private static void AddToListIfReloadable(ICollection<IReloadableControl> list, IBaseControl control)
