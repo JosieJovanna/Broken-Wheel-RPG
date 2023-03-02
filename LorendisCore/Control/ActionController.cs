@@ -62,6 +62,35 @@ namespace LorendisCore.Control
                 _equipment.OffHand?.TryPrimary(press);
         }
 
+        public void Special(PressData press)
+        {
+            var twoHanded = GetTwoHandedImplement();
+            if (twoHanded != null)
+                TrySpecialForImplement(twoHanded, press);
+            else
+                TryOneHandedSpecial(press);
+        }
+
+        private void TryOneHandedSpecial(PressData press)
+        {
+            var implementOne = press.IsAltPress ? _equipment.OffHand : _equipment.MainHand;
+            var implementTwo = !press.IsAltPress ? _equipment.MainHand : _equipment.OffHand;
+            var isFirstTrySuccessful = TrySpecialForImplement(implementOne, press);
+            if (!isFirstTrySuccessful)
+                TrySpecialForImplement(implementTwo, press);
+        }
+
+        private static bool TrySpecialForImplement(IImplementControl implementControl, PressData press)
+        {
+            if (implementControl.TryCastToInterface<ISpecialControl>(out var asSpecial))
+                asSpecial.TrySpecial(press);
+            else if (implementControl.TryCastToInterface<IVersatileImplementControl>(out var asVersatile))
+                asVersatile.TryToggleGrip(press);
+            else
+                return false;
+            return true;
+        }
+
         private ITwoHandedImplementControl GetTwoHandedImplement()
         {
             if (_equipment.MainHand.IsTwoHanded())
@@ -69,27 +98,6 @@ namespace LorendisCore.Control
             if (_equipment.OffHand.IsTwoHanded())
                 return _equipment.OffHand.CastToInterface<ITwoHandedImplementControl>();
             return null;
-        }
-
-        public void Special(PressData press) => GetSpecials().FirstOrDefault()?.TrySpecial(press);
-
-        public void AltSpecial(PressData press) => GetSpecials().LastOrDefault()?.TrySpecial(press);
-
-        private IEnumerable<ISpecialControl> GetSpecials()
-        {
-            var specials = new List<ISpecialControl>();
-            AddImplementToListIfSpecial(_equipment.MainHand, specials);
-            AddImplementToListIfSpecial(_equipment.OffHand, specials);
-            return specials;
-        }
-
-        private static void AddImplementToListIfSpecial(IImplementControl implementControl, IList<ISpecialControl> list)
-        {
-            if (list == null)
-                throw new ArgumentNullException(nameof(list));
-            
-            if (implementControl.ImplementsInterface<ISpecialControl>())
-                list.Add((ISpecialControl)implementControl);
         }
 
         public void UseAbility(PressData press)

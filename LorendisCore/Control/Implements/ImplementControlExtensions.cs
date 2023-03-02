@@ -10,10 +10,10 @@ namespace LorendisCore.Control.Implements
         {
             if (implementControl == null) return false;
             var implementsTwoHandedInterface = implementControl.ImplementsInterface<ITwoHandedImplementControl>();
-            var isVersatile = implementControl.TryCastToInterface<IVersatileImplementControl>(out var versatileImplement);
+            var isVersatile = implementControl.TryCastToInterface<IVersatileImplementControl>(out var asVersatile);
             return !isVersatile
                 ? implementsTwoHandedInterface 
-                : versatileImplement.IsTwoHandedGrip;
+                : asVersatile.IsTwoHandedGrip;
         }
         
         public static bool HasSpecial(this IImplementControl implementControl)

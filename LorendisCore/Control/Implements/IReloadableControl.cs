@@ -4,5 +4,7 @@
     {
         bool IsReloading { get; }
         bool CanReload { get; }
+
+        bool TryReload();
     }
 }
