@@ -25,20 +25,11 @@ namespace LorendisCore.Control.Actions
         /// <summary> Main-hand primary action, usually the left mouse button. </summary>
         void MainHand(PressData press);
 
-        /// <summary> Main-hand secondary action, usually shift + LMB. </summary>
-        void AltMainHand(PressData press);
-
         /// <summary> Off-hand primary action, usually the right mouse button. </summary>
         void OffHand(PressData press);
 
-        /// <summary> Off-hand secondary action, usually shift + RMB. </summary>
-        void AltOffHand(PressData press);
-
         /// <summary> Special weapon attack, checking main hand first. Often stuff like an overhead attack. </summary>
         void Special(PressData press);
-
-        /// <summary> Special weapon attack, checking offhand first. Often stuff like an overhead attack. </summary>
-        void AltSpecial(PressData press);
 
         /// <summary> Uses the special ability, usually class specific, or granted by an item. </summary>
         void UseAbility(PressData press);

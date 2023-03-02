@@ -13,6 +13,8 @@ namespace LorendisCore.Control.Models
 		/// Time passed in seconds since the last event happened.
 		/// </summary>
 		public double DeltaTime { get; }
+		
+		public bool IsAltPress { get; }
 
 		/// <summary>
 		/// The <see cref="PressType"/> of the input.
@@ -20,15 +22,17 @@ namespace LorendisCore.Control.Models
 		public PressType Type { get; }
 
 
-		public PressData(double deltaTime, bool isPressed, bool isHeld)
+		public PressData(double deltaTime, bool isAltPress, bool isPressed, bool isHeld)
         {
             DeltaTime = deltaTime;
+            IsAltPress = isAltPress;
             Type = Util.GetButtonPressTypeFromBooleans(isPressed, isHeld);
         }
 
-        public PressData(double deltaTime, PressType pressType)
+        public PressData(double deltaTime, PressType pressType, bool isAltPress = false)
         {
             DeltaTime = deltaTime;
+            IsAltPress = isAltPress;
             Type = pressType;
         }
 	}

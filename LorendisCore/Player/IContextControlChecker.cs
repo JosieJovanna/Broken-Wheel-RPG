@@ -9,7 +9,7 @@ namespace LorendisCore.Player
     /// </summary>
     public interface IContextControlChecker
     {
-        IImplementCtrl GetInteractControl();
-        IImplementCtrl GetGrabControl();
+        IImplementControl GetInteractControl();
+        IImplementControl GetGrabControl();
     }
 }

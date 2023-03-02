@@ -1,12 +1,9 @@
-﻿using LorendisCore.Equipment.Implements;
-using LorendisCore.Equipment.Implements.WeaponTypes;
-
-namespace LorendisCore.Control.Implements
+﻿namespace LorendisCore.Control.Implements
 {
     /// <summary>
     /// Maps input to actions for implements which may be either one- or two-handed, toggled by special.
     /// </summary>
-    public interface IVersatileImplementCtrl : ITwoHandedImplementCtrl, ISpecial
+    public interface IVersatileImplementControl : ITwoHandedImplementControl
     {
         bool IsOneHandedGrip { get; }
         bool IsTwoHandedGrip { get; }

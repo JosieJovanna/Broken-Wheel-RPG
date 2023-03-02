@@ -1,31 +1,29 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using LorendisCore.Equipment.Implements;
-using LorendisCore.Equipment.Implements.WeaponTypes;
 
 namespace LorendisCore.Control.Implements
 {
-    public static class ImplementExtensions
+    public static class ImplementControlExtensions
     {
-        public static bool IsTwoHanded(this IImplementCtrl implementCtrl)
+        public static bool IsTwoHanded(this IImplementControl implementControl)
         {
-            if (implementCtrl == null) return false;
-            var implementsTwoHandedInterface = implementCtrl.ImplementsInterface<ITwoHandedImplementCtrl>();
-            var isVersatile = implementCtrl.TryCastToInterface<IVersatileImplementCtrl>(out var versatileImplement);
+            if (implementControl == null) return false;
+            var implementsTwoHandedInterface = implementControl.ImplementsInterface<ITwoHandedImplementControl>();
+            var isVersatile = implementControl.TryCastToInterface<IVersatileImplementControl>(out var versatileImplement);
             return !isVersatile
                 ? implementsTwoHandedInterface 
                 : versatileImplement.IsTwoHandedGrip;
         }
         
-        public static bool HasSpecial(this IImplementCtrl implementCtrl)
-            => implementCtrl.ImplementsInterface<ISpecial>();
+        public static bool HasSpecial(this IImplementControl implementControl)
+            => implementControl.ImplementsInterface<ISpecialControl>();
 
-        public static bool IsVersatile(this IImplementCtrl implementCtrl)
-            => implementCtrl.ImplementsInterface<IVersatileImplementCtrl>();
+        public static bool IsVersatile(this IImplementControl implementControl)
+            => implementControl.ImplementsInterface<IVersatileImplementControl>();
 
-        public static bool IsReloadable(this IImplementCtrl implementCtrl) 
-            => implementCtrl.ImplementsInterface<IReloadable>();
+        public static bool IsReloadable(this IImplementControl implementControl) 
+            => implementControl.ImplementsInterface<IReloadableControl>();
 
         /// <summary>
         /// Tries casting the object to another interface which it implements, if possible. Does not throw exceptions.
@@ -33,11 +31,11 @@ namespace LorendisCore.Control.Implements
         /// <param name="result">The resulting cast, which is default or null if the cast fails.</param>
         /// <typeparam name="T">An interface which is implemented by the object.</typeparam>
         /// <returns>Whether the cast was successful.</returns>
-        public static bool TryCastToInterface<T>(this IImplementCtrl implementCtrl, out T result)
+        public static bool TryCastToInterface<T>(this IImplementControl implementControl, out T result)
         {
             try
             {
-                result = implementCtrl.CastToInterface<T>();
+                result = implementControl.CastToInterface<T>();
                 return true;
             }
             catch
@@ -53,28 +51,29 @@ namespace LorendisCore.Control.Implements
         /// </summary>
         /// <typeparam name="T">An interface which the object implements.</typeparam>
         /// <exception cref="InvalidCastException"></exception>
-        public static T CastToInterface<T>(this IImplementCtrl implementCtrl)
+        public static T CastToInterface<T>(this IImplementControl implementControl)
         {
-            var implementsT = implementCtrl.ImplementsInterface<T>();
+            var implementsT = implementControl.ImplementsInterface<T>();
             if (!implementsT)
                 throw new InvalidCastException($"The Implement does not inherit interface '{typeof(T)}'.");
-            return (T)implementCtrl;
+            return (T)implementControl;
         }
         
         /// <typeparam name="T">Must be an interface.</typeparam>
         /// <exception cref="InvalidOperationException">Thrown if T is not an interface.</exception>
-        public static bool ImplementsInterface<T>(this IImplementCtrl implementCtrl)
+        public static bool ImplementsInterface<T>(this IImplementControl implementControl)
         {
-            if (implementCtrl == null)
+            if (implementControl == null)
                 return false;
+            
             if (!typeof(T).IsInterface)
                 throw new InvalidOperationException($"Type '{typeof(T)}' is not an interface.");
-            return implementCtrl.GetInterfaces().Contains(typeof(T));
+            return implementControl.GetInterfaces().Contains(typeof(T));
         }
 
-        private static IEnumerable<Type> GetInterfaces(this IImplementCtrl implementCtrl)
+        private static IEnumerable<Type> GetInterfaces(this IImplementControl implementControl)
         {
-            return implementCtrl.GetType().GetInterfaces().AsEnumerable();
+            return implementControl.GetType().GetInterfaces().AsEnumerable();
         }
     }
 }
