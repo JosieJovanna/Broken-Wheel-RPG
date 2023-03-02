@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Linq;
-using System.Collections.Generic;
 using LorendisCore.Player;
 using LorendisCore.Control.Models;
 using LorendisCore.Control.Implements;
@@ -14,29 +12,22 @@ namespace LorendisCore.Control
     {
         private readonly EquipmentControl _equipment;
         private readonly IContextControlChecker _context;
+        private readonly ReloadOrReadyController _reloadOrReadyController;
 
         public ActionController(EquipmentControl equipmentControl, IContextControlChecker contextControlChecker)
         {
             _equipment = equipmentControl ?? throw new ArgumentNullException(nameof(equipmentControl));
             _context = contextControlChecker ?? throw new ArgumentNullException(nameof(contextControlChecker));
+            _reloadOrReadyController = new ReloadOrReadyController(_equipment);
         }
 
         #region Context-Sensitive Controls
 
-        public void Interact(PressData press)
-        {
-            _context.GetInteractControl()?.TryPrimary(press);
-        }
+        public void Interact(PressData press) => _context.GetInteractControl()?.TryPrimary(press);
 
-        public void Grab(PressData press)
-        {
-            _context.GetInteractControl()?.TryPrimary(press);
-        }
+        public void Grab(PressData press) => _context.GetInteractControl()?.TryPrimary(press);
 
-        public void ReloadOrReady(PressData press)
-        {
-            throw new System.NotImplementedException();
-        }
+        public void ReloadOrReady(PressData press) => _reloadOrReadyController.ReloadOrReady(press);
 
         #endregion
 
@@ -44,7 +35,7 @@ namespace LorendisCore.Control
 
         public void MainHand(PressData press) => GetImplementForPrimary()?.TryPrimary(press);
 
-        private IImplementControl GetImplementForPrimary()
+        private IBaseControl GetImplementForPrimary()
         {
             var hasOffhand = _equipment.OffHand != null;
             var isOneHandedMainHand = !_equipment.MainHand.IsTwoHanded();
@@ -80,23 +71,23 @@ namespace LorendisCore.Control
                 TrySpecialForImplement(implementTwo, press);
         }
 
-        private static bool TrySpecialForImplement(IImplementControl implementControl, PressData press)
+        private static bool TrySpecialForImplement(IBaseControl control, PressData press)
         {
-            if (implementControl.TryCastToInterface<ISpecialControl>(out var asSpecial))
+            if (control.TryCastToInterface<ISpecialControl>(out var asSpecial))
                 asSpecial.TrySpecial(press);
-            else if (implementControl.TryCastToInterface<IVersatileImplementControl>(out var asVersatile))
+            else if (control.TryCastToInterface<IVersatileControl>(out var asVersatile))
                 asVersatile.TryToggleGrip(press);
             else
                 return false;
             return true;
         }
 
-        private ITwoHandedImplementControl GetTwoHandedImplement()
+        private ITwoHandedControl GetTwoHandedImplement()
         {
             if (_equipment.MainHand.IsTwoHanded())
-                return _equipment.MainHand.CastToInterface<ITwoHandedImplementControl>();
+                return _equipment.MainHand.CastToInterface<ITwoHandedControl>();
             if (_equipment.OffHand.IsTwoHanded())
-                return _equipment.OffHand.CastToInterface<ITwoHandedImplementControl>();
+                return _equipment.OffHand.CastToInterface<ITwoHandedControl>();
             return null;
         }
 

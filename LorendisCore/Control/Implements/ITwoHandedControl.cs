@@ -2,7 +2,7 @@
 
 namespace LorendisCore.Control.Implements
 {
-    public interface ITwoHandedImplementControl : IImplementControl
+    public interface ITwoHandedControl : IBaseControl
     {
         bool TrySecondary(PressData pressData);
     }

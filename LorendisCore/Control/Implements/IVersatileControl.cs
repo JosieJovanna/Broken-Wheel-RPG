@@ -5,7 +5,7 @@ namespace LorendisCore.Control.Implements
     /// <summary>
     /// Maps input to actions for implements which may be either one- or two-handed, toggled by special.
     /// </summary>
-    public interface IVersatileImplementControl : ITwoHandedImplementControl
+    public interface IVersatileControl : ITwoHandedControl
     {
         bool IsOneHandedGrip { get; }
         bool IsTwoHandedGrip { get; }

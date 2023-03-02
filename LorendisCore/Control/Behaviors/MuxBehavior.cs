@@ -17,9 +17,9 @@ namespace LorendisCore.Control.Behaviors
 
         public MuxBehavior(double holdTime) : base(holdTime) { }
 
-        protected override void InitialPress() => OnInitialPress?.Invoke();
-        protected override void Held() => OnHeld?.Invoke();
-        protected override void ReleaseClick() => OnReleaseClick?.Invoke();
-        protected override void ReleaseHold() => OnReleaseHold?.Invoke();
+        protected override void InitialPress(bool isAltPress) => OnInitialPress?.Invoke();
+        protected override void Held(bool isAltPress) => OnHeld?.Invoke();
+        protected override void ReleaseClick(bool isAltPress) => OnReleaseClick?.Invoke();
+        protected override void ReleaseHold(bool isAltPress) => OnReleaseHold?.Invoke();
     }
 }

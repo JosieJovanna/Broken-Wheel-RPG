@@ -12,32 +12,34 @@ namespace LorendisCore.Control.Behaviors
     public abstract class AbstractActionBehavior : IActionBehavior
     {
         private readonly double _holdTime;
-        private double _heldFor = 0;
+        private double _heldFor;
+        private bool _isAltPress;
+        private bool _isAltPressIsLocked;
 
         protected AbstractActionBehavior(double holdTime)
         {
             _holdTime = holdTime;
         }
 
-        protected abstract void InitialPress();
-        protected abstract void Held();
-        protected abstract void ReleaseClick();
-        protected abstract void ReleaseHold();
+        protected abstract void InitialPress(bool isAltPress);
+        protected abstract void Held(bool isAltPress);
+        protected abstract void ReleaseClick(bool isAltPress);
+        protected abstract void ReleaseHold(bool isAltPress);
         
-        public void Execute(PressData pressData)
+        public void Execute(PressData press)
         {
-            _heldFor += pressData.DeltaTime;
-            var type = pressData.Type;
-
-            Ex(type);
+            _heldFor += press.DeltaTime;
+            if (!_isAltPressIsLocked)
+                _isAltPress = press.IsAltPress;
+            SwitchPress(press);
         }
 
-        private void Ex(PressType type)
+        private void SwitchPress(PressData press)
         {
-            switch (type)
+            switch (press.Type)
             {
                 case PressType.Clicked:
-                    InitialPress();
+                    InitialPress(_isAltPress);
                     break;
                 case PressType.Released:
                     ReleaseClickOrHold();
@@ -45,22 +47,27 @@ namespace LorendisCore.Control.Behaviors
                 case PressType.Held:
                     HoldIfLongEnough();
                     break;
+                case PressType.NotHeld:
+                default:
+                    _isAltPressIsLocked = false;
+                    break;
             }
         }
 
         private void ReleaseClickOrHold()
         {
             if (_heldFor >= _holdTime)
-                ReleaseHold();
+                ReleaseHold(_isAltPress);
             else
-                ReleaseClick();
+                ReleaseClick(_isAltPress);
             _heldFor = 0;
+            _isAltPressIsLocked = false;
         }
 
         private void HoldIfLongEnough()
         {
             if (_heldFor >= _holdTime)
-                Held();
+                Held(_isAltPress);
         }
     }
 }

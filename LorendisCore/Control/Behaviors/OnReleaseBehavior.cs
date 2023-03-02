@@ -12,9 +12,9 @@ namespace LorendisCore.Control.Behaviors
             OnRelease = onRelease;
         }
 
-        public void Execute(PressData pressData)
+        public void Execute(PressData press)
         {
-            if (pressData.Type == PressType.Released)
+            if (press.Type == PressType.Released)
                 OnRelease?.Invoke();
         }
     }

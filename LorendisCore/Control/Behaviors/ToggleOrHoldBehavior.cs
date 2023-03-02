@@ -20,15 +20,15 @@ namespace LorendisCore.Control.Behaviors
             ToggleOff = toggleOff;
         }
 
-        protected override void InitialPress() { } // do nothing...
+        protected override void InitialPress(bool isAltPress) { } // do nothing...
 
-        protected override void Held()
+        protected override void Held(bool isAltPress)
         {
             _isToggled = true;
             ToggleOn();
         }
 
-        protected override void ReleaseClick()
+        protected override void ReleaseClick(bool isAltPress)
         {
             if (_isToggled)
                 ToggleOff();
@@ -37,7 +37,7 @@ namespace LorendisCore.Control.Behaviors
             _isToggled = !_isToggled;
         }
 
-        protected override void ReleaseHold()
+        protected override void ReleaseHold(bool isAltPress)
         {
             _isToggled = false;
             ToggleOff();

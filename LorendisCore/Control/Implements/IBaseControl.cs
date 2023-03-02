@@ -5,7 +5,7 @@ namespace LorendisCore.Control.Implements
     /// <summary>
     /// The object which maps input to items for use. Behaviors vary greatly by item.
     /// </summary>
-    public interface IImplementControl
+    public interface IBaseControl
     {
         /// <summary>
         /// Attempts to perform the primary action(s) of the implement, which may depend on the type of button press.

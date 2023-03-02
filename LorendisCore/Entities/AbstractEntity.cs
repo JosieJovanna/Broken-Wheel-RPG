@@ -1,6 +1,5 @@
 ﻿using LorendisCore.Common.Stats.Processing;
 using LorendisCore.Control;
-using LorendisCore.Control.Actions;
 
 namespace LorendisCore.Entities
 {

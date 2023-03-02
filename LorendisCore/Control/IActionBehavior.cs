@@ -12,6 +12,6 @@ namespace LorendisCore.Control
     /// </summary>
     public interface IActionBehavior
     {
-        void Execute(PressData pressData);
+        void Execute(PressData press);
     }
 }

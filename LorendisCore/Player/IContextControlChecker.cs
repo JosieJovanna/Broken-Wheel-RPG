@@ -1,5 +1,4 @@
 ﻿using LorendisCore.Control.Implements;
-using LorendisCore.Equipment.Implements;
 
 namespace LorendisCore.Player
 {
@@ -9,7 +8,9 @@ namespace LorendisCore.Player
     /// </summary>
     public interface IContextControlChecker
     {
-        IImplementControl GetInteractControl();
-        IImplementControl GetGrabControl();
+        bool IsInCombat { get; }
+        
+        IBaseControl GetInteractControl();
+        IBaseControl GetGrabControl();
     }
 }
