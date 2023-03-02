@@ -15,15 +15,6 @@ namespace LorendisCore.Control.Implements
                 ? implementsTwoHandedInterface 
                 : asVersatile.IsTwoHandedGrip;
         }
-        
-        public static bool HasSpecial(this IBaseControl control)
-            => control.ImplementsInterface<ISpecialControl>();
-
-        public static bool IsVersatile(this IBaseControl control)
-            => control.ImplementsInterface<IVersatileControl>();
-
-        public static bool IsReloadable(this IBaseControl control) 
-            => control.ImplementsInterface<IReloadableControl>();
 
         /// <summary>
         /// Tries casting the object to another interface which it implements, if possible. Does not throw exceptions.
