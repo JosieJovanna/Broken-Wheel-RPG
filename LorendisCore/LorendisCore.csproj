@@ -9,7 +9,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Equipment" />
     <Folder Include="Equipment\" />
   </ItemGroup>
 

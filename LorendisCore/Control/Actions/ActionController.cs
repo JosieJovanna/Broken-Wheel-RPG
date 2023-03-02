@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Collections.Generic;
 using LorendisCore.Control.Implements;
-using LorendisCore.Control.Implements.WeaponTypes;
 using LorendisCore.Control.Models;
 using LorendisCore.Equipment.Implements;
 using LorendisCore.Equipment.Implements.WeaponTypes;

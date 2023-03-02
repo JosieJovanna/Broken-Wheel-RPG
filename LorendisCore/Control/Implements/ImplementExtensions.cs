@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using LorendisCore.Control.Implements.WeaponTypes;
 using LorendisCore.Equipment.Implements;
 using LorendisCore.Equipment.Implements.WeaponTypes;
 

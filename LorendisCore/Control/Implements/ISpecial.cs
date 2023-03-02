@@ -1,6 +1,6 @@
 ﻿using LorendisCore.Control.Models;
 
-namespace LorendisCore.Control.Implements.WeaponTypes
+namespace LorendisCore.Control.Implements
 {
     /// <summary>
     /// An interface for implements which have a special action.

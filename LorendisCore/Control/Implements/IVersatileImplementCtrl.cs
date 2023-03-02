@@ -1,5 +1,4 @@
-﻿using LorendisCore.Control.Implements.WeaponTypes;
-using LorendisCore.Equipment.Implements;
+﻿using LorendisCore.Equipment.Implements;
 using LorendisCore.Equipment.Implements.WeaponTypes;
 
 namespace LorendisCore.Control.Implements
