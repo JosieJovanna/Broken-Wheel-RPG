@@ -1,6 +1,6 @@
 ﻿using LorendisCore.Control.Models;
 
-namespace LorendisCore.Control.Actions
+namespace LorendisCore.Control
 {
     /// <summary>
     /// The object which maps actions and their input to control.

@@ -1,6 +1,6 @@
 ﻿using LorendisCore.Common.Delegates;
 
-namespace LorendisCore.Control.Actions.Behaviors
+namespace LorendisCore.Control.Behaviors
 {
     /// <summary>
     /// A concrete <see cref="AbstractActionBehavior"/> where on press, hold, and release,

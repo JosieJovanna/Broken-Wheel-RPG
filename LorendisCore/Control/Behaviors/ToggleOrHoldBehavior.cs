@@ -1,6 +1,6 @@
 ﻿using LorendisCore.Common.Delegates;
 
-namespace LorendisCore.Control.Actions.Behaviors
+namespace LorendisCore.Control.Behaviors
 {
     /// <summary>
     /// Aiming can be held, or toggled on/off.

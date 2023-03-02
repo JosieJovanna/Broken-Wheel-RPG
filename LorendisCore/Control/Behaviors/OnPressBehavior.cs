@@ -1,7 +1,7 @@
 ﻿using LorendisCore.Common.Delegates;
 using LorendisCore.Control.Models;
 
-namespace LorendisCore.Control.Actions.Behaviors
+namespace LorendisCore.Control.Behaviors
 {
     public class OnPressBehavior : IActionBehavior
     {

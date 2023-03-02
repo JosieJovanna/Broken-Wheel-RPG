@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
-using LorendisCore.Control.Implements;
-using LorendisCore.Control.Models;
-using LorendisCore.Equipment.Implements;
-using LorendisCore.Equipment.Implements.WeaponTypes;
 using LorendisCore.Player;
+using LorendisCore.Control.Models;
+using LorendisCore.Control.Implements;
 
-namespace LorendisCore.Control.Actions
+namespace LorendisCore.Control
 {
     /// <summary>
     /// The default implementation of <see cref="IActionController"/>

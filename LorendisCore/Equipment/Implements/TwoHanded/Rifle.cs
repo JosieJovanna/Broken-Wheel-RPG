@@ -1,7 +1,8 @@
-﻿using LorendisCore.Settings;
+﻿using LorendisCore.Control;
+using LorendisCore.Settings;
 using LorendisCore.Control.Models;
 using LorendisCore.Control.Actions;
-using LorendisCore.Control.Actions.Behaviors;
+using LorendisCore.Control.Behaviors;
 using LorendisCore.Control.Implements;
 using LorendisCore.Equipment.Implements.WeaponTypes;
 
