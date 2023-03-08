@@ -1,4 +1,4 @@
-namespace LorendisCore.Equipment.Implements.WeaponTypes
+namespace LorendisCore.Equipment.Implements.Aspects
 {
     public interface IReloadable
     {
@@ -8,6 +8,5 @@ namespace LorendisCore.Equipment.Implements.WeaponTypes
         void StartReloading();
         void FinishReloading();
         void CancelReloading();
-        void KeepReloading(double deltaTime);
     }
 }

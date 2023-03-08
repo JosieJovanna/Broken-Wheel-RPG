@@ -3,7 +3,7 @@ using LorendisCore.Settings;
 using LorendisCore.Control.Models;
 using LorendisCore.Control.Behaviors;
 using LorendisCore.Control.Implements;
-using LorendisCore.Equipment.Implements.WeaponTypes;
+using LorendisCore.Equipment.Implements.Aspects;
 
 namespace LorendisCore.Equipment.Implements.TwoHanded
 {
