@@ -7,7 +7,7 @@ using LorendisCore.Equipment.Implements.Aspects;
 
 namespace LorendisCore.Equipment.Implements.TwoHanded
 {
-    public class Rifle : ITwoHandedControl, ITriggerWeapon
+    public class Rifle : ITwoHandedControl, ITriggerWeapon, IReloadable, IAimable
     {
         private bool _isAiming = false;
 
@@ -21,7 +21,7 @@ namespace LorendisCore.Equipment.Implements.TwoHanded
             var holdTime = StaticSettings.Controls.HoldToToggleAim;
             AimBehavior = new ToggleOrHoldBehavior(ref holdTime, StartAiming, StopAiming);
             BashBehavior = new OnPressBehavior(Bash);
-            FireBehavior = new OnPressBehavior(Fire);
+            FireBehavior = new OnPressBehavior(TryFiring);
         }
 
         public bool IsAiming() => _isAiming;
@@ -38,7 +38,7 @@ namespace LorendisCore.Equipment.Implements.TwoHanded
             _isAiming = false;
         }
 
-        public void Fire()
+        public void TryFiring()
         {
             // pew pew
         }
