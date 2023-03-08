@@ -1,10 +1,11 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using LorendisCore.Control.Implements;
 
-namespace LorendisCore.Control.Implements
+namespace LorendisCore.Control.Extensions
 {
-    public static class ControlExtensions
+    public static class ImplementControlExtensions
     {
         public static bool IsTwoHanded(this IBaseControl control)
         {

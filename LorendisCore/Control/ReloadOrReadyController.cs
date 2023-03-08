@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using LorendisCore.Settings;
 using LorendisCore.Control.Models;
 using LorendisCore.Control.Behaviors;
+using LorendisCore.Control.Extensions;
 using LorendisCore.Control.Implements;
 
 namespace LorendisCore.Control
