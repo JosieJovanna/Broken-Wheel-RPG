@@ -16,9 +16,9 @@ namespace LorendisCore.Control.Behaviors
         private bool _isAltPress;
         private bool _isAltPressIsLocked;
 
-        protected AbstractActionBehavior(double holdTime)
+        protected AbstractActionBehavior(ref double holdTime)
         {
-            _holdTime = holdTime; // TODO: make it so the control can actually change without spinning up new control objects?
+            _holdTime = holdTime;
         }
 
         protected abstract void InitialPress(bool isAltPress);

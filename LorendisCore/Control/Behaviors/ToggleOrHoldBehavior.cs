@@ -12,9 +12,10 @@ namespace LorendisCore.Control.Behaviors
         protected SimpleDelegate ToggleOn;
         protected SimpleDelegate ToggleOff;
 
-        public ToggleOrHoldBehavior(double holdTime) : base(holdTime) { }
+        public ToggleOrHoldBehavior(ref double holdTime) : base(ref holdTime) { }
         
-        public ToggleOrHoldBehavior(double holdTime, SimpleDelegate toggleOn, SimpleDelegate toggleOff) : base(holdTime)
+        public ToggleOrHoldBehavior(ref double holdTime, SimpleDelegate toggleOn, SimpleDelegate toggleOff) 
+            : base(ref holdTime)
         {
             ToggleOn = toggleOn;
             ToggleOff = toggleOff;

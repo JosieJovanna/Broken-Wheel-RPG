@@ -15,7 +15,7 @@ namespace LorendisCore.Control.Behaviors
         public SimpleDelegate OnReleaseClick;
         public SimpleDelegate OnReleaseHold;
 
-        public MuxBehavior(double holdTime) : base(holdTime) { }
+        public MuxBehavior(ref double holdTime) : base(ref holdTime) { }
 
         protected override void InitialPress(bool isAltPress) => OnInitialPress?.Invoke();
         protected override void Held(bool isAltPress) => OnHeld?.Invoke();

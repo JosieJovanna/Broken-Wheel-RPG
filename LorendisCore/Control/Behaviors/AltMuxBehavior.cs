@@ -13,9 +13,8 @@ namespace LorendisCore.Control.Behaviors
         public SimpleDelegate OnReleaseHold;
         public SimpleDelegate OnAltReleaseHold;
 
-        public AltMuxBehavior(double holdTime) : base(holdTime)
-        {
-        }
+        public AltMuxBehavior(ref double holdTime) : base(ref holdTime)
+        { }
 
         protected override void InitialPress(bool isAltPress)
         {

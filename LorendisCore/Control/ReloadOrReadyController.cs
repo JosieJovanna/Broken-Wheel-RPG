@@ -24,7 +24,7 @@ namespace LorendisCore.Control
 
         private AltMuxBehavior CreateBehavior()
         {
-            return new AltMuxBehavior(StaticSettings.Controls.HoldToReadyWeapon) 
+            return new AltMuxBehavior(ref StaticSettings.Controls.HoldToReadyWeapon) 
             {
                 OnReleaseHold = ReadyWeapon,
                 OnAltReleaseHold = ReadyWeapon,

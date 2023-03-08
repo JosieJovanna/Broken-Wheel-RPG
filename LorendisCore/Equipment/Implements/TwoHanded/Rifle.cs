@@ -18,8 +18,8 @@ namespace LorendisCore.Equipment.Implements.TwoHanded
 
         public Rifle()
         {
-            var holdTime = Settings.StaticSettings.Controls.HoldToToggleAim;
-            AimBehavior = new ToggleOrHoldBehavior(holdTime, StartAiming, StopAiming);
+            var holdTime = StaticSettings.Controls.HoldToToggleAim;
+            AimBehavior = new ToggleOrHoldBehavior(ref holdTime, StartAiming, StopAiming);
             BashBehavior = new OnPressBehavior(Bash);
             FireBehavior = new OnPressBehavior(Fire);
         }
