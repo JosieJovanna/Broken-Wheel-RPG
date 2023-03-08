@@ -12,6 +12,6 @@ namespace LorendisCore.Control.Implements
         /// As two implements may have a special each, special actions should not differ by alt presses.
         /// </summary>
         /// <returns>Whether or not any action could be taken.</returns>
-        bool TrySpecial(PressData press);
+        void TrySpecial(PressData press);
     }
 }

@@ -1,8 +1,8 @@
 ﻿using System;
-using LorendisCore.Control.Extensions;
 using LorendisCore.Player;
 using LorendisCore.Control.Models;
 using LorendisCore.Control.Implements;
+using LorendisCore.Control.Extensions;
 
 namespace LorendisCore.Control
 {
@@ -36,7 +36,7 @@ namespace LorendisCore.Control
 
         public void MainHand(PressData press) => GetImplementForPrimary()?.TryPrimary(press);
 
-        private IBaseControl GetImplementForPrimary()
+        private IOneHandControl GetImplementForPrimary()
         {
             var hasOffhand = _equipment.OffHand != null;
             var isOneHandedMainHand = !_equipment.MainHand.IsTwoHanded();
@@ -72,7 +72,7 @@ namespace LorendisCore.Control
                 TrySpecialForImplement(implementTwo, press);
         }
 
-        private static bool TrySpecialForImplement(IBaseControl control, PressData press)
+        private static bool TrySpecialForImplement(IOneHandControl control, PressData press)
         {
             if (control.TryCastToInterface<ISpecialControl>(out var asSpecial))
                 asSpecial.TrySpecial(press);
@@ -83,12 +83,12 @@ namespace LorendisCore.Control
             return true;
         }
 
-        private ITwoHandedControl GetTwoHandedImplement()
+        private ITwoHandControl GetTwoHandedImplement()
         {
             if (_equipment.MainHand.IsTwoHanded())
-                return _equipment.MainHand.CastToInterface<ITwoHandedControl>();
+                return _equipment.MainHand.CastToInterface<ITwoHandControl>();
             if (_equipment.OffHand.IsTwoHanded())
-                return _equipment.OffHand.CastToInterface<ITwoHandedControl>();
+                return _equipment.OffHand.CastToInterface<ITwoHandControl>();
             return null;
         }
 

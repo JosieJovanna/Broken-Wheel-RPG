@@ -52,14 +52,14 @@ namespace LorendisCore.Control
             
         }
 
-        private void TryFirstThenSecond(IBaseControl ctrlOne, IBaseControl ctrlTwo)
+        private void TryFirstThenSecond(IOneHandControl ctrlOne, IOneHandControl ctrlTwo)
         {
             var shouldTryTwo = TryReloadingIfOtherDoesntOverride(ctrlOne, ctrlTwo);
 
 
         }
 
-        private bool TryReloadingIfOtherDoesntOverride(IBaseControl ctrlMain, IBaseControl ctrlOther)
+        private bool TryReloadingIfOtherDoesntOverride(IOneHandControl ctrlMain, IOneHandControl ctrlOther)
         {
             return false;
         }
@@ -72,7 +72,7 @@ namespace LorendisCore.Control
             return list.Where(rc => rc.CanReload).ToList();
         }
 
-        private static void AddToListIfReloadable(ICollection<IReloadableControl> list, IBaseControl control)
+        private static void AddToListIfReloadable(ICollection<IReloadableControl> list, IOneHandControl control)
         {
             if (control.TryCastToInterface<IReloadableControl>(out var asReloadable))
                 list.Add(asReloadable);

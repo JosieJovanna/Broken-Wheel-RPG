@@ -7,7 +7,7 @@ using LorendisCore.Equipment.Implements.Aspects;
 
 namespace LorendisCore.Equipment.Implements.TwoHanded
 {
-    public class Rifle : ITwoHandedControl, ITriggerWeapon, IReloadable, IAimable
+    public class Rifle : ITwoHandControl, ITriggerWeapon, IReloadable, IAimable
     {
         private bool _isAiming = false;
 

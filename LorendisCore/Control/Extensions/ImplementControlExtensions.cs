@@ -7,10 +7,10 @@ namespace LorendisCore.Control.Extensions
 {
     public static class ImplementControlExtensions
     {
-        public static bool IsTwoHanded(this IBaseControl control)
+        public static bool IsTwoHanded(this IOneHandControl control)
         {
             if (control == null) return false;
-            var implementsTwoHandedInterface = control.ImplementsInterface<ITwoHandedControl>();
+            var implementsTwoHandedInterface = control.ImplementsInterface<ITwoHandControl>();
             var isVersatile = control.TryCastToInterface<IVersatileControl>(out var asVersatile);
             return !isVersatile
                 ? implementsTwoHandedInterface 
@@ -23,7 +23,7 @@ namespace LorendisCore.Control.Extensions
         /// <param name="result">The resulting cast, which is default or null if the cast fails.</param>
         /// <typeparam name="T">An interface which is implemented by the object.</typeparam>
         /// <returns>Whether the cast was successful.</returns>
-        public static bool TryCastToInterface<T>(this IBaseControl control, out T result)
+        public static bool TryCastToInterface<T>(this IOneHandControl control, out T result)
         {
             try
             {
@@ -43,7 +43,7 @@ namespace LorendisCore.Control.Extensions
         /// </summary>
         /// <typeparam name="T">An interface which the object implements.</typeparam>
         /// <exception cref="InvalidCastException"></exception>
-        public static T CastToInterface<T>(this IBaseControl control)
+        public static T CastToInterface<T>(this IOneHandControl control)
         {
             var implementsT = control.ImplementsInterface<T>();
             if (!implementsT)
@@ -53,7 +53,7 @@ namespace LorendisCore.Control.Extensions
         
         /// <typeparam name="T">Must be an interface.</typeparam>
         /// <exception cref="InvalidOperationException">Thrown if T is not an interface.</exception>
-        public static bool ImplementsInterface<T>(this IBaseControl control)
+        public static bool ImplementsInterface<T>(this IOneHandControl control)
         {
             if (control == null)
                 return false;
@@ -63,7 +63,7 @@ namespace LorendisCore.Control.Extensions
             return control.GetInterfaces().Contains(typeof(T));
         }
 
-        private static IEnumerable<Type> GetInterfaces(this IBaseControl control)
+        private static IEnumerable<Type> GetInterfaces(this IOneHandControl control)
         {
             return control.GetType().GetInterfaces().AsEnumerable();
         }

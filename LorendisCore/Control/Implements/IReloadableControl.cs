@@ -5,7 +5,7 @@
         bool IsReloading { get; }
         bool CanReload { get; }
 
-        bool TryReload();
-        bool AbortReload();
+        void TryReload();
+        void CancelReload();
     }
 }

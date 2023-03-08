@@ -10,7 +10,7 @@ namespace LorendisCore.Player
     {
         bool IsInCombat { get; }
         
-        IBaseControl GetInteractControl();
-        IBaseControl GetGrabControl();
+        IOneHandControl GetInteractControl();
+        IOneHandControl GetGrabControl();
     }
 }
