@@ -5,7 +5,7 @@ namespace LorendisCore.Control.Implements
     /// <summary>
     /// An interface for implements which have a special action.
     /// </summary>
-    public interface ISpecialControl
+    public interface ISpecialControl : IOneHandControl
     {
         /// <summary>
         /// Attempts to perform the special action of the implement.

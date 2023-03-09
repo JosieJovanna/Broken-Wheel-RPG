@@ -17,6 +17,13 @@ namespace LorendisCore.Control.Extensions
                 : asVersatile.IsTwoHandedGrip;
         }
 
+        public static bool IsAdaptable(this IOneHandControl control)
+        {
+            if (control == null) return false;
+            var implementsAdaptableInterface = control.ImplementsInterface<IAdaptableControl>();
+            return implementsAdaptableInterface;
+        }
+
         /// <summary>
         /// Tries casting the object to another interface which it implements, if possible. Does not throw exceptions.
         /// </summary>
