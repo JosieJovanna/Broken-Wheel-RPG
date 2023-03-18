@@ -5,10 +5,10 @@ using LorendisCore.Utilities;
 
 namespace LorendisCore.Common.Damage
 {
-    public class ComplexDamage : Damage
+    public class PolynomialDamage : Damage
     {
         private readonly Polynomial _func;
-        private double _overflow = 0;
+        private double _overflow;
 
         /// <summary>
         /// Deal damage over a set amount of time, determined by a polynomial with the coefficients given.
@@ -17,7 +17,7 @@ namespace LorendisCore.Common.Damage
         /// Total damage will be determined by the duration and the equation.
         /// Only positive amounts of damage will be dealt; negatives in the equation act as delays.
         /// </summary>
-        public ComplexDamage(DamageType type, double[] coefficients, int duration)
+        public PolynomialDamage(DamageType type, double[] coefficients, int duration)
             : base(type, GetTotal(coefficients, duration), duration)
         {
             _func = new Polynomial(coefficients);

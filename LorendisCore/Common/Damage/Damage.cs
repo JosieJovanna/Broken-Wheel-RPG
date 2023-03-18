@@ -12,7 +12,7 @@ namespace LorendisCore.Common.Damage
         public readonly int Duration;
         public readonly int Total;
         public int Remaining { get; protected set; }
-        public int TimePassed { get; protected set; } = 0;
+        public int TimePassed { get; protected set; }
         public bool IsDone => IsDoneCondition();
         public int Dealt => Total - Remaining;
         public int TimeRemaining => IsDone 

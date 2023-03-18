@@ -3,7 +3,7 @@ namespace LorendisCore.Common.Damage
 {
     public class InstantDamage : Damage
     {
-        private bool _isDone = false;
+        private bool _isDone;
         protected override bool IsDoneCondition() => _isDone;
         
         /// <summary>
