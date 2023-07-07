@@ -1,4 +1,4 @@
-﻿using BrokenWheel.Core.Common.Delegates;
+﻿using BrokenWheel.Core;
 
 namespace BrokenWheel.Control.Behaviors
 {

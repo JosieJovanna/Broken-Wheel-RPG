@@ -1,5 +1,5 @@
 ﻿using BrokenWheel.Control;
-using BrokenWheel.Core.Common.Stats.Processing;
+using BrokenWheel.Core.Stats.Processing;
 
 namespace BrokenWheel.Entity
 {

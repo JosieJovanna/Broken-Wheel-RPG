@@ -1,5 +1,5 @@
-﻿using BrokenWheel.Core.Common.Delegates;
-using BrokenWheel.Control.Models;
+﻿using BrokenWheel.Control.Models;
+using BrokenWheel.Core;
 
 namespace BrokenWheel.Control.Behaviors
 {

@@ -10,10 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Control" />
-    <Folder Include="Entities" />
     <Folder Include="Equipment\" />
-    <Folder Include="Player" />
   </ItemGroup>
 
 </Project>
