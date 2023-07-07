@@ -14,7 +14,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LorendisCore\LorendisCore.csproj" />
+    <ProjectReference Include="..\BrokenWheel.Core\BrokenWheel.Core.csproj" />
   </ItemGroup>
 
 </Project>

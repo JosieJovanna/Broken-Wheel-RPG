@@ -1,5 +1,5 @@
 ﻿using System;
-using LorendisCore;
+using BrokenWheel.Core;
 
 namespace ConsoleApp
 {
