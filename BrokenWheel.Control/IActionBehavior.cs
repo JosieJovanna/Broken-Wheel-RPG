@@ -1,6 +1,6 @@
-﻿using BrokenWheel.Core.Control.Models;
+﻿using BrokenWheel.Control.Models;
 
-namespace BrokenWheel.Core.Control
+namespace BrokenWheel.Control
 {
     /// <summary>
     /// A behavior for some kind of player action -- usually an attack. Does not control movement.

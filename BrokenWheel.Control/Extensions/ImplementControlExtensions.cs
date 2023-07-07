@@ -1,9 +1,9 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using BrokenWheel.Core.Control.Implements;
+using BrokenWheel.Control.Implements;
 
-namespace BrokenWheel.Core.Control.Extensions
+namespace BrokenWheel.Control.Extensions
 {
     public static class ImplementControlExtensions
     {

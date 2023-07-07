@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
-using BrokenWheel.Core.Control.Behaviors;
-using BrokenWheel.Core.Control.Implements;
-using BrokenWheel.Core.Control.Models;
+using BrokenWheel.Control.Behaviors;
+using BrokenWheel.Control.Implements;
+using BrokenWheel.Control.Models;
 using BrokenWheel.Core.Settings;
-using BrokenWheel.Core.Control.Extensions;
+using BrokenWheel.Control.Extensions;
 
-namespace BrokenWheel.Core.Control
+namespace BrokenWheel.Control
 {
     /// <summary>
     /// Specifically handles the logic of reloading and readying weapons, since they implement a behavior by default.

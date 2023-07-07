@@ -1,7 +1,7 @@
 ﻿using BrokenWheel.Core.Common.Delegates;
-using BrokenWheel.Core.Control.Models;
+using BrokenWheel.Control.Models;
 
-namespace BrokenWheel.Core.Control.Behaviors
+namespace BrokenWheel.Control.Behaviors
 {
     public class OnReleaseBehavior : IActionBehavior
     {

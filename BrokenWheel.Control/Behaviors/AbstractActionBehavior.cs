@@ -1,6 +1,6 @@
-﻿using BrokenWheel.Core.Control.Models;
+﻿using BrokenWheel.Control.Models;
 
-namespace BrokenWheel.Core.Control.Behaviors
+namespace BrokenWheel.Control.Behaviors
 {
     /// <summary>
     /// The simplest type of <see cref="IActionBehavior"/>, where a different action 

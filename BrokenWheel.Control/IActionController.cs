@@ -1,6 +1,7 @@
-﻿using BrokenWheel.Core.Control.Models;
+﻿using BrokenWheel.Control.Implements;
+using BrokenWheel.Control.Models;
 
-namespace BrokenWheel.Core.Control
+namespace BrokenWheel.Control
 {
     /// <summary>
     /// The object which maps actions and their input to control.
@@ -13,6 +14,18 @@ namespace BrokenWheel.Core.Control
     /// </summary>
     public interface IActionController
     {
+        /// <summary> Contextually sets the action controller for the interact button. </summary>
+        void SetInteractControl(IOneHandControl interactControl);
+
+        /// <summary> Resets the action controller of the interact button to do nothing. </summary>
+        void ResetInteractControl();
+
+        /// <summary> Contextually sets the action controller for the grab. </summary>
+        void SetGrabControl(IOneHandControl kickControl);
+
+        /// <summary> Resets the action controller of the grab to do nothing. </summary>
+        void ResetGrabControl();
+        
         /// <summary> Main action, usually performed with 'E'. Opening doors, talking, etc. </summary>
         void Interact(PressData press);
 
@@ -21,7 +34,13 @@ namespace BrokenWheel.Core.Control
 
         /// <summary> Readys weapon, reloads, etc. Likely 'R'. Holding is raising and lowering weapons, always </summary>
         void ReloadOrReady(PressData press);
-        
+
+        /// <summary> Uses the special ability, usually class specific, or granted by an item. </summary>
+        void UseAbility(PressData press);
+
+        /// <summary> Kicks, usually just a normal kick but can be replaced or could be using other fighting style. </summary>
+        void Kick(PressData press);
+
         /// <summary> Main-hand primary action, usually the left mouse button. </summary>
         void MainHand(PressData press);
 
@@ -30,11 +49,5 @@ namespace BrokenWheel.Core.Control
 
         /// <summary> Special weapon attack, checking main hand first. Often stuff like an overhead attack. </summary>
         void Special(PressData press);
-
-        /// <summary> Uses the special ability, usually class specific, or granted by an item. </summary>
-        void UseAbility(PressData press);
-
-        /// <summary> Kicks, usually just a normal kick but can be replaced or could be using other fighting style. </summary>
-        void Kick(PressData press);
     }
 }

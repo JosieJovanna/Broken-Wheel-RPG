@@ -1,6 +1,6 @@
 ﻿using BrokenWheel.Core.Common.Delegates;
 
-namespace BrokenWheel.Core.Control.Behaviors
+namespace BrokenWheel.Control.Behaviors
 {
     /// <summary>
     /// Aiming can be held, or toggled on/off.

@@ -1,7 +1,7 @@
-using BrokenWheel.Core.Control.Implements;
+using BrokenWheel.Control.Implements;
 using BrokenWheel.Core.Equipment;
 
-namespace BrokenWheel.Core.Control.Models
+namespace BrokenWheel.Control.Models
 {
     /// <summary>
     /// The object which tracks the objects allowing for the player to control

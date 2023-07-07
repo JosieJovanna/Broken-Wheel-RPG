@@ -1,7 +1,7 @@
-﻿using BrokenWheel.Core.Common.Stats.Processing;
-using BrokenWheel.Core.Control;
+﻿using BrokenWheel.Control;
+using BrokenWheel.Core.Common.Stats.Processing;
 
-namespace BrokenWheel.Core.Entities
+namespace BrokenWheel.Entity
 {
     public abstract class AbstractEntity
     {

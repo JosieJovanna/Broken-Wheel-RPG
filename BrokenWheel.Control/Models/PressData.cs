@@ -1,6 +1,6 @@
 ﻿using BrokenWheel.Core.Utilities;
 
-namespace BrokenWheel.Core.Control.Models
+namespace BrokenWheel.Control.Models
 {
     /// <summary>
     /// When a button is pressed, different actions might be performed based on context.
@@ -26,7 +26,7 @@ namespace BrokenWheel.Core.Control.Models
         {
             DeltaTime = deltaTime;
             IsAltPress = isAltPress;
-            Type = Util.GetButtonPressTypeFromBooleans(isPressed, isHeld);
+            Type = Util.Util.GetButtonPressTypeFromBooleans(isPressed, isHeld);
         }
 
         public PressData(double deltaTime, PressType pressType, bool isAltPress = false)

@@ -1,6 +1,6 @@
 ﻿using BrokenWheel.Core.Common.Delegates;
 
-namespace BrokenWheel.Core.Control.Behaviors
+namespace BrokenWheel.Control.Behaviors
 {
     /// <summary>
     /// A concrete <see cref="AbstractActionBehavior"/> where on press, hold, and release,

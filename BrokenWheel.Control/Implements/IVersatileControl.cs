@@ -1,6 +1,6 @@
-﻿using BrokenWheel.Core.Control.Models;
+﻿using BrokenWheel.Control.Models;
 
-namespace BrokenWheel.Core.Control.Implements
+namespace BrokenWheel.Control.Implements
 {
     /// <summary>
     /// Maps input to actions for implements which may be either one- or two-handed, toggled by special.

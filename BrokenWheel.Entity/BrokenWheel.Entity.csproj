@@ -5,4 +5,8 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\BrokenWheel.Control\BrokenWheel.Control.csproj" />
+    </ItemGroup>
+
 </Project>

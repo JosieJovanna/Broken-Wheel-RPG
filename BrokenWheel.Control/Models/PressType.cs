@@ -1,4 +1,4 @@
-﻿namespace BrokenWheel.Core.Control.Models
+﻿namespace BrokenWheel.Control.Models
 {
     /// <summary>
     /// A button press's input state.

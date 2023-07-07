@@ -1,6 +1,6 @@
-﻿using BrokenWheel.Core.Control.Models;
+﻿using BrokenWheel.Control.Models;
 
-namespace BrokenWheel.Core.Control.Implements
+namespace BrokenWheel.Control.Implements
 {
     public interface ITwoHandControl : IOneHandControl
     {

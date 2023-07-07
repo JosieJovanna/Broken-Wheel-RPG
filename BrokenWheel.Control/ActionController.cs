@@ -1,10 +1,9 @@
 ﻿using System;
-using BrokenWheel.Core.Control.Implements;
-using BrokenWheel.Core.Control.Models;
-using BrokenWheel.Core.Player;
-using BrokenWheel.Core.Control.Extensions;
+using BrokenWheel.Control.Implements;
+using BrokenWheel.Control.Models;
+using BrokenWheel.Control.Extensions;
 
-namespace BrokenWheel.Core.Control
+namespace BrokenWheel.Control
 {
     /// <summary>
     /// The default implementation of <see cref="IActionController"/>
@@ -12,30 +11,26 @@ namespace BrokenWheel.Core.Control
     public class ActionController : IActionController
     {
         private readonly EquipmentControl _equipment;
-        private readonly IContextControlChecker _context;
         private readonly ReloadOrReadyController _reloadOrReadyController;
+        private IOneHandControl _interactControl;
+        private IOneHandControl _grabControl;
 
-        public ActionController(EquipmentControl equipmentControl, IContextControlChecker contextControlChecker)
+        public ActionController(EquipmentControl equipmentControl)
         {
             _equipment = equipmentControl ?? throw new ArgumentNullException(nameof(equipmentControl));
-            _context = contextControlChecker ?? throw new ArgumentNullException(nameof(contextControlChecker));
             _reloadOrReadyController = new ReloadOrReadyController(_equipment);
         }
 
-        /// <summary>
-        /// Tries to use the current INTERACT action, which depends on the player's surroundings.
-        /// </summary>
-        public void Interact(PressData press) => _context.GetInteractControl()?.TryPrimary(press);
+        public void SetInteractControl(IOneHandControl interactControl) => _interactControl = interactControl;
+        public void ResetInteractControl() => _interactControl = null;
+        public void SetGrabControl(IOneHandControl kickControl) => _grabControl = kickControl;
+        public void ResetGrabControl() => _grabControl = null;
 
-        /// <summary>
-        /// Tries to use the current GRAB action, which depends on the player's surroundings.
-        /// </summary>
-        public void Grab(PressData press) => _context.GetGrabControl()?.TryPrimary(press);
-
-        /// <summary>
-        /// Tries to reload/cancel actions, or raise/lower weapons.
-        /// </summary>
+        public void Interact(PressData press) => _interactControl?.TryPrimary(press);
+        public void Grab(PressData press) => _grabControl?.TryPrimary(press);
         public void ReloadOrReady(PressData press) => _reloadOrReadyController.ReloadOrReady(press);
+        public void UseAbility(PressData press) => _equipment.Ability?.TryPrimary(press);
+        public void Kick(PressData press) => _equipment.Kick?.TryPrimary(press);
 
         /// <summary>
         /// Uses the implement in the main hand. If there is a two-handed implement, will use the primary action.
@@ -129,15 +124,5 @@ namespace BrokenWheel.Core.Control
             if (!isFirstTrySuccessful)
                 TryTwoHandedSpecial(implementTwo, press);
         }
-
-        /// <summary>
-        /// Tries using the equipped ability.
-        /// </summary>
-        public void UseAbility(PressData press) => _equipment.Ability?.TryPrimary(press);
-
-        /// <summary>
-        /// Tries using the current kick action.
-        /// </summary>
-        public void Kick(PressData press) => _equipment.Kick?.TryPrimary(press);
     }
 }

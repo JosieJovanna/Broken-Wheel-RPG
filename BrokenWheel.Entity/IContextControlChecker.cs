@@ -1,4 +1,4 @@
-﻿using BrokenWheel.Core.Control.Implements;
+﻿using BrokenWheel.Control.Implements;
 
 namespace BrokenWheel.Core.Player
 {
