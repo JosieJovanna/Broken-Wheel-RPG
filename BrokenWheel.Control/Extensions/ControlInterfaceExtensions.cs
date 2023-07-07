@@ -1,11 +1,11 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using BrokenWheel.Control.Implements;
+using BrokenWheel.Control.Interfaces;
 
 namespace BrokenWheel.Control.Extensions
 {
-    public static class ImplementControlExtensions
+    internal static class ControlInterfaceExtensions
     {
         public static bool IsTwoHanded(this IOneHandControl control)
         {

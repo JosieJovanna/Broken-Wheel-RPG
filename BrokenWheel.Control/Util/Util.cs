@@ -2,7 +2,7 @@
 
 namespace BrokenWheel.Control.Util
 {
-    public static class Util
+    internal static class Util
     {
         public static PressType GetButtonPressTypeFromBooleans(bool isPressed, bool isHeld)
         {

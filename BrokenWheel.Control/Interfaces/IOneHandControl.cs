@@ -1,6 +1,6 @@
 ﻿using BrokenWheel.Control.Models;
 
-namespace BrokenWheel.Control.Implements
+namespace BrokenWheel.Control.Interfaces
 {
     /// <summary>
     /// The object which maps input to items for use. Behaviors vary greatly by item.

@@ -1,13 +1,13 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using BrokenWheel.Control.Behaviors;
-using BrokenWheel.Control.Implements;
+using BrokenWheel.Control.Extensions;
+using BrokenWheel.Control.Interfaces;
 using BrokenWheel.Control.Models;
 using BrokenWheel.Core.Settings;
-using BrokenWheel.Control.Extensions;
 
-namespace BrokenWheel.Control
+namespace BrokenWheel.Control.Implementations
 {
     /// <summary>
     /// Specifically handles the logic of reloading and readying weapons, since they implement a behavior by default.
@@ -44,7 +44,7 @@ namespace BrokenWheel.Control
             if (!reloadableList.Any())
                 return;
             
-            
+            // TODO
         }
 
         private void AltReload()

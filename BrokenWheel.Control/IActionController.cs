@@ -1,4 +1,4 @@
-﻿using BrokenWheel.Control.Implements;
+﻿using BrokenWheel.Control.Interfaces;
 using BrokenWheel.Control.Models;
 
 namespace BrokenWheel.Control

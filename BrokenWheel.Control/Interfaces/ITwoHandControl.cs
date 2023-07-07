@@ -1,6 +1,6 @@
 ﻿using BrokenWheel.Control.Models;
 
-namespace BrokenWheel.Control.Implements
+namespace BrokenWheel.Control.Interfaces
 {
     public interface ITwoHandControl : IOneHandControl
     {

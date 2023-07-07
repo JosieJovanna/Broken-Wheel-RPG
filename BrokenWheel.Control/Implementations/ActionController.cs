@@ -1,9 +1,9 @@
 ﻿using System;
-using BrokenWheel.Control.Implements;
-using BrokenWheel.Control.Models;
 using BrokenWheel.Control.Extensions;
+using BrokenWheel.Control.Interfaces;
+using BrokenWheel.Control.Models;
 
-namespace BrokenWheel.Control
+namespace BrokenWheel.Control.Implementations
 {
     /// <summary>
     /// The default implementation of <see cref="IActionController"/>

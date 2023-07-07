@@ -1,6 +1,6 @@
 ﻿using BrokenWheel.Control.Models;
 
-namespace BrokenWheel.Control.Implements
+namespace BrokenWheel.Control.Interfaces
 {
     /// <summary>
     /// An interface for implements which have a special action.

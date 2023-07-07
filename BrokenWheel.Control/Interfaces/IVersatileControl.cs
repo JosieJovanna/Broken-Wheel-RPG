@@ -1,6 +1,6 @@
 ﻿using BrokenWheel.Control.Models;
 
-namespace BrokenWheel.Control.Implements
+namespace BrokenWheel.Control.Interfaces
 {
     /// <summary>
     /// Maps input to actions for implements which may be either one- or two-handed, toggled by special.

@@ -1,4 +1,4 @@
-﻿namespace BrokenWheel.Control.Implements
+﻿namespace BrokenWheel.Control.Interfaces
 {
     public interface IReloadableControl : IOneHandControl
     {

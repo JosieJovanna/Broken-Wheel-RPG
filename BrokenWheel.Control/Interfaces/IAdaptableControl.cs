@@ -1,6 +1,6 @@
 ﻿using BrokenWheel.Control.Models;
 
-namespace BrokenWheel.Control.Implements
+namespace BrokenWheel.Control.Interfaces
 {
     /// <summary>
     /// An implement that has extra actions when it is the only weapon equipped.
