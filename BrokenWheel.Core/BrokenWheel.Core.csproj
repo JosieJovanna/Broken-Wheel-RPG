@@ -13,4 +13,8 @@
     <Folder Include="Equipment\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BrokenWheel.Math\BrokenWheel.Math.csproj" />
+  </ItemGroup>
+
 </Project>

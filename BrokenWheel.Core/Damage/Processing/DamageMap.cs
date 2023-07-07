@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using BrokenWheel.Core.Utilities;
+using BrokenWheel.Math.Utility;
 
 namespace BrokenWheel.Core.Damage.Processing
 {

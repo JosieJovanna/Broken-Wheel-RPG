@@ -1,4 +1,5 @@
 ﻿using BrokenWheel.Core.Utilities;
+using BrokenWheel.Math.Utility;
 
 namespace BrokenWheel.Core.Stats
 {

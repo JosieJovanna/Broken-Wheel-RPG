@@ -1,5 +1,7 @@
 using System;
 using BrokenWheel.Core.Utilities;
+using BrokenWheel.Math;
+using BrokenWheel.Math.Utility;
 
 namespace BrokenWheel.Core.Damage
 {

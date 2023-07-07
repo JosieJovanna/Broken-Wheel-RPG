@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace BrokenWheel.Core
+namespace BrokenWheel.Math
 {
     public class Polynomial
     {
@@ -26,7 +26,7 @@ namespace BrokenWheel.Core
         public double Fx(int x)
         {
             return _coefficients
-                .Select((coef, idx) => coef * Math.Pow(x, idx))
+                .Select((coef, idx) => coef * System.Math.Pow(x, idx))
                 .Sum();
         }
 

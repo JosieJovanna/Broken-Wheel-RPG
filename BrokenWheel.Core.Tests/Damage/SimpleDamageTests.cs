@@ -1,5 +1,6 @@
 using System;
 using BrokenWheel.Core.Damage;
+using BrokenWheel.Math;
 using Xunit;
 
 namespace BrokenWheel.Core.Tests.Damage;
@@ -90,7 +91,7 @@ public class SimpleDamageTests
             timePassed++;
             timeRemaining--;
             var tick = damage.Tick();
-            var newExpectedDealt = (int)Math.Floor((expectedDps * timePassed).ToDouble());
+            var newExpectedDealt = (int)System.Math.Floor((expectedDps * timePassed).ToDouble());
             var expectedTick = newExpectedDealt - expectedDealt;
             var expectedRemaining = amount - newExpectedDealt;
             expectedDealt = newExpectedDealt;
@@ -141,9 +142,9 @@ public class SimpleDamageTests
     {
         // setup
         var damage = new SimpleDamage(type, amount, duration);
-        var expectedTime = Math.Min(duration, time);
+        var expectedTime = System.Math.Min(duration, time);
         var expectedDps = new Fraction(amount, duration);
-        var expectedDealt = (int)Math.Floor(expectedDps.ToDouble() * expectedTime);
+        var expectedDealt = (int)System.Math.Floor(expectedDps.ToDouble() * expectedTime);
 
         // execute
         for (var i = 0; i < time; i++)
@@ -172,9 +173,9 @@ public class SimpleDamageTests
     {
         // setup
         var damage = new SimpleDamage(type, amount, duration);
-        var expectedTime = Math.Min(duration, time);
+        var expectedTime = System.Math.Min(duration, time);
         var expectedDps = new Fraction(amount, duration);
-        var expectedDealt = (int)Math.Floor(expectedDps.ToDouble() * expectedTime);
+        var expectedDealt = (int)System.Math.Floor(expectedDps.ToDouble() * expectedTime);
 
         // execute
         for (var i = 0; i < time; i++)
@@ -187,6 +188,6 @@ public class SimpleDamageTests
         Assert.Contains(duration.ToString(), result);
         Assert.Contains(expectedDps.ToString(), result);
         Assert.Contains(expectedDealt.ToString(), result);
-        Assert.Contains(Math.Min(duration, time).ToString(), result);
+        Assert.Contains(System.Math.Min(duration, time).ToString(), result);
     }
 }

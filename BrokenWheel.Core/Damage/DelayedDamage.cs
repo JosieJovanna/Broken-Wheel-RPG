@@ -32,7 +32,7 @@ namespace BrokenWheel.Core.Damage
 
         protected override string ChildInfoString()
         {
-            return $"{_delayedDamage.ToString()} after {Math.Min(TimePassed, Delay)}/{Delay} seconds";
+            return $"{_delayedDamage.ToString()} after {System.Math.Min(TimePassed, Delay)}/{Delay} seconds";
         }
     }
 }

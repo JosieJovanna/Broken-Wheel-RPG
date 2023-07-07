@@ -1,5 +1,5 @@
-﻿using System;
-using BrokenWheel.Core.Utilities;
+﻿using BrokenWheel.Core.Utilities;
+using BrokenWheel.Math.Utility;
 
 namespace BrokenWheel.Core.Stats
 {
@@ -23,27 +23,22 @@ namespace BrokenWheel.Core.Stats
         /// <summary>
         /// Gets the effective maximum the stat can be raised to, including modifier and exhaustion.
         /// </summary>
-        public int GetTotal() 
-            => MathUtil.NonNeg(_max + _mod - _exh);
+        public int GetTotal() => MathUtil.NonNeg(_max + _mod - _exh);
 
         /// <summary>
         /// Gets the maximum the stat can be raised to, including modifier but <i>not</i> exhaustion.
         /// </summary>
-        public int GetModifiedMaximum() 
-            => MathUtil.NonNeg(_max + _mod);
+        public int GetModifiedMaximum() => MathUtil.NonNeg(_max + _mod);
 
-        public string GetStatName() 
-            => _name;
+        public string GetStatName() => _name;
         
-        public int GetValue() 
-            => _val;
+        public int GetValue() => _val;
 
         /// <summary>
         /// Gets the effective value of the stat.
         /// Cannot be greater than the maximum.
         /// </summary>
-        public int GetEffectiveValue() 
-            => Math.Min(GetTotal(), _val);
+        public int GetEffectiveValue() => System.Math.Min(GetTotal(), _val);
 
         /// <summary>
         /// Sets the effective value of the stat.
@@ -57,25 +52,19 @@ namespace BrokenWheel.Core.Stats
         /// Sets the value of the stat.
         /// Cannot be greater than the maximum, including modifier and exhaustion.
         /// </summary>
-        public void SetValue(int val) 
-            => _val = MathUtil.NonNeg(Math.Min(GetTotal(), val));
+        public void SetValue(int val) => _val = MathUtil.NonNeg(System.Math.Min(GetTotal(), val));
 
         /// <summary>
         /// Modifies the value of the stat.
         /// Result will not be greater than the maximum, including modifier and exhaustion.
         /// </summary>
-        public void AddValue(int add) 
-            => SetValue(_val + add);
+        public void AddValue(int add) => SetValue(_val + add);
 
-        public int GetModifier() 
-            => _mod;
-        public void SetModifier(int val) 
-            => _mod = val;
-        public void AddModifier(int add) 
-            => _mod += add;
+        public int GetModifier() => _mod;
+        public void SetModifier(int val) => _mod = val;
+        public void AddModifier(int add) => _mod += add;
 
-        public int GetMaximum() 
-            => _max;
+        public int GetMaximum() => _max;
 
         /// <summary>
         /// Sets the maximum value and then ensures the stat's value is below the maximum.
