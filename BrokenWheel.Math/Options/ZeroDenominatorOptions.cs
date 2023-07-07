@@ -8,7 +8,7 @@
         /// <summary>
         /// When attempting to set the denominator to zero, will throw a <see cref="FractionException"/>.
         /// </summary>
-        ThrowOnSetting = 0,
+        ThrowOnSetting = default,
         /// <summary>
         /// When evaluating the fraction to a single value, will throw a <see cref="FractionException"/>.
         /// </summary>
@@ -20,6 +20,10 @@
         /// <summary>
         /// When getting the fraction as a single value, returns zero, but does not alter the true values.
         /// </summary>
-        GetValueAsZero = 3
+        GetValueAsZero = 3,
+        /// <summary>
+        /// Will not do any special handling, letting divide-by-zero issues bubble up (NOT RECOMMENDED).
+        /// </summary>
+        Ignore = 4
     }
 }

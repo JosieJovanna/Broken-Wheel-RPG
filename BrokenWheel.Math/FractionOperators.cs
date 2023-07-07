@@ -1,10 +1,12 @@
-﻿namespace BrokenWheel.Math
+﻿
+/*
+ * Operators for the Fraction object
+ * includes -(unary), and binary operators such as +, -, *, /
+ * also includes relational and logical operators such as ==, !=, <, >, <=, >=
+ */
+
+namespace BrokenWheel.Math
 {
-    /// <summary>
-    /// Operators for the Fraction object
-    /// includes -(unary), and binary operators such as +, -, *, /
-    /// also includes relational and logical operators such as ==, !=, <, >, <=, >=
-    /// </summary>
     public sealed partial class Fraction
     {
         public static Fraction operator -(Fraction frac1) => Negate(frac1);
@@ -41,10 +43,10 @@
         public static bool operator <=(Fraction frac1, Fraction frac2) => frac1.Numerator * frac2.Denominator <= frac2.Numerator * frac1.Denominator;
         public static bool operator >=(Fraction frac1, Fraction frac2) => frac1.Numerator * frac2.Denominator >= frac2.Numerator * frac1.Denominator;
 
-        public static implicit operator Fraction(long lNo) => new Fraction(lNo);
-        public static implicit operator Fraction(double dNo) => new Fraction(dNo);
-        public static implicit operator Fraction(string strNo) => new Fraction(strNo);
-        public static explicit operator double(Fraction frac) => frac.ToDouble();
-        public static implicit operator string(Fraction frac) => frac.ToString();
+        public static implicit operator Fraction(long longNumber) => new Fraction(longNumber);
+        public static implicit operator Fraction(double doubleNumber) => new Fraction(doubleNumber);
+        public static implicit operator Fraction(string stringValue) => new Fraction(stringValue);
+        public static explicit operator double(Fraction fraction) => fraction.ToDouble();
+        public static implicit operator string(Fraction fraction) => fraction.ToString();
     }
 }
