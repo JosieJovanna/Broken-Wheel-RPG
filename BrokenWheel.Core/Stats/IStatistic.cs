@@ -1,4 +1,6 @@
-﻿namespace BrokenWheel.Core.Stats
+﻿using BrokenWheel.Core.Stats.Enum;
+
+namespace BrokenWheel.Core.Stats
 {
     /// <summary>
     /// A statistic tracker with a <see cref="Stat"/> type, value, and modifier.
@@ -10,7 +12,7 @@
         /// <summary>
         /// The type of <see cref="Stat"/> this object represents.
         /// </summary>
-        Stat Type { get; }
+        StatType Type { get; }
         
         /// <summary>
         /// The value of the stat. Cannot be negative; attempting to set a negative value will in fact set it to zero.
