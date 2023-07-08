@@ -1,6 +1,6 @@
 ﻿using BrokenWheel.Math.Utility;
 
-namespace BrokenWheel.Core.Stats.Implementations
+namespace BrokenWheel.Core.Stats
 {
     /// <summary>
     /// A simple implementation of <see cref="IComplexStatistic"/>.

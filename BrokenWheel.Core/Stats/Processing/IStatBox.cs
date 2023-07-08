@@ -5,13 +5,13 @@ namespace BrokenWheel.Core.Stats.Processing
         void SaveStats();
         void LoadStats();
         
-        T GetStat<T>(Stat stat) where T : IStatObject;
-        T GetStat<T>(string stat) where T : IStatObject;
+        T GetStat<T>(Stat stat) where T : IStatistic;
+        T GetStat<T>(string stat) where T : IStatistic;
 
-        SimpleStat GetSimpleStat(Stat stat);
-        SimpleStat GetSimpleStat(string stat);
+        IStatistic GetSimpleStat(Stat stat);
+        IStatistic GetSimpleStat(string stat);
 
-        ComplexStat GetComplexStat(Stat stat);
-        ComplexStat GetComplexStat(string stat);
+        IComplexStatistic GetComplexStat(Stat stat);
+        IComplexStatistic GetComplexStat(string stat);
     }
 }

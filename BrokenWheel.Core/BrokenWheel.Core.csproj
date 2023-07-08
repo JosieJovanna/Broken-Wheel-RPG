@@ -17,4 +17,13 @@
     <ProjectReference Include="..\BrokenWheel.Math\BrokenWheel.Math.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Stats\ComplexStatistic.cs">
+      <DependentUpon>IComplexStatistic.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Stats\Statistic.cs">
+      <DependentUpon>IStatistic.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
 </Project>

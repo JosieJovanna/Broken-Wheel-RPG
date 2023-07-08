@@ -16,14 +16,14 @@ namespace BrokenWheel.Core.Stats.Processing
             throw new System.NotImplementedException();
         }
 
-        public SimpleStat GetSimpleStat(Stat stat) => GetStat<SimpleStat>(stat);
-        public SimpleStat GetSimpleStat(string stat) => GetStat<SimpleStat>(stat);
+        public IStatistic GetSimpleStat(Stat stat) => GetStat<IStatistic>(stat);
+        public IStatistic GetSimpleStat(string stat) => GetStat<IStatistic>(stat);
 
-        public ComplexStat GetComplexStat(Stat stat) => GetStat<ComplexStat>(stat);
-        public ComplexStat GetComplexStat(string stat) => GetStat<ComplexStat>(stat);
+        public IComplexStatistic GetComplexStat(Stat stat) => GetStat<IComplexStatistic>(stat);
+        public IComplexStatistic GetComplexStat(string stat) => GetStat<IComplexStatistic>(stat);
         
-        public T GetStat<T>(Stat stat) where T : IStatObject => GetStat<T>(stat.GetName());
-        public T GetStat<T>(string stat) where T : IStatObject
+        public T GetStat<T>(Stat stat) where T : IStatistic => GetStat<T>(stat.GetName());
+        public T GetStat<T>(string stat) where T : IStatistic
         {
             throw new System.NotImplementedException();
             
