@@ -1,8 +1,7 @@
 ﻿namespace BrokenWheel.UI.StatBar
 {
-    public interface IStatBar
+    public interface IStatBar : IUIElement
     {
         void SetDisplayMode(StatBarDisplayMode displayMode);
-        void Update();
     }
 }
