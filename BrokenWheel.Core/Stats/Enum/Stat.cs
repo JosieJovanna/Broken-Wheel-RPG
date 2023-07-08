@@ -8,7 +8,7 @@ namespace BrokenWheel.Core.Stats
         /// <summary>
         /// An unspecified stat, which must be checked using string matching on the dynamic stat table.
         /// </summary>
-        Custom,
+        Custom = default,
 
         #region ATTRIBUTES
         [Attribute]
