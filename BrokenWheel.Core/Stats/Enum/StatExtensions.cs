@@ -49,9 +49,9 @@ namespace BrokenWheel.Core.Stats.Enum
         private static T GetAttribute<T>(this Stat stat) where T : Attribute
         {
             return stat.GetType()
-                .GetMember(stat.ToString()).First()
+                .GetMember(stat.ToString()).FirstOrDefault()
                 ?.GetCustomAttributes(typeof(T), false)
-                .First() as T;
+                .FirstOrDefault() as T;
         }
     }
 }
