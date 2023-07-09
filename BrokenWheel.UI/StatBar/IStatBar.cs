@@ -1,7 +1,13 @@
-﻿namespace BrokenWheel.UI.StatBar
+﻿using BrokenWheel.Core.Stats.Enum;
+
+namespace BrokenWheel.UI.StatBar
 {
-    public interface IStatBar : IUIElement
+    public interface IStatBar
     {
-        void SetDisplayMode(StatBarDisplayMode displayMode);
+        StatType Type { get; }
+        
+        void SetPosition(int xPosition, int yPosition);
+        
+        void UpdateDisplay();
     }
 }

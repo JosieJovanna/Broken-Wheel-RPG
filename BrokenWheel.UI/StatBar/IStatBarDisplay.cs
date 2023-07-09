@@ -2,7 +2,7 @@
 {
     /// <summary>
     /// A simple interface for controlling the regions that constitute a stat bar.
-    /// To be implemented in-engine, where the methods affect display rectangles.
+    /// To be implemented in-engine for the GUI, where the methods affect display rectangles.
     /// Does not handle any logic regarding positioning, which is handled by <see cref="IStatBar"/>.
     /// </summary>
     public interface IStatBarDisplay
