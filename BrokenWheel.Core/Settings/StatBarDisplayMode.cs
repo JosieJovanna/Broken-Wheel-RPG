@@ -1,4 +1,4 @@
-﻿namespace BrokenWheel.UI.StatBar
+﻿namespace BrokenWheel.Core.Settings
 {
     /// <summary>
     /// The way that the <see cref="IStatBar"/> displays.

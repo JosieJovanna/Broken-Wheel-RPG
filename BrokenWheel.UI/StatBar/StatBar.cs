@@ -1,11 +1,11 @@
 ﻿using System;
+using BrokenWheel.Core.Settings;
 using BrokenWheel.Core.Stats;
 using BrokenWheel.Core.Stats.Enum;
-using BrokenWheel.UI.Settings;
 
 namespace BrokenWheel.UI.StatBar
 {
-    public abstract class StatBar : IStatBar
+    public class StatBar : IStatBar
     {
         private readonly IComplexStatistic _stat;
         private readonly IStatBarDisplay _display;

@@ -10,7 +10,8 @@ namespace BrokenWheel.UI.StatBar
     public interface IStatBarSuite
     {
         /// <summary>
-        /// Event listener for stat changes.
+        /// Event listener for stat changes. Passes <see cref="StatUpdateEventArgs"/> in case some implementation
+        /// applies special effects based on damage, such as, for example, flames emitting on taking fire damage.
         /// </summary>
         void StatUpdateHandler(object sender, StatUpdateEventArgs args);
         

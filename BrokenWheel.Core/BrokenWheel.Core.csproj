@@ -24,6 +24,9 @@
     <Compile Update="Stats\Statistic.cs">
       <DependentUpon>IStatistic.cs</DependentUpon>
     </Compile>
+    <Compile Update="Settings\StatBarDisplayMode.cs">
+      <DependentUpon>StatBarSettings.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
 
 </Project>

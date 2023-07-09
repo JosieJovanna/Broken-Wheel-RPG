@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Collections.Generic;
 
-namespace BrokenWheel.Core.Settings
+namespace BrokenWheel.Core.Settings.Registration
 {
     /// <summary>
     /// A static class used for getting settings as needed.
@@ -14,7 +14,7 @@ namespace BrokenWheel.Core.Settings
     /// I would need to make another static class which can fetch this service across virtually every project --
     /// just pushing the issue of having a dependency on a concrete class down the line.
     /// </remarks>
-    public static class SettingsFactory
+    public static class SettingsRegistry
     {
         private static readonly IDictionary<Type, ISettings> _settingsByType = new Dictionary<Type, ISettings>();
 

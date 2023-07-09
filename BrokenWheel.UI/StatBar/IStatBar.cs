@@ -1,4 +1,5 @@
-﻿using BrokenWheel.Core.Stats.Enum;
+﻿using BrokenWheel.Core.Stats;
+using BrokenWheel.Core.Stats.Enum;
 
 namespace BrokenWheel.UI.StatBar
 {
@@ -13,7 +14,7 @@ namespace BrokenWheel.UI.StatBar
         /// The type of stat being tracked.
         /// </summary>
         StatTypeInfo Type { get; }
-        
+
         /// <summary>
         /// The overall position of the bar, relative to the lower-left corner of the screen.
         /// </summary>

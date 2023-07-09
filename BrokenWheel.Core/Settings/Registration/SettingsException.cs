@@ -1,9 +1,9 @@
 ﻿using System;
 
-namespace BrokenWheel.Core.Settings
+namespace BrokenWheel.Core.Settings.Registration
 {
     /// <summary>
-    /// An exception thrown by <see cref="SettingsFactory"/> when a <see cref="ISettings"/> class is not registered,
+    /// An exception thrown by <see cref="ISettings"/> when a <see cref="SettingsRegistry"/> class is not registered,
     /// and a the game tries to access it. Will only be thrown if settings are not properly instantiated/loaded.
     /// </summary>
     public class SettingsException : Exception
