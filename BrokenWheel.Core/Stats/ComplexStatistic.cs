@@ -5,19 +5,19 @@ namespace BrokenWheel.Core.Stats
 {
     /// <summary>
     /// A simple implementation of <see cref="IComplexStatistic"/>.
-    /// Used for HP, SP, WP, and misc. <see cref="Stat"/>s like the amount of oil.
+    /// Used for HP, SP, WP, and misc. <see cref="StatType"/>s like the amount of oil.
     /// </summary>
     public class ComplexStatistic : Statistic, IComplexStatistic
     {
         protected int Max;
         protected int Exh;
 
-        /// <param name="type"> The <see cref="Stat"/> being tracked. </param>
+        /// <param name="type"> The <see cref="StatType"/> being tracked. </param>
         /// <param name="value"> The current value of the stat; will be set between zero and <see cref="EffectiveMaximum"/>. </param>
         /// <param name="maximum"> The maximum value before modification; will be set above or equal to zero. </param>
         /// <param name="modifier"> The modifier to the maximum value. Optional; defaults to zero. </param>
         /// <param name="exhaustion"> The exhaustion of the stat, which cannot be negative. Optional; defaults to zero. </param>
-        public ComplexStatistic(StatType type, int value, int maximum, int modifier = 0, int exhaustion = 0) 
+        public ComplexStatistic(StatTypeInfo type, int value, int maximum, int modifier = 0, int exhaustion = 0) 
             : base(type, value, modifier)
         {
             Max = MathUtil.NonNeg(maximum);

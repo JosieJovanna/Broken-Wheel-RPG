@@ -2,7 +2,7 @@
 
 namespace BrokenWheel.Core.Damage.Events
 {
-    public class DamageEvent<T> where T : Damage
+    public class DamageEvent<T> where T : DamageTicker
     {
         public T Result;
         

@@ -5,7 +5,7 @@ using BrokenWheel.Math.Utility;
 
 namespace BrokenWheel.Core.Damage
 {
-    public class PolynomialDamage : Damage
+    public class PolynomialDamageTicker : DamageTicker
     {
         private readonly Polynomial _func;
         private double _overflow;
@@ -17,7 +17,7 @@ namespace BrokenWheel.Core.Damage
         /// Total damage will be determined by the duration and the equation.
         /// Only positive amounts of damage will be dealt; negatives in the equation act as delays.
         /// </summary>
-        public PolynomialDamage(DamageType type, double[] coefficients, int duration)
+        public PolynomialDamageTicker(DamageType type, double[] coefficients, int duration)
             : base(type, GetTotal(coefficients, duration), duration)
         {
             _func = new Polynomial(coefficients);

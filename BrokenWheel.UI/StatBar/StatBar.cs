@@ -25,7 +25,7 @@ namespace BrokenWheel.UI.StatBar
             UpdateDisplay();
         }
 
-        public StatType Type { get => _stat.Type; }
+        public StatTypeInfo Type { get => _stat.Type; }
 
         public void SetPosition(int xPosition, int yPosition)
         {

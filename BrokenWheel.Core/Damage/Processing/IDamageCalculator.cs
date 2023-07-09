@@ -12,9 +12,9 @@ namespace BrokenWheel.Core.Damage.Processing
     {
         /// <summary>
         /// Adds damage to the group to be calculated to completion.
-        /// <see cref="Damage"/>s will not leave the queue until they deal all damage.
+        /// <see cref="DamageTicker"/>s will not leave the queue until they deal all damage.
         /// </summary>
-        void AddToQueue(Damage damage);
+        void AddToQueue(DamageTicker damage);
 
         /// <summary>
         /// Clears the damage queue and stops processing.

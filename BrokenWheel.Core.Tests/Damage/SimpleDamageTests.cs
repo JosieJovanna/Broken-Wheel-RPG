@@ -17,7 +17,7 @@ public class SimpleDamageTests
     {
         // setup
         var type = DamageType.Generic;
-        var damage = new SimpleDamage(type, amount, duration);
+        var damage = new SimpleDamageTicker(type, amount, duration);
         var expectedDps = new Fraction(amount, duration);
 
         // test
@@ -39,7 +39,7 @@ public class SimpleDamageTests
     [InlineData(-100)]
     public void Constructor_Throws_ArgumentException_OnInvalidAmounts(int amount)
     {
-        Assert.Throws<ArgumentException>(() => new SimpleDamage(DamageType.Generic, amount, 1));
+        Assert.Throws<ArgumentException>(() => new SimpleDamageTicker(DamageType.Generic, amount, 1));
     }
 
     [Theory]
@@ -48,14 +48,14 @@ public class SimpleDamageTests
     [InlineData(-100)]
     public void Constructor_Throws_ArgumentException_OnInvalidDurations(int duration)
     {
-        Assert.Throws<ArgumentException>(() => new SimpleDamage(DamageType.Generic, 1, duration));
+        Assert.Throws<ArgumentException>(() => new SimpleDamageTicker(DamageType.Generic, 1, duration));
     }
 
     [Fact]
     public void Tick_NoDamageIsDealtAfterDone()
     {
         // setup
-        var damage = new SimpleDamage(DamageType.Generic, 10, 1);
+        var damage = new SimpleDamageTicker(DamageType.Generic, 10, 1);
 
         // execute
         damage.Tick();
@@ -77,7 +77,7 @@ public class SimpleDamageTests
     public void Tick_Properties_CorrectWhileRunning(int amount, int duration)
     {
         // setup
-        var damage = new SimpleDamage(DamageType.Generic, amount, duration);
+        var damage = new SimpleDamageTicker(DamageType.Generic, amount, duration);
 
         var expectedDps = new Fraction(amount, duration);
         var expectedDealt = 0;
@@ -115,7 +115,7 @@ public class SimpleDamageTests
     public void Tick_Properties_CorrectAfterCompletion(int amount, int duration)
     {
         // setup
-        var damage = new SimpleDamage(DamageType.Generic, amount, duration);
+        var damage = new SimpleDamageTicker(DamageType.Generic, amount, duration);
 
         // execute
         while (!damage.IsDone)
@@ -141,7 +141,7 @@ public class SimpleDamageTests
     public void ToString_Contains_RelevantInfo(DamageType type, int amount, int duration, int time)
     {
         // setup
-        var damage = new SimpleDamage(type, amount, duration);
+        var damage = new SimpleDamageTicker(type, amount, duration);
         var expectedTime = System.Math.Min(duration, time);
         var expectedDps = new Fraction(amount, duration);
         var expectedDealt = (int)System.Math.Floor(expectedDps.ToDouble() * expectedTime);
@@ -172,7 +172,7 @@ public class SimpleDamageTests
     public void ToDataString_Contains_RelevantInfo(DamageType type, int amount, int duration, int time)
     {
         // setup
-        var damage = new SimpleDamage(type, amount, duration);
+        var damage = new SimpleDamageTicker(type, amount, duration);
         var expectedTime = System.Math.Min(duration, time);
         var expectedDps = new Fraction(amount, duration);
         var expectedDealt = (int)System.Math.Floor(expectedDps.ToDouble() * expectedTime);

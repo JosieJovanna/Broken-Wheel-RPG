@@ -11,7 +11,7 @@ namespace BrokenWheel.Core.Damage
     /// Damage values are in absolutes; values below 0 will be 0.
     /// When damage calculations are made, rounds down the DPS, and applies any extra damage first.
     /// </summary>
-    public class SimpleDamage : Damage
+    public class SimpleDamageTicker : DamageTicker
     {
         public double DPS => _dps.ToDouble();
 
@@ -19,7 +19,7 @@ namespace BrokenWheel.Core.Damage
         private Fraction _overflow = new Fraction();
 
         /// <summary>
-        /// Creates a <see cref="Damage"/> that deals damage at a constant rate.
+        /// Creates a <see cref="DamageTicker"/> that deals damage at a constant rate.
         /// When rounding DPS, extra damage will be dealt on the first tick.
         /// </summary>
         /// <param name="type">  The type of damage dealt.  </param>
@@ -29,9 +29,9 @@ namespace BrokenWheel.Core.Damage
         /// </param>
         /// <param name="duration">
         /// The amount of time it takes for the damage to resolve.
-        /// Cannot be less than 1; such values should be <see cref="InstantDamage"/>.
+        /// Cannot be less than 1; such values should be <see cref="InstantDamageTicker"/>.
         /// </param>
-        public SimpleDamage(DamageType type, int amount, int duration)
+        public SimpleDamageTicker(DamageType type, int amount, int duration)
             : base(type, amount, duration)
         {
             Validate.ThrowIfNotPositive(duration, nameof(Duration));

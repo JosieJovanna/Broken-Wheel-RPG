@@ -12,7 +12,7 @@ public class ComplexDamageTests
     [InlineData(1, new double[] { 5, -2 })]
     public void Constructor_Passes(int duration, double[] coefficients)
     {
-        var damage = new PolynomialDamage(DamageType.Generic, coefficients, duration);
+        var damage = new PolynomialDamageTicker(DamageType.Generic, coefficients, duration);
         Assert.True(true);
     }
 }

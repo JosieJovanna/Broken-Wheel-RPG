@@ -1,4 +1,5 @@
 using BrokenWheel.Core.Stats.Enum;
+using BrokenWheel.Core.Stats.Extensions;
 
 namespace BrokenWheel.Core.Stats.Processing
 {
@@ -16,13 +17,13 @@ namespace BrokenWheel.Core.Stats.Processing
             throw new System.NotImplementedException();
         }
 
-        public IStatistic GetSimpleStat(Stat stat) => GetStat<IStatistic>(stat);
+        public IStatistic GetSimpleStat(StatType stat) => GetStat<IStatistic>(stat);
         public IStatistic GetSimpleStat(string stat) => GetStat<IStatistic>(stat);
 
-        public IComplexStatistic GetComplexStat(Stat stat) => GetStat<IComplexStatistic>(stat);
+        public IComplexStatistic GetComplexStat(StatType stat) => GetStat<IComplexStatistic>(stat);
         public IComplexStatistic GetComplexStat(string stat) => GetStat<IComplexStatistic>(stat);
         
-        public T GetStat<T>(Stat stat) where T : IStatistic => GetStat<T>(stat.GetName());
+        public T GetStat<T>(StatType stat) where T : IStatistic => GetStat<T>(stat.GetName());
         public T GetStat<T>(string stat) where T : IStatistic
         {
             throw new System.NotImplementedException();

@@ -6,7 +6,7 @@ namespace BrokenWheel.Core.Damage
     /// <summary>
     /// Abstract class which causes some damage over time. Values can only be positive.
     /// </summary>
-    public abstract class Damage
+    public abstract class DamageTicker
     {
         public readonly DamageType Type;
         public readonly int Duration;
@@ -15,10 +15,7 @@ namespace BrokenWheel.Core.Damage
         public int TimePassed { get; protected set; }
         public bool IsDone => IsDoneCondition();
         public int Dealt => Total - Remaining;
-        public int TimeRemaining => IsDone 
-            ? 0 
-            : Duration - TimePassed;
-
+        public int TimeRemaining => IsDone ? 0 : Duration - TimePassed;
 
         /// <summary>
         /// Sets <see cref="Type"/> and internal trackers.
@@ -34,7 +31,7 @@ namespace BrokenWheel.Core.Damage
         /// Throws an <see cref="ArgumentException"/> if 0 or lower;
         /// such values should be filtered out during processing of damage events.
         /// </param>
-        protected Damage(DamageType type, int total, int duration)
+        protected DamageTicker(DamageType type, int total, int duration)
         {
             Type = type;
             Total = Validate.ThrowIfNotPositive(total, nameof(Total));
@@ -48,7 +45,7 @@ namespace BrokenWheel.Core.Damage
         protected virtual bool IsDoneCondition() => Remaining <= 0;
 
         /// <summary> 
-        /// <b>Irreversibly</b> advances the <see cref="Damage"/> by one second.
+        /// <b>Irreversibly</b> advances the <see cref="DamageTicker"/> by one second.
         /// First, ticks time passed.
         /// Gets one second's worth of damage from the abstract <see cref="CalculateTick"/> method, 
         /// then tracks remaining damage and returns damage dealt that second.
@@ -79,7 +76,7 @@ namespace BrokenWheel.Core.Damage
         /// <returns>  A string containing the variables of the extending class.  </returns>
         protected abstract string ChildInfoString();
         
-        /// <returns>  A string verbosely describing the <see cref="Damage"/>.  </returns>
+        /// <returns>  A string verbosely describing the <see cref="DamageTicker"/>.  </returns>
         public override string ToString() => ChildInfoString();
     }
 }

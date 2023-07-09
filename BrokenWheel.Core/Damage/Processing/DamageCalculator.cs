@@ -7,8 +7,8 @@ namespace BrokenWheel.Core.Damage.Processing
     /// </summary>
     public class DamageCalculator : IDamageCalculator
     {
-        protected readonly List<Damage> _queue = new List<Damage>();
-        protected readonly List<Damage> _instants = new List<Damage>();
+        protected readonly List<DamageTicker> _queue = new List<DamageTicker>();
+        protected readonly List<DamageTicker> _instants = new List<DamageTicker>();
         protected readonly List<DamageMap> _lastTicks = new List<DamageMap>();
         protected DamageMap _dmgDone = new DamageMap();
         protected DamageMap _dmgTick = new DamageMap();
@@ -16,15 +16,15 @@ namespace BrokenWheel.Core.Damage.Processing
         protected bool _justTicked = false;
 
 
-        public void AddToQueue(IEnumerable<Damage> damages)
+        public void AddToQueue(IEnumerable<DamageTicker> damages)
         {
             foreach (var dmg in damages)
                 AddToQueue(dmg);
         }
         
-        public void AddToQueue(Damage damage)
+        public void AddToQueue(DamageTicker damage)
         {
-            if (damage.GetType() != typeof(InstantDamage))
+            if (damage.GetType() != typeof(InstantDamageTicker))
                 _queue.Add(damage);
             else
                 _instants.Add(damage);
@@ -109,7 +109,7 @@ namespace BrokenWheel.Core.Damage.Processing
                 CaculateDamage(damage);
         }
 
-        private void CaculateDamage(Damage damage)
+        private void CaculateDamage(DamageTicker damage)
         {
             if (damage.IsDone)
                 _queue.Remove(damage);

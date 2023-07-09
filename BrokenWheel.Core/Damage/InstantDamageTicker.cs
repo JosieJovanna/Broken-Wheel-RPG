@@ -1,7 +1,7 @@
 ﻿
 namespace BrokenWheel.Core.Damage
 {
-    public class InstantDamage : Damage
+    public class InstantDamageTicker : DamageTicker
     {
         private bool _isDone;
         protected override bool IsDoneCondition() => _isDone;
@@ -9,7 +9,7 @@ namespace BrokenWheel.Core.Damage
         /// <summary>
         /// Creates an instant damage event with a duration of 0, which is to be 
         /// </summary>
-        public InstantDamage(DamageType type, int amount)
+        public InstantDamageTicker(DamageType type, int amount)
             : base(type, amount, 0) { }
         
         protected override int CalculateTick()

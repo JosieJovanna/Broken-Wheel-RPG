@@ -3,16 +3,16 @@
 namespace BrokenWheel.Core.Stats
 {
     /// <summary>
-    /// A statistic tracker with a <see cref="Stat"/> type, value, and modifier.
+    /// A statistic tracker with a <see cref="StatType"/> type, value, and modifier.
     /// The <see cref="Value"/> is more stable, being for example skill, which only changes during level-ups.
     /// The <see cref="Modifier"/> is more erratic, being set by spells, equipment, et cetera.
     /// </summary>
     public interface IStatistic
     {
         /// <summary>
-        /// The type of <see cref="Stat"/> this object represents.
+        /// The type of <see cref="StatType"/> this object represents.
         /// </summary>
-        StatType Type { get; }
+        StatTypeInfo Type { get; }
         
         /// <summary>
         /// The value of the stat. Cannot be negative; attempting to set a negative value will in fact set it to zero.
