@@ -8,6 +8,21 @@
     public interface IStatBarDisplay
     {
         /// <summary>
+        /// Whether the individual stat bar is currently being rendered.
+        /// </summary>
+        bool IsHidden { get; }
+
+        /// <summary>
+        /// Shows the individual stat bar.
+        /// </summary>
+        void Show();
+
+        /// <summary>
+        /// Hides the individual stat bar.
+        /// </summary>
+        void Hide();
+        
+        /// <summary>
         /// Sets the stat bar's position relative to the screen, and the size of the outline.
         /// The border is overlapped by all other display sections.
         /// </summary>

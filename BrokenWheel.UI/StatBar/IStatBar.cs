@@ -1,4 +1,5 @@
-﻿using BrokenWheel.Core.Stats;
+﻿using BrokenWheel.Core.Events.Stats;
+using BrokenWheel.Core.Stats;
 using BrokenWheel.Core.Stats.Enum;
 
 namespace BrokenWheel.UI.StatBar
@@ -14,6 +15,27 @@ namespace BrokenWheel.UI.StatBar
         /// The type of stat being tracked.
         /// </summary>
         StatTypeInfo Type { get; }
+        
+        /// <summary>
+        /// Whether the individual stat bar is currently being rendered.
+        /// </summary>
+        bool IsHidden { get; }
+
+        /// <summary>
+        /// Shows the individual stat bar.
+        /// </summary>
+        void Show();
+
+        /// <summary>
+        /// Hides the individual stat bar.
+        /// </summary>
+        void Hide();
+
+        /// <summary>
+        /// Event listener for stat changes. Passes <see cref="StatUpdateEventArgs"/> in case some implementation
+        /// applies special effects based on damage, such as, for example, flames emitting on taking fire damage.
+        /// </summary>
+        void StatUpdateHandler(object sender, StatUpdateEventArgs args);
 
         /// <summary>
         /// The overall position of the bar, relative to the lower-left corner of the screen.

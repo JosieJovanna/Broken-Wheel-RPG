@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using BrokenWheel.Core.Events;
-using BrokenWheel.Core.Stats;
+﻿using BrokenWheel.Core.Stats;
 
 namespace BrokenWheel.UI.StatBar
 {
@@ -10,29 +8,38 @@ namespace BrokenWheel.UI.StatBar
     public interface IStatBarSuite
     {
         /// <summary>
-        /// Event listener for stat changes. Passes <see cref="StatUpdateEventArgs"/> in case some implementation
-        /// applies special effects based on damage, such as, for example, flames emitting on taking fire damage.
+        /// Shows all <see cref="IStatBar"/>s.
         /// </summary>
-        void StatUpdateHandler(object sender, StatUpdateEventArgs args);
+        void Show();
+
+        /// <summary>
+        /// Hides all <see cref="IStatBar"/>s.
+        /// </summary>
+        void Hide();
         
         /// <summary>
         /// Updates all of the stat bars, to reflect stat values and settings.
         /// </summary>
-        void Update();
-        
-        /// <summary>
-        /// Gets a list of all current stats with bars assigned to them. There can only be one stat per <see cref="StatType"/>.
-        /// </summary>
-        IList<IComplexStatistic> GetStats();
+        void UpdateDisplays();
         
         /// <summary>
         /// Adds a bar for the specified stat, if there is not already a stat of that type being displayed.
         /// </summary>
-        void AddStat(IComplexStatistic statistic);
+        void AddStat(StatType statType, IStatBarDisplay display);
         
         /// <summary>
-        /// Removes the <see cref="IStatBar"/> for the specified stat type.
+        /// Adds a bar for the specified custom stat, if there is not already a stat of that type being displayed.
+        /// </summary>
+        void AddCustomStat(string customStatName, IStatBarDisplay display);
+        
+        /// <summary>
+        /// Removes the <see cref="IStatBar"/> for the specified stat type. If the stat type 
         /// </summary>
         void RemoveStat(StatType statType);
+
+        /// <summary>
+        /// Removes the <see cref="IStatBar"/> for the specified stat type. If the stat type 
+        /// </summary>
+        void RemoveCustomStat(StatType customStatName);
     }
 }

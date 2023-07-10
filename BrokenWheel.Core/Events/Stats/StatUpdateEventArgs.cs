@@ -24,6 +24,6 @@ namespace BrokenWheel.Core.Events.Stats
         public bool IsComplexStat() => Stat.IsComplex();
 
         /// <returns> Statistic as a complex statistic. If not a complex statistic, null. </returns>
-        public IComplexStatistic TryStatisticAsComplex() => Stat.TryAsComplex(out var complex) ? complex : null;
+        public IComplexStatistic StatAsComplex() => Stat.TryAsComplex(out var complex) ? complex : null;
     }
 }

@@ -1,51 +1,63 @@
-﻿using System.Collections.Generic;
-using BrokenWheel.Core.Events;
+﻿using System;
+using System.Collections.Generic;
 using BrokenWheel.Core.Stats;
+using BrokenWheel.Core.Stats.Processing;
 
 namespace BrokenWheel.UI.StatBar
 {
     public class StatBarSuite : IStatBarSuite
     {
-        private class StatBarRelationship
-        {
-            public IComplexStatistic Stat { get; }
-            public IStatBar Bar { get; }
-            public int Order { get; }
-
-            public StatBarRelationship(IComplexStatistic statistic, IStatBar statBar, int order = 99)
-            {
-                Stat = statistic;
-                Order = order;
-            }
-        }
-
+        private readonly IStatBox _statBox;
         private readonly IList<StatBarRelationship> _statBars;
+        private readonly IStatBarSuiteDisplay _groupSuiteDisplay;
 
-        public StatBarSuite(IComplexStatistic health, IComplexStatistic stamina, IComplexStatistic willpower, 
-            IList<IComplexStatistic> otherStats = null)
-        {
-        }
-        
-        public void StatUpdateHandler(object sender, StatUpdateEventArgs args) => Update();
+        private bool _isHiding;
 
-        public void Update()
+        public StatBarSuite(IStatBox statBox)
         {
-            throw new System.NotImplementedException();
+            _statBox = statBox ?? throw new ArgumentNullException(nameof(statBox));
         }
 
-        public IList<IComplexStatistic> GetStats()
+        public void Show()
         {
-            throw new System.NotImplementedException();
+            if (!_isHiding)
+                return;
+            UpdateDisplays();
+            _groupSuiteDisplay.Show();
+            _isHiding = false;
         }
 
-        public void AddStat(IComplexStatistic statistic)
+        public void Hide()
         {
-            throw new System.NotImplementedException();
+            if (_isHiding)
+                return;
+            _groupSuiteDisplay.Hide();
+            _isHiding = true;
+        }
+
+        public void UpdateDisplays()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddStat(StatType statType, IStatBarDisplay display)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddCustomStat(string customStatName, IStatBarDisplay display)
+        {
+            throw new NotImplementedException();
         }
 
         public void RemoveStat(StatType statType)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
+        }
+
+        public void RemoveCustomStat(StatType customStatName)
+        {
+            throw new NotImplementedException();
         }
     }
 }
