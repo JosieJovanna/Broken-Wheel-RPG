@@ -10,7 +10,7 @@
     public interface IComplexStatistic : IStatistic
     {
         /// <summary>
-        /// The value of the <see cref="StatType"/>.
+        /// The current value of the <see cref="StatType"/>.
         /// Will be equal to or lower than the <see cref="EffectiveMaximum"/>, and non-negative.
         /// </summary>
         new int Value { get; set; }
@@ -25,6 +25,12 @@
         /// will be greater than or equal to zero, and less than or equal to <see cref="EffectiveMaximum"/>.
         /// </summary>
         new int EffectiveValue { get; }
+        
+        /// <summary>
+        /// The value that the <see cref="StatType"/> is determined, by other mechanism, to reach.
+        /// Does not progress on its own, but rather, is useful mainly for display.
+        /// </summary>
+        int DestinationValue { get; set; }
 
         /// <summary>
         /// The maximum <see cref="Value"/> that the stat can have,

@@ -9,7 +9,11 @@ namespace BrokenWheel.Core.Stats
     /// </summary>
     public class ComplexStatistic : Statistic, IComplexStatistic
     {
+        /// <summary> Destination Value </summary>
+        protected int Dst;
+        /// <summary> Maximum </summary>
         protected int Max;
+        /// <summary> Exhaustion </summary>
         protected int Exh;
 
         /// <param name="type"> The <see cref="StatType"/> being tracked. </param>
@@ -23,7 +27,7 @@ namespace BrokenWheel.Core.Stats
             Max = MathUtil.NonNeg(maximum);
             Exhaustion = MathUtil.NonNeg(exhaustion);
             Val = MathUtil.NonNeg(value);
-            CapStat();
+            CapValues();
         }
 
         public new int Value
@@ -32,7 +36,7 @@ namespace BrokenWheel.Core.Stats
             set
             {
                 Val = MathUtil.NonNeg(value);
-                CapStat();
+                CapValues();
             }
         }
 
@@ -42,7 +46,17 @@ namespace BrokenWheel.Core.Stats
             set
             {
                 Mod = value;
-                CapStat();
+                CapValues();
+            }
+        }
+
+        public int DestinationValue
+        {
+            get => Dst;
+            set
+            {
+                Dst = MathUtil.NonNeg(value);
+                CapValues();
             }
         }
 
@@ -52,7 +66,7 @@ namespace BrokenWheel.Core.Stats
             set
             {
                 Max = MathUtil.NonNeg(value);
-                CapStat();
+                CapValues();
             }
         }
 
@@ -62,7 +76,7 @@ namespace BrokenWheel.Core.Stats
             set
             {
                 Exh = MathUtil.NonNeg(value);
-                CapStat();
+                CapValues();
             }
         }
 
@@ -70,6 +84,10 @@ namespace BrokenWheel.Core.Stats
 
         public new int EffectiveValue { get => Val; }
 
-        private void CapStat() => Val = System.Math.Min(Val, EffectiveMaximum);
+        private void CapValues()
+        {
+            Val = System.Math.Min(Val, EffectiveMaximum);
+            Dst = System.Math.Min(Dst, EffectiveMaximum);
+        }
     }
 }

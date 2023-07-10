@@ -9,4 +9,8 @@
       <ProjectReference Include="..\BrokenWheel.Control\BrokenWheel.Control.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Player" />
+    </ItemGroup>
+
 </Project>

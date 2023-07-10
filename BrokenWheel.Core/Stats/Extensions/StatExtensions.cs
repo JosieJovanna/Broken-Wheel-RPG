@@ -6,15 +6,12 @@ namespace BrokenWheel.Core.Stats.Extensions
 {
     public static class StatExtensions
     {
-        public static string GetName(this StatType stat)
+        public static string GetCode(this StatType stat)
         {
-            var menuNameAttribute = stat.GetAttribute<MenuNameAttribute>();
-            return menuNameAttribute == null 
-                ? System.Enum.GetName(typeof(StatType), stat) 
-                : menuNameAttribute.MenuName;
+            return stat.ToString();
         }
-
-        public static string DescriptiveName(this StatType stat)
+        
+        public static string GetName(this StatType stat)
         {
             var infoAttribute = stat.GetAttribute<InfoAttribute>();
             return infoAttribute == null 
@@ -22,7 +19,15 @@ namespace BrokenWheel.Core.Stats.Extensions
                 : infoAttribute.Name;
         }
 
-        public static string Description(this StatType stat)
+        public static string GetMenuName(this StatType stat)
+        {
+            var menuNameAttribute = stat.GetAttribute<MenuNameAttribute>();
+            return menuNameAttribute == null 
+                ? System.Enum.GetName(typeof(StatType), stat) 
+                : menuNameAttribute.MenuName;
+        }
+
+        public static string GetDescription(this StatType stat)
         {
             var infoAttribute = stat.GetAttribute<InfoAttribute>();
             return infoAttribute == null

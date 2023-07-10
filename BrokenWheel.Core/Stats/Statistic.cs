@@ -23,7 +23,7 @@ namespace BrokenWheel.Core.Stats
             Mod = modifier;
         }
 
-        public StatTypeInfo Type { get => Stat; }
+        public StatTypeInfo Info { get => Stat; }
 
         public int Value { get => Val; set => Val = MathUtil.NonNeg(value); }
 

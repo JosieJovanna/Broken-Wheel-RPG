@@ -16,6 +16,9 @@
       <Compile Update="StatBar\StatBarSuite.cs">
         <DependentUpon>IStatBarSuite.cs</DependentUpon>
       </Compile>
+      <Compile Update="StatBar\StatBarRelationship.cs">
+        <DependentUpon>IStatBarSuite.cs</DependentUpon>
+      </Compile>
     </ItemGroup>
 
 </Project>
