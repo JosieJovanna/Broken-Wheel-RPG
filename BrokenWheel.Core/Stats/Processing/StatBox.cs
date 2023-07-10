@@ -16,8 +16,8 @@ namespace BrokenWheel.Core.Stats.Processing
         public IStatistic GetStat(StatType stat) => GetStat<IStatistic>(stat);
         public IStatistic GetStat(string stat) => GetStat<IStatistic>(stat);
 
-        public IComplexStatistic GetComplexStat(StatType stat) => GetStat<IComplexStatistic>(stat);
-        public IComplexStatistic GetComplexStat(string stat) => GetStat<IComplexStatistic>(stat);
+        public IComplexStatistic GetComplexStatIfExists(StatType stat) => GetStat<IComplexStatistic>(stat);
+        public IComplexStatistic GetComplexStatIfExists(string stat) => GetStat<IComplexStatistic>(stat);
 
         public T GetStat<T>(StatType stat) where T : IStatistic => GetStat<T>(stat.GetName());
 

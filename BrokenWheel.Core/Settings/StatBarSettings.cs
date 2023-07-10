@@ -1,4 +1,5 @@
-﻿using BrokenWheel.Core.Settings.Registration;
+﻿using System.Collections.Generic;
+using BrokenWheel.Core.Settings.Registration;
 
 namespace BrokenWheel.Core.Settings
 {
@@ -13,6 +14,13 @@ namespace BrokenWheel.Core.Settings
         public int StatBarThickness { get; internal set; } = 4;
         public int BorderSize { get; internal set; } = 1;
         public int Spacing { get; internal set; } = 2;
+        
         public string[] MainStatOrder { get; internal set; } = { "HP", "SP", "WP" };
+        public StatBarColorSettings HpColors { get; internal set; }
+        public StatBarColorSettings SpColors { get; internal set; }
+        public StatBarColorSettings WpColors { get; internal set; }
+        public StatBarColorSettings DefaultColors { get; internal set; }
+        public IDictionary<string, StatBarColorSettings> ColorsByCode { get; internal set; } = 
+            new Dictionary<string, StatBarColorSettings>();
     }
 }

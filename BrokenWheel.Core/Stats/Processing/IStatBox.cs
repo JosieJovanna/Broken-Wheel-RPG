@@ -12,12 +12,12 @@ namespace BrokenWheel.Core.Stats.Processing
         IStatistic GetStat(StatType stat);
         IStatistic GetStat(string stat);
 
-        IComplexStatistic GetComplexStat(StatType stat);
+        IComplexStatistic GetComplexStatIfExists(StatType stat);
 
         /// <summary>
         /// Gets a 
         /// </summary>
-        IComplexStatistic GetComplexStat(string stat);
+        IComplexStatistic GetComplexStatIfExists(string stat);
 
         /// <summary>
         /// Subscribes to receive <see cref="StatUpdateEventArgs"/> of the specified type whenever any of the stat values change.

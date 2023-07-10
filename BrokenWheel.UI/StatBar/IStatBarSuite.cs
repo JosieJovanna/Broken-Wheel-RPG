@@ -25,12 +25,12 @@ namespace BrokenWheel.UI.StatBar
         /// <summary>
         /// Adds a bar for the specified stat, if there is not already a stat of that type being displayed.
         /// </summary>
-        void AddStat(StatType statType, IStatBarDisplay display);
+        void AddStat(StatType statType);
         
         /// <summary>
         /// Adds a bar for the specified custom stat, if there is not already a stat of that type being displayed.
         /// </summary>
-        void AddCustomStat(string customStatName, IStatBarDisplay display);
+        void AddCustomStat(string customStatName);
         
         /// <summary>
         /// Removes the <see cref="IStatBar"/> for the specified stat type. If the stat type 

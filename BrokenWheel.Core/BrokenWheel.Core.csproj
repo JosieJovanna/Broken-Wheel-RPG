@@ -27,6 +27,9 @@
     <Compile Update="Settings\StatBarDisplayMode.cs">
       <DependentUpon>StatBarSettings.cs</DependentUpon>
     </Compile>
+    <Compile Update="Settings\StatBarColorSettings.cs">
+      <DependentUpon>StatBarSettings.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
 
 </Project>

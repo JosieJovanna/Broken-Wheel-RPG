@@ -1,4 +1,5 @@
-﻿using BrokenWheel.Core.Stats;
+﻿using System;
+using BrokenWheel.Core.Stats;
 using BrokenWheel.Core.Settings;
 using BrokenWheel.Core.Settings.Registration;
 
@@ -11,10 +12,12 @@ namespace BrokenWheel.UI.StatBar
         public int Order { get; set; }
         public StatType Type { get => Stat.Info.Type; }
 
-        public StatBarRelationship(IComplexStatistic statistic, IStatBarDisplay display)
+        public StatBarRelationship(IComplexStatistic statistic, IStatBarDisplay display, int order = 99, StatBarSettings settings = null)
         {
-            Bar = new StatBar(statistic, display, SettingsRegistry.GetSettings<StatBarSettings>());
-            Stat = statistic;
+            if (display == null)
+                throw new ArgumentNullException(nameof(display));
+            Stat = statistic ?? throw new ArgumentNullException(nameof(statistic));
+            Bar = new StatBar(statistic, display, settings ?? SettingsRegistry.GetSettings<StatBarSettings>());
         }
     }
 }
