@@ -14,7 +14,7 @@ namespace BrokenWheel.UI.StatBar
         /// <summary>
         /// The type of stat being tracked.
         /// </summary>
-        StatTypeInfo Type { get; }
+        StatTypeInfo Info { get; }
         
         /// <summary>
         /// Whether the individual stat bar is currently being rendered.

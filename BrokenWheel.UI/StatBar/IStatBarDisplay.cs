@@ -1,4 +1,6 @@
-﻿namespace BrokenWheel.UI.StatBar
+﻿using BrokenWheel.Core.Settings;
+
+namespace BrokenWheel.UI.StatBar
 {
     /// <summary>
     /// A simple interface for controlling the regions that constitute a stat bar.
@@ -54,5 +56,10 @@
         /// The exhaustion region overlaps all other display sections.
         /// </summary>
         void SetExhaustionDimensions(int xPosition, int yPosition, int width, int height);
+
+        /// <summary>
+        /// Sets the colors of the bar to a new setting.
+        /// </summary>
+        void SetColorProfile(StatBarColorSettings colors);
     }
 }

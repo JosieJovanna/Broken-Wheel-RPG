@@ -30,7 +30,7 @@ namespace BrokenWheel.UI.StatBar
             UpdateDisplay();
         }
         
-        public StatTypeInfo Type { get => _stat.Info; }
+        public StatTypeInfo Info { get => _stat.Info; }
         public bool IsHidden { get => _display.IsHidden; }
 
         public void Show()

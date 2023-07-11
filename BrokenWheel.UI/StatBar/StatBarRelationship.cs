@@ -7,7 +7,7 @@ namespace BrokenWheel.UI.StatBar
 {
     internal class StatBarRelationship
     {
-        public IStatBar Bar { get; }
+        public IStatBar StatBar { get; }
         public IComplexStatistic Stat { get; }
         public int Order { get; set; }
         public StatType Type { get => Stat.Info.Type; }
@@ -17,7 +17,7 @@ namespace BrokenWheel.UI.StatBar
             if (display == null)
                 throw new ArgumentNullException(nameof(display));
             Stat = statistic ?? throw new ArgumentNullException(nameof(statistic));
-            Bar = new StatBar(statistic, display, settings ?? SettingsRegistry.GetSettings<StatBarSettings>());
+            StatBar = new StatBar(statistic, display, settings ?? SettingsRegistry.GetSettings<StatBarSettings>());
         }
     }
 }

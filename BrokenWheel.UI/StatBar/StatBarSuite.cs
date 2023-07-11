@@ -12,11 +12,14 @@ namespace BrokenWheel.UI.StatBar
 {
     public class StatBarSuite : IStatBarSuite
     {
+        private const string STAT_NOT_FOUND_FORMAT = 
+            "Complex stat {0} does not exist - can only make stat bars for complex stats.";
+        
         private readonly StatBarSettings _settings;
         private readonly IStatBox _statBox;
         private readonly IStatBarSuiteDisplay _groupDisplay;
         
-        private readonly IList<StatBarRelationship> _statBars = new List<StatBarRelationship>();
+        private IList<StatBarRelationship> _statBars = new List<StatBarRelationship>();
 
         private bool _isHiding;
 
@@ -31,28 +34,90 @@ namespace BrokenWheel.UI.StatBar
             _settings = SettingsRegistry.GetSettings<StatBarSettings>();
             _statBox = statBox ?? throw new ArgumentNullException(nameof(statBox));
             _groupDisplay = suiteDisplay ?? throw new ArgumentNullException(nameof(suiteDisplay));
-            InstantiateMainStatBars();
+            // main stat displays
+            for (var i = 0; i < _settings.MainStatOrder.Length; i++)
+                _statBars.Add(NewStatBarRelationship(_settings.MainStatOrder[i], i));
         }
 
-        private void InstantiateMainStatBars()
+        public void Show()
         {
-            var hp = InstantiateStatBar(StatType.HP, 0); // TODO: order. array index as order, string as code.
-            var sp = InstantiateStatBar(StatType.SP, 1);
-            var wp = InstantiateStatBar(StatType.WP, 2);
+            if (!_isHiding)
+                return;
+            UpdateDisplays();
+            _groupDisplay.Show();
+            _isHiding = false;
         }
 
-        private StatBarRelationship InstantiateStatBar(StatType type, int order)
+        public void Hide()
         {
-            var stat = _statBox.GetComplexStatIfExists(type);
+            if (_isHiding)
+                return;
+            _groupDisplay.Hide();
+            _isHiding = true;
+        }
+
+        public void UpdateDisplays()
+        {
+            foreach (var statBarRelationship in _statBars)
+                statBarRelationship.StatBar.UpdateDisplay();
+        }
+
+        public void AddStat(StatType type)
+        {
+            if (AnyMatchingBarsForStat(type))
+                return;
+            _statBars.Add(NewStatBarRelationship(type));
+        }
+
+        public void AddCustomStat(string code)
+        {
+            if (AnyMatchingBarsForStat(code))
+                return;
+            _statBars.Add(NewStatBarRelationship(code));
+        }
+
+        public void RemoveStat(StatType type)
+        {
+            if (AnyMatchingBarsForStat(type))
+                return;
+            _statBars = _statBars
+                .Where(_ => _.Type != type)
+                .ToList();
+        }
+
+        public void RemoveCustomStat(string code)
+        {
+            if (AnyMatchingBarsForStat(code))
+                return;
+            _statBars = _statBars
+                .Where(_ => _.StatBar.Info.Code != code)
+                .ToList();
+        }
+
+        private bool AnyMatchingBarsForStat(StatType type) => _statBars.Any(_ => _.Type == type);
+
+        private bool AnyMatchingBarsForStat(string code) => _statBars.Any(_ => _.StatBar.Info.Code == code);
+
+        private StatBarRelationship NewStatBarRelationship(StatType statType, int order = -1)
+        {
+            var stat = _statBox.GetComplexStatIfExists(statType);
             if (stat == null)
-                throw new InvalidOperationException(
-                    $"Complex stat {type.GetCode()} does not exist - can only make stat bars for complex stats.");
-            return InstantiateStatBar(stat, order);
-
+                throw new InvalidOperationException(string.Format(STAT_NOT_FOUND_FORMAT, statType.GetCode()));
+            return NewStatBarRelationship(stat, order);
         }
 
-        private StatBarRelationship InstantiateStatBar(IComplexStatistic statistic, int order)
+        private StatBarRelationship NewStatBarRelationship(string statCode, int order = -1)
         {
+            var stat = _statBox.GetComplexStatIfExists(statCode);
+            if (stat == null)
+                throw new InvalidOperationException(string.Format(STAT_NOT_FOUND_FORMAT, statCode));
+            return NewStatBarRelationship(stat, order);
+        }
+
+        private StatBarRelationship NewStatBarRelationship(IComplexStatistic statistic, int order = -1)
+        {
+            if (order < 0)
+                order = _statBars.Count;
             var colors = ColorSettingsForStat(statistic.Info);
             var display = _groupDisplay.CreateStatBarDisplay(colors);
             return new StatBarRelationship(statistic, display, order, _settings);
@@ -78,49 +143,6 @@ namespace BrokenWheel.UI.StatBar
             return _settings.ColorsByCode.Any(kvp => kvp.Key == customStatCode)
                 ? _settings.ColorsByCode.First(kvp => kvp.Key == customStatCode).Value 
                 : _settings.DefaultColors;
-        }
-
-        public void Show()
-        {
-            if (!_isHiding)
-                return;
-            UpdateDisplays();
-            _groupDisplay.Show();
-            _isHiding = false;
-        }
-
-        public void Hide()
-        {
-            if (_isHiding)
-                return;
-            _groupDisplay.Hide();
-            _isHiding = true;
-        }
-
-        public void UpdateDisplays()
-        {
-            foreach (var statBarRelationship in _statBars)
-                statBarRelationship.Bar.UpdateDisplay();
-        }
-
-        public void AddStat(StatType statType)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void AddCustomStat(string customStatName)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void RemoveStat(StatType statType)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void RemoveCustomStat(StatType customStatName)
-        {
-            throw new NotImplementedException();
         }
     }
 }

@@ -25,21 +25,23 @@ namespace BrokenWheel.UI.StatBar
         /// <summary>
         /// Adds a bar for the specified stat, if there is not already a stat of that type being displayed.
         /// </summary>
-        void AddStat(StatType statType);
+        void AddStat(StatType type);
         
         /// <summary>
         /// Adds a bar for the specified custom stat, if there is not already a stat of that type being displayed.
         /// </summary>
-        void AddCustomStat(string customStatName);
+        void AddCustomStat(string code);
         
         /// <summary>
-        /// Removes the <see cref="IStatBar"/> for the specified stat type. If the stat type 
+        /// Removes the <see cref="IStatBar"/> for the specified stat type, if it exists.
+        /// May not remove health, stamina, or willpower bars.
         /// </summary>
-        void RemoveStat(StatType statType);
+        void RemoveStat(StatType type);
 
         /// <summary>
-        /// Removes the <see cref="IStatBar"/> for the specified stat type. If the stat type 
+        /// Removes the <see cref="IStatBar"/> for the specified stat type, if it exists.
+        /// May not remove health, stamina, or willpower bars.
         /// </summary>
-        void RemoveCustomStat(StatType customStatName);
+        void RemoveCustomStat(string code);
     }
 }

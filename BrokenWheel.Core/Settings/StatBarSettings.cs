@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using BrokenWheel.Core.Settings.Registration;
+using BrokenWheel.Core.Stats;
 
 namespace BrokenWheel.Core.Settings
 {
@@ -15,7 +16,7 @@ namespace BrokenWheel.Core.Settings
         public int BorderSize { get; internal set; } = 1;
         public int Spacing { get; internal set; } = 2;
         
-        public string[] MainStatOrder { get; internal set; } = { "HP", "SP", "WP" };
+        public StatType[] MainStatOrder { get; internal set; } = { StatType.HP, StatType.SP, StatType.WP };
         public StatBarColorSettings HpColors { get; internal set; }
         public StatBarColorSettings SpColors { get; internal set; }
         public StatBarColorSettings WpColors { get; internal set; }
