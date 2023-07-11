@@ -10,7 +10,7 @@ namespace BrokenWheel.Core.Settings
         public bool IsVertical { get; internal set; } = true;
         public int StatBarX { get; internal set; } = 2;
         public int StatBarY { get; internal set; } = 2;
-        public int MaxWidth { get; internal set; } = 320;
+        public int MaxLength { get; internal set; } = 320;
         public int StatBarLength { get; internal set; } = 100;
         public int StatBarThickness { get; internal set; } = 4;
         public int BorderSize { get; internal set; } = 1;

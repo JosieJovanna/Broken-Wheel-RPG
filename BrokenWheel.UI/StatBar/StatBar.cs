@@ -59,7 +59,7 @@ namespace BrokenWheel.UI.StatBar
             UpdateDisplay();
         }
 
-        public void SetPosition(int xPosition, int yPosition)
+        public void SetPositionAndUpdate(int xPosition, int yPosition)
         {
             _x = xPosition;
             _y = yPosition;

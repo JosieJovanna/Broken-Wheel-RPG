@@ -39,8 +39,9 @@ namespace BrokenWheel.UI.StatBar
 
         /// <summary>
         /// The overall position of the bar, relative to the lower-left corner of the screen.
+        /// Then calls <see cref="UpdateDisplay"/>.
         /// </summary>
-        void SetPosition(int xPosition, int yPosition);
+        void SetPositionAndUpdate(int xPosition, int yPosition);
 
         /// <summary>
         /// Updates the display according to the stat values and settings.

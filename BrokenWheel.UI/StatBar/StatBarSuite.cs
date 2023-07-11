@@ -7,6 +7,7 @@ using BrokenWheel.Core.Stats;
 using BrokenWheel.Core.Stats.Enum;
 using BrokenWheel.Core.Stats.Extensions;
 using BrokenWheel.Core.Stats.Processing;
+using BrokenWheel.UI.StatBar.Extensions;
 
 namespace BrokenWheel.UI.StatBar
 {
@@ -37,6 +38,7 @@ namespace BrokenWheel.UI.StatBar
             // main stat displays
             for (var i = 0; i < _settings.MainStatOrder.Length; i++)
                 _statBars.Add(NewStatBarRelationship(_settings.MainStatOrder[i], i));
+            UpdateDisplays();
         }
 
         public void Show()
@@ -58,45 +60,45 @@ namespace BrokenWheel.UI.StatBar
 
         public void UpdateDisplays()
         {
-            foreach (var statBarRelationship in _statBars)
-                statBarRelationship.StatBar.UpdateDisplay();
+            var ordered = _statBars.Ordered().ToList();
+            var alignment = _settings.IsVertical ? _settings.StatBarY : _settings.StatBarX;
+            var distance = _settings.IsVertical ? _settings.StatBarX : _settings.StatBarY;
+            var totalBarThickness = _settings.BorderSize * 2 + _settings.StatBarThickness;
+            for (var i = 0; i < ordered.Count; i++)
+                RepositionBar(ordered[i].StatBar, i, alignment, distance, totalBarThickness);
+        }
+
+        private void RepositionBar(IStatBar statBar, int barIndex, int alignment, int distance, int totalBarThickness)
+        {
+            var offset = (totalBarThickness + _settings.Spacing) * barIndex + distance;
+            var x = _settings.IsVertical ? alignment : offset;
+            var y = _settings.IsVertical ? offset : alignment;
+            statBar.SetPositionAndUpdate(x, y);
         }
 
         public void AddStat(StatType type)
         {
-            if (AnyMatchingBarsForStat(type))
-                return;
-            _statBars.Add(NewStatBarRelationship(type));
+            if (!_statBars.ContainsStat(type))
+                _statBars.Add(NewStatBarRelationship(type));
         }
 
         public void AddCustomStat(string code)
         {
-            if (AnyMatchingBarsForStat(code))
-                return;
-            _statBars.Add(NewStatBarRelationship(code));
+            if (!_statBars.ContainsStat(code))
+                _statBars.Add(NewStatBarRelationship(code));
         }
 
         public void RemoveStat(StatType type)
         {
-            if (AnyMatchingBarsForStat(type))
-                return;
-            _statBars = _statBars
-                .Where(_ => _.Type != type)
-                .ToList();
+            if (_statBars.ContainsStat(type))
+                _statBars = _statBars.WhereNotStat(type).ToList();
         }
 
         public void RemoveCustomStat(string code)
         {
-            if (AnyMatchingBarsForStat(code))
-                return;
-            _statBars = _statBars
-                .Where(_ => _.StatBar.Info.Code != code)
-                .ToList();
+            if (_statBars.ContainsStat(code))
+                _statBars = _statBars.WhereNotStat(code).ToList();
         }
-
-        private bool AnyMatchingBarsForStat(StatType type) => _statBars.Any(_ => _.Type == type);
-
-        private bool AnyMatchingBarsForStat(string code) => _statBars.Any(_ => _.StatBar.Info.Code == code);
 
         private StatBarRelationship NewStatBarRelationship(StatType statType, int order = -1)
         {
