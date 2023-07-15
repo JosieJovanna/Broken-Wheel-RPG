@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrokenWheel.Entity", "Broke
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrokenWheel.Math", "BrokenWheel.Math\BrokenWheel.Math.csproj", "{261A8299-AFF5-4FD9-B28D-6859B4D44483}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrokenWheel.Math.Tests", "BrokenWheel.Math.Tests\BrokenWheel.Math.Tests.csproj", "{4F0B5A6A-49B2-47F7-8A4B-AC4DBF07D57C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{261A8299-AFF5-4FD9-B28D-6859B4D44483}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{261A8299-AFF5-4FD9-B28D-6859B4D44483}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{261A8299-AFF5-4FD9-B28D-6859B4D44483}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F0B5A6A-49B2-47F7-8A4B-AC4DBF07D57C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F0B5A6A-49B2-47F7-8A4B-AC4DBF07D57C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F0B5A6A-49B2-47F7-8A4B-AC4DBF07D57C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F0B5A6A-49B2-47F7-8A4B-AC4DBF07D57C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
