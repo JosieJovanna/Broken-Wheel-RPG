@@ -107,7 +107,7 @@ namespace BrokenWheel.Core.Damage.Processing
 
             return new DamageMap(_map.ToDictionary(
                 k => k.Key, 
-                v => MathUtil.FloorDouble(v.Value * deltaTime)));
+                v => MathUtil.LowerDoubleToInt(v.Value * deltaTime)));
         }
 
         /// <summary>

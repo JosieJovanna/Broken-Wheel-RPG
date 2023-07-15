@@ -4,13 +4,15 @@ using BrokenWheel.Core.Settings;
 using BrokenWheel.Core.Settings.Registration;
 using BrokenWheel.Core.Stats;
 using BrokenWheel.Core.Stats.Enum;
+using BrokenWheel.Math.Utility;
+using BrokenWheel.UI.Display;
 
 namespace BrokenWheel.UI.StatBar.Implementation
 {
     public class StatBar : IStatBar
     {
         public delegate void ReportPointsPerPixel(double ratio);
-        public delegate int HighestPointsPerPixel();
+        public delegate double HighestPointsPerPixel();
         
         private readonly StatBarSettings _settings;
         private readonly IComplexStatistic _stat;
@@ -19,7 +21,6 @@ namespace BrokenWheel.UI.StatBar.Implementation
         private readonly HighestPointsPerPixel _highestPpp;
 
         private bool _isHiding;
-        private int _pointsPerPixel;
         private int _x;
         private int _y;
 
@@ -85,23 +86,61 @@ namespace BrokenWheel.UI.StatBar.Implementation
 
         public void UpdateDisplay()
         {
+            var ppp = CalculatePointsPerPixel();
             throw new NotImplementedException();
         }
 
-        private int CalculatePointsPerPixel(IComplexStatistic stat)
+        private double CalculatePointsPerPixel()
         {
             switch (_settings.DisplayMode)
             {
                 case StatBarDisplayMode.FixedLengthBeforeMod:
-                    
+                    return CalculateFixedPppBeforeMod();
                 case StatBarDisplayMode.UniformPointsPerPixel:
-                    
+                    return CalculateUniformPpp();
                 case StatBarDisplayMode.UniformPointsPerPixelUntilMaxLength:
-                    
+                    return CalculateUniformPppUpToMax();
                 case StatBarDisplayMode.FixedLength:
                 default:
-                    
+                    return (double)_stat.EffectiveMaximum / _settings.DefaultLength;
             }
         }
+
+        private double CalculateFixedPppBeforeMod()
+        {
+            var length = _settings.DefaultLength; // prevent race condition
+            var basePpp = (double)_stat.Maximum / length;
+            var modLength = MathUtil.RaiseDoubleToInt(basePpp * _stat.Modifier);
+            length = System.Math.Min(length + modLength, GetConstrainingUIDimension());
+            return (double)_stat.EffectiveMaximum / length;
+        }
+
+        private double CalculateUniformPpp()
+        {
+            var ppp = _settings.DefaultPointPerPixelRatio; // prevent race condition
+            var max = GetMaxWidth(); // prevent race condition
+            if (_stat.EffectiveMaximum * ppp < max)
+                return System.Math.Max(ppp, _highestPpp());
+            var newPpp = (double)_stat.EffectiveMaximum / max;
+            _reportPpp(newPpp);
+            return newPpp;
+        }
+
+        private double CalculateUniformPppUpToMax()
+        {
+            var maxLength = System.Math.Min(_settings.MaxLength, GetConstrainingUIDimension());
+            var ppp = _settings.DefaultPointPerPixelRatio; // prevent race conditions
+            return System.Math.Ceiling(ppp * _stat.EffectiveMaximum) > maxLength
+                ? (double)_stat.EffectiveMaximum / maxLength
+                : ppp;
+        }
+
+        private int GetMaxWidth() => System.Math.Min(_settings.MaxLength, GetConstrainingUIDimension());
+
+        /// <summary>
+        /// Gets either the width or height of the UI, depending on whether stat bars are vertical enough,
+        /// as that is the maximum length a stat bar can have, regardless of settings.
+        /// </summary>
+        private int GetConstrainingUIDimension() => _settings.IsVertical ? DisplayInfo.UIHeight() : DisplayInfo.UIWidth();
     }
 }

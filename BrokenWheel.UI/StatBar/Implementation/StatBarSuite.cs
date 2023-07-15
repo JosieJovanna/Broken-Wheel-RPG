@@ -19,10 +19,10 @@ namespace BrokenWheel.UI.StatBar.Implementation
         private readonly StatBarSettings _settings;
         private readonly IStatBox _statBox;
         private readonly IStatBarSuiteDisplay _groupDisplay;
-        
-        private IList<StatBarRelationship> _statBars = new List<StatBarRelationship>();
 
+        private IList<StatBarRelationship> _statBars = new List<StatBarRelationship>();
         private bool _isHiding;
+        private double _highestPpp;
 
         /// <summary>
         /// Creates a group of stat bars, automatically populating 
@@ -116,6 +116,10 @@ namespace BrokenWheel.UI.StatBar.Implementation
             return NewStatBarRelationship(stat, order);
         }
 
+        private void ReportPpp(double ratio) => _highestPpp = System.Math.Max(_highestPpp, ratio);
+
+        private double HighestPpp() => _highestPpp;
+
         private StatBarRelationship NewStatBarRelationship(IComplexStatistic statistic, int order = -1)
         {
             if (order < 0)
@@ -145,16 +149,6 @@ namespace BrokenWheel.UI.StatBar.Implementation
             return _settings.ColorsByCode.Any(kvp => kvp.Key == customStatCode)
                 ? _settings.ColorsByCode.First(kvp => kvp.Key == customStatCode).Value 
                 : _settings.DefaultColors;
-        }
-
-        private void ReportPpp(double ratio)
-        {
-            
-        }
-
-        private int HighestPpp()
-        {
-            
         }
     }
 }

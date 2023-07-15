@@ -34,6 +34,18 @@ namespace BrokenWheel.UI.Display
             if (_display == null)
                 throw new StaticServiceNotInitializedException(nameof(DisplayInfo));
         }
+
+        /// <summary>
+        /// Gets the real pixel width of the display.
+        /// </summary>
+        /// <exception cref="InvalidOperationException"> When not initialized. </exception>
+        public static int WindowWidth() => WindowResolution().Item1;
+
+        /// <summary>
+        /// Gets the real pixel height of the display.
+        /// </summary>
+        /// <exception cref="InvalidOperationException"> When not initialized. </exception>
+        public static int WindowHeight() => WindowResolution().Item2;
         
         /// <summary>
         /// Gets the real pixel resolution of the display.
@@ -44,7 +56,19 @@ namespace BrokenWheel.UI.Display
         {
             return _display?.WindowResolution() ?? throw new InvalidOperationException(ERR_NOT_INITIALIZED);
         }
-        
+
+        /// <summary>
+        /// Gets the pixel width of the UI.
+        /// </summary>
+        /// <exception cref="InvalidOperationException"> When not initialized. </exception>
+        public static int UIWidth() => UIResolution().Item1;
+
+        /// <summary>
+        /// Gets the pixel height of the UI.
+        /// </summary>
+        /// <exception cref="InvalidOperationException"> When not initialized. </exception>
+        public static int UIHeight() => UIResolution().Item2;
+
         /// <summary>
         /// Gets the pixel resolution of the UI.
         /// It is intended that the stat bars, hands, and other GUI elements are at a smaller, low-resolution scale.

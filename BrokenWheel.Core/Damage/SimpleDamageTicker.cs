@@ -42,7 +42,7 @@ namespace BrokenWheel.Core.Damage
         protected override int CalculateTick()
         {
             var temp = _overflow + _dps;
-            var amount = MathUtil.FloorDouble(temp.ToDouble());
+            var amount = MathUtil.LowerDoubleToInt(temp.ToDouble());
             _overflow = temp - amount;
             return amount;
         }

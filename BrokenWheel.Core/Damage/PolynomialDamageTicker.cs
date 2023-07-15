@@ -26,7 +26,7 @@ namespace BrokenWheel.Core.Damage
         protected override int CalculateTick()
         {
             var y = Fx();
-            var amount = MathUtil.FloorDouble(y);
+            var amount = MathUtil.LowerDoubleToInt(y);
             return WithOverflow();
 
             // LOCAL FX
@@ -83,7 +83,7 @@ namespace BrokenWheel.Core.Damage
             var ttl = 0.0;
             for (var i = 1; i <= x; i++)
                 ttl += MathUtil.NonNeg(f.Fx(i));
-            return MathUtil.FloorDouble(ttl);
+            return MathUtil.LowerDoubleToInt(ttl);
         }
     }
 }

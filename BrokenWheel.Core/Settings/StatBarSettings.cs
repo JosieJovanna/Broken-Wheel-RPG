@@ -44,7 +44,7 @@ namespace BrokenWheel.Core.Settings
         /// The number of stat points it takes to increase a stat bar's length by one pixel.
         /// This setting will only be used when set to a <see cref="DisplayMode"/> that scales this way.
         /// </summary>
-        public int DefaultPointsPerPixel { get; internal set; } = 10;
+        public double DefaultPointPerPixelRatio { get; internal set; } = 10;
         
         /// <summary>
         /// The thickness, in pixels, of all of the stat bars.
