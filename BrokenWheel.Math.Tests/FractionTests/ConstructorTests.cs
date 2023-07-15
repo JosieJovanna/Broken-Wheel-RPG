@@ -19,9 +19,9 @@ public class ConstructorTests
     [Fact]
     public void PlainConstructor_Passes()
     {
-        var fraction = new Fraction(VALID_NUMBER, 2, VALID_OPTION);
+        var fraction = new Fraction(VALID_NUMBER, VALID_NUMBER, VALID_OPTION);
         Assert.Equal(VALID_NUMBER, fraction.Numerator);
-        Assert.Equal(2, fraction.Denominator);
+        Assert.Equal(VALID_NUMBER, fraction.Denominator);
         Assert.Equal(VALID_OPTION, fraction.Option);
     }
     
