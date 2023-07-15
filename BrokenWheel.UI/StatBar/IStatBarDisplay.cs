@@ -6,11 +6,13 @@ namespace BrokenWheel.UI.StatBar
     /// A simple interface for controlling the regions that constitute a stat bar.
     /// To be implemented in-engine for the GUI, where the methods affect display rectangles.
     /// Does not handle any logic regarding positioning, which is handled by <see cref="IStatBar"/>.
+    /// Implementation is responsible for interpolating the distances, handling fading effects, et cetera.
     /// </summary>
     public interface IStatBarDisplay
     {
         /// <summary>
         /// Whether the individual stat bar is currently being rendered.
+        /// This will be set after <see cref="Hide"/> is called, as there may be a time taken to fade.
         /// </summary>
         bool IsHidden { get; }
 
