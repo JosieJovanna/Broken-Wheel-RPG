@@ -1,39 +1,4 @@
-﻿namespace BrokenWheel.Math
-{
-    public sealed partial class Fraction
-    {
-        public Fraction() 
-            => Initialize(0, 1);
-
-        public Fraction(long iNumerator, long iDenominator) 
-            => Initialize(iNumerator, iDenominator);
-
-        public Fraction(long iWholeNumber) 
-            => Initialize(iWholeNumber, 1);
-
-        public Fraction(double dDecimalValue)
-        {
-            var temp = ToFraction(dDecimalValue);
-            Initialize(temp.Numerator, temp.Denominator);
-        }
-
-        public Fraction(string strValue)
-        {
-            var temp = ToFraction(strValue);
-            Initialize(temp.Numerator, temp.Denominator);
-        }
-
-        private void Initialize(long iNumerator, long iDenominator)
-        {
-            Numerator = iNumerator;
-            Denominator = iDenominator;
-            ReduceFraction(this);
-        }
-    }
-}
-
-/*
-using BrokenWheel.Math.Options;
+﻿using BrokenWheel.Math.Options;
 
 namespace BrokenWheel.Math
 {
@@ -49,7 +14,7 @@ namespace BrokenWheel.Math
             Initialize(numerator, denominator, option);
         }
 
-        public Fraction(long wholeNumber, ZeroDenominatorOption option)
+        public Fraction(long wholeNumber, ZeroDenominatorOption option = default)
         {
             Initialize(wholeNumber, 1, option);
         }
@@ -68,11 +33,10 @@ namespace BrokenWheel.Math
         
         private void Initialize(long numerator, long denominator, ZeroDenominatorOption zeroDenominatorOption = default)
         {
-            Option = zeroDenominatorOption; // set first so that setting denominator behaves correctly
+            //TODO: Option = zeroDenominatorOption; // set first so that setting denominator behaves correctly
             Numerator = numerator;
             Denominator = denominator;
-            Reduce();
+            Reduce(this);
         }
     }
 }
-*/

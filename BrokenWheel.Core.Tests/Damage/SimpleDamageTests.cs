@@ -30,7 +30,7 @@ public class SimpleDamageTests
         Assert.Equal(duration, damage.TimeRemaining);
         Assert.Equal(0, damage.SecondsPassed);
 
-        Assert.Equal(expectedDps.ToDouble(), damage.DPS);
+        Assert.Equal(expectedDps.AsDouble(), damage.DPS);
         Assert.Equal(type, damage.Type);
     }
 
@@ -92,7 +92,7 @@ public class SimpleDamageTests
             timePassed++;
             timeRemaining--;
             var tick = damage.Dps();
-            var newExpectedDealt = (int)System.Math.Floor((expectedDps * timePassed).ToDouble());
+            var newExpectedDealt = (int)System.Math.Floor((expectedDps * timePassed).AsDouble());
             var expectedTick = newExpectedDealt - expectedDealt;
             var expectedRemaining = amount - newExpectedDealt;
             expectedDealt = newExpectedDealt;
@@ -145,7 +145,7 @@ public class SimpleDamageTests
         var damage = new SimpleDpsCalculator(type, amount, duration);
         var expectedTime = System.Math.Min(duration, time);
         var expectedDps = new Fraction(amount, duration);
-        var expectedDealt = (int)System.Math.Floor(expectedDps.ToDouble() * expectedTime);
+        var expectedDealt = (int)System.Math.Floor(expectedDps.AsDouble() * expectedTime);
 
         // execute
         for (var i = 0; i < time; i++)
@@ -176,7 +176,7 @@ public class SimpleDamageTests
         var damage = new SimpleDpsCalculator(type, amount, duration);
         var expectedTime = System.Math.Min(duration, time);
         var expectedDps = new Fraction(amount, duration);
-        var expectedDealt = (int)System.Math.Floor(expectedDps.ToDouble() * expectedTime);
+        var expectedDealt = (int)System.Math.Floor(expectedDps.AsDouble() * expectedTime);
 
         // execute
         for (var i = 0; i < time; i++)

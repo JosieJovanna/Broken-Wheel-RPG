@@ -65,103 +65,13 @@ namespace BrokenWheel.Math
      */
     public sealed partial class Fraction
     {
+        private long _denominator;
+
         public long Numerator { get; set; }
         public long Denominator
         {
             get => _denominator;
             set => _denominator = FilterZeroValues(value);
-        }
-        public long Value
-        {
-            set
-            {
-                Numerator = value;
-                _denominator = 1;
-            }
-        }
-
-        private long _denominator;
-
-        public Fraction Duplicate()
-        {
-            var frac = new Fraction
-            {
-                Numerator = Numerator,
-                Denominator = Denominator
-            };
-            return frac;
-        }
-
-        public static Fraction Inverse(Fraction frac)
-        {
-            var iNumerator = frac.Denominator;
-            var iDenominator = frac.Numerator;
-            return new Fraction(iNumerator, iDenominator);
-        }
-
-        /// <summary>
-        /// The function reduces(simplifies) a Fraction object by dividing both its numerator 
-        /// and denominator by their GCD
-        /// </summary>
-        public static void ReduceFraction(Fraction frac)
-        {
-            try
-            {
-                AttemptToReduceFraction();
-            }
-            catch (Exception exp)
-            {
-                throw new FractionException("Cannot reduce Fraction: " + exp.Message);
-            }
-
-            // LOCAL FX
-            void AttemptToReduceFraction()
-            {
-                if (frac.Numerator == 0)
-                {
-                    frac.Denominator = 1;
-                    return;
-                }
-                ReduceByGcd();
-            }
-            void ReduceByGcd()
-            {
-                var greatestCommonDenominator = GreatestCommonDenominator(frac.Numerator, frac.Denominator);
-                frac.Numerator /= greatestCommonDenominator;
-                frac.Denominator /= greatestCommonDenominator;
-                MakeNumeratorNegativeInsteadOfTheDenominator();
-            }
-            void MakeNumeratorNegativeInsteadOfTheDenominator()
-            {
-                if (frac.Denominator >= 0) 
-                    return;
-                frac.Numerator *= -1;
-                frac.Denominator *= -1;
-            }
-        }
-
-        /// <summary>
-        /// The function returns Greatest Common Denominator of two numbers (used for reducing a Fraction)
-        /// </summary>
-        private static long GreatestCommonDenominator(long iNo1, long iNo2)
-        {
-            if (iNo1 < 0) 
-                iNo1 = -iNo1;
-            if (iNo2 < 0) 
-                iNo2 = -iNo2;
-            CalculateGcd();
-            return iNo2;
-            
-            // LOCAL FX
-            void CalculateGcd()
-            {
-                do
-                {
-                    if (iNo1 < iNo2)
-                        (iNo1, iNo2) = (iNo2, iNo1);
-                    iNo1 %= iNo2;
-                } while (iNo1 != 0);
-            }
         }
 
         /// <summary>
@@ -180,10 +90,10 @@ namespace BrokenWheel.Math
         /// <summary>
         /// Checks whether two fractions are equal
         /// </summary>
-        public override bool Equals(object obj)
+        public override bool Equals(object value)
         {
-            var frac = (Fraction) obj;
-            return frac != null && Numerator == frac.Numerator && Denominator == frac.Denominator;
+            var fraction = (Fraction) value;
+            return fraction != null && Numerator == fraction.Numerator && Denominator == fraction.Denominator;
         }
 
         /// <summary>
