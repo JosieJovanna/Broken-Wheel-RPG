@@ -1,9 +1,10 @@
 ﻿
 /*
+/*
  * Operators for the Fraction object
  * includes -(unary), and binary operators such as +, -, *, /
  * also includes relational and logical operators such as ==, !=, <, >, <=, >=
- */
+ #1#
 
 namespace BrokenWheel.Math
 {
@@ -50,3 +51,4 @@ namespace BrokenWheel.Math
         public static implicit operator string(Fraction fraction) => fraction.ToString();
     }
 }
+*/

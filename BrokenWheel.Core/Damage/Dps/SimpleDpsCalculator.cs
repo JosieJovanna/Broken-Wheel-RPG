@@ -13,7 +13,7 @@ namespace BrokenWheel.Core.Damage.Dps
     /// </summary>
     internal class SimpleDpsCalculator : DpsCalculator
     {
-        public double DPS => _dps.ToDouble();
+        public double DPS { get => _dps.ToDouble(); }
 
         private readonly Fraction _dps;
         private Fraction _overflow = new Fraction();
