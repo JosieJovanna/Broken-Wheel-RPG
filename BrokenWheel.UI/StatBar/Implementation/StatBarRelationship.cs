@@ -1,6 +1,5 @@
 ﻿using System;
 using BrokenWheel.Core.Settings;
-using BrokenWheel.Core.Settings.Registration;
 using BrokenWheel.Core.Stats;
 
 namespace BrokenWheel.UI.StatBar.Implementation
@@ -21,7 +20,7 @@ namespace BrokenWheel.UI.StatBar.Implementation
             int order = 99)
         {
             if (statBarSettings == null)
-                statBarSettings = SettingsRegistry.GetSettings<StatBarSettings>();
+                throw new ArgumentNullException(nameof(statBarSettings));
             if (complexStatistic == null)
                 throw new ArgumentNullException(nameof(complexStatistic));
             if (statBarDisplay == null)
