@@ -28,7 +28,7 @@ namespace BrokenWheel.UI.StatBar
         /// Sets the stat bar's position relative to the screen, and the size of the outline.
         /// The border is overlapped by all other display sections.
         /// </summary>
-        void SetBarDimensions(int xPosition, int yPosition, int width, int height);
+        void SetBorderDimensions(int xPosition, int yPosition, int width, int height);
 
         /// <summary>
         /// Sets the stat bar's background position and size relative to the bottom-left corner of the border.
@@ -49,7 +49,7 @@ namespace BrokenWheel.UI.StatBar
         /// When health is decreasing, represents the current value; when increasing, represents the target value.
         /// Due to changing positioning, this and the primary section should not overlap.
         /// </summary>
-        void SetSecondaryPosition(int xPosition, int yPosition, int width, int height);
+        void SetSecondaryDimensions(int xPosition, int yPosition, int width, int height);
 
         /// <summary>
         /// Sets the stat bar's exhaustion position and size relative to the bottom-left corner of the border.

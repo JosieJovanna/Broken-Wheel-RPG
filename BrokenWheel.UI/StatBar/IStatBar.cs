@@ -7,7 +7,7 @@ namespace BrokenWheel.UI.StatBar
     /// <summary>
     /// An object which controls the <see cref="IStatBarDisplay"/>s conveying a <see cref="IComplexStatistic"/>.
     /// </summary>
-    public interface IStatBar
+    internal interface IStatBar
     {
         /// <summary>
         /// The type of stat being tracked.
