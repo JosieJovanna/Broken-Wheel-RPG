@@ -1,9 +1,9 @@
 ﻿using System;
-using BrokenWheel.Core.Stats;
 using BrokenWheel.Core.Settings;
 using BrokenWheel.Core.Settings.Registration;
+using BrokenWheel.Core.Stats;
 
-namespace BrokenWheel.UI.StatBar
+namespace BrokenWheel.UI.StatBar.Implementation
 {
     internal class StatBarRelationship
     {
@@ -32,6 +32,7 @@ namespace BrokenWheel.UI.StatBar
                 throw new ArgumentNullException(nameof(highestPointsPerPixelDelegate));
             
             Order = order;
+            Stat = complexStatistic;
             StatBar = new StatBar(
                 statBarSettings, 
                 complexStatistic, 

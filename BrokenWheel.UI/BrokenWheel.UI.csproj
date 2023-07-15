@@ -8,20 +8,4 @@
       <ProjectReference Include="..\BrokenWheel.Core\BrokenWheel.Core.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Compile Update="StatBar\StatBar.cs">
-        <DependentUpon>IStatBar.cs</DependentUpon>
-      </Compile>
-      <Compile Update="StatBar\StatBarSuite.cs">
-        <DependentUpon>IStatBarSuite.cs</DependentUpon>
-      </Compile>
-      <Compile Update="StatBar\StatBarRelationship.cs">
-        <DependentUpon>IStatBarSuite.cs</DependentUpon>
-      </Compile>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="StatBar\Implementation" />
-    </ItemGroup>
-
 </Project>

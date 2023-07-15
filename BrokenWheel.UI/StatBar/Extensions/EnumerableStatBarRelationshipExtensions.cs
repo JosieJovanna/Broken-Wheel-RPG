@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using BrokenWheel.Core.Stats;
+using BrokenWheel.UI.StatBar.Implementation;
 
 namespace BrokenWheel.UI.StatBar.Extensions
 {

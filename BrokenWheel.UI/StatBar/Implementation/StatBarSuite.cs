@@ -9,7 +9,7 @@ using BrokenWheel.Core.Stats.Extensions;
 using BrokenWheel.Core.Stats.Processing;
 using BrokenWheel.UI.StatBar.Extensions;
 
-namespace BrokenWheel.UI.StatBar
+namespace BrokenWheel.UI.StatBar.Implementation
 {
     public class StatBarSuite : IStatBarSuite
     {

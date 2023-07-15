@@ -5,7 +5,7 @@ using BrokenWheel.Core.Settings.Registration;
 using BrokenWheel.Core.Stats;
 using BrokenWheel.Core.Stats.Enum;
 
-namespace BrokenWheel.UI.StatBar
+namespace BrokenWheel.UI.StatBar.Implementation
 {
     public class StatBar : IStatBar
     {
