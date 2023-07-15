@@ -70,9 +70,7 @@ namespace BrokenWheel.UI.StatBar.Implementation
         public void StatUpdateHandler(object sender, StatUpdateEventArgs args)
         {
             if (!args.IsComplexStat())
-                throw new InvalidOperationException(
-                    $"Stat bars only support complex stats - '{args.Stat.Info.Name}' is not complex.");
-            //_stat = args.StatAsComplex(); TODO: Return to this. Unsure if reference types are sufficient.
+                throw new InvalidOperationException($"Stat bars only support complex stats - '{args.Stat.Info.Name}' is not complex.");
             UpdateDisplay();
         }
 

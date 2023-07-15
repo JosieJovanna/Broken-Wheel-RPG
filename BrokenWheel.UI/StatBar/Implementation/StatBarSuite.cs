@@ -18,8 +18,8 @@ namespace BrokenWheel.UI.StatBar.Implementation
         private readonly StatBarSettings _settings;
         private readonly IStatBox _statBox;
         private readonly IStatBarSuiteDisplay _groupDisplay;
-
-        private IList<StatBarRelationship> _statBars = new List<StatBarRelationship>();
+        private readonly IList<StatBarRelationship> _statBars = new List<StatBarRelationship>();
+        
         private bool _isHiding;
         private double _highestPpp;
 
@@ -44,6 +44,7 @@ namespace BrokenWheel.UI.StatBar.Implementation
         {
             if (!_isHiding)
                 return;
+            
             UpdateDisplays();
             _groupDisplay.Show();
             _isHiding = false;
@@ -53,6 +54,7 @@ namespace BrokenWheel.UI.StatBar.Implementation
         {
             if (_isHiding)
                 return;
+            
             _groupDisplay.Hide();
             _isHiding = true;
         }
@@ -81,6 +83,7 @@ namespace BrokenWheel.UI.StatBar.Implementation
         {
             if (!HasStat(type))
                 return;
+            
             var toRemove = _statBars.First(_ => _.Type != type);
             _groupDisplay.RemoveDisplay(toRemove.StatBar.Display);
             _statBars.Remove(toRemove);
@@ -125,7 +128,8 @@ namespace BrokenWheel.UI.StatBar.Implementation
             if (order < 0)
                 order = _statBars.Count;
             var colors = ColorSettingsForStat(statistic.Info);
-            var display = _groupDisplay.CreateStatBarDisplay(colors);
+            var display = _groupDisplay.AddDisplay(statistic.Info.Name);
+            display.SetColorProfile(colors);
             return new StatBarRelationship(_settings, statistic, display, ReportPpp, HighestPpp, order);
         }
 

@@ -1,16 +1,11 @@
-﻿using BrokenWheel.Core.Settings;
-
-namespace BrokenWheel.UI.StatBar
+﻿namespace BrokenWheel.UI.StatBar
 {
     public interface IStatBarSuiteDisplay
     {
         void Show();
         void Hide();
 
-        void AddBar(IStatBarDisplay display);
+        IStatBarDisplay AddDisplay(string name);
         void RemoveDisplay(IStatBarDisplay display);
-
-        IStatBarDisplay CreateStatBarDisplay(StatBarColorSettings colorSettings);
-        void DestroyStatBarDisplay(IStatBarDisplay display);
     }
 }
