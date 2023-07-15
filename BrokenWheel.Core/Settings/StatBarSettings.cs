@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Drawing;
 using BrokenWheel.Core.Settings.Registration;
 using BrokenWheel.Core.Stats;
 
@@ -29,22 +30,50 @@ namespace BrokenWheel.Core.Settings
         /// <summary>
         /// The color profile of the health bar.
         /// </summary>
-        public StatBarColorSettings HpColors { get; internal set; }
+        public StatBarColorSettings HpColors { get; internal set; } = new StatBarColorSettings
+        {
+            BorderColor = Color.White,
+            BackgroundColor = Color.Black,
+            PrimaryColor = Color.Red,
+            SecondaryColor = Color.Coral,
+            ExhaustionColor = Color.DarkRed
+        };
 
         /// <summary>
         /// The color profile of the stamina bar.
         /// </summary>
-        public StatBarColorSettings SpColors { get; internal set; }
+        public StatBarColorSettings SpColors { get; internal set; } = new StatBarColorSettings
+        {
+            BorderColor = Color.White,
+            BackgroundColor = Color.Black,
+            PrimaryColor = Color.LimeGreen,
+            SecondaryColor = Color.GreenYellow,
+            ExhaustionColor = Color.DarkGreen
+        };
 
         /// <summary>
         /// The color profile of the willpower bar.
         /// </summary>
-        public StatBarColorSettings WpColors { get; internal set; }
+        public StatBarColorSettings WpColors { get; internal set; } = new StatBarColorSettings
+        {
+            BorderColor = Color.White,
+            BackgroundColor = Color.Black,
+            PrimaryColor = Color.RoyalBlue,
+            SecondaryColor = Color.Cyan,
+            ExhaustionColor = Color.DarkBlue
+        };
 
         /// <summary>
         /// The default color profile for any other stat added not included in <see cref="ColorsByCode"/>.
         /// </summary>
-        public StatBarColorSettings DefaultColors { get; internal set; }
+        public StatBarColorSettings DefaultColors { get; internal set; } = new StatBarColorSettings
+        {
+            BorderColor = Color.White,
+            BackgroundColor = Color.Black,
+            PrimaryColor = Color.DarkGoldenrod,
+            SecondaryColor = Color.Gold,
+            ExhaustionColor = Color.SaddleBrown
+        };
 
         /// <summary>
         /// Color profiles for any non-standard stats being tracked.
