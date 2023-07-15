@@ -8,7 +8,7 @@ namespace BrokenWheel.UI.StatBar
         void Hide();
 
         void AddBar(IStatBarDisplay display);
-        void RemoveBar(IStatBarDisplay display);
+        void RemoveDisplay(IStatBarDisplay display);
 
         IStatBarDisplay CreateStatBarDisplay(StatBarColorSettings colorSettings);
         void DestroyStatBarDisplay(IStatBarDisplay display);

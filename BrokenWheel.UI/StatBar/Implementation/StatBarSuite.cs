@@ -34,7 +34,7 @@ namespace BrokenWheel.UI.StatBar.Implementation
             _settings = SettingsRegistry.GetSettings<StatBarSettings>();
             _statBox = statBox ?? throw new ArgumentNullException(nameof(statBox));
             _groupDisplay = suiteDisplay ?? throw new ArgumentNullException(nameof(suiteDisplay));
-            // main stat displays
+
             for (var i = 0; i < _settings.MainStatOrder.Length; i++)
                 _statBars.Add(NewStatBarRelationship(_settings.MainStatOrder[i], i));
             UpdateDisplays();
@@ -79,14 +79,21 @@ namespace BrokenWheel.UI.StatBar.Implementation
 
         public void RemoveStat(StatType type)
         {
-            if (HasStat(type))
-                _statBars = _statBars.Where(_ => _.Type != type).ToList();
+            if (!HasStat(type))
+                return;
+            var toRemove = _statBars.First(_ => _.Type != type);
+            _groupDisplay.RemoveDisplay(toRemove.StatBar.Display);
+            _statBars.Remove(toRemove);
         }
 
         public void RemoveCustomStat(string code)
         {
-            if (HasStat(code))
-                _statBars = _statBars.Where(_ => _.StatBar.Info.Code != code).ToList();
+            if (!HasStat(code))
+                return;
+            
+            var toRemove = _statBars.First(_ => _.StatBar.Info.Code == code);
+            _groupDisplay.RemoveDisplay(toRemove.StatBar.Display);
+            _statBars.Remove(toRemove);
         }
 
         private bool HasStat(StatType type) => _statBars.Any(_ => _.Type == type);

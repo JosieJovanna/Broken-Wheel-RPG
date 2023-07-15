@@ -10,6 +10,11 @@ namespace BrokenWheel.UI.StatBar
     internal interface IStatBar
     {
         /// <summary>
+        /// The GUI representation of the stat bar.
+        /// </summary>
+        IStatBarDisplay Display { get; }
+
+        /// <summary>
         /// The type of stat being tracked.
         /// </summary>
         StatTypeInfo Info { get; }

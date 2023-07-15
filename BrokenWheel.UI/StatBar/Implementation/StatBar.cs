@@ -15,7 +15,6 @@ namespace BrokenWheel.UI.StatBar.Implementation
         
         private readonly StatBarSettings _settings;
         private readonly IComplexStatistic _stat;
-        private readonly IStatBarDisplay _display;
         private readonly ReportPointsPerPixel _reportPpp;
         private readonly HighestPointsPerPixel _highestPpp;
 
@@ -41,21 +40,22 @@ namespace BrokenWheel.UI.StatBar.Implementation
         {
             _settings = statBarSettings ?? throw new ArgumentNullException(nameof(statBarSettings));
             _stat = complexStatisticToTrack ?? throw new ArgumentNullException(nameof(complexStatisticToTrack));
-            _display = statBarDisplay ?? throw new ArgumentNullException(nameof(statBarDisplay));
+            Display = statBarDisplay ?? throw new ArgumentNullException(nameof(statBarDisplay));
             _reportPpp = reportPointsPerPixel ?? throw new ArgumentNullException(nameof(reportPointsPerPixel));
             _highestPpp = highestPointsPerPixel ?? throw new ArgumentNullException(nameof(highestPointsPerPixel));
             UpdateDisplay();
         }
 
+        public IStatBarDisplay Display { get; }
         public StatTypeInfo Info { get => _stat.Info; }
-        public bool IsHidden { get => _display.IsHidden; }
+        public bool IsHidden { get => Display.IsHidden; }
 
         public void Show()
         {
             if (!_isHiding)
                 return;
             UpdateDisplay();
-            _display.Show();
+            Display.Show();
             _isHiding = false;
         }
 
@@ -63,7 +63,7 @@ namespace BrokenWheel.UI.StatBar.Implementation
         {
             if (_isHiding)
                 return;
-            _display.Hide();
+            Display.Hide();
             _isHiding = true;
         }
 
@@ -172,14 +172,14 @@ namespace BrokenWheel.UI.StatBar.Implementation
             var thickness = p.Thickness + borderSizeX2;
             var width = p.IsVertical ? thickness : length;
             var height = p.IsVertical ? length : thickness;
-            _display.SetBorderDimensions(p.BaseX, p.BaseY, width, height);
+            Display.SetBorderDimensions(p.BaseX, p.BaseY, width, height);
         }
 
         private void UpdateBackground(UpdateDisplayParameters p)
         {
             var width = p.IsVertical ? p.Thickness : p.FullLength;
             var height = p.IsVertical ? p.FullLength : p.Thickness;
-            _display.SetBackgroundDimensions(p.BackgroundX, p.BackgroundY, width, height);
+            Display.SetBackgroundDimensions(p.BackgroundX, p.BackgroundY, width, height);
         }
 
         private void UpdatePrimary(UpdateDisplayParameters p, out int length)
@@ -187,7 +187,7 @@ namespace BrokenWheel.UI.StatBar.Implementation
             length = 10; // TODO: current value/destination value
             var width = p.IsVertical ? p.Thickness : length;
             var height = p.IsVertical ? length : p.Thickness;
-            _display.SetPrimaryDimensions(p.BackgroundX, p.BackgroundY, width, height);
+            Display.SetPrimaryDimensions(p.BackgroundX, p.BackgroundY, width, height);
         }
 
         private void UpdateSecondary(UpdateDisplayParameters p, int primaryLength)
@@ -196,7 +196,7 @@ namespace BrokenWheel.UI.StatBar.Implementation
             var (x, y, width, height) = p.IsVertical 
                 ? VerticalSecondaryDimensions(p, primaryLength, length) 
                 : HorizontalSecondaryDimensions(p, primaryLength, length);
-            _display.SetSecondaryDimensions(x, y, width, height);
+            Display.SetSecondaryDimensions(x, y, width, height);
         }
 
         private static (int, int, int, int) VerticalSecondaryDimensions(UpdateDisplayParameters p, int primaryLength, int length)
@@ -223,7 +223,7 @@ namespace BrokenWheel.UI.StatBar.Implementation
             var (x, y, width, height) = p.IsVertical
                 ? VerticalExhaustionDimensions(p, length)
                 : HorizontalExhaustionDimensions(p, length);
-            _display.SetExhaustionDimensions(x, y, width, height);
+            Display.SetExhaustionDimensions(x, y, width, height);
         }
         
 
