@@ -33,7 +33,7 @@ namespace BrokenWheel.Math
         
         private void Initialize(long numerator, long denominator, ZeroDenominatorOption zeroDenominatorOption = default)
         {
-            //TODO: Option = zeroDenominatorOption; // set first so that setting denominator behaves correctly
+            Option = zeroDenominatorOption; // set first so that setting denominator behaves correctly
             Numerator = numerator;
             Denominator = denominator;
             Reduce(this);

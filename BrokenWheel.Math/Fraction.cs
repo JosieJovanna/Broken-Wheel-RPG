@@ -1,5 +1,6 @@
 using System;
 using System.Globalization;
+using BrokenWheel.Math.Options;
 
 namespace BrokenWheel.Math
 {
@@ -71,7 +72,41 @@ namespace BrokenWheel.Math
         public long Denominator
         {
             get => _denominator;
-            set => _denominator = FilterZeroValues(value);
+            set => _denominator = HandleZeroDenominators(value);
+        }
+        
+        public ZeroDenominatorOption Option { get; set; }
+        
+        private long HandleZeroDenominators(long denominator)
+        {
+            return denominator == 0 
+                ? HandleZeroDenominator(denominator) 
+                : denominator;
+        }
+
+        private long HandleZeroDenominator(long denominator)
+        {
+            switch (Option)
+            {
+                case ZeroDenominatorOption.ThrowOnSetting:
+                    throw new FractionException("Denominator cannot be '0'; cannot divide by zero.");
+                case ZeroDenominatorOption.ThrowOnGetting:
+                    return 0;
+                case ZeroDenominatorOption.SetValueToZero:
+                    Numerator = 0;
+                    return 1;
+                case ZeroDenominatorOption.GetValueAsZero:
+                case ZeroDenominatorOption.Ignore:
+                default:
+                    return denominator;
+            }
+        }
+
+        private static ZeroDenominatorOption SameOrDefaultZeroOption(Fraction fraction1, Fraction fraction2)
+        {
+            return fraction1.Option == fraction2.Option 
+                ? fraction1.Option 
+                : default;
         }
 
         /// <summary>
@@ -103,13 +138,6 @@ namespace BrokenWheel.Math
         {
             // ReSharper disable once NonReadonlyMemberInGetHashCode
             return Convert.ToInt32((Numerator ^ Denominator) & 0xFFFFFFFF);
-        }
-
-        private static long FilterZeroValues(long value)
-        {
-            if (value == 0)
-                throw new FractionException("Denominator cannot be assigned a ZERO Value");
-            return value;
         }
     }
 }

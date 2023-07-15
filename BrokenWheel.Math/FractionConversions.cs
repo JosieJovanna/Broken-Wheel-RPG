@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using BrokenWheel.Math.Options;
 
 namespace BrokenWheel.Math
 {
@@ -10,33 +11,11 @@ namespace BrokenWheel.Math
         /// </summary>
         public double AsDouble()
         {
-            return (double) Numerator / Denominator;
-        }
-
-        /// <summary>
-        /// The function takes an string as an argument and returns its corresponding reduced fraction
-        /// the string can be an in the form of and integer, double or fraction.
-        /// e.g it can be like "123" or "123.321" or "123/456"
-        /// </summary>
-        public static Fraction FromString(string value)
-        {
-            var i = IndexOfSlash();
-            if (i == value.Length) // if string is not in the form of a fraction
-                return Convert.ToDouble(value);
-            
-            var numerator = Convert.ToInt64(value.Substring(0, i));
-            var denominator = Convert.ToInt64(value.Substring(i + 1));
-            return new Fraction(numerator, denominator);
-            
-            // LOCAL FX
-            int IndexOfSlash()
-            {
-                int j;
-                for (j = 0; j < value.Length; j++)
-                    if (value[j] == '/')
-                        break;
-                return j;
-            }
+            if (Denominator != 0 || Option == ZeroDenominatorOption.Ignore)
+                return (double)Numerator / Denominator;
+            if (Option == ZeroDenominatorOption.GetValueAsZero)
+                return 0;
+            throw new FractionException("Cannot evaluate a fraction with zero denominator.");
         }
 
         /// <summary>
@@ -105,6 +84,32 @@ namespace BrokenWheel.Math
                 while (tempString[index] != '.')
                     index++;
                 return index;
+            }
+        }
+
+        /// <summary>
+        /// The function takes an string as an argument and returns its corresponding reduced fraction
+        /// the string can be an in the form of and integer, double or fraction.
+        /// e.g it can be like "123" or "123.321" or "123/456"
+        /// </summary>
+        public static Fraction FromString(string value)
+        {
+            var i = IndexOfSlash();
+            if (i == value.Length) // if string is not in the form of a fraction
+                return Convert.ToDouble(value);
+            
+            var numerator = Convert.ToInt64(value.Substring(0, i));
+            var denominator = Convert.ToInt64(value.Substring(i + 1));
+            return new Fraction(numerator, denominator);
+            
+            // LOCAL FX
+            int IndexOfSlash()
+            {
+                int j;
+                for (j = 0; j < value.Length; j++)
+                    if (value[j] == '/')
+                        break;
+                return j;
             }
         }
     }
