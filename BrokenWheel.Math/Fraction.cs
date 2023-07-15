@@ -63,7 +63,7 @@ namespace BrokenWheel.Math
      * 	   Implicit: From double/long/string to Fraction
      * 	   Explicit: From Fraction to double/string
      */
-    public sealed class Fraction
+    public sealed partial class Fraction
     {
         public long Numerator { get; set; }
         public long Denominator
@@ -81,36 +81,6 @@ namespace BrokenWheel.Math
         }
 
         private long _denominator;
-
-        #region Constructors
-        public Fraction() 
-            => Initialize(0, 1);
-
-        public Fraction(long iNumerator, long iDenominator) 
-            => Initialize(iNumerator, iDenominator);
-
-        public Fraction(long iWholeNumber) 
-            => Initialize(iWholeNumber, 1);
-
-        public Fraction(double dDecimalValue)
-        {
-            var temp = ToFraction(dDecimalValue);
-            Initialize(temp.Numerator, temp.Denominator);
-        }
-
-        public Fraction(string strValue)
-        {
-            var temp = ToFraction(strValue);
-            Initialize(temp.Numerator, temp.Denominator);
-        }
-
-        private void Initialize(long iNumerator, long iDenominator)
-        {
-            Numerator = iNumerator;
-            Denominator = iDenominator;
-            ReduceFraction(this);
-        }
-        #endregion
 
         public Fraction Duplicate()
         {
@@ -195,173 +165,6 @@ namespace BrokenWheel.Math
         }
 
         /// <summary>
-        /// The function returns the current Fraction object as double
-        /// </summary>
-        public double ToDouble()
-        {
-            return (double) Numerator / Denominator;
-        }
-
-        /// <summary>
-        /// The function takes an string as an argument and returns its corresponding reduced fraction
-        /// the string can be an in the form of and integer, double or fraction.
-        /// e.g it can be like "123" or "123.321" or "123/456"
-        /// </summary>
-        public static Fraction ToFraction(string strValue)
-        {
-            var i = IndexOfSlash();
-            if (i == strValue.Length) // if string is not in the form of a fraction
-                return Convert.ToDouble(strValue);
-            
-            var iNumerator = Convert.ToInt64(strValue.Substring(0, i));
-            var iDenominator = Convert.ToInt64(strValue.Substring(i + 1));
-            return new Fraction(iNumerator, iDenominator);
-            
-            // LOCAL FX
-            int IndexOfSlash()
-            {
-                int i1;
-                for (i1 = 0; i1 < strValue.Length; i1++)
-                    if (strValue[i1] == '/')
-                        break;
-                return i1;
-            }
-        }
-
-
-        /// <summary>
-        /// The function takes a floating point number as an argument 
-        /// and returns its corresponding reduced fraction
-        /// </summary>
-        public static Fraction ToFraction(double dValue)
-        {
-            try
-            {
-                return ToFractionChecked(dValue);
-            }
-            catch (OverflowException ex)
-            {
-                throw new FractionException("Conversion not possible due to overflow", ex);
-            }
-            catch (Exception ex)
-            {
-                throw new FractionException("Conversion not possible", ex);
-            }
-        }
-
-        private static Fraction ToFractionChecked(double dValue)
-        {
-            checked
-            {
-                return dValue % 1 == 0 // if whole number
-                    ? new Fraction((long) dValue) 
-                    : ToFractionFromFloatingPoint(dValue);
-            }
-        }
-
-        private static Fraction ToFractionFromFloatingPoint(double dValue)
-        {
-            var dTemp = dValue;
-            var iMultiple = 1L;
-            var strTemp = dValue.ToString(CultureInfo.InvariantCulture);
-
-            ProcessWhole();
-            ProcessDecimal();
-            return new Fraction((int) System.Math.Round(dTemp), iMultiple);
-            
-            // LOCAL FX
-            void ProcessWhole()
-            {
-                while (strTemp.IndexOf("E", StringComparison.Ordinal) > 0) // if in the form like 12E-9
-                {
-                    dTemp *= 10;
-                    iMultiple *= 10;
-                    strTemp = dTemp.ToString(CultureInfo.InvariantCulture);
-                }
-            }
-            void ProcessDecimal()
-            {
-                var iDigitsAfterDecimal = strTemp.Length - IndexOfDecimalPoint() - 1;
-                while (iDigitsAfterDecimal > 0)
-                {
-                    dTemp *= 10;
-                    iMultiple *= 10;
-                    iDigitsAfterDecimal--;
-                }
-            }
-            int IndexOfDecimalPoint()
-            {
-                var idx = 0;
-                while (strTemp[idx] != '.')
-                    idx++;
-                return idx;
-            }
-        }
-
-        #region Static Math Methods
-        private static Fraction Negate(Fraction frac1)
-        {
-            var iNumerator = -frac1.Numerator;
-            var iDenominator = frac1.Denominator;
-            return new Fraction(iNumerator, iDenominator);
-        }
-
-        private static Fraction TryAdd(Fraction frac1, Fraction frac2)
-        {
-            try
-            {
-                return Add(frac1, frac2);
-            }
-            catch (OverflowException ex)
-            {
-                throw new FractionException("Overflow occurred while performing arithmetic operation", ex);
-            }
-            catch (Exception ex)
-            {
-                throw new FractionException("An error occurred while performing arithmetic operation", ex);
-            }
-        }
-
-        private static Fraction Add(Fraction frac1, Fraction frac2)
-        {
-            checked
-            {
-                var iNumerator = frac1.Numerator * frac2.Denominator + frac2.Numerator * frac1.Denominator;
-                var iDenominator = frac1.Denominator * frac2.Denominator;
-                return new Fraction(iNumerator, iDenominator);
-            }
-        }
-
-        private static Fraction TryMultiply(Fraction frac1, Fraction frac2)
-        {
-            try
-            {
-                return Multiply(frac1, frac2);
-            }
-            catch (OverflowException ex)
-            {
-                throw new FractionException("Overflow occurred while performing arithmetic operation", ex);
-            }
-            catch (Exception ex)
-            {
-                throw new FractionException("An error occurred while performing arithmetic operation", ex);
-            }
-        }
-
-        private static Fraction Multiply(Fraction frac1, Fraction frac2)
-        {
-            checked
-            {
-                var iNumerator = frac1.Numerator * frac2.Numerator;
-                var iDenominator = frac1.Denominator * frac2.Denominator;
-                return new Fraction(iNumerator, iDenominator);
-            }
-        }
-
-        #endregion
-
-        #region Object Overrides
-        /// <summary>
         /// The function returns the current Fraction object as a string
         /// </summary>
         public override string ToString()
@@ -391,62 +194,6 @@ namespace BrokenWheel.Math
             // ReSharper disable once NonReadonlyMemberInGetHashCode
             return Convert.ToInt32((Numerator ^ Denominator) & 0xFFFFFFFF);
         }
-        #endregion
-
-        // Operators for the Fraction object
-        // includes -(unary), and binary operators such as +, -, *, /
-        // also includes relational and logical operators such as ==, !=, <, >, <=, >=
-        #region Operators
-        public static Fraction operator -(Fraction frac1) => Negate(frac1);
-        public static Fraction operator +(Fraction frac1, Fraction frac2) => TryAdd(frac1, frac2);
-        public static Fraction operator +(int iNo, Fraction frac1) => TryAdd(frac1, new Fraction(iNo));
-        public static Fraction operator +(Fraction frac1, int iNo) => TryAdd(frac1, new Fraction(iNo));
-        public static Fraction operator +(double dbl, Fraction frac1) => TryAdd(frac1, ToFraction(dbl));
-        public static Fraction operator +(Fraction frac1, double dbl) => TryAdd(frac1, ToFraction(dbl));
-        public static Fraction operator -(Fraction frac1, Fraction frac2) => TryAdd(frac1, -frac2);
-        public static Fraction operator -(int iNo, Fraction frac1) => TryAdd(-frac1, new Fraction(iNo));
-        public static Fraction operator -(Fraction frac1, int iNo) => TryAdd(frac1, -new Fraction(iNo));
-        public static Fraction operator -(double dbl, Fraction frac1) => TryAdd(-frac1, ToFraction(dbl));
-        public static Fraction operator -(Fraction frac1, double dbl) => TryAdd(frac1, -ToFraction(dbl));
-        public static Fraction operator *(Fraction frac1, Fraction frac2) => TryMultiply(frac1, frac2);
-        public static Fraction operator *(int iNo, Fraction frac1) => TryMultiply(frac1, new Fraction(iNo));
-        public static Fraction operator *(Fraction frac1, int iNo) => TryMultiply(frac1, new Fraction(iNo));
-        public static Fraction operator *(double dbl, Fraction frac1) => TryMultiply(frac1, ToFraction(dbl));
-        public static Fraction operator *(Fraction frac1, double dbl) => TryMultiply(frac1, ToFraction(dbl));
-        public static Fraction operator /(Fraction frac1, Fraction frac2) => TryMultiply(frac1, Inverse(frac2));
-        public static Fraction operator /(int iNo, Fraction frac1) => TryMultiply(Inverse(frac1), new Fraction(iNo));
-        public static Fraction operator /(Fraction frac1, int iNo) => TryMultiply(frac1, Inverse(new Fraction(iNo)));
-        public static Fraction operator /(double dbl, Fraction frac1) => TryMultiply(Inverse(frac1), ToFraction(dbl));
-        public static Fraction operator /(Fraction frac1, double dbl) => TryMultiply(frac1, Inverse(ToFraction(dbl)));
-        
-        public static bool operator ==(Fraction frac1, Fraction frac2) 
-            => frac1 != null && frac1.Equals(frac2);
-        public static bool operator ==(Fraction frac1, int iNo) 
-            => frac1 != null && frac1.Equals(new Fraction(iNo));
-        public static bool operator ==(Fraction frac1, double dbl) 
-            => frac1 != null && frac1.Equals(new Fraction(dbl));
-        public static bool operator !=(Fraction frac1, Fraction frac2) 
-            => frac1 == null || !frac1.Equals(frac2);
-        public static bool operator !=(Fraction frac1, int iNo) 
-            => frac1 == null || !frac1.Equals(new Fraction(iNo));
-        public static bool operator !=(Fraction frac1, double dbl) 
-            => frac1 == null || !frac1.Equals(new Fraction(dbl));
-
-        public static bool operator <(Fraction frac1, Fraction frac2) 
-            => frac1.Numerator * frac2.Denominator < frac2.Numerator * frac1.Denominator;
-        public static bool operator >(Fraction frac1, Fraction frac2) 
-            => frac1.Numerator * frac2.Denominator > frac2.Numerator * frac1.Denominator;
-        public static bool operator <=(Fraction frac1, Fraction frac2) 
-            => frac1.Numerator * frac2.Denominator <= frac2.Numerator * frac1.Denominator;
-        public static bool operator >=(Fraction frac1, Fraction frac2) 
-            => frac1.Numerator * frac2.Denominator >= frac2.Numerator * frac1.Denominator;
-
-        public static implicit operator Fraction(long lNo) => new Fraction(lNo);
-        public static implicit operator Fraction(double dNo) => new Fraction(dNo);
-        public static implicit operator Fraction(string strNo) => new Fraction(strNo);
-        public static explicit operator double(Fraction frac) => frac.ToDouble();
-        public static implicit operator string(Fraction frac) => frac.ToString();
-        #endregion
 
         private static long FilterZeroValues(long value)
         {

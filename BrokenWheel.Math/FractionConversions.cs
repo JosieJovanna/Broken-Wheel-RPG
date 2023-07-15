@@ -1,4 +1,117 @@
-﻿/*
+﻿using System;
+using System.Globalization;
+
+namespace BrokenWheel.Math
+{
+    public sealed partial class Fraction
+    {
+        /// <summary>
+        /// The function returns the current Fraction object as double
+        /// </summary>
+        public double ToDouble()
+        {
+            return (double) Numerator / Denominator;
+        }
+
+        /// <summary>
+        /// The function takes an string as an argument and returns its corresponding reduced fraction
+        /// the string can be an in the form of and integer, double or fraction.
+        /// e.g it can be like "123" or "123.321" or "123/456"
+        /// </summary>
+        public static Fraction ToFraction(string strValue)
+        {
+            var i = IndexOfSlash();
+            if (i == strValue.Length) // if string is not in the form of a fraction
+                return Convert.ToDouble(strValue);
+            
+            var iNumerator = Convert.ToInt64(strValue.Substring(0, i));
+            var iDenominator = Convert.ToInt64(strValue.Substring(i + 1));
+            return new Fraction(iNumerator, iDenominator);
+            
+            // LOCAL FX
+            int IndexOfSlash()
+            {
+                int i1;
+                for (i1 = 0; i1 < strValue.Length; i1++)
+                    if (strValue[i1] == '/')
+                        break;
+                return i1;
+            }
+        }
+
+
+        /// <summary>
+        /// The function takes a floating point number as an argument 
+        /// and returns its corresponding reduced fraction
+        /// </summary>
+        public static Fraction ToFraction(double dValue)
+        {
+            try
+            {
+                return ToFractionChecked(dValue);
+            }
+            catch (OverflowException ex)
+            {
+                throw new FractionException("Conversion not possible due to overflow", ex);
+            }
+            catch (Exception ex)
+            {
+                throw new FractionException("Conversion not possible", ex);
+            }
+        }
+
+        private static Fraction ToFractionChecked(double dValue)
+        {
+            checked
+            {
+                return dValue % 1 == 0 // if whole number
+                    ? new Fraction((long) dValue) 
+                    : ToFractionFromFloatingPoint(dValue);
+            }
+        }
+
+        private static Fraction ToFractionFromFloatingPoint(double dValue)
+        {
+            var dTemp = dValue;
+            var iMultiple = 1L;
+            var strTemp = dValue.ToString(CultureInfo.InvariantCulture);
+
+            ProcessWhole();
+            ProcessDecimal();
+            return new Fraction((int) System.Math.Round(dTemp), iMultiple);
+            
+            // LOCAL FX
+            void ProcessWhole()
+            {
+                while (strTemp.IndexOf("E", StringComparison.Ordinal) > 0) // if in the form like 12E-9
+                {
+                    dTemp *= 10;
+                    iMultiple *= 10;
+                    strTemp = dTemp.ToString(CultureInfo.InvariantCulture);
+                }
+            }
+            void ProcessDecimal()
+            {
+                var iDigitsAfterDecimal = strTemp.Length - IndexOfDecimalPoint() - 1;
+                while (iDigitsAfterDecimal > 0)
+                {
+                    dTemp *= 10;
+                    iMultiple *= 10;
+                    iDigitsAfterDecimal--;
+                }
+            }
+            int IndexOfDecimalPoint()
+            {
+                var idx = 0;
+                while (strTemp[idx] != '.')
+                    idx++;
+                return idx;
+            }
+        }
+    }
+}
+
+/*
 using System;
 using System.Globalization;
 using BrokenWheel.Math.Options;
