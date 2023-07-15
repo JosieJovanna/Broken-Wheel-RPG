@@ -25,11 +25,13 @@ namespace BrokenWheel.Math
         /// The function reduces(simplifies) a Fraction object by dividing both its numerator 
         /// and denominator by their GCD
         /// </summary>
-        public static void Reduce(Fraction fraction)
+        public void Reduce()
         {
+            var (tempNumerator, tempDenominator) = (Numerator, Denominator);
             try
             {
                 AttemptToReduceFraction();
+                (Numerator, Denominator) = (tempNumerator, tempDenominator);
             }
             catch (Exception ex)
             {
@@ -39,26 +41,24 @@ namespace BrokenWheel.Math
             // LOCAL FX
             void AttemptToReduceFraction()
             {
-                if (fraction.Numerator == 0)
-                {
-                    fraction.Denominator = 1;
-                    return;
-                }
-                ReduceByGcd();
+                if (tempNumerator == 0)
+                    tempDenominator = 1;
+                else
+                    ReduceByGcd();
             }
             void ReduceByGcd()
             {
-                var greatestCommonDenominator = GreatestCommonDenominator(fraction.Numerator, fraction.Denominator);
-                fraction.Numerator /= greatestCommonDenominator;
-                fraction.Denominator /= greatestCommonDenominator;
+                var greatestCommonDenominator = GreatestCommonDenominator(tempNumerator, tempDenominator);
+                tempNumerator /= greatestCommonDenominator;
+                tempDenominator /= greatestCommonDenominator;
                 MakeNumeratorNegativeInsteadOfTheDenominator();
             }
             void MakeNumeratorNegativeInsteadOfTheDenominator()
             {
-                if (fraction.Denominator >= 0) 
+                if (tempDenominator >= 0) 
                     return;
-                fraction.Numerator *= -1;
-                fraction.Denominator *= -1;
+                tempNumerator *= -1;
+                tempDenominator *= -1;
             }
         }
 

@@ -19,10 +19,11 @@ namespace BrokenWheel.Math
             Initialize(wholeNumber, 1, option);
         }
 
-        public Fraction(double decimalValue, ZeroDenominatorOption option = default)
+        public Fraction(double floatingValue, ZeroDenominatorOption option = default)
         {
-            var temp = FromDouble(decimalValue);
+            var temp = FromDouble(floatingValue);
             Initialize(temp.Numerator, temp.Denominator, option);
+            Reduce();
         }
 
         public Fraction(string valueAsString, ZeroDenominatorOption option = default)
@@ -36,7 +37,6 @@ namespace BrokenWheel.Math
             Option = zeroDenominatorOption; // set first so that setting denominator behaves correctly
             Numerator = numerator;
             Denominator = denominator;
-            Reduce(this);
         }
     }
 }
