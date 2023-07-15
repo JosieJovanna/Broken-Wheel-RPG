@@ -29,7 +29,10 @@
     <Compile Update="Settings\StatBarColorSettings.cs">
       <DependentUpon>StatBarSettings.cs</DependentUpon>
     </Compile>
-    <Compile Update="Settings\StatBarPosition.cs">
+    <Compile Update="Settings\StatBarCorner.cs">
+      <DependentUpon>StatBarSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Settings\StatBarFading.cs">
       <DependentUpon>StatBarSettings.cs</DependentUpon>
     </Compile>
   </ItemGroup>

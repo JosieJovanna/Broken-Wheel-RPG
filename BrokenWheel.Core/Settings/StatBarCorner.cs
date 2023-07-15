@@ -3,7 +3,7 @@
     /// <summary>
     /// Where on the screen stat bars should be displayed from.
     /// </summary>
-    public enum StatBarPosition
+    public enum StatBarCorner
     {
         BottomLeft = default,
         BottomRight = 1,
