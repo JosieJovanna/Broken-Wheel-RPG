@@ -11,13 +11,14 @@ namespace BrokenWheel.UI.StatBar
         private readonly IComplexStatistic _stat;
         private readonly IStatBarDisplay _display;
         private readonly StatBarSettings _settings;
-        
+
         /// <summary>
         /// Whether the stat bar is hidden. This is different from <see cref="IsHidden"/>,
         /// because there may be an animation that takes time in the graphical implementation.
         /// This controls whether to start or stop hiding.
         /// </summary>
         private bool _isHiding;
+
         private int _pointsPerPixel;
         private int _x;
         private int _y;
@@ -29,7 +30,7 @@ namespace BrokenWheel.UI.StatBar
             _settings = settings ?? throw new ArgumentNullException(nameof(settings));
             UpdateDisplay();
         }
-        
+
         public StatTypeInfo Info { get => _stat.Info; }
         public bool IsHidden { get => _display.IsHidden; }
 
@@ -69,6 +70,22 @@ namespace BrokenWheel.UI.StatBar
         public void UpdateDisplay()
         {
             throw new NotImplementedException();
+        }
+
+        private int CalculatePointsPerPixel(IComplexStatistic stat)
+        {
+            switch (_settings.DisplayMode)
+            {
+
+                case StatBarDisplayMode.FixedLengthBeforeMod:
+                    
+                case StatBarDisplayMode.UniformPointsPerPixel:
+                    
+                case StatBarDisplayMode.UniformPointsPerPixelUntilMaxLength:
+                    
+                case StatBarDisplayMode.FixedLength:
+                default:
+            }
         }
     }
 }

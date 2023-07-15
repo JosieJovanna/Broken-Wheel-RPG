@@ -61,9 +61,9 @@ namespace BrokenWheel.UI.StatBar
         public void UpdateDisplays()
         {
             var ordered = _statBars.Ordered().ToList();
-            var alignment = _settings.IsVertical ? _settings.StatBarY : _settings.StatBarX;
-            var distance = _settings.IsVertical ? _settings.StatBarX : _settings.StatBarY;
-            var totalBarThickness = _settings.BorderSize * 2 + _settings.StatBarThickness;
+            var alignment = _settings.IsVertical ? _settings.PixelsFromEdgeY : _settings.PixelsFromEdgeX;
+            var distance = _settings.IsVertical ? _settings.PixelsFromEdgeX : _settings.PixelsFromEdgeY;
+            var totalBarThickness = _settings.BorderSize * 2 + _settings.Thickness;
             for (var i = 0; i < ordered.Count; i++)
                 RepositionBar(ordered[i].StatBar, i, alignment, distance, totalBarThickness);
         }

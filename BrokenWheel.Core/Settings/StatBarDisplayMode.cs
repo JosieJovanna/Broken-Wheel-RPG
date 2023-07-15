@@ -6,26 +6,26 @@
     public enum StatBarDisplayMode
     {
         /// <summary>
-        /// All stat bars share the same maximum width, with values scaled to fit.
+        /// All stat bars share the same length, no matter what.
         /// </summary>
-        FixedWidth = default,
+        FixedLength = default,
         
         /// <summary>
-        /// All stat bars share the same maximum width before modification.
-        /// Modifiers extend or shorten bars.
+        /// All stat bars share the same maximum width based on their maximum value.
+        /// The stat modifier then extends or shrinks that bar with the same proportion of points per pixel.
         /// </summary>
-        FixedMaxScalingMod = 1,
+        FixedLengthBeforeMod = 1,
         
         /// <summary>
-        /// Stat bars have a set point-to-pixel ratio.
-        /// When stat bar reaches maximum length, that bar scales to max width.
+        /// All stat bars have a same point-to-pixel ratio. When one stat bar reaches maximum length,
+        /// it will not extend past; rather, its ratio becomes the ratio used by all other bars.
         /// </summary>
-        ScaleByPointsIndividualMaxScaling = 2,
+        UniformPointsPerPixel = 2,
         
         /// <summary>
-        /// Stat bars have a set point-to-pixel ratio.
-        /// when stat bar reaches maximum length, it stays at maximum, and all other bars share that new scale.
+        /// All stat bars have a set point-to-pixel ratio. When a stat bar reaches the maximum length,
+        /// it will not grow any longer, and its ratio will no longer be uniform to the others.
         /// </summary>
-        ScaleByPointsAllScaleToMax = 3
+        UniformPointsPerPixelUntilMaxLength = 3
     }
 }

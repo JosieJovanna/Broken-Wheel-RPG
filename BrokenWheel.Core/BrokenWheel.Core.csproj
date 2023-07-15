@@ -29,6 +29,9 @@
     <Compile Update="Settings\StatBarColorSettings.cs">
       <DependentUpon>StatBarSettings.cs</DependentUpon>
     </Compile>
+    <Compile Update="Settings\StatBarPosition.cs">
+      <DependentUpon>StatBarSettings.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
 
 </Project>
