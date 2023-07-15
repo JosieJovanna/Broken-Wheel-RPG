@@ -77,14 +77,14 @@ namespace BrokenWheel.UI.StatBar.Implementation
             UpdateDisplay();
         }
 
-        public void SetPositionAndUpdate(int xPosition, int yPosition)
+        public void Update(int xPosition, int yPosition)
         {
             _x = xPosition;
             _y = yPosition;
             UpdateDisplay();
         }
 
-        public void UpdateDisplay()
+        private void UpdateDisplay()
         {
             var ppp = CalculatePointsPerPixel();
             throw new NotImplementedException();

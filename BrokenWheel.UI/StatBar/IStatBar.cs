@@ -36,14 +36,10 @@ namespace BrokenWheel.UI.StatBar
         void StatUpdateHandler(object sender, StatUpdateEventArgs args);
 
         /// <summary>
-        /// The overall position of the bar, relative to the lower-left corner of the screen.
-        /// Then calls <see cref="UpdateDisplay"/>.
+        /// Sets the position of the bar then updates the display according to its statistic.
         /// </summary>
-        void SetPositionAndUpdate(int xPosition, int yPosition);
-
-        /// <summary>
-        /// Updates the display according to the stat values and settings.
-        /// </summary>
-        void UpdateDisplay();
+        /// <param name="xPosition"> The X position of the bar, before accounting for length, if on the right side. </param>
+        /// <param name="yPosition"> The Y position of the bar, before accounting for length, if on the top. </param>
+        void Update(int xPosition, int yPosition);
     }
 }

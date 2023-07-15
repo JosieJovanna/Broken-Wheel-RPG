@@ -7,7 +7,6 @@ using BrokenWheel.Core.Stats;
 using BrokenWheel.Core.Stats.Enum;
 using BrokenWheel.Core.Stats.Extensions;
 using BrokenWheel.Core.Stats.Processing;
-using BrokenWheel.UI.StatBar.Extensions;
 
 namespace BrokenWheel.UI.StatBar.Implementation
 {
@@ -60,45 +59,39 @@ namespace BrokenWheel.UI.StatBar.Implementation
 
         public void UpdateDisplays()
         {
-            var ordered = _statBars.Ordered().ToList();
-            var alignment = _settings.IsVertical ? _settings.PixelsFromEdgeY : _settings.PixelsFromEdgeX;
-            var distance = _settings.IsVertical ? _settings.PixelsFromEdgeX : _settings.PixelsFromEdgeY;
-            var totalBarThickness = _settings.BorderSize * 2 + _settings.Thickness;
-            for (var i = 0; i < ordered.Count; i++)
-                RepositionBar(ordered[i].StatBar, i, alignment, distance, totalBarThickness);
-        }
-
-        private void RepositionBar(IStatBar statBar, int barIndex, int alignment, int distance, int totalBarThickness)
-        {
-            var offset = (totalBarThickness + _settings.Spacing) * barIndex + distance;
-            var x = _settings.IsVertical ? alignment : offset;
-            var y = _settings.IsVertical ? offset : alignment;
-            statBar.SetPositionAndUpdate(x, y);
+            StatBarDisplayUpdater.PositionAndUpdateStatBars(_settings, _statBars
+                .Where(_ => !_.StatBar.IsHidden)
+                .OrderBy(_ => _.Order)
+                .ToList());
         }
 
         public void AddStat(StatType type)
         {
-            if (!_statBars.ContainsStat(type))
+            if (!HasStat(type))
                 _statBars.Add(NewStatBarRelationship(type));
         }
 
         public void AddCustomStat(string code)
         {
-            if (!_statBars.ContainsStat(code))
+            if (!HasStat(code))
                 _statBars.Add(NewStatBarRelationship(code));
         }
 
         public void RemoveStat(StatType type)
         {
-            if (_statBars.ContainsStat(type))
-                _statBars = _statBars.WhereNotStat(type).ToList();
+            if (HasStat(type))
+                _statBars = _statBars.Where(_ => _.Type != type).ToList();
         }
 
         public void RemoveCustomStat(string code)
         {
-            if (_statBars.ContainsStat(code))
-                _statBars = _statBars.WhereNotStat(code).ToList();
+            if (HasStat(code))
+                _statBars = _statBars.Where(_ => _.StatBar.Info.Code != code).ToList();
         }
+
+        private bool HasStat(StatType type) => _statBars.Any(_ => _.Type == type);
+
+        private bool HasStat(string code) => _statBars.Any(_ => _.StatBar.Info.Code == code);
 
         private StatBarRelationship NewStatBarRelationship(StatType statType, int order = -1)
         {

@@ -9,7 +9,7 @@ namespace BrokenWheel.Core.Settings
         /// <summary>
         /// Which corner the stat bars are displayed in.
         /// </summary>
-        public StatBarCorner Corner { get; internal set; } = default;
+        public StatBarCorner DisplayCorner { get; internal set; } = default;
 
         /// <summary>
         /// The way the stat bars display, relative to each other.
@@ -61,13 +61,13 @@ namespace BrokenWheel.Core.Settings
         /// The horizontal distance from the side of the screen, left or right.
         /// Between zero and the width of the display; if outside this range, rounds to be within it.
         /// </summary>
-        public int PixelsFromEdgeX { get; internal set; } = 2;
+        public int PixelsFromVerticalEdge { get; internal set; } = 2;
 
         /// <summary>
         /// The vertical distance from the side of the screen, bottom or top.
         /// Between zero and the height of the display; if outside this range, rounds to be within it.
         /// </summary>
-        public int PixelsFromEdgeY { get; internal set; } = 2;
+        public int PixelsFromHorizontalEdge { get; internal set; } = 2;
 
         /// <summary>
         /// The spacing between stat bars, in pixels.
