@@ -12,12 +12,32 @@ namespace BrokenWheel.UI.StatBar
         public int Order { get; set; }
         public StatType Type { get => Stat.Info.Type; }
 
-        public StatBarRelationship(IComplexStatistic statistic, IStatBarDisplay display, int order = 99, StatBarSettings settings = null)
+        public StatBarRelationship(
+            StatBarSettings statBarSettings, 
+            IComplexStatistic complexStatistic, 
+            IStatBarDisplay statBarDisplay, 
+            StatBar.ReportPointsPerPixel reportPointsPerPixelDelegate,
+            StatBar.HighestPointsPerPixel highestPointsPerPixelDelegate,
+            int order = 99)
         {
-            if (display == null)
-                throw new ArgumentNullException(nameof(display));
-            Stat = statistic ?? throw new ArgumentNullException(nameof(statistic));
-            StatBar = new StatBar(statistic, display, settings ?? SettingsRegistry.GetSettings<StatBarSettings>());
+            if (statBarSettings == null)
+                statBarSettings = SettingsRegistry.GetSettings<StatBarSettings>();
+            if (complexStatistic == null)
+                throw new ArgumentNullException(nameof(complexStatistic));
+            if (statBarDisplay == null)
+                throw new ArgumentNullException(nameof(statBarDisplay));
+            if (reportPointsPerPixelDelegate == null)
+                throw new ArgumentNullException(nameof(reportPointsPerPixelDelegate));
+            if (highestPointsPerPixelDelegate == null)
+                throw new ArgumentNullException(nameof(highestPointsPerPixelDelegate));
+            
+            Order = order;
+            StatBar = new StatBar(
+                statBarSettings, 
+                complexStatistic, 
+                statBarDisplay,
+                reportPointsPerPixelDelegate,
+                highestPointsPerPixelDelegate);
         }
     }
 }

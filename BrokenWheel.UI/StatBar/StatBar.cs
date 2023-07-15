@@ -1,6 +1,7 @@
 ﻿using System;
 using BrokenWheel.Core.Events.Stats;
 using BrokenWheel.Core.Settings;
+using BrokenWheel.Core.Settings.Registration;
 using BrokenWheel.Core.Stats;
 using BrokenWheel.Core.Stats.Enum;
 
@@ -8,26 +9,41 @@ namespace BrokenWheel.UI.StatBar
 {
     public class StatBar : IStatBar
     {
+        public delegate void ReportPointsPerPixel(double ratio);
+        public delegate int HighestPointsPerPixel();
+        
+        private readonly StatBarSettings _settings;
         private readonly IComplexStatistic _stat;
         private readonly IStatBarDisplay _display;
-        private readonly StatBarSettings _settings;
+        private readonly ReportPointsPerPixel _reportPpp;
+        private readonly HighestPointsPerPixel _highestPpp;
 
-        /// <summary>
-        /// Whether the stat bar is hidden. This is different from <see cref="IsHidden"/>,
-        /// because there may be an animation that takes time in the graphical implementation.
-        /// This controls whether to start or stop hiding.
-        /// </summary>
         private bool _isHiding;
-
         private int _pointsPerPixel;
         private int _x;
         private int _y;
 
-        public StatBar(IComplexStatistic stat, IStatBarDisplay display, StatBarSettings settings)
+        /// <summary>
+        /// Initiates the object controlling the display, then immediately calls <see cref="UpdateDisplay"/>.
+        /// </summary>
+        /// <param name="settings"> The settings for stat bars. If null, will attempt to fetch them. </param>
+        /// <param name="stat"> The complex statistic being represented. </param>
+        /// <param name="display"> The GUI element this object controls. </param>
+        /// <param name="reportPointsPerPixel"> A delegate to report back when the ratio of points per pixel changes. </param>
+        /// <param name="highestPointsPerPixel"> A delegate which gets the highest ratio of points per pixel. </param>
+        /// <exception cref="ArgumentNullException"> When these parameters are null. </exception>
+        public StatBar(
+            StatBarSettings settings,
+            IComplexStatistic stat, 
+            IStatBarDisplay display, 
+            ReportPointsPerPixel reportPointsPerPixel,
+            HighestPointsPerPixel highestPointsPerPixel)
         {
+            _settings = settings ?? SettingsRegistry.GetSettings<StatBarSettings>();
             _stat = stat ?? throw new ArgumentNullException(nameof(stat));
             _display = display ?? throw new ArgumentNullException(nameof(display));
-            _settings = settings ?? throw new ArgumentNullException(nameof(settings));
+            _reportPpp = reportPointsPerPixel ?? throw new ArgumentNullException(nameof(reportPointsPerPixel));
+            _highestPpp = highestPointsPerPixel ?? throw new ArgumentNullException(nameof(highestPointsPerPixel));
             UpdateDisplay();
         }
 
@@ -76,7 +92,6 @@ namespace BrokenWheel.UI.StatBar
         {
             switch (_settings.DisplayMode)
             {
-
                 case StatBarDisplayMode.FixedLengthBeforeMod:
                     
                 case StatBarDisplayMode.UniformPointsPerPixel:
@@ -85,6 +100,7 @@ namespace BrokenWheel.UI.StatBar
                     
                 case StatBarDisplayMode.FixedLength:
                 default:
+                    
             }
         }
     }

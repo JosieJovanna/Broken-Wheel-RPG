@@ -18,7 +18,7 @@
         
         /// <summary>
         /// All stat bars have a same point-to-pixel ratio. When one stat bar reaches maximum length,
-        /// it will not extend past; rather, its ratio becomes the ratio used by all other bars.
+        /// it will not extend past; rather, it remains at he max, and its ratio becomes that used by all other bars.
         /// </summary>
         UniformPointsPerPixel = 2,
         

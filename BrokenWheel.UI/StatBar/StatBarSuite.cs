@@ -122,7 +122,7 @@ namespace BrokenWheel.UI.StatBar
                 order = _statBars.Count;
             var colors = ColorSettingsForStat(statistic.Info);
             var display = _groupDisplay.CreateStatBarDisplay(colors);
-            return new StatBarRelationship(statistic, display, order, _settings);
+            return new StatBarRelationship(_settings, statistic, display, ReportPpp, HighestPpp, order);
         }
 
         private StatBarColorSettings ColorSettingsForStat(StatTypeInfo statInfo)
@@ -145,6 +145,16 @@ namespace BrokenWheel.UI.StatBar
             return _settings.ColorsByCode.Any(kvp => kvp.Key == customStatCode)
                 ? _settings.ColorsByCode.First(kvp => kvp.Key == customStatCode).Value 
                 : _settings.DefaultColors;
+        }
+
+        private void ReportPpp(double ratio)
+        {
+            
+        }
+
+        private int HighestPpp()
+        {
+            
         }
     }
 }
