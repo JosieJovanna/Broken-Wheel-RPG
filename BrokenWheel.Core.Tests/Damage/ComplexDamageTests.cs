@@ -1,4 +1,5 @@
 ﻿using BrokenWheel.Core.Damage;
+using BrokenWheel.Core.Damage.Dps;
 using Xunit;
 
 namespace BrokenWheel.Core.Tests.Damage;
@@ -12,7 +13,7 @@ public class ComplexDamageTests
     [InlineData(1, new double[] { 5, -2 })]
     public void Constructor_Passes(int duration, double[] coefficients)
     {
-        var damage = new PolynomialDamageTicker(DamageType.Generic, coefficients, duration);
+        var damage = new PolynomialDpsCalculator(DamageType.Generic, coefficients, duration);
         Assert.True(true);
     }
 }

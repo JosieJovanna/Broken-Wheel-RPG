@@ -1,7 +1,7 @@
 ﻿
-namespace BrokenWheel.Core.Damage
+namespace BrokenWheel.Core.Damage.Dps
 {
-    public class InstantDamageTicker : DamageTicker
+    internal class InstantDpsCalculator : DpsCalculator
     {
         private bool _isDone;
         protected override bool IsDoneCondition() => _isDone;
@@ -9,23 +9,23 @@ namespace BrokenWheel.Core.Damage
         /// <summary>
         /// Creates an instant damage event with a duration of 0, which is to be 
         /// </summary>
-        public InstantDamageTicker(DamageType type, int amount)
+        public InstantDpsCalculator(DamageType type, int amount)
             : base(type, amount, 0) { }
         
-        protected override int CalculateTick()
+        protected override int CalculateDps()
         {
             _isDone = true;
-            return Total;
+            return TotalDamage;
         }
 
         public override string ToDataString()
         {
-            return $"[({Total}){Type.GetName()}]";
+            return $"[({TotalDamage}){Type.GetName()}]";
         }
 
         protected override string ChildInfoString()
         {
-            return $"{Total} instant {Type.GetName()} damage";
+            return $"{TotalDamage} instant {Type.GetName()} damage";
         }
     }
 }

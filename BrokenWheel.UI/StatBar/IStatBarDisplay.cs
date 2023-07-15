@@ -25,6 +25,11 @@ namespace BrokenWheel.UI.StatBar
         /// Hides the individual stat bar.
         /// </summary>
         void Hide();
+
+        /// <summary>
+        /// Sets the colors of the bar to a new setting.
+        /// </summary>
+        void SetColorProfile(StatBarColorSettings colors);
         
         /// <summary>
         /// Sets the stat bar's position relative to the screen, and the size of the outline.
@@ -58,10 +63,5 @@ namespace BrokenWheel.UI.StatBar
         /// The exhaustion region overlaps all other display sections.
         /// </summary>
         void SetExhaustionDimensions(int xPosition, int yPosition, int width, int height);
-
-        /// <summary>
-        /// Sets the colors of the bar to a new setting.
-        /// </summary>
-        void SetColorProfile(StatBarColorSettings colors);
     }
 }

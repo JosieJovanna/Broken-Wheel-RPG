@@ -9,11 +9,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Damage\Events" />
     <Folder Include="Equipment\" />
+    <Folder Include="Properties" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\BrokenWheel.Math\BrokenWheel.Math.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>BrokenWheel.Core.Tests</_Parameter1>
+    </AssemblyAttribute>
   </ItemGroup>
 
   <ItemGroup>

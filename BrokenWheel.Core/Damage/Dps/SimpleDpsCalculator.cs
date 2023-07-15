@@ -3,7 +3,7 @@ using BrokenWheel.Core.Utilities;
 using BrokenWheel.Math;
 using BrokenWheel.Math.Utility;
 
-namespace BrokenWheel.Core.Damage
+namespace BrokenWheel.Core.Damage.Dps
 {
     /// <summary>
     /// A type of damage event for linear damage rates; the most common type.
@@ -11,7 +11,7 @@ namespace BrokenWheel.Core.Damage
     /// Damage values are in absolutes; values below 0 will be 0.
     /// When damage calculations are made, rounds down the DPS, and applies any extra damage first.
     /// </summary>
-    public class SimpleDamageTicker : DamageTicker
+    internal class SimpleDpsCalculator : DpsCalculator
     {
         public double DPS => _dps.ToDouble();
 
@@ -19,7 +19,7 @@ namespace BrokenWheel.Core.Damage
         private Fraction _overflow = new Fraction();
 
         /// <summary>
-        /// Creates a <see cref="DamageTicker"/> that deals damage at a constant rate.
+        /// Creates a <see cref="DpsCalculator"/> that deals damage at a constant rate.
         /// When rounding DPS, extra damage will be dealt on the first tick.
         /// </summary>
         /// <param name="type">  The type of damage dealt.  </param>
@@ -29,9 +29,9 @@ namespace BrokenWheel.Core.Damage
         /// </param>
         /// <param name="duration">
         /// The amount of time it takes for the damage to resolve.
-        /// Cannot be less than 1; such values should be <see cref="InstantDamageTicker"/>.
+        /// Cannot be less than 1; such values should be <see cref="InstantDpsCalculator"/>.
         /// </param>
-        public SimpleDamageTicker(DamageType type, int amount, int duration)
+        public SimpleDpsCalculator(DamageType type, int amount, int duration)
             : base(type, amount, duration)
         {
             Validate.ThrowIfNotPositive(duration, nameof(Duration));
@@ -39,7 +39,7 @@ namespace BrokenWheel.Core.Damage
             _dps = new Fraction(amount, duration);
         }
         
-        protected override int CalculateTick()
+        protected override int CalculateDps()
         {
             var temp = _overflow + _dps;
             var amount = MathUtil.LowerDoubleToInt(temp.ToDouble());
@@ -48,9 +48,9 @@ namespace BrokenWheel.Core.Damage
         }
 
         public override string ToDataString() 
-            => $"[({Dealt}/{Total}){Type.GetName()}/({TimePassed}/{Duration})s@{_dps}DPS]";
+            => $"[({DamageDealt}/{TotalDamage}){Type.GetName()}/({SecondsPassed}/{Duration})s@{_dps}DPS]";
 
         protected override string ChildInfoString() 
-            => $"{Dealt}/{Total} {Type.GetName()} damage dealt over {TimePassed}/{Duration} seconds at {_dps}DPS";
+            => $"{DamageDealt}/{TotalDamage} {Type.GetName()} damage dealt over {SecondsPassed}/{Duration} seconds at {_dps}DPS";
     }
 }

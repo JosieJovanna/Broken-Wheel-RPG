@@ -1,11 +1,11 @@
-using System.Text;
 using System.Globalization;
+using System.Text;
 using BrokenWheel.Math;
 using BrokenWheel.Math.Utility;
 
-namespace BrokenWheel.Core.Damage
+namespace BrokenWheel.Core.Damage.Dps
 {
-    public class PolynomialDamageTicker : DamageTicker
+    internal class PolynomialDpsCalculator : DpsCalculator
     {
         private readonly Polynomial _func;
         private double _overflow;
@@ -17,13 +17,13 @@ namespace BrokenWheel.Core.Damage
         /// Total damage will be determined by the duration and the equation.
         /// Only positive amounts of damage will be dealt; negatives in the equation act as delays.
         /// </summary>
-        public PolynomialDamageTicker(DamageType type, double[] coefficients, int duration)
+        public PolynomialDpsCalculator(DamageType type, double[] coefficients, int duration)
             : base(type, GetTotal(coefficients, duration), duration)
         {
             _func = new Polynomial(coefficients);
         }
         
-        protected override int CalculateTick()
+        protected override int CalculateDps()
         {
             var y = Fx();
             var amount = MathUtil.LowerDoubleToInt(y);
@@ -32,7 +32,7 @@ namespace BrokenWheel.Core.Damage
             // LOCAL FX
             double Fx()
             {
-                var result = _func.Fx(TimePassed);
+                var result = _func.Fx(SecondsPassed);
                 return MathUtil.NonNeg(result);
             }
             int WithOverflow()
@@ -50,7 +50,7 @@ namespace BrokenWheel.Core.Damage
         public override string ToDataString()
         {
             var sb = new StringBuilder(
-                $"[({Dealt}/{Total}){Type.GetName()}/({TimePassed}/{Duration})s@({_func.GetCoefficientForExponent(0)}");
+                $"[({DamageDealt}/{TotalDamage}){Type.GetName()}/({SecondsPassed}/{Duration})s@({_func.GetCoefficientForExponent(0)}");
             for (var i = 1; i < _func.NumberOfExponents; i++)
                 sb.Append($",{_func.GetCoefficientForExponent(i)}");
             return sb.Append(")]").ToString();
@@ -59,7 +59,7 @@ namespace BrokenWheel.Core.Damage
         protected override string ChildInfoString()
         {
             var sb = new StringBuilder(
-                $"{Dealt}/{Total} {Type.GetName()} damage dealt over {TimePassed}/{Duration} seconds with F(x)=");
+                $"{DamageDealt}/{TotalDamage} {Type.GetName()} damage dealt over {SecondsPassed}/{Duration} seconds with F(x)=");
             sb.Append(_func.GetCoefficientForExponent(0).ToString(CultureInfo.InvariantCulture));
             AppendCoefficients();
             return sb.ToString();
