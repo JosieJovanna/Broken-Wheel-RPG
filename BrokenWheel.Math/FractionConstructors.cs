@@ -6,7 +6,7 @@ namespace BrokenWheel.Math
 {
     public sealed partial class Fraction
     {
-        private const double DEFAULT_ACCURACY = 0.00000000001;
+        private const double DEFAULT_ACCURACY = 0.00000000001; // between zero and one
 
         /// <summary>
         /// Creates a Fraction with a numerator of zero and a denominator of one.
@@ -73,11 +73,18 @@ namespace BrokenWheel.Math
         }
         
         /// <summary>
-        /// The function takes a floating point number as an argument 
-        /// and returns its corresponding reduced fraction
+        /// Attempts to find a sufficiently similar fraction to the given double.
+        /// <remarks> Algorithm edited from: https://stackoverflow.com/a/32903747. </remarks>
         /// </summary>
-        private static Fraction FromDouble(double value, double accuracy = DEFAULT_ACCURACY)
+        /// <param name="value"> The double being converted. </param>
+        /// <param name="accuracy"> How close a fraction must be to the value to be accepted as equivalent. </param>
+        /// <returns> A fraction representing the double, preserving sign. </returns>
+        /// <exception cref="FractionException"></exception>
+        /// <exception cref="ArgumentException"></exception>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        public static Fraction FromDouble(double value, double accuracy = DEFAULT_ACCURACY)
         {
+            ValidateParameters();
             try
             {
                 return FromDoubleChecked();
@@ -92,12 +99,17 @@ namespace BrokenWheel.Math
             }
             
             // LOCAL FX
-            Fraction FromDoubleChecked()
+            void ValidateParameters()
             {
+                if (accuracy <= 0.0 || accuracy >= 1.0)
+                    throw new ArgumentOutOfRangeException(nameof(accuracy), "Must be > 0 and < 1.");
                 if (double.IsNaN(value))
                     throw new ArgumentException($"{nameof(value)} must be a number.");
                 if (double.IsInfinity(value))
                     throw new ArgumentException($"{nameof(value)} must be a finite number.");
+            }
+            Fraction FromDoubleChecked()
+            {
                 checked
                 {
                     return value % 1 == 0 // if whole number
@@ -107,10 +119,6 @@ namespace BrokenWheel.Math
             }
             Fraction ToFractionFromFloatingPoint()
             {
-                /* Algorithm from https://stackoverflow.com/a/32903747 */
-                if (accuracy <= 0.0 || accuracy >= 1.0)
-                    throw new ArgumentOutOfRangeException(nameof(accuracy), "Must be > 0 and < 1.");
-
                 var sign = System.Math.Sign(value);
                 if (sign == -1)
                     value = System.Math.Abs(value);
@@ -143,13 +151,18 @@ namespace BrokenWheel.Math
                 }
             }
         }
-        
+  
         /// <summary>
-        /// The function takes an string as an argument and returns its corresponding reduced fraction
-        /// the string can be an in the form of and integer, double or fraction.
-        /// e.g it can be like "123" or "123.321" or "123/456"
+        /// Formats a string into a Fraction, with several possible formats.
+        /// All numbers can have commas or underscore inserted; they will be ignored.
+        /// <para> Fraction: "#/#" - with at least one number on each side, and no letters. </para>
+        /// <para> Whole number: "###" - just a number as a string, over one.  </para>
+        /// <para> Decimal number: "#.#" - any floating point number, with a '.' as the decimal point (not sorry, british 'people'). </para>
         /// </summary>
-        private static Fraction FromString(string value)
+        /// <exception cref="FractionException">
+        /// When string format is incorrect, or denominator is zero unless set to ignore setting zeroes.
+        /// </exception>
+        public static Fraction FromString(string value)
         {
             var i = IndexOfSlash();
             try

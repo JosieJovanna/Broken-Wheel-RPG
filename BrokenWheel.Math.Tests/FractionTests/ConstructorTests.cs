@@ -135,4 +135,23 @@ public class ConstructorTests
     {
         Assert.Throws<FractionException>(() => new Fraction(toConvert, IGNORE_OPTION));
     }
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(1)]
+    [InlineData(999)]
+    [InlineData(-999)]
+    public void FromDouble_ThrowsArgumentOutOfRangeException_WhenAccuracyNotBetweenZeroAndOne(double accuracy)
+    {
+        Assert.Throws<ArgumentOutOfRangeException>(() => Fraction.FromDouble(0.5, accuracy));
+    }
+
+    [Theory]
+    [InlineData(double.NaN)]
+    [InlineData(double.NegativeInfinity)]
+    [InlineData(double.PositiveInfinity)]
+    public void FromDouble_ThrowsArgumentException_WhenNaNOrInfinity(double toConvert)
+    {
+        Assert.Throws<ArgumentException>(() => Fraction.FromDouble(toConvert));
+    }
 }

@@ -65,10 +65,18 @@ namespace BrokenWheel.Math
      */
     public sealed partial class Fraction
     {
+        private long _numerator;
         private long _denominator;
 
         public ZeroDenominatorOption Option { get; set; }
-        public long Numerator { get; set; }
+        public bool IsPositive { get; }
+
+        public long Numerator
+        {
+            get => _numerator;
+            set => _numerator = value;
+        }
+
         public long Denominator
         {
             get => _denominator;
@@ -93,10 +101,10 @@ namespace BrokenWheel.Math
         public override string ToString()
         {
             string str;
-            if (Denominator == 1)
-                str = Numerator.ToString();
+            if (_denominator == 1)
+                str = _numerator.ToString();
             else
-                str = Numerator + "/" + Denominator;
+                str = _numerator + "/" + _denominator;
             return str;
         }
 
@@ -106,7 +114,7 @@ namespace BrokenWheel.Math
         public override bool Equals(object value)
         {
             var fraction = (Fraction) value;
-            return fraction != null && Numerator == fraction.Numerator && Denominator == fraction.Denominator;
+            return fraction != null && _numerator == fraction._numerator && _denominator == fraction._denominator;
         }
 
         /// <summary>
