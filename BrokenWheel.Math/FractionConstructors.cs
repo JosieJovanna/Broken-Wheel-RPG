@@ -8,21 +8,40 @@ namespace BrokenWheel.Math
     {
         private const double DEFAULT_ACCURACY = 0.00000000001;
 
+        /// <summary>
+        /// Creates a Fraction with a numerator of zero and a denominator of one.
+        /// </summary>
         public Fraction(ZeroDenominatorOption option = default)
         {
             Initialize(0, 1, option);
         }
 
+        /// <summary>
+        /// Creates a fraction with a set numerator and denominator.
+        /// </summary>
+        /// <exception cref="FractionException">
+        /// When denominator is zero and the option does not ignore setting zeroes.
+        /// </exception>
         public Fraction(long numerator, long denominator, ZeroDenominatorOption option = default)
         {
             Initialize(numerator, denominator, option);
         }
 
+        /// <summary>
+        /// Creates a fraction with a given whole value over one.
+        /// </summary>
         public Fraction(long wholeNumber, ZeroDenominatorOption option = default)
         {
             Initialize(wholeNumber, 1, option);
         }
 
+        /// <summary>
+        /// Parses a double into the nearest fraction it can, though not with perfect accuracy.
+        /// Common irrational numbers like ".333...", ".166..." will have the expected fractions.
+        /// </summary>
+        /// <exception cref="FractionException">
+        /// When NaN or infinity, or denominator is zero and the option does not ignore setting zeroes.
+        /// </exception>
         public Fraction(double floatingValue, ZeroDenominatorOption option = default)
         {
             var temp = FromDouble(floatingValue);
@@ -30,6 +49,16 @@ namespace BrokenWheel.Math
             Reduce();
         }
 
+        /// <summary>
+        /// Formats a string into a Fraction, with several possible formats.
+        /// All numbers can have commas or underscore inserted; they will be ignored.
+        /// <para> Fraction: "#/#" - with at least one number on each side, and no letters. </para>
+        /// <para> Whole number: "###" - just a number as a string, over one.  </para>
+        /// <para> Decimal number: "#.#" - any floating point number, with a '.' as the decimal point (not sorry, british 'people'). </para>
+        /// </summary>
+        /// <exception cref="FractionException">
+        /// When string format is incorrect, or denominator is zero unless set to ignore setting zeroes.
+        /// </exception>
         public Fraction(string valueAsString, ZeroDenominatorOption option = default)
         {
             var temp = FromString(valueAsString);
@@ -97,31 +126,20 @@ namespace BrokenWheel.Math
                 if (1 - maxError < value)
                     return new Fraction(sign * (n + 1), 1);
 
-                var lowerNumerator = 0;
-                var lowerDenominator = 1;
-
-                var upperNumerator = 1;
-                var uppderDenominator = 1;
+                var (lowerNumerator, lowerDenominator) = (0, 1);
+                var (upperNumerator, upperDenominator) = (1, 1);
 
                 while (true)
                 {
-                    var MiddleNumerator = lowerNumerator + upperNumerator;
-                    var middleDenominator = lowerDenominator + uppderDenominator;
+                    var middleNumerator = lowerNumerator + upperNumerator;
+                    var middleDenominator = lowerDenominator + upperDenominator;
 
-                    if (middleDenominator * (value + maxError) < MiddleNumerator)
-                    {
-                        upperNumerator = MiddleNumerator;
-                        uppderDenominator = middleDenominator;
-                    }
-                    else if (MiddleNumerator < (value - maxError) * middleDenominator)
-                    { 
-                        lowerNumerator = MiddleNumerator;
-                        lowerDenominator = middleDenominator;
-                    }
+                    if (middleDenominator * (value + maxError) < middleNumerator)
+                        (upperNumerator, upperDenominator) = (middleNumerator, middleDenominator);
+                    else if (middleNumerator < (value - maxError) * middleDenominator)
+                        (lowerNumerator, lowerDenominator) = (middleNumerator, middleDenominator);
                     else // middle is best fraction
-                    {
-                        return new Fraction((n * middleDenominator + MiddleNumerator) * sign, middleDenominator);
-                    }
+                        return new Fraction((n * middleDenominator + middleNumerator) * sign, middleDenominator);
                 }
             }
         }

@@ -101,6 +101,7 @@ public class ConstructorTests
 
     [Theory]
     [InlineData("0.5", 1, 2)]
+    [InlineData("1.5", 3, 2)]
     [InlineData(".3333333333333333333333333", 1, 3)]
     [InlineData(".6666666666666666666666", 2, 3)]
     [InlineData(".16666666666666666666666", 1, 6)]
