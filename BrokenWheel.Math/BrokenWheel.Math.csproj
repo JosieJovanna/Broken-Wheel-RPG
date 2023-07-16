@@ -8,9 +8,6 @@
     <Compile Update="FractionConstructors.cs">
       <DependentUpon>Fraction.cs</DependentUpon>
     </Compile>
-    <Compile Update="FractionConversions.cs">
-      <DependentUpon>Fraction.cs</DependentUpon>
-    </Compile>
     <Compile Update="FractionMath.cs">
       <DependentUpon>Fraction.cs</DependentUpon>
     </Compile>
