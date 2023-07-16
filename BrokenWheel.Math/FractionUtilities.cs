@@ -4,21 +4,21 @@ namespace BrokenWheel.Math
 {
     public sealed partial class Fraction
     {
-        public Fraction Duplicate()
-        {
-            var frac = new Fraction
-            {
-                Numerator = Numerator,
-                Denominator = Denominator
-            };
-            return frac;
-        }
-
         public static Fraction Inverse(Fraction fraction)
         {
             var numerator = fraction.Denominator;
             var denominator = fraction.Numerator;
-            return new Fraction(numerator, denominator);
+            return new Fraction(numerator, denominator, fraction.Option);
+        }
+        
+        public Fraction Duplicate()
+        {
+            return new Fraction
+            {
+                Numerator = Numerator,
+                Denominator = Denominator,
+                Option = Option
+            };
         }
 
         /// <summary>
