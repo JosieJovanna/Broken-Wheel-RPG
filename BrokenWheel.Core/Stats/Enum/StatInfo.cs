@@ -3,20 +3,21 @@ using BrokenWheel.Core.Stats.Extensions;
 
 namespace BrokenWheel.Core.Stats.Enum
 {
-    public class StatTypeInfo
+    public class StatInfo
     {
-        public readonly StatType Type;
-        public readonly string Name;
-        public readonly string Code;
+        public StatType Type { get; }
+        public string Name { get; }
+        public string Code { get; }
+        public bool IsCustom { get => Type == StatType.Custom; }
 
-        public StatTypeInfo(StatType statTypeType)
+        public StatInfo(StatType statTypeType)
         {
             Type = statTypeType;
             Name = statTypeType.GetName();
             Code = statTypeType.ToString();
         }
 
-        public StatTypeInfo(string customTypeName, string customTypeCode)
+        public StatInfo(string customTypeName, string customTypeCode)
         {
             if (string.IsNullOrWhiteSpace(customTypeName))
                 throw new ArgumentException($"{nameof(customTypeName)} cannot be null or whitespace.");
@@ -27,7 +28,5 @@ namespace BrokenWheel.Core.Stats.Enum
             Name = customTypeName;
             Code = customTypeCode;
         }
-
-        public bool IsCustomStat() => Type == StatType.Custom;
     }
 }

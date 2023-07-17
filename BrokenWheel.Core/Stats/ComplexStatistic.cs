@@ -21,7 +21,7 @@ namespace BrokenWheel.Core.Stats
         /// <param name="maximum"> The maximum value before modification; will be set above or equal to zero. </param>
         /// <param name="modifier"> The modifier to the maximum value. Optional; defaults to zero. </param>
         /// <param name="exhaustion"> The exhaustion of the stat, which cannot be negative. Optional; defaults to zero. </param>
-        public ComplexStatistic(StatTypeInfo type, int value, int maximum, int modifier = 0, int exhaustion = 0) 
+        public ComplexStatistic(StatInfo type, int value, int maximum, int modifier = 0, int exhaustion = 0) 
             : base(type, value, modifier)
         {
             Max = MathUtil.NonNeg(maximum);

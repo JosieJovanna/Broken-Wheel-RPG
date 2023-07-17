@@ -1,5 +1,6 @@
+/*
 using System.Collections.Generic;
-using BrokenWheel.Core.Events.Stats;
+using BrokenWheel.Core.Events;
 using BrokenWheel.Core.Stats.Extensions;
 
 namespace BrokenWheel.Core.Stats.Processing
@@ -8,10 +9,10 @@ namespace BrokenWheel.Core.Stats.Processing
     {
         public string EntityGuid { get; }
 
-        private event StatEventHandlers.StatUpdateEventHandler _handlersForAnyStat; // TODO: stat setting
+        private event Handlers.StatUpdateEventHandler _handlersForAnyStat; // TODO: stat setting
 
-        private readonly IDictionary<string, StatEventHandlers.StatUpdateEventHandler> _handlersByStatCode =
-            new Dictionary<string, StatEventHandlers.StatUpdateEventHandler>();
+        private readonly IDictionary<string, Handlers.StatUpdateEventHandler> _handlersByStatCode =
+            new Dictionary<string, Handlers.StatUpdateEventHandler>();
 
         public IStatistic GetStat(StatType stat) => GetStat<IStatistic>(stat);
         public IStatistic GetStat(string stat) => GetStat<IStatistic>(stat);
@@ -31,13 +32,13 @@ namespace BrokenWheel.Core.Stats.Processing
             // (and so I'll probably have to specify format by type)
         }
 
-        public void SubscribeToStatUpdates(StatType statType, StatEventHandlers.StatUpdateEventHandler handler)
+        public void SubscribeToStatUpdates(StatType statType, Handlers.StatUpdateEventHandler handler)
         {
             var statCode = statType.GetCode();
             SubscribeToCustomStatUpdates(statCode, handler);
         }
 
-        public void SubscribeToCustomStatUpdates(string statCode, StatEventHandlers.StatUpdateEventHandler handler)
+        public void SubscribeToCustomStatUpdates(string statCode, Handlers.StatUpdateEventHandler handler)
         {
             if (!_handlersByStatCode.ContainsKey(statCode))
                 _handlersByStatCode.Add(statCode, handler);
@@ -45,26 +46,27 @@ namespace BrokenWheel.Core.Stats.Processing
                 _handlersByStatCode[statCode] += handler;
         }
 
-        public void SubscribeToAllStatUpdates(StatEventHandlers.StatUpdateEventHandler handler)
+        public void SubscribeToAllStatUpdates(Handlers.StatUpdateEventHandler handler)
         {
             _handlersForAnyStat += handler;
         }
 
-        public void UnsubscribeFromStatUpdates(StatType statType, StatEventHandlers.StatUpdateEventHandler handler)
+        public void UnsubscribeFromStatUpdates(StatType statType, Handlers.StatUpdateEventHandler handler)
         {
             var statCode = statType.GetCode();
             UnsubscribeFromCustomStatUpdates(statCode, handler);
         }
 
-        public void UnsubscribeFromCustomStatUpdates(string statCode, StatEventHandlers.StatUpdateEventHandler handler)
+        public void UnsubscribeFromCustomStatUpdates(string statCode, Handlers.StatUpdateEventHandler handler)
         {
             if (_handlersByStatCode.ContainsKey(statCode))
                 _handlersByStatCode[statCode] -= handler;
         }
 
-        public void UnsubscribeFromAllStatUpdates(StatEventHandlers.StatUpdateEventHandler handler)
+        public void UnsubscribeFromAllStatUpdates(Handlers.StatUpdateEventHandler handler)
         {
             _handlersForAnyStat -= handler;
         }
     }
 }
+*/

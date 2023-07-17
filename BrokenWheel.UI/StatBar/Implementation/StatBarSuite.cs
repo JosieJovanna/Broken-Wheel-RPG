@@ -133,7 +133,7 @@ namespace BrokenWheel.UI.StatBar.Implementation
             return new StatBarRelationship(_settings, statistic, display, ReportPpp, HighestPpp, order);
         }
 
-        private StatBarColorSettings ColorSettingsForStat(StatTypeInfo statInfo)
+        private StatBarColorSettings ColorSettingsForStat(StatInfo statInfo)
         {
             switch (statInfo.Type)
             {

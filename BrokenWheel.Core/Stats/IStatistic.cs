@@ -12,7 +12,7 @@ namespace BrokenWheel.Core.Stats
         /// <summary>
         /// The type of <see cref="StatType"/> this object represents.
         /// </summary>
-        StatTypeInfo Info { get; }
+        StatInfo Info { get; }
         
         /// <summary>
         /// The value of the stat. Cannot be negative; attempting to set a negative value will in fact set it to zero.

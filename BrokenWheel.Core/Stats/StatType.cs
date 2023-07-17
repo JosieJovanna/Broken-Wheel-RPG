@@ -1,5 +1,4 @@
-﻿using System;
-using BrokenWheel.Core.Stats.Attributes;
+﻿using BrokenWheel.Core.Stats.Attributes;
 
 namespace BrokenWheel.Core.Stats
 {

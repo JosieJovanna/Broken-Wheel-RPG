@@ -1,8 +1,8 @@
 ﻿using System;
-using BrokenWheel.Core.Events.Stats;
 using BrokenWheel.Core.Settings;
 using BrokenWheel.Core.Stats;
 using BrokenWheel.Core.Stats.Enum;
+using BrokenWheel.Core.Stats.Events;
 using BrokenWheel.Math.Utility;
 using BrokenWheel.UI.Display;
 
@@ -47,7 +47,7 @@ namespace BrokenWheel.UI.StatBar.Implementation
         }
 
         public IStatBarDisplay Display { get; }
-        public StatTypeInfo Info { get => _stat.Info; }
+        public StatInfo Info { get => _stat.Info; }
         public bool IsHidden { get => Display.IsHidden; }
 
         public void Show()
@@ -67,14 +67,7 @@ namespace BrokenWheel.UI.StatBar.Implementation
             _isHiding = true;
         }
 
-        public void StatUpdateHandler(object sender, StatUpdateEventArgs args)
-        {
-            if (!args.IsComplexStat())
-                throw new InvalidOperationException($"Stat bars only support complex stats - '{args.Stat.Info.Name}' is not complex.");
-            UpdateDisplay();
-        }
-
-        public void Update(int xPosition, int yPosition)
+        public void Update(int xPosition, int yPosition, ComplexStatUpdate stat)
         {
             _x = xPosition;
             _y = yPosition;

@@ -1,4 +1,5 @@
-using BrokenWheel.Core.Events.Stats;
+/*
+using BrokenWheel.Core.Events;
 
 namespace BrokenWheel.Core.Stats.Processing
 {
@@ -20,33 +21,34 @@ namespace BrokenWheel.Core.Stats.Processing
         IComplexStatistic GetComplexStatIfExists(string stat);
 
         /// <summary>
-        /// Subscribes to receive <see cref="StatUpdateEventArgs"/> of the specified type whenever any of the stat values change.
+        /// Subscribes to receive <see cref="StatUpdateEvent"/> of the specified type whenever any of the stat values change.
         /// </summary>
-        void SubscribeToStatUpdates(StatType statType, StatEventHandlers.StatUpdateEventHandler handler);
+        void SubscribeToStatUpdates(StatType statType, Handlers.StatUpdateEventHandler handler);
 
         /// <summary>
-        /// Subscribes to receive <see cref="StatUpdateEventArgs"/> of the specified type whenever any of the stat values change.
+        /// Subscribes to receive <see cref="StatUpdateEvent"/> of the specified type whenever any of the stat values change.
         /// </summary>
-        void SubscribeToCustomStatUpdates(string statCode, StatEventHandlers.StatUpdateEventHandler handler);
+        void SubscribeToCustomStatUpdates(string statCode, Handlers.StatUpdateEventHandler handler);
 
         /// <summary>
-        /// Subscribes to receive <see cref="StatUpdateEventArgs"/> whenever any stat values change.
+        /// Subscribes to receive <see cref="StatUpdateEvent"/> whenever any stat values change.
         /// </summary>
-        void SubscribeToAllStatUpdates(StatEventHandlers.StatUpdateEventHandler handler);
-
-        /// <summary>
-        /// Unsubscribes from receiving an event when the specified type of stat changes.
-        /// </summary>
-        void UnsubscribeFromStatUpdates(StatType statType, StatEventHandlers.StatUpdateEventHandler handler);
+        void SubscribeToAllStatUpdates(Handlers.StatUpdateEventHandler handler);
 
         /// <summary>
         /// Unsubscribes from receiving an event when the specified type of stat changes.
         /// </summary>
-        void UnsubscribeFromCustomStatUpdates(string statCode, StatEventHandlers.StatUpdateEventHandler handler);
+        void UnsubscribeFromStatUpdates(StatType statType, Handlers.StatUpdateEventHandler handler);
+
+        /// <summary>
+        /// Unsubscribes from receiving an event when the specified type of stat changes.
+        /// </summary>
+        void UnsubscribeFromCustomStatUpdates(string statCode, Handlers.StatUpdateEventHandler handler);
 
         /// <summary>
         /// Unsubscribes from receiving an event for general stat changes, but does not unsubscribe from individual stat type subscriptions.
         /// </summary>
-        void UnsubscribeFromAllStatUpdates(StatEventHandlers.StatUpdateEventHandler handler);
+        void UnsubscribeFromAllStatUpdates(Handlers.StatUpdateEventHandler handler);
     }
 }
+*/
