@@ -1,6 +1,7 @@
 ﻿using System;
 using BrokenWheel.Core.Settings;
 using BrokenWheel.Core.Stats;
+using BrokenWheel.Core.Stats.Events;
 
 namespace BrokenWheel.UI.StatBar.Implementation
 {
@@ -9,7 +10,7 @@ namespace BrokenWheel.UI.StatBar.Implementation
     /// </summary>
     internal class UpdateDisplayParameters
     {
-        public IComplexStatistic Stat { get; }
+        public ComplexStatUpdate Stat { get; }
         public bool IsVertical { get; }
         public double PPP { get; }
         public int BorderSize { get; }
@@ -22,7 +23,7 @@ namespace BrokenWheel.UI.StatBar.Implementation
         
         public UpdateDisplayParameters(
             StatBarSettings settings, 
-            IComplexStatistic stat, 
+            ComplexStatUpdate stat, 
             double ppp, 
             int length, 
             int x, 
@@ -30,8 +31,8 @@ namespace BrokenWheel.UI.StatBar.Implementation
         {
             if (settings == null)
                 throw new ArgumentNullException(nameof(settings));
-            
-            Stat = stat ?? throw new ArgumentNullException(nameof(stat));
+
+            Stat = stat;
             IsVertical = settings.IsVertical;
             BorderSize = settings.BorderSize;
             Thickness = settings.Thickness;

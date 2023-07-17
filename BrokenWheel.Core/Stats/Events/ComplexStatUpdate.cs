@@ -22,6 +22,6 @@
         /// <summary>
         /// The maximum value that a stat can reach, after modifier, and exhaustion.
         /// </summary>
-        public new int EffectiveValue { get; internal set; }
+        public int EffectiveMaximum { get; internal set; }
     }
 }

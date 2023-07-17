@@ -1,43 +1,31 @@
 ﻿using System;
 using BrokenWheel.Core.Settings;
-using BrokenWheel.Core.Stats;
+using BrokenWheel.Core.Stats.Enum;
 
 namespace BrokenWheel.UI.StatBar.Implementation
 {
     internal class StatBarRelationship
     {
         public IStatBar StatBar { get; }
-        public IComplexStatistic Stat { get; }
+        public StatInfo StatInfo { get; }
         public int Order { get; set; }
-        public StatType Type { get => Stat.Info.Type; }
 
         public StatBarRelationship(
             StatBarSettings statBarSettings, 
-            IComplexStatistic complexStatistic, 
+            StatInfo statInfo, 
             IStatBarDisplay statBarDisplay, 
             StatBar.ReportPointsPerPixel reportPointsPerPixelDelegate,
             StatBar.HighestPointsPerPixel highestPointsPerPixelDelegate,
             int order = 99)
         {
-            if (statBarSettings == null)
-                throw new ArgumentNullException(nameof(statBarSettings));
-            if (complexStatistic == null)
-                throw new ArgumentNullException(nameof(complexStatistic));
-            if (statBarDisplay == null)
-                throw new ArgumentNullException(nameof(statBarDisplay));
-            if (reportPointsPerPixelDelegate == null)
-                throw new ArgumentNullException(nameof(reportPointsPerPixelDelegate));
-            if (highestPointsPerPixelDelegate == null)
-                throw new ArgumentNullException(nameof(highestPointsPerPixelDelegate));
-            
             Order = order;
-            Stat = complexStatistic;
+            StatInfo = statInfo;
             StatBar = new StatBar(
-                statBarSettings, 
-                complexStatistic, 
-                statBarDisplay,
-                reportPointsPerPixelDelegate,
-                highestPointsPerPixelDelegate);
+                statBarSettings ?? throw new ArgumentNullException(nameof(statBarSettings)), 
+                statBarDisplay ?? throw new ArgumentNullException(nameof(statBarDisplay)),
+                statInfo ?? throw new ArgumentNullException(nameof(statInfo)), 
+                reportPointsPerPixelDelegate ?? throw new ArgumentNullException(nameof(reportPointsPerPixelDelegate)),
+                highestPointsPerPixelDelegate ?? throw new ArgumentNullException(nameof(highestPointsPerPixelDelegate)));
         }
     }
 }

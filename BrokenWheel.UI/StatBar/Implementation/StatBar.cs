@@ -1,6 +1,5 @@
 ﻿using System;
 using BrokenWheel.Core.Settings;
-using BrokenWheel.Core.Stats;
 using BrokenWheel.Core.Stats.Enum;
 using BrokenWheel.Core.Stats.Events;
 using BrokenWheel.Math.Utility;
@@ -10,14 +9,16 @@ namespace BrokenWheel.UI.StatBar.Implementation
 {
     internal class StatBar : IStatBar
     {
+        private const string EX_FORMAT = "Stat bar type '{0}' does not match event's stat type '{1}'.";
+        
         public delegate void ReportPointsPerPixel(double ratio);
         public delegate double HighestPointsPerPixel();
         
         private readonly StatBarSettings _settings;
-        private readonly IComplexStatistic _stat;
         private readonly ReportPointsPerPixel _reportPpp;
         private readonly HighestPointsPerPixel _highestPpp;
 
+        private ComplexStatUpdate _stat;
         private bool _isHiding;
         private int _x;
         private int _y;
@@ -26,28 +27,27 @@ namespace BrokenWheel.UI.StatBar.Implementation
         /// Initiates the object controlling the display, then immediately calls <see cref="UpdateDisplay"/>.
         /// </summary>
         /// <param name="statBarSettings"> The statBarSettings for stat bars. </param>
-        /// <param name="complexStatisticToTrack"> The complex statistic being represented. </param>
         /// <param name="statBarDisplay"> The GUI element this object controls. </param>
         /// <param name="reportPointsPerPixel"> A delegate to report back when the ratio of points per pixel changes. </param>
         /// <param name="highestPointsPerPixel"> A delegate which gets the highest ratio of points per pixel. </param>
         /// <exception cref="ArgumentNullException"> When these parameters are null. </exception>
         public StatBar(
             StatBarSettings statBarSettings,
-            IComplexStatistic complexStatisticToTrack, 
-            IStatBarDisplay statBarDisplay, 
+            IStatBarDisplay statBarDisplay,
+            StatInfo statInfo,
             ReportPointsPerPixel reportPointsPerPixel,
             HighestPointsPerPixel highestPointsPerPixel)
         {
             _settings = statBarSettings ?? throw new ArgumentNullException(nameof(statBarSettings));
-            _stat = complexStatisticToTrack ?? throw new ArgumentNullException(nameof(complexStatisticToTrack));
             Display = statBarDisplay ?? throw new ArgumentNullException(nameof(statBarDisplay));
+            Info = statInfo ?? throw new ArgumentNullException(nameof(statInfo));
             _reportPpp = reportPointsPerPixel ?? throw new ArgumentNullException(nameof(reportPointsPerPixel));
             _highestPpp = highestPointsPerPixel ?? throw new ArgumentNullException(nameof(highestPointsPerPixel));
             UpdateDisplay();
         }
 
         public IStatBarDisplay Display { get; }
-        public StatInfo Info { get => _stat.Info; }
+        public StatInfo Info { get; }
         public bool IsHidden { get => Display.IsHidden; }
 
         public void Show()
@@ -67,11 +67,22 @@ namespace BrokenWheel.UI.StatBar.Implementation
             _isHiding = true;
         }
 
-        public void Update(int xPosition, int yPosition, ComplexStatUpdate stat)
+        public void Update(int xPosition, int yPosition, ComplexStatUpdate stat = null)
         {
             _x = xPosition;
             _y = yPosition;
+            if (stat != null)
+                _stat = stat;
             UpdateDisplay();
+        }
+
+        public void HandleEvent(ComplexStatUpdatedEvent gameEvent)
+        {
+            if (gameEvent.StatInfo.Type != Info.Type)
+                throw new InvalidOperationException(string.Format(EX_FORMAT, gameEvent.StatInfo.Type, Info.Type));
+            if (Info.IsCustom && gameEvent.StatInfo.Code != Info.Code)
+                throw new InvalidOperationException(string.Format(EX_FORMAT, gameEvent.StatInfo.Code, Info.Code));
+            _stat = gameEvent.Stat;
         }
 
         private void UpdateDisplay()

@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using BrokenWheel.Core.Events.Listening;
 using BrokenWheel.Core.Settings;
 using BrokenWheel.Core.Settings.Registration;
 using BrokenWheel.Core.Stats;
 using BrokenWheel.Core.Stats.Enum;
 using BrokenWheel.Core.Stats.Extensions;
-using BrokenWheel.Core.Stats.Processing;
 
 namespace BrokenWheel.UI.StatBar.Implementation
 {
@@ -16,7 +16,7 @@ namespace BrokenWheel.UI.StatBar.Implementation
             "Complex stat {0} does not exist - can only make stat bars for complex stats.";
         
         private readonly StatBarSettings _settings;
-        private readonly IStatBox _statBox;
+        private readonly IEntityEventNexus _eventNexus;
         private readonly IStatBarSuiteDisplay _groupDisplay;
         private readonly IList<StatBarRelationship> _statBars = new List<StatBarRelationship>();
         
@@ -26,18 +26,18 @@ namespace BrokenWheel.UI.StatBar.Implementation
         /// <summary>
         /// Creates a group of stat bars, automatically populating 
         /// </summary>
-        /// <param name="statBox"></param>
-        /// <param name="suiteDisplay"></param>
-        /// <exception cref="ArgumentNullException"></exception>
-        public StatBarSuite(IStatBox statBox, IStatBarSuiteDisplay suiteDisplay)
+        /// <param name="eventNexus"> The event tracker for the entity the stat bars belong to. </param>
+        /// <param name="suiteDisplay"> The object in charge of creating and displaying the stat bars in GUI. </param>
+        /// <exception cref="ArgumentNullException"> If any argument is null. </exception>
+        public StatBarSuite(IEntityEventNexus eventNexus, IStatBarSuiteDisplay suiteDisplay)
         {
             _settings = SettingsRegistry.GetSettings<StatBarSettings>();
-            _statBox = statBox ?? throw new ArgumentNullException(nameof(statBox));
+            _eventNexus = eventNexus ?? throw new ArgumentNullException(nameof(eventNexus));
             _groupDisplay = suiteDisplay ?? throw new ArgumentNullException(nameof(suiteDisplay));
 
             for (var i = 0; i < _settings.MainStatOrder.Length; i++)
                 _statBars.Add(NewStatBarRelationship(_settings.MainStatOrder[i], i));
-            UpdateDisplays();
+            RepositionDisplays();
         }
 
         public void Show()
@@ -45,7 +45,7 @@ namespace BrokenWheel.UI.StatBar.Implementation
             if (!_isHiding)
                 return;
             
-            UpdateDisplays();
+            RepositionDisplays();
             _groupDisplay.Show();
             _isHiding = false;
         }
@@ -59,7 +59,7 @@ namespace BrokenWheel.UI.StatBar.Implementation
             _isHiding = true;
         }
 
-        public void UpdateDisplays()
+        public void RepositionDisplays()
         {
             StatBarDisplayUpdater.PositionAndUpdateStatBars(_settings, _statBars
                 .Where(_ => !_.StatBar.IsHidden)
@@ -84,7 +84,7 @@ namespace BrokenWheel.UI.StatBar.Implementation
             if (!HasStat(type))
                 return;
             
-            var toRemove = _statBars.First(_ => _.Type != type);
+            var toRemove = _statBars.First(_ => _.StatInfo.Type != type);
             _groupDisplay.RemoveDisplay(toRemove.StatBar.Display);
             _statBars.Remove(toRemove);
         }
@@ -99,7 +99,7 @@ namespace BrokenWheel.UI.StatBar.Implementation
             _statBars.Remove(toRemove);
         }
 
-        private bool HasStat(StatType type) => _statBars.Any(_ => _.Type == type);
+        private bool HasStat(StatType type) => _statBars.Any(_ => _.StatInfo.Type == type);
 
         private bool HasStat(string code) => _statBars.Any(_ => _.StatBar.Info.Code == code);
 

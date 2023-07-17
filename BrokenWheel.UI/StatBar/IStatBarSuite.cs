@@ -20,7 +20,7 @@ namespace BrokenWheel.UI.StatBar
         /// <summary>
         /// Updates all of the stat bars, to reflect stat values and settings.
         /// </summary>
-        void UpdateDisplays();
+        void RepositionDisplays();
         
         /// <summary>
         /// Adds a bar for the specified stat, if there is not already a stat of that type being displayed.
