@@ -25,7 +25,7 @@ namespace BrokenWheel.Core.Settings
         /// <summary>
         /// The order of the main health, stamina, and willpower stats.
         /// </summary>
-        public StatType[] MainStatOrder { get; internal set; } = { StatType.HP, StatType.SP, StatType.WP };
+        public StatType[] MainStatCodesInOrder { get; internal set; } = { StatType.HP, StatType.SP, StatType.WP };
 
         /// <summary>
         /// The color profile of the health bar.

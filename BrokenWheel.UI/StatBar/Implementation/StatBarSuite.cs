@@ -32,14 +32,14 @@ namespace BrokenWheel.UI.StatBar.Implementation
             _eventNexus = eventNexus ?? throw new ArgumentNullException(nameof(eventNexus));
             _groupDisplay = suiteDisplay ?? throw new ArgumentNullException(nameof(suiteDisplay));
 
-            for (var i = 0; i < _settings.MainStatOrder.Length; i++)
-                _statBars.Add(NewStatBarRelationship(_settings.MainStatOrder[i], i));
+            for (var i = 0; i < _settings.MainStatCodesInOrder.Length; i++)
+                _statBars.Add(NewStatBarRelationship(new StatInfo(_settings.MainStatCodesInOrder[i]), i));
             RepositionDisplays();
-
-            /*StatBar statBar = null;
-            _eventNexus.SubscribeToEnumeratedEvent<StatType, ComplexStatUpdatedEvent>(StatType.HP,
-                ev => statBar.Update(0, 0, ev.Stat));*/
         }
+
+        private void ReportPpp(double ratio) => _highestPpp = System.Math.Max(_highestPpp, ratio);
+
+        private double HighestPpp() => _highestPpp;
 
         public void Show()
         {
@@ -73,16 +73,19 @@ namespace BrokenWheel.UI.StatBar.Implementation
             if (HasStat(type))
                 return;
 
-            var statBarRelationship = NewStatBarRelationship(type);
-            _eventNexus.SubscribeToEnumeratedEvent<StatType, ComplexStatUpdatedEvent>(statBarRelationship.StatInfo.Code, 
-                complexStatUpdatedEvent => statBarRelationship.StatBar.HandleEvent(complexStatUpdatedEvent));
-            _statBars.Add(statBarRelationship);
+            var sbr = NewStatBarRelationship(new StatInfo(type));
+            _eventNexus.SubscribeToEnumeratedEvent(sbr.StatInfo.Type, sbr.StatBar);
+            _statBars.Add(sbr);
         }
 
         public void AddCustomStat(string code)
         {
-            if (!HasStat(code))
-                _statBars.Add(NewStatBarRelationship(code));
+            if (HasStat(code))
+                return;
+
+            var sbr = NewStatBarRelationship(new StatInfo(code));
+            _eventNexus.SubscribeToEnumeratedEvent<StatType, ComplexStatUpdatedEvent>(sbr.StatInfo.Code, sbr.StatBar);
+            _statBars.Add(sbr);
         }
 
         public void RemoveStat(StatType type)
@@ -91,6 +94,7 @@ namespace BrokenWheel.UI.StatBar.Implementation
                 return;
             
             var toRemove = _statBars.First(_ => _.StatInfo.Type != type);
+            _eventNexus.UnsubscribeFromEnumeratedEvent(toRemove.StatInfo.Type, toRemove.StatBar);
             _groupDisplay.RemoveDisplay(toRemove.StatBar.Display);
             _statBars.Remove(toRemove);
         }
@@ -101,6 +105,7 @@ namespace BrokenWheel.UI.StatBar.Implementation
                 return;
             
             var toRemove = _statBars.First(_ => _.StatBar.Info.Code == code);
+            _eventNexus.UnsubscribeFromEnumeratedEvent<StatType, ComplexStatUpdatedEvent>(toRemove.StatInfo.Code, toRemove.StatBar);
             _groupDisplay.RemoveDisplay(toRemove.StatBar.Display);
             _statBars.Remove(toRemove);
         }
@@ -108,18 +113,6 @@ namespace BrokenWheel.UI.StatBar.Implementation
         private bool HasStat(StatType type) => _statBars.Any(_ => _.StatInfo.Type == type);
 
         private bool HasStat(string code) => _statBars.Any(_ => _.StatBar.Info.Code == code);
-
-        private StatBarRelationship NewStatBarRelationship(StatType statType, int order = -1)
-        {
-            var stat = new StatInfo(statType);
-            return NewStatBarRelationship(stat, order);
-        }
-
-        private StatBarRelationship NewStatBarRelationship(string statCode, int order = -1)
-        {
-            var stat = new StatInfo(statCode);
-            return NewStatBarRelationship(stat, order);
-        }
 
         private StatBarRelationship NewStatBarRelationship(StatInfo statInfo, int order = -1)
         {
@@ -152,9 +145,5 @@ namespace BrokenWheel.UI.StatBar.Implementation
                 ? _settings.ColorsByCode.First(kvp => kvp.Key == customStatCode).Value 
                 : _settings.DefaultColors;
         }
-
-        private void ReportPpp(double ratio) => _highestPpp = System.Math.Max(_highestPpp, ratio);
-
-        private double HighestPpp() => _highestPpp;
     }
 }
