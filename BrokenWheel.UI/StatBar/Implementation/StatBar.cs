@@ -87,21 +87,11 @@ namespace BrokenWheel.UI.StatBar.Implementation
 
         private void UpdateDisplay()
         {
-            var parameters = UpdateDisplayParameters();
-            UpdateBorder(parameters);
-            UpdateBackground(parameters);
-            UpdatePrimary(parameters, out var primaryLength);
-            UpdateSecondary(parameters, primaryLength);
-            UpdateExhaustion(parameters);
-        }
-
-        #region Display Calculations
-        private UpdateDisplayParameters UpdateDisplayParameters()
-        {
             var ppp = CalculatePointsPerPixel();
             var length = MathUtil.RaiseDoubleToInt(ppp * _stat.EffectiveMaximum);
             var y = CalculateYAdjustingForLengthIfOnTop(length);
-            return new UpdateDisplayParameters(_settings, _stat, ppp, length, _x, y);
+            var parameters = new UpdateDisplayParameters(_settings, _stat, ppp, length, _x, y);
+            StatBarDisplayUpdater.UpdateDisplay(Display, parameters);
         }
 
         private int CalculateYAdjustingForLengthIfOnTop(int length)
@@ -164,88 +154,5 @@ namespace BrokenWheel.UI.StatBar.Implementation
         /// as that is the maximum length a stat bar can have, regardless of settings.
         /// </summary>
         private int GetConstrainingDimension() => _settings.IsVertical ? DisplayInfo.UIHeight() : DisplayInfo.UIWidth();
-        #endregion
-
-        #region Updates
-        private void UpdateBorder(UpdateDisplayParameters p)
-        {
-            var borderSizeX2 = p.BorderSize * 2;
-            var length = p.FullLength + borderSizeX2;
-            var thickness = p.Thickness + borderSizeX2;
-            var width = p.IsVertical ? thickness : length;
-            var height = p.IsVertical ? length : thickness;
-            Display.SetBorderDimensions(p.BaseX, p.BaseY, width, height);
-        }
-
-        private void UpdateBackground(UpdateDisplayParameters p)
-        {
-            var width = p.IsVertical ? p.Thickness : p.FullLength;
-            var height = p.IsVertical ? p.FullLength : p.Thickness;
-            Display.SetBackgroundDimensions(p.BackgroundX, p.BackgroundY, width, height);
-        }
-
-        private void UpdatePrimary(UpdateDisplayParameters p, out int length)
-        {
-            length = 10; // TODO: current value/destination value
-            var width = p.IsVertical ? p.Thickness : length;
-            var height = p.IsVertical ? length : p.Thickness;
-            Display.SetPrimaryDimensions(p.BackgroundX, p.BackgroundY, width, height);
-        }
-
-        private void UpdateSecondary(UpdateDisplayParameters p, int primaryLength)
-        {
-            var length = 5; // TODO: destination value/current value
-            var (x, y, width, height) = p.IsVertical 
-                ? VerticalSecondaryDimensions(p, primaryLength, length) 
-                : HorizontalSecondaryDimensions(p, primaryLength, length);
-            Display.SetSecondaryDimensions(x, y, width, height);
-        }
-
-        private static (int, int, int, int) VerticalSecondaryDimensions(UpdateDisplayParameters p, int primaryLength, int length)
-        {
-            var x = p.BackgroundX;
-            var y = p.BackgroundY + primaryLength + length;
-            var width = p.Thickness;
-            var height = length;
-            return (x, y, width, height);
-        }
-
-        private static (int, int, int, int) HorizontalSecondaryDimensions(UpdateDisplayParameters p, int primaryLength, int length)
-        {
-            var x = p.BackgroundX + primaryLength + length;
-            var y = p.BackgroundY;
-            var width = length;
-            var height = p.Thickness;
-            return (x, y, width, height);
-        }
-
-        private void UpdateExhaustion(UpdateDisplayParameters p)
-        {
-            var length = MathUtil.RaiseDoubleToInt(p.PPP * p.Stat.Exhaustion);
-            var (x, y, width, height) = p.IsVertical
-                ? VerticalExhaustionDimensions(p, length)
-                : HorizontalExhaustionDimensions(p, length);
-            Display.SetExhaustionDimensions(x, y, width, height);
-        }
-        
-
-        private static (int, int, int, int) VerticalExhaustionDimensions(UpdateDisplayParameters p, int length)
-        {
-            var x = p.BackgroundX;
-            var y = p.BackgroundY + p.FullLength - length;
-            var width = p.Thickness;
-            var height = length;
-            return (x, y, width, height);
-        }
-
-        private static (int, int, int, int) HorizontalExhaustionDimensions(UpdateDisplayParameters p, int length)
-        {
-            var x = p.BackgroundX + p.FullLength - length;
-            var y = p.BackgroundY;
-            var width = length;
-            var height = p.Thickness;
-            return (x, y, width, height);
-        }
-        #endregion
     }
 }

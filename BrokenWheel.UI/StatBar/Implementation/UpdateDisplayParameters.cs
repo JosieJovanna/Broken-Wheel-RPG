@@ -1,6 +1,5 @@
 ﻿using System;
 using BrokenWheel.Core.Settings;
-using BrokenWheel.Core.Stats;
 using BrokenWheel.Core.Stats.Events;
 
 namespace BrokenWheel.UI.StatBar.Implementation
