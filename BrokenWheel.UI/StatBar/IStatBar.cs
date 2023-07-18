@@ -37,10 +37,8 @@ namespace BrokenWheel.UI.StatBar
 
         /// <summary>
         /// Sets the position of the bar then updates the display according to its statistic.
+        /// The class is in charge of mirroring top or bottom.
         /// </summary>
-        /// <param name="xPosition"> The X position of the bar, before accounting for length, if on the right side. </param>
-        /// <param name="yPosition"> The Y position of the bar, before accounting for length, if on the top. </param>
-        /// <param name="stat"> The new stat data being reflected. If null, does not update values. </param>
-        void Update(int xPosition, int yPosition, ComplexStatUpdate stat = null);
+        void SetPosition(int xPosition, int yPosition);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using BrokenWheel.Core.Settings;
 using BrokenWheel.Core.Stats.Enum;
+using BrokenWheel.Core.Stats.Events;
 
 namespace BrokenWheel.UI.StatBar.Implementation
 {
@@ -8,6 +9,7 @@ namespace BrokenWheel.UI.StatBar.Implementation
     {
         public IStatBar StatBar { get; }
         public StatInfo StatInfo { get; }
+        public EventHandler<ComplexStatUpdatedEvent> Handler { get; }
         public int Order { get; set; }
 
         public StatBarRelationship(

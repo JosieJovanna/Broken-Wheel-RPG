@@ -28,6 +28,7 @@ namespace BrokenWheel.UI.StatBar.Implementation
         /// </summary>
         /// <param name="statBarSettings"> The statBarSettings for stat bars. </param>
         /// <param name="statBarDisplay"> The GUI element this object controls. </param>
+        /// <param name="statInfo"> The stat this stat bar is assigned to track. </param>
         /// <param name="reportPointsPerPixel"> A delegate to report back when the ratio of points per pixel changes. </param>
         /// <param name="highestPointsPerPixel"> A delegate which gets the highest ratio of points per pixel. </param>
         /// <exception cref="ArgumentNullException"> When these parameters are null. </exception>
@@ -67,12 +68,10 @@ namespace BrokenWheel.UI.StatBar.Implementation
             _isHiding = true;
         }
 
-        public void Update(int xPosition, int yPosition, ComplexStatUpdate stat = null)
+        public void SetPosition(int xPosition, int yPosition)
         {
             _x = xPosition;
             _y = yPosition;
-            if (stat != null)
-                _stat = stat;
             UpdateDisplay();
         }
 
@@ -83,6 +82,7 @@ namespace BrokenWheel.UI.StatBar.Implementation
             if (Info.IsCustom && gameEvent.StatInfo.Code != Info.Code)
                 throw new InvalidOperationException(string.Format(EX_FORMAT, gameEvent.StatInfo.Code, Info.Code));
             _stat = gameEvent.Stat;
+            UpdateDisplay();
         }
 
         private void UpdateDisplay()

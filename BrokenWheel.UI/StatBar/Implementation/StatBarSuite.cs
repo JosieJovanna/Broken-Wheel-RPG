@@ -6,15 +6,12 @@ using BrokenWheel.Core.Settings;
 using BrokenWheel.Core.Settings.Registration;
 using BrokenWheel.Core.Stats;
 using BrokenWheel.Core.Stats.Enum;
-using BrokenWheel.Core.Stats.Extensions;
+using BrokenWheel.Core.Stats.Events;
 
 namespace BrokenWheel.UI.StatBar.Implementation
 {
     public class StatBarSuite : IStatBarSuite
     {
-        private const string STAT_NOT_FOUND_FORMAT = 
-            "Complex stat {0} does not exist - can only make stat bars for complex stats.";
-        
         private readonly StatBarSettings _settings;
         private readonly IEntityEventNexus _eventNexus;
         private readonly IStatBarSuiteDisplay _groupDisplay;
@@ -38,6 +35,10 @@ namespace BrokenWheel.UI.StatBar.Implementation
             for (var i = 0; i < _settings.MainStatOrder.Length; i++)
                 _statBars.Add(NewStatBarRelationship(_settings.MainStatOrder[i], i));
             RepositionDisplays();
+
+            /*StatBar statBar = null;
+            _eventNexus.SubscribeToEnumeratedEvent<StatType, ComplexStatUpdatedEvent>(StatType.HP,
+                ev => statBar.Update(0, 0, ev.Stat));*/
         }
 
         public void Show()
@@ -61,7 +62,7 @@ namespace BrokenWheel.UI.StatBar.Implementation
 
         public void RepositionDisplays()
         {
-            StatBarDisplayUpdater.PositionAndUpdateStatBars(_settings, _statBars
+            StatBarPositioner.PositionBars(_settings, _statBars
                 .Where(_ => !_.StatBar.IsHidden)
                 .OrderBy(_ => _.Order)
                 .ToList());
@@ -69,8 +70,13 @@ namespace BrokenWheel.UI.StatBar.Implementation
 
         public void AddStat(StatType type)
         {
-            if (!HasStat(type))
-                _statBars.Add(NewStatBarRelationship(type));
+            if (HasStat(type))
+                return;
+
+            var statBarRelationship = NewStatBarRelationship(type);
+            _eventNexus.SubscribeToEnumeratedEvent<StatType, ComplexStatUpdatedEvent>(statBarRelationship.StatInfo.Code, 
+                complexStatUpdatedEvent => statBarRelationship.StatBar.HandleEvent(complexStatUpdatedEvent));
+            _statBars.Add(statBarRelationship);
         }
 
         public void AddCustomStat(string code)
@@ -105,32 +111,24 @@ namespace BrokenWheel.UI.StatBar.Implementation
 
         private StatBarRelationship NewStatBarRelationship(StatType statType, int order = -1)
         {
-            var stat = _statBox.GetComplexStatIfExists(statType);
-            if (stat == null)
-                throw new InvalidOperationException(string.Format(STAT_NOT_FOUND_FORMAT, statType.GetCode()));
+            var stat = new StatInfo(statType);
             return NewStatBarRelationship(stat, order);
         }
 
         private StatBarRelationship NewStatBarRelationship(string statCode, int order = -1)
         {
-            var stat = _statBox.GetComplexStatIfExists(statCode);
-            if (stat == null)
-                throw new InvalidOperationException(string.Format(STAT_NOT_FOUND_FORMAT, statCode));
+            var stat = new StatInfo(statCode);
             return NewStatBarRelationship(stat, order);
         }
 
-        private void ReportPpp(double ratio) => _highestPpp = System.Math.Max(_highestPpp, ratio);
-
-        private double HighestPpp() => _highestPpp;
-
-        private StatBarRelationship NewStatBarRelationship(IComplexStatistic statistic, int order = -1)
+        private StatBarRelationship NewStatBarRelationship(StatInfo statInfo, int order = -1)
         {
             if (order < 0)
                 order = _statBars.Count;
-            var colors = ColorSettingsForStat(statistic.Info);
-            var display = _groupDisplay.AddDisplay(statistic.Info.Name);
+            var colors = ColorSettingsForStat(statInfo);
+            var display = _groupDisplay.AddDisplay(statInfo.Name);
             display.SetColorProfile(colors);
-            return new StatBarRelationship(_settings, statistic, display, ReportPpp, HighestPpp, order);
+            return new StatBarRelationship(_settings, statInfo, display, ReportPpp, HighestPpp, order);
         }
 
         private StatBarColorSettings ColorSettingsForStat(StatInfo statInfo)
@@ -154,5 +152,9 @@ namespace BrokenWheel.UI.StatBar.Implementation
                 ? _settings.ColorsByCode.First(kvp => kvp.Key == customStatCode).Value 
                 : _settings.DefaultColors;
         }
+
+        private void ReportPpp(double ratio) => _highestPpp = System.Math.Max(_highestPpp, ratio);
+
+        private double HighestPpp() => _highestPpp;
     }
 }

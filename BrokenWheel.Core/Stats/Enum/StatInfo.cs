@@ -17,13 +17,12 @@ namespace BrokenWheel.Core.Stats.Enum
             Code = statTypeType.ToString();
         }
 
-        public StatInfo(string customTypeName, string customTypeCode)
+        public StatInfo(string customTypeCode, string customTypeName = null)
         {
-            if (string.IsNullOrWhiteSpace(customTypeName))
-                throw new ArgumentException($"{nameof(customTypeName)} cannot be null or whitespace.");
             if (string.IsNullOrWhiteSpace(customTypeCode))
                 throw new ArgumentException($"{nameof(customTypeCode)} cannot be null or whitespace.");
-            
+            // TODO: get name from some utility, if not given
+
             Type = StatType.Custom;
             Name = customTypeName;
             Code = customTypeCode;

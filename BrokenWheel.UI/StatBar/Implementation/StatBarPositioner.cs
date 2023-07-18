@@ -5,7 +5,7 @@ using BrokenWheel.UI.Display;
 
 namespace BrokenWheel.UI.StatBar.Implementation
 {
-    internal static class StatBarDisplayUpdater
+    internal static class StatBarPositioner
     {
         private static StatBarSettings _settings;
         private static IList<StatBarRelationship> _list;
@@ -16,7 +16,7 @@ namespace BrokenWheel.UI.StatBar.Implementation
         private static int _distance;
         private static int _thickness;
 
-        public static void PositionAndUpdateStatBars(
+        public static void PositionBars(
             StatBarSettings statBarSettings, 
             IList<StatBarRelationship> statBarRelationships)
         {
@@ -24,7 +24,7 @@ namespace BrokenWheel.UI.StatBar.Implementation
             _list = statBarRelationships ?? throw new ArgumentException(nameof(statBarRelationships));
             InitiateToPreventRaceConditions();
             for (var i = 0; i < _list.Count; i++)
-                PositionAndUpdateBar(i);
+                PositionBar(i);
         }
 
         private static void InitiateToPreventRaceConditions()
@@ -37,12 +37,12 @@ namespace BrokenWheel.UI.StatBar.Implementation
             _thickness = _settings.BorderSize * 2 + _settings.Thickness;
         }
 
-        private static void PositionAndUpdateBar(int i)
+        private static void PositionBar(int i)
         {
             var offset = (_thickness + _spacing) * i + _distance;
             var x = CalculateX(offset);
             var y = CalculateY(offset);
-            _list[i].StatBar.Update(x, y);
+            _list[i].StatBar.SetPosition(x, y);
         }
 
         private static int CalculateX(int offset)

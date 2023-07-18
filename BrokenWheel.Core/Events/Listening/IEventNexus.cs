@@ -39,11 +39,11 @@ namespace BrokenWheel.Core.Events.Listening
         /// Specifically, a custom override, present for some enums, where a default value is selected,
         /// and a string used to access some other related value, included for use in modding.
         /// </summary>
-        /// <param name="enumValue"> The enumeration value's string override to select. </param>
+        /// <param name="customCode"> The enumeration value's string override to select. </param>
         /// <param name="handler"> The event handler for this type of event. </param>
         /// <typeparam name="E"> The enum being used to select against. </typeparam>
         /// <typeparam name="T"> The type of enumerated event to be listened to. </typeparam>
-        void SubscribeToEnumeratedEvent<E, T>(string customEnumValue, EventHandler<T> handler)
+        void SubscribeToEnumeratedEvent<E, T>(string customCode, EventHandler<T> handler)
             where E : struct, IConvertible where T : CustomOverrideEnumGameEvent<E>;
         
         /// <summary>
@@ -51,11 +51,48 @@ namespace BrokenWheel.Core.Events.Listening
         /// Specifically, a custom override, present for some enums, where a default value is selected,
         /// and a string used to access some other related value, included for use in modding.
         /// </summary>
-        /// <param name="customEnumValue"> The enumeration value's string override to select. </param>
+        /// <param name="customCode"> The enumeration value's string override to select. </param>
         /// <param name="handler"> The event handler currently subscribed. </param>
         /// <typeparam name="E"> The enum being used to select against. </typeparam>
         /// <typeparam name="T"> The type of enumerated event to be unsubscribed from. </typeparam>
-        void UnsubscribeFromEnumeratedEvent<E, T>(string customEnumValue, EventHandler<T> handler)
+        void UnsubscribeFromEnumeratedEvent<E, T>(string customCode, EventHandler<T> handler)
+            where E : struct, IConvertible where T : CustomOverrideEnumGameEvent<E>;
+        
+        /// <summary>
+        /// Emits a <see cref="GameEvent"/> to be handled by listeners.
+        /// </summary>
+        void EmitEvent<T>(T gameEvent) where T : GameEvent;
+
+        /// <summary>
+        /// Emits an event for listeners based on enum value attached to the event.
+        /// Specifically, a custom override, present for some enums, where a default value is selected,
+        /// and a string used to access some other related value, included for use in modding.
+        /// </summary>
+        /// <param name="enumValue"> The enumeration value to select. </param>
+        /// <param name="gameEvent"> The event being emitted for listeners. </param>
+        /// <param name="emitToCatchallListeners">
+        /// Whether the event should be sent to listeners which are registered to the type of event, but not the specific
+        /// enumerator value that is specified.
+        /// </param>
+        /// <typeparam name="E"> The enum being used to select against. </typeparam>
+        /// <typeparam name="T"> The type of enumerated event emit. </typeparam>
+        void EmitEnumeratedEvent<E, T>(E enumValue, T gameEvent, bool emitToCatchallListeners = true)
+            where E : struct, IConvertible where T : EnumeratedGameEvent<E>;
+
+        /// <summary>
+        /// Emits an event for listeners based on enum value attached to the event.
+        /// Specifically, a custom override, present for some enums, where a default value is selected,
+        /// and a string used to access some other related value, included for use in modding.
+        /// </summary>
+        /// <param name="customCode"> The enumeration value's string override to select. </param>
+        /// <param name="gameEvent"> The event being emitted for listeners. </param>
+        /// <param name="emitToCatchallListeners">
+        /// Whether the event should be sent to listeners which are registered to the type of event, but not the specific
+        /// enumerator value that is specified.
+        /// </param>
+        /// <typeparam name="E"> The enum being used to select against. </typeparam>
+        /// <typeparam name="T"> The type of enumerated event emit. </typeparam>
+        void EmitEnumeratedEvent<E, T>(string customCode, T gameEvent, bool emitToCatchallListeners = true)
             where E : struct, IConvertible where T : CustomOverrideEnumGameEvent<E>;
     }
 }
