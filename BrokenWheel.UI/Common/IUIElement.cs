@@ -12,7 +12,7 @@
         /// Whether the individual display element is currently being rendered.
         /// This will be set as or after <see cref="Hide"/> is called, as there may be a time taken to fade.
         /// </summary>
-        bool IsHidden { get; set; }
+        bool IsHidden { get; }
         
         /// <summary>
         /// Starts showing the display element, possibly with a fade.

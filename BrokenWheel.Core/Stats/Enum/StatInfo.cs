@@ -8,24 +8,31 @@ namespace BrokenWheel.Core.Stats.Enum
         public StatType Type { get; }
         public string Name { get; }
         public string Code { get; }
-        public bool IsCustom { get => Type == StatType.Custom; }
+        public bool IsCustom { get; }
+        public bool IsComplex { get; }
 
-        public StatInfo(StatType statTypeType)
+        public StatInfo(StatType statType)
         {
-            Type = statTypeType;
-            Name = statTypeType.GetName();
-            Code = statTypeType.ToString();
+            if (statType == StatType.Custom)
+                throw new ArgumentException($"{nameof(statType)} cannot be Custom unless code is specified.");
+            
+            Type = statType;
+            Name = statType.GetName();
+            Code = statType.ToString();
+            IsCustom = false;
+            IsComplex = statType.IsComplex();
         }
 
-        public StatInfo(string customTypeCode, string customTypeName = null)
+        public StatInfo(string customTypeCode)
         {
             if (string.IsNullOrWhiteSpace(customTypeCode))
                 throw new ArgumentException($"{nameof(customTypeCode)} cannot be null or whitespace.");
-            // TODO: get name from some utility, if not given
 
             Type = StatType.Custom;
-            Name = customTypeName;
+            Name = ""; // TODO: get this from some service
             Code = customTypeCode;
+            IsCustom = true;
+            IsComplex = false; // TODO: get this from some service
         }
     }
 }
