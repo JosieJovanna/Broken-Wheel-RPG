@@ -5,14 +5,14 @@ using BrokenWheel.Core.Stats.Events;
 namespace BrokenWheel.UI.StatBar
 {
     /// <summary>
-    /// An object which controls the <see cref="IStatBarDisplay"/>s conveying a <see cref="IComplexStatistic"/>.
+    /// An object which controls the <see cref="IStatBarUIElement"/>s conveying a <see cref="IComplexStatistic"/>.
     /// </summary>
     internal interface IStatBar : IListener<ComplexStatUpdatedEvent>
     {
         /// <summary>
         /// The GUI representation of the stat bar.
         /// </summary>
-        IStatBarDisplay Display { get; }
+        IStatBarUIElement UIElement { get; }
 
         /// <summary>
         /// The type of stat being tracked.

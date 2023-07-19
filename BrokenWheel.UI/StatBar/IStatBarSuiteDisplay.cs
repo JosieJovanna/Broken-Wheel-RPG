@@ -5,7 +5,7 @@
         void Show();
         void Hide();
 
-        IStatBarDisplay AddDisplay(string name);
-        void RemoveDisplay(IStatBarDisplay display);
+        IStatBarUIElement AddDisplay(string name);
+        void RemoveDisplay(IStatBarUIElement uiElement);
     }
 }

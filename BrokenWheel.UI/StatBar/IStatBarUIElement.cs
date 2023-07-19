@@ -9,7 +9,7 @@ namespace BrokenWheel.UI.StatBar
     /// Does not handle any logic regarding positioning, which is handled by <see cref="IStatBar"/>.
     /// Implementation is responsible for interpolating the distances, handling fading effects, et cetera.
     /// </summary>
-    public interface IStatBarDisplay : IDisplay
+    public interface IStatBarUIElement : IUIElement
     {
         /// <summary>
         /// Sets the colors of the bar to a new setting.

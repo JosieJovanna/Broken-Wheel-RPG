@@ -1,6 +1,6 @@
 ﻿namespace BrokenWheel.UI.Common
 {
-    public interface IDisplay
+    public interface IUIElement
     {
         /// <summary>
         /// Gets the master position of the display.

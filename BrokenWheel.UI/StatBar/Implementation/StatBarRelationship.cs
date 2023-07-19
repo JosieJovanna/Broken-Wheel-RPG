@@ -15,7 +15,7 @@ namespace BrokenWheel.UI.StatBar.Implementation
         public StatBarRelationship(
             StatBarSettings statBarSettings, 
             StatInfo statInfo, 
-            IStatBarDisplay statBarDisplay, 
+            IStatBarUIElement statBarUIElement, 
             StatBar.ReportPointsPerPixel reportPointsPerPixelDelegate,
             StatBar.HighestPointsPerPixel highestPointsPerPixelDelegate,
             int order = 99)
@@ -24,7 +24,7 @@ namespace BrokenWheel.UI.StatBar.Implementation
             StatInfo = statInfo;
             StatBar = new StatBar(
                 statBarSettings ?? throw new ArgumentNullException(nameof(statBarSettings)), 
-                statBarDisplay ?? throw new ArgumentNullException(nameof(statBarDisplay)),
+                statBarUIElement ?? throw new ArgumentNullException(nameof(statBarUIElement)),
                 statInfo ?? throw new ArgumentNullException(nameof(statInfo)), 
                 reportPointsPerPixelDelegate ?? throw new ArgumentNullException(nameof(reportPointsPerPixelDelegate)),
                 highestPointsPerPixelDelegate ?? throw new ArgumentNullException(nameof(highestPointsPerPixelDelegate)));

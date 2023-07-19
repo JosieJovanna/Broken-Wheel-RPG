@@ -4,48 +4,48 @@ namespace BrokenWheel.UI.StatBar.Implementation
 {
     internal static class StatBarDisplayUpdater
     {
-        public static void UpdateDisplay(IStatBarDisplay display, UpdateDisplayParameters parameters)
+        public static void UpdateDisplay(IStatBarUIElement uiElement, UpdateDisplayParameters parameters)
         {
-            display.SetPosition(parameters.BaseX, parameters.BaseY);
-            UpdateBorder(display, parameters);
-            UpdateBackground(display, parameters);
-            UpdatePrimary(display, parameters, out var primaryLength);
-            UpdateSecondary(display, parameters, primaryLength);
-            UpdateExhaustion(display, parameters);
+            uiElement.SetPosition(parameters.BaseX, parameters.BaseY);
+            UpdateBorder(uiElement, parameters);
+            UpdateBackground(uiElement, parameters);
+            UpdatePrimary(uiElement, parameters, out var primaryLength);
+            UpdateSecondary(uiElement, parameters, primaryLength);
+            UpdateExhaustion(uiElement, parameters);
         }
         
-        private static void UpdateBorder(IStatBarDisplay display, UpdateDisplayParameters p)
+        private static void UpdateBorder(IStatBarUIElement uiElement, UpdateDisplayParameters p)
         {
             var borderSizeX2 = p.BorderSize * 2;
             var length = p.FullLength + borderSizeX2;
             var thickness = p.Thickness + borderSizeX2;
             var width = p.IsVertical ? thickness : length;
             var height = p.IsVertical ? length : thickness;
-            display.SetBorderDimensions(0, 0, width, height);
+            uiElement.SetBorderDimensions(0, 0, width, height);
         }
 
-        private static void UpdateBackground(IStatBarDisplay display, UpdateDisplayParameters p)
+        private static void UpdateBackground(IStatBarUIElement uiElement, UpdateDisplayParameters p)
         {
             var width = p.IsVertical ? p.Thickness : p.FullLength;
             var height = p.IsVertical ? p.FullLength : p.Thickness;
-            display.SetBackgroundDimensions(p.BorderSize, p.BorderSize, width, height);
+            uiElement.SetBackgroundDimensions(p.BorderSize, p.BorderSize, width, height);
         }
 
-        private static void UpdatePrimary(IStatBarDisplay display, UpdateDisplayParameters p, out int length)
+        private static void UpdatePrimary(IStatBarUIElement uiElement, UpdateDisplayParameters p, out int length)
         {
             length = 10; // TODO: current value/destination value
             var width = p.IsVertical ? p.Thickness : length;
             var height = p.IsVertical ? length : p.Thickness;
-            display.SetPrimaryDimensions(p.BorderSize, p.BorderSize, width, height);
+            uiElement.SetPrimaryDimensions(p.BorderSize, p.BorderSize, width, height);
         }
 
-        private static void UpdateSecondary(IStatBarDisplay display, UpdateDisplayParameters p, int primaryLength)
+        private static void UpdateSecondary(IStatBarUIElement uiElement, UpdateDisplayParameters p, int primaryLength)
         {
             var length = 5; // TODO: destination value/current value
             var (x, y, width, height) = p.IsVertical 
                 ? VerticalSecondaryDimensions(p, primaryLength, length) 
                 : HorizontalSecondaryDimensions(p, primaryLength, length);
-            display.SetSecondaryDimensions(x, y, width, height);
+            uiElement.SetSecondaryDimensions(x, y, width, height);
         }
 
         private static (int, int, int, int) VerticalSecondaryDimensions(UpdateDisplayParameters p, int primaryLength, int length)
@@ -66,13 +66,13 @@ namespace BrokenWheel.UI.StatBar.Implementation
             return (x, y, width, height);
         }
 
-        private static void UpdateExhaustion(IStatBarDisplay display, UpdateDisplayParameters p)
+        private static void UpdateExhaustion(IStatBarUIElement uiElement, UpdateDisplayParameters p)
         {
             var length = MathUtil.RaiseDoubleToInt(p.PPP * p.Stat.Exhaustion);
             var (x, y, width, height) = p.IsVertical
                 ? VerticalExhaustionDimensions(p, length)
                 : HorizontalExhaustionDimensions(p, length);
-            display.SetExhaustionDimensions(x, y, width, height);
+            uiElement.SetExhaustionDimensions(x, y, width, height);
         }
         
 
