@@ -17,8 +17,6 @@ namespace BrokenWheel.UI.StatBar.Implementation
         public int FullLength { get; }
         public int BaseX { get; }
         public int BaseY { get; }
-        public int BackgroundX { get; }
-        public int BackgroundY { get; }
         
         public UpdateDisplayParameters(
             StatBarSettings settings, 
@@ -39,8 +37,6 @@ namespace BrokenWheel.UI.StatBar.Implementation
             FullLength = length;
             BaseX = x;
             BaseY = y;
-            BackgroundX = x + BorderSize;
-            BackgroundY = y + BorderSize;
         }
     }
 }

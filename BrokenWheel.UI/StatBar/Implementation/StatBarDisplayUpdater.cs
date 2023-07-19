@@ -6,6 +6,7 @@ namespace BrokenWheel.UI.StatBar.Implementation
     {
         public static void UpdateDisplay(IStatBarDisplay display, UpdateDisplayParameters parameters)
         {
+            display.SetPosition(parameters.BaseX, parameters.BaseY);
             UpdateBorder(display, parameters);
             UpdateBackground(display, parameters);
             UpdatePrimary(display, parameters, out var primaryLength);
@@ -20,14 +21,14 @@ namespace BrokenWheel.UI.StatBar.Implementation
             var thickness = p.Thickness + borderSizeX2;
             var width = p.IsVertical ? thickness : length;
             var height = p.IsVertical ? length : thickness;
-            display.SetBorderDimensions(p.BaseX, p.BaseY, width, height);
+            display.SetBorderDimensions(0, 0, width, height);
         }
 
         private static void UpdateBackground(IStatBarDisplay display, UpdateDisplayParameters p)
         {
             var width = p.IsVertical ? p.Thickness : p.FullLength;
             var height = p.IsVertical ? p.FullLength : p.Thickness;
-            display.SetBackgroundDimensions(p.BackgroundX, p.BackgroundY, width, height);
+            display.SetBackgroundDimensions(p.BorderSize, p.BorderSize, width, height);
         }
 
         private static void UpdatePrimary(IStatBarDisplay display, UpdateDisplayParameters p, out int length)
@@ -35,7 +36,7 @@ namespace BrokenWheel.UI.StatBar.Implementation
             length = 10; // TODO: current value/destination value
             var width = p.IsVertical ? p.Thickness : length;
             var height = p.IsVertical ? length : p.Thickness;
-            display.SetPrimaryDimensions(p.BackgroundX, p.BackgroundY, width, height);
+            display.SetPrimaryDimensions(p.BorderSize, p.BorderSize, width, height);
         }
 
         private static void UpdateSecondary(IStatBarDisplay display, UpdateDisplayParameters p, int primaryLength)
@@ -49,8 +50,8 @@ namespace BrokenWheel.UI.StatBar.Implementation
 
         private static (int, int, int, int) VerticalSecondaryDimensions(UpdateDisplayParameters p, int primaryLength, int length)
         {
-            var x = p.BackgroundX;
-            var y = p.BackgroundY + primaryLength + length;
+            var x = p.BorderSize;
+            var y = p.BorderSize + primaryLength + length;
             var width = p.Thickness;
             var height = length;
             return (x, y, width, height);
@@ -58,8 +59,8 @@ namespace BrokenWheel.UI.StatBar.Implementation
 
         private static (int, int, int, int) HorizontalSecondaryDimensions(UpdateDisplayParameters p, int primaryLength, int length)
         {
-            var x = p.BackgroundX + primaryLength + length;
-            var y = p.BackgroundY;
+            var x = p.BorderSize + primaryLength + length;
+            var y = p.BorderSize;
             var width = length;
             var height = p.Thickness;
             return (x, y, width, height);
@@ -77,8 +78,8 @@ namespace BrokenWheel.UI.StatBar.Implementation
 
         private static (int, int, int, int) VerticalExhaustionDimensions(UpdateDisplayParameters p, int length)
         {
-            var x = p.BackgroundX;
-            var y = p.BackgroundY + p.FullLength - length;
+            var x = p.BorderSize;
+            var y = p.BorderSize + p.FullLength - length;
             var width = p.Thickness;
             var height = length;
             return (x, y, width, height);
@@ -86,8 +87,8 @@ namespace BrokenWheel.UI.StatBar.Implementation
 
         private static (int, int, int, int) HorizontalExhaustionDimensions(UpdateDisplayParameters p, int length)
         {
-            var x = p.BackgroundX + p.FullLength - length;
-            var y = p.BackgroundY;
+            var x = p.BorderSize + p.FullLength - length;
+            var y = p.BorderSize;
             var width = length;
             var height = p.Thickness;
             return (x, y, width, height);
