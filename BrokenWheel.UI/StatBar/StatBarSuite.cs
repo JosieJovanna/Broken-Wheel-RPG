@@ -7,8 +7,9 @@ using BrokenWheel.Core.Settings.Registration;
 using BrokenWheel.Core.Stats;
 using BrokenWheel.Core.Stats.Enum;
 using BrokenWheel.Core.Stats.Events;
+using BrokenWheel.UI.StatBar.Implementation;
 
-namespace BrokenWheel.UI.StatBar.Implementation
+namespace BrokenWheel.UI.StatBar
 {
     public class StatBarSuite : IStatBarSuite
     {
@@ -95,7 +96,7 @@ namespace BrokenWheel.UI.StatBar.Implementation
             
             var toRemove = _statBars.First(_ => _.StatInfo.Type != type);
             _eventNexus.UnsubscribeFromEnumeratedEvent(toRemove.StatInfo.Type, toRemove.StatBar);
-            _groupDisplay.RemoveDisplay(toRemove.StatBar.UIElement);
+            _groupDisplay.RemoveStatBarElement(toRemove.StatBar.UIElement);
             _statBars.Remove(toRemove);
         }
 
@@ -106,7 +107,7 @@ namespace BrokenWheel.UI.StatBar.Implementation
             
             var toRemove = _statBars.First(_ => _.StatBar.Info.Code == code);
             _eventNexus.UnsubscribeFromEnumeratedEvent<StatType, ComplexStatUpdatedEvent>(toRemove.StatInfo.Code, toRemove.StatBar);
-            _groupDisplay.RemoveDisplay(toRemove.StatBar.UIElement);
+            _groupDisplay.RemoveStatBarElement(toRemove.StatBar.UIElement);
             _statBars.Remove(toRemove);
         }
 
@@ -119,7 +120,7 @@ namespace BrokenWheel.UI.StatBar.Implementation
             if (order < 0)
                 order = _statBars.Count;
             var colors = ColorSettingsForStat(statInfo);
-            var display = _groupDisplay.AddDisplay(statInfo.Name);
+            var display = _groupDisplay.CreateStatBarElement<IStatBarUIElement>(statInfo.Name);
             display.SetColorProfile(colors);
             return new StatBarRelationship(_settings, statInfo, display, ReportPpp, HighestPpp, order);
         }

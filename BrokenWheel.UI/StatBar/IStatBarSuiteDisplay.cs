@@ -1,11 +1,10 @@
-﻿namespace BrokenWheel.UI.StatBar
-{
-    public interface IStatBarSuiteDisplay
-    {
-        void Show();
-        void Hide();
+﻿using BrokenWheel.UI.Common;
 
-        IStatBarUIElement AddDisplay(string name);
-        void RemoveDisplay(IStatBarUIElement uiElement);
+namespace BrokenWheel.UI.StatBar
+{
+    public interface IStatBarSuiteDisplay : IUIElement
+    {
+        T CreateStatBarElement<T>(string name) where T : IStatBarUIElement;
+        void RemoveStatBarElement(IStatBarUIElement uiElement);
     }
 }
