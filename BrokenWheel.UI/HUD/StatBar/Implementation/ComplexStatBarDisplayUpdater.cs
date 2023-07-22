@@ -1,4 +1,5 @@
-﻿using BrokenWheel.Core.Stats.Events;
+﻿using BrokenWheel.Core.Stats;
+using BrokenWheel.Core.Stats.Events;
 using BrokenWheel.Math.Utility;
 
 namespace BrokenWheel.UI.HUD.StatBar.Implementation

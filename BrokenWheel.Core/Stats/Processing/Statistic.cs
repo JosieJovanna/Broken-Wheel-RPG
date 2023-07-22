@@ -1,13 +1,13 @@
 ﻿using BrokenWheel.Core.Stats.Enum;
 using BrokenWheel.Math.Utility;
 
-namespace BrokenWheel.Core.Stats
+namespace BrokenWheel.Core.Stats.Processing
 {
     /// <summary>
     /// A simple implementation of <see cref="IStatistic"/>.
     /// Used for skills, proficiencies, et cetera, but not things like HP.
     /// </summary>
-    public class Statistic : IStatistic
+    internal class Statistic : IStatistic
     {
         protected readonly StatInfo Stat;
         protected int Val;

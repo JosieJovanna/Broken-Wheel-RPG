@@ -4,7 +4,7 @@ using BrokenWheel.Core.Stats.Attributes;
 
 namespace BrokenWheel.Core.Stats.Extensions
 {
-    public static class StatExtensions
+    public static class StatTypeExtensions
     {
         public static string GetCode(this StatType stat)
         {

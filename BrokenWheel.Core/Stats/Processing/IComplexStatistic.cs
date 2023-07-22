@@ -1,4 +1,4 @@
-﻿namespace BrokenWheel.Core.Stats
+﻿namespace BrokenWheel.Core.Stats.Processing
 {
     /// /// <summary>
     /// A simple implementation of <see cref="IComplexStatistic"/>.
@@ -7,7 +7,7 @@
     /// Has a modifier to the <see cref="EffectiveMaximum"/>, positive or negative. Set by effects, equipment, et cetera.
     /// Has exhaustion, which is a gradual drain on the <see cref="StatType"/> that happens with time and use.
     /// </summary>
-    public interface IComplexStatistic : IStatistic
+    internal interface IComplexStatistic : IStatistic
     {
         /// <summary>
         /// The current value of the <see cref="StatType"/>.

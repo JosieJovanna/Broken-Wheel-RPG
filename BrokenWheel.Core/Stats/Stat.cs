@@ -1,4 +1,4 @@
-﻿namespace BrokenWheel.Core.Stats.Events
+﻿namespace BrokenWheel.Core.Stats
 {
     public class Stat
     {
@@ -19,10 +19,10 @@
         /// For simple stats, value plus modifier; for complex, just the value, no higher than effective maximum.
         /// </summary>
         public int EffectiveValue { get; internal set; }
-        
+
         /// <summary>
         /// The maximum value this stat can have. -1 if no maximum.
         /// </summary>
-        public int Maximum { get; internal set; }
+        public int Maximum { get; internal set; } = NO_MAX;
     }
 }

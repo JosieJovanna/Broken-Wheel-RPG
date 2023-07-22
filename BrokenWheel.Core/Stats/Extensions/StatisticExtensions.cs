@@ -1,6 +1,8 @@
-﻿namespace BrokenWheel.Core.Stats.Extensions
+﻿using BrokenWheel.Core.Stats.Processing;
+
+namespace BrokenWheel.Core.Stats.Extensions
 {
-    public static class StatisticExtensions
+    internal static class StatisticExtensions
     {
         public static bool IsComplex(this IStatistic statistic)
         {

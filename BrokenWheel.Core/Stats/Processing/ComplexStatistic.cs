@@ -1,13 +1,13 @@
 ﻿using BrokenWheel.Core.Stats.Enum;
 using BrokenWheel.Math.Utility;
 
-namespace BrokenWheel.Core.Stats
+namespace BrokenWheel.Core.Stats.Processing
 {
     /// <summary>
     /// A simple implementation of <see cref="IComplexStatistic"/>.
     /// Used for HP, SP, WP, and misc. <see cref="StatType"/>s like the amount of oil.
     /// </summary>
-    public class ComplexStatistic : Statistic, IComplexStatistic
+    internal class ComplexStatistic : Statistic, IComplexStatistic
     {
         /// <summary> Destination Value </summary>
         protected int Dst;

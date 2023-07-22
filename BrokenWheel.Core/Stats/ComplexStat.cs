@@ -1,4 +1,4 @@
-﻿namespace BrokenWheel.Core.Stats.Events
+﻿namespace BrokenWheel.Core.Stats
 {
     public class ComplexStat : Stat
     {
