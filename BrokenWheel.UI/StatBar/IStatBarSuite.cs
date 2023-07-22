@@ -1,19 +1,20 @@
 ﻿using BrokenWheel.Core.Stats;
+using BrokenWheel.UI.StatBar.Implementation;
 
 namespace BrokenWheel.UI.StatBar
 {
     /// <summary>
-    /// A controller for displaying multiple <see cref="IStatBar"/>s on the UI, and coordinating their positions.
+    /// A controller for displaying multiple <see cref="StatBar"/>s on the UI, and coordinating their positions.
     /// </summary>
     public interface IStatBarSuite
     {
         /// <summary>
-        /// Shows all <see cref="IStatBar"/>s.
+        /// Shows all <see cref="StatBar"/>s.
         /// </summary>
         void Show();
 
         /// <summary>
-        /// Hides all <see cref="IStatBar"/>s.
+        /// Hides all <see cref="StatBar"/>s.
         /// </summary>
         void Hide();
         
@@ -33,13 +34,13 @@ namespace BrokenWheel.UI.StatBar
         void AddCustomStat(string code);
         
         /// <summary>
-        /// Removes the <see cref="IStatBar"/> for the specified stat type, if it exists.
+        /// Removes the <see cref="StatBar"/> for the specified stat type, if it exists.
         /// May not remove health, stamina, or willpower bars.
         /// </summary>
         void RemoveStat(StatType type);
 
         /// <summary>
-        /// Removes the <see cref="IStatBar"/> for the specified stat type, if it exists.
+        /// Removes the <see cref="StatBar"/> for the specified stat type, if it exists.
         /// May not remove health, stamina, or willpower bars.
         /// </summary>
         void RemoveCustomStat(string code);

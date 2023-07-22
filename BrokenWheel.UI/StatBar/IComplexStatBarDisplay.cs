@@ -1,6 +1,6 @@
 ﻿namespace BrokenWheel.UI.StatBar
 {
-    public interface IComplexStatBarDisplay : IStatBarUIElement
+    public interface IComplexStatBarDisplay : IStatBarDisplay
     {
         /// <summary>
         /// Sets the stat bar's secondary-colored section's position and size relative to the bottom-left of the stat bar.

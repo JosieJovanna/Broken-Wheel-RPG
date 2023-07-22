@@ -8,7 +8,7 @@ namespace BrokenWheel.UI.StatBar.Implementation
     internal static class StatBarPositioner
     {
         private static StatBarSettings _settings;
-        private static IList<IStatBar> _list;
+        private static IList<StatBar> _list;
         private static StatBarCorner _corner;
         private static bool _isVertical;
         private static int _spacing;
@@ -18,7 +18,7 @@ namespace BrokenWheel.UI.StatBar.Implementation
 
         public static void PositionBars(
             StatBarSettings statBarSettings, 
-            IList<IStatBar> statBarRelationships)
+            IList<StatBar> statBarRelationships)
         {
             _settings = statBarSettings ?? throw new ArgumentNullException(nameof(statBarSettings));
             _list = statBarRelationships ?? throw new ArgumentException(nameof(statBarRelationships));

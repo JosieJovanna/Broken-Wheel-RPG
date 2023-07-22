@@ -17,14 +17,14 @@ namespace BrokenWheel.UI.StatBar.Implementation
         }
         
         private static void UpdateBorder(
-            IStatBarUIElement uiElement, UpdateDisplayParameters<ComplexStatUpdate> parameters)
+            IStatBarDisplay display, UpdateDisplayParameters<ComplexStatUpdate> parameters)
         {
             var borderSizeX2 = parameters.BorderSize * 2;
             var length = parameters.FullLength + borderSizeX2;
             var thickness = parameters.Thickness + borderSizeX2;
             var width = parameters.IsVertical ? thickness : length;
             var height = parameters.IsVertical ? length : thickness;
-            uiElement.SetBorderDimensions(0, 0, width, height);
+            display.SetBorderDimensions(0, 0, width, height);
         }
 
         private static void UpdateBackground(

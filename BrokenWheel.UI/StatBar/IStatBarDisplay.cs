@@ -6,10 +6,10 @@ namespace BrokenWheel.UI.StatBar
     /// <summary>
     /// A simple interface for controlling the regions that constitute a stat bar.
     /// To be implemented in-engine for the GUI, where the methods affect display rectangles.
-    /// Does not handle any logic regarding positioning, which is handled by <see cref="IStatBar"/>.
+    /// Does not handle any logic regarding positioning, which is handled by a stat bar controller.
     /// Implementation is responsible for interpolating the distances, handling fading effects, et cetera.
     /// </summary>
-    public interface IStatBarUIElement : IUIElement
+    public interface IStatBarDisplay : IUIElement
     {
         /// <summary>
         /// Sets the colors of the bar to a new setting.

@@ -15,7 +15,7 @@ namespace BrokenWheel.UI.StatBar.Implementation
         private readonly StatBarSettings _settings;
         private readonly IEntityEventNexus _eventNexus;
         private readonly IStatBarSuiteDisplay _groupDisplay;
-        private readonly IList<IStatBar> _statBars = new List<IStatBar>();
+        private readonly IList<StatBar> _statBars = new List<StatBar>();
         
         private bool _isHiding;
         private double _highestPpp;
@@ -63,7 +63,7 @@ namespace BrokenWheel.UI.StatBar.Implementation
         public void RepositionDisplays()
         {
             StatBarPositioner.PositionBars(_settings, _statBars
-                .Where(_ => !_.IsHidden)
+                .Where(_ => !_.Display.IsHidden)
                 .OrderBy(_ => _.Order)
                 .ToList());
         }
@@ -100,7 +100,7 @@ namespace BrokenWheel.UI.StatBar.Implementation
 
         private bool HasStat(string code) => _statBars.Any(_ => _.Info.Code == code);
 
-        private void RemoveStatBar(IStatBar statBar)
+        private void RemoveStatBar(StatBar statBar)
         {
             if (statBar.Info.IsComplex)
                 RemoveComplexStatBar((ComplexStatBar)statBar);
@@ -173,7 +173,7 @@ namespace BrokenWheel.UI.StatBar.Implementation
 
         private void AddSimpleStatBar(StatInfo statInfo, StatBarColorSettings colors, int order)
         {
-            var display = _groupDisplay.CreateStatBarElement<IStatBarUIElement>(statInfo.Name, colors);
+            var display = _groupDisplay.CreateStatBarElement<IStatBarDisplay>(statInfo.Name, colors);
             var statBar = new SimpleStatBar(_settings, display, statInfo, ReportPpp, HighestPpp, order);
             if (statInfo.IsCustom)
                 _eventNexus.SubscribeToEnumeratedEvent<StatType, SimpleStatUpdatedEvent>(statInfo.Code, statBar);

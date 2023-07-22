@@ -11,12 +11,12 @@ namespace BrokenWheel.UI.StatBar
         /// <param name="name"> The name of the stat. This could be displayed, and should thus be readable. </param>
         /// <param name="colors"> The color that the stat bar will take on. If left null, must be set separately. </param>
         /// <typeparam name="T"> The type of element to create.</typeparam>
-        T CreateStatBarElement<T>(string name, StatBarColorSettings colors = null) where T : IStatBarUIElement;
+        T CreateStatBarElement<T>(string name, StatBarColorSettings colors = null) where T : IStatBarDisplay;
         
         /// <summary>
         /// Removes a stat bar's GUI element from the group display.
         /// </summary>
-        /// <param name="uiElement"> The specific element to remove. </param>
-        void RemoveStatBarElement(IStatBarUIElement uiElement);
+        /// <param name="display"> The specific element to remove. </param>
+        void RemoveStatBarElement(IStatBarDisplay display);
     }
 }
