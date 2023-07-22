@@ -5,7 +5,7 @@ using BrokenWheel.Core.Stats.Enum;
 namespace BrokenWheel.Core.Stats.Events
 {
     public abstract class AbstractStatUpdatedEvent<T> : CustomOverrideEnumGameEvent<StatType>
-        where T : StatUpdate
+        where T : Stat
     {
         public StatInfo StatInfo { get; }
         public T Stat { get; }

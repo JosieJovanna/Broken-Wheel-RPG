@@ -1,6 +1,8 @@
 ﻿using System;
 using BrokenWheel.Core.Settings;
 using BrokenWheel.Core.Stats.Enum;
+using BrokenWheel.Math.Utility;
+using BrokenWheel.UI.Display;
 
 namespace BrokenWheel.UI.StatBar.Implementation
 {
@@ -51,5 +53,17 @@ namespace BrokenWheel.UI.StatBar.Implementation
         }
 
         protected abstract void UpdateDisplay();
+
+        protected int CalculateYAdjustingForLengthIfOnTop(int length)
+        {
+            return Settings.DisplayCorner == StatBarCorner.TopLeft 
+                   || Settings.DisplayCorner == StatBarCorner.TopRight
+                ? Y - length
+                : Y;
+        }
+        
+        protected int MaxLength() => System.Math.Min(Settings.MaxLength, ConstrainingDimension());
+
+        protected int ConstrainingDimension() => Settings.IsVertical ? DisplayInfo.UIHeight() : DisplayInfo.UIWidth();
     }
 }

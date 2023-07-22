@@ -1,6 +1,6 @@
 ﻿namespace BrokenWheel.Core.Stats.Events
 {
-    public class ComplexStatUpdate : StatUpdate
+    public class ComplexStat : Stat
     {
         // Inherits Value, Modifier
         
@@ -8,11 +8,6 @@
         /// The value this stat is set to reach over time.
         /// </summary>
         public int Destination { get; internal set; }
-        
-        /// <summary>
-        /// The highest value the stat can have, before modifier and exhaustion.
-        /// </summary>
-        public int Maximum { get; internal set; }
         
         /// <summary>
         /// How many points of a stat are currently unusable.

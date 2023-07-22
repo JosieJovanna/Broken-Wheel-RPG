@@ -7,7 +7,7 @@ namespace BrokenWheel.UI.StatBar.Implementation
     /// <summary>
     /// Stores several properties from settings to avoid race conditions and simplify method signatures.
     /// </summary>
-    internal class UpdateDisplayParameters<T> where T : StatUpdate
+    internal class UpdateDisplayParameters<T> where T : Stat
     {
         public T Stat { get; }
         public bool IsVertical { get; }

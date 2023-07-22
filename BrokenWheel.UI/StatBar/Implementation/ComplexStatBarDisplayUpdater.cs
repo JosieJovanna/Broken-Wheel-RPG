@@ -6,7 +6,7 @@ namespace BrokenWheel.UI.StatBar.Implementation
     internal static class ComplexStatBarDisplayUpdater
     {
         public static void UpdateDisplay(
-            IComplexStatBarDisplay uiElement, UpdateDisplayParameters<ComplexStatUpdate> parameters)
+            IComplexStatBarDisplay uiElement, UpdateDisplayParameters<ComplexStat> parameters)
         {
             uiElement.SetPosition(parameters.BaseX, parameters.BaseY);
             UpdateBorder(uiElement, parameters);
@@ -17,7 +17,7 @@ namespace BrokenWheel.UI.StatBar.Implementation
         }
         
         private static void UpdateBorder(
-            IStatBarDisplay display, UpdateDisplayParameters<ComplexStatUpdate> parameters)
+            IStatBarDisplay display, UpdateDisplayParameters<ComplexStat> parameters)
         {
             var borderSizeX2 = parameters.BorderSize * 2;
             var length = parameters.FullLength + borderSizeX2;
@@ -28,7 +28,7 @@ namespace BrokenWheel.UI.StatBar.Implementation
         }
 
         private static void UpdateBackground(
-            IComplexStatBarDisplay uiElement, UpdateDisplayParameters<ComplexStatUpdate> parameters)
+            IComplexStatBarDisplay uiElement, UpdateDisplayParameters<ComplexStat> parameters)
         {
             var width = parameters.IsVertical ? parameters.Thickness : parameters.FullLength;
             var height = parameters.IsVertical ? parameters.FullLength : parameters.Thickness;
@@ -36,7 +36,7 @@ namespace BrokenWheel.UI.StatBar.Implementation
         }
 
         private static void UpdatePrimary(
-            IComplexStatBarDisplay uiElement, UpdateDisplayParameters<ComplexStatUpdate> parameters, out int length)
+            IComplexStatBarDisplay uiElement, UpdateDisplayParameters<ComplexStat> parameters, out int length)
         {
             length = 10; // TODO: current value/destination value
             var width = parameters.IsVertical ? parameters.Thickness : length;
@@ -45,7 +45,7 @@ namespace BrokenWheel.UI.StatBar.Implementation
         }
 
         private static void UpdateSecondary(
-            IComplexStatBarDisplay uiElement, UpdateDisplayParameters<ComplexStatUpdate> parameters, int primaryLength)
+            IComplexStatBarDisplay uiElement, UpdateDisplayParameters<ComplexStat> parameters, int primaryLength)
         {
             var length = 5; // TODO: destination value/current value
             var (x, y, width, height) = parameters.IsVertical 
@@ -55,7 +55,7 @@ namespace BrokenWheel.UI.StatBar.Implementation
         }
 
         private static (int, int, int, int) VerticalSecondaryDimensions(
-            UpdateDisplayParameters<ComplexStatUpdate> parameters, int primaryLength, int length)
+            UpdateDisplayParameters<ComplexStat> parameters, int primaryLength, int length)
         {
             var x = parameters.BorderSize;
             var y = parameters.BorderSize + primaryLength + length;
@@ -65,7 +65,7 @@ namespace BrokenWheel.UI.StatBar.Implementation
         }
 
         private static (int, int, int, int) HorizontalSecondaryDimensions(
-            UpdateDisplayParameters<ComplexStatUpdate> parameters, int primaryLength, int length)
+            UpdateDisplayParameters<ComplexStat> parameters, int primaryLength, int length)
         {
             var x = parameters.BorderSize + primaryLength + length;
             var y = parameters.BorderSize;
@@ -75,7 +75,7 @@ namespace BrokenWheel.UI.StatBar.Implementation
         }
 
         private static void UpdateExhaustion(
-            IComplexStatBarDisplay display, UpdateDisplayParameters<ComplexStatUpdate> parameters)
+            IComplexStatBarDisplay display, UpdateDisplayParameters<ComplexStat> parameters)
         {
             var length = MathUtil.RaiseDoubleToInt(parameters.PPP * parameters.Stat.Exhaustion);
             var (x, y, width, height) = parameters.IsVertical
@@ -86,7 +86,7 @@ namespace BrokenWheel.UI.StatBar.Implementation
         
 
         private static (int, int, int, int) VerticalExhaustionDimensions(
-            UpdateDisplayParameters<ComplexStatUpdate> parameters, int length)
+            UpdateDisplayParameters<ComplexStat> parameters, int length)
         {
             var x = parameters.BorderSize;
             var y = parameters.BorderSize + parameters.FullLength - length;
@@ -96,7 +96,7 @@ namespace BrokenWheel.UI.StatBar.Implementation
         }
 
         private static (int, int, int, int) HorizontalExhaustionDimensions(
-            UpdateDisplayParameters<ComplexStatUpdate> parameters, int length)
+            UpdateDisplayParameters<ComplexStat> parameters, int length)
         {
             var x = parameters.BorderSize + parameters.FullLength - length;
             var y = parameters.BorderSize;

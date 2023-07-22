@@ -11,7 +11,7 @@ namespace BrokenWheel.UI.StatBar.Implementation
     internal sealed class ComplexStatBar : StatBar, IListener<ComplexStatUpdatedEvent>
     {
         private readonly IComplexStatBarDisplay _display;
-        private ComplexStatUpdate _stat;
+        private ComplexStat _stat;
         
         /// <summary>
         /// Initiates the object controlling the display, then immediately calls <see cref="UpdateDisplay"/>.
@@ -41,16 +41,8 @@ namespace BrokenWheel.UI.StatBar.Implementation
             var ppp = CalculatePointsPerPixel();
             var length = MathUtil.RaiseDoubleToInt(ppp * _stat.EffectiveMaximum);
             var y = CalculateYAdjustingForLengthIfOnTop(length);
-            var parameters = new UpdateDisplayParameters<ComplexStatUpdate>(Settings, _stat, ppp, length, X, y);
+            var parameters = new UpdateDisplayParameters<ComplexStat>(Settings, _stat, ppp, length, X, y);
             ComplexStatBarDisplayUpdater.UpdateDisplay(_display, parameters);
-        }
-
-        private int CalculateYAdjustingForLengthIfOnTop(int length)
-        {
-            return Settings.DisplayCorner == StatBarCorner.TopLeft 
-                   || Settings.DisplayCorner == StatBarCorner.TopRight
-                ? Y - length
-                : Y;
         }
 
         private double CalculatePointsPerPixel()
@@ -74,14 +66,14 @@ namespace BrokenWheel.UI.StatBar.Implementation
             var length = Settings.DefaultLength; // prevent race condition
             var basePpp = (double)_stat.Maximum / length;
             var modLength = MathUtil.RaiseDoubleToInt(basePpp * _stat.Modifier);
-            length = System.Math.Min(length + modLength, GetConstrainingDimension());
+            length = System.Math.Min(length + modLength, ConstrainingDimension());
             return (double)_stat.EffectiveMaximum / length;
         }
 
         private double CalculateUniformPpp()
         {
             var ppp = Settings.DefaultPointPerPixelRatio; // prevent race condition
-            var max = GetMaxWidth(); // prevent race condition
+            var max = MaxLength(); // prevent race condition
             if (_stat.EffectiveMaximum * ppp < max)
                 return System.Math.Max(ppp, HighestPpp());
             var newPpp = (double)_stat.EffectiveMaximum / max;
@@ -91,15 +83,11 @@ namespace BrokenWheel.UI.StatBar.Implementation
 
         private double CalculateUniformPppUpToMax()
         {
-            var maxLength = System.Math.Min(Settings.MaxLength, GetConstrainingDimension());
+            var maxLength = System.Math.Min(Settings.MaxLength, ConstrainingDimension());
             var ppp = Settings.DefaultPointPerPixelRatio; // prevent race conditions
             return System.Math.Ceiling(ppp * _stat.EffectiveMaximum) > maxLength
                 ? (double)_stat.EffectiveMaximum / maxLength
                 : ppp;
         }
-
-        private int GetMaxWidth() => System.Math.Min(Settings.MaxLength, GetConstrainingDimension());
-
-        private int GetConstrainingDimension() => Settings.IsVertical ? DisplayInfo.UIHeight() : DisplayInfo.UIWidth();
     }
 }

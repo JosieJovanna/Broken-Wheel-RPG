@@ -1,9 +1,11 @@
 ﻿namespace BrokenWheel.Core.Stats.Events
 {
-    public class StatUpdate
+    public class Stat
     {
+        public const int NO_MAX = -1;
+        
         /// <summary>
-        /// The current value of the stat.
+        /// The current value of the stat. Will not be higher than <see cref="Maximum"/>, if applicable.
         /// </summary>
         public int Value { get; internal set; }
         
@@ -13,9 +15,14 @@
         public int Modifier { get; internal set; }
         
         /// <summary>
-        /// The final number needed for most stat checks.
+        /// The final number needed for most stat checks. Will not be higher than <see cref="Maximum"/>, if applicable.
         /// For simple stats, value plus modifier; for complex, just the value, no higher than effective maximum.
         /// </summary>
         public int EffectiveValue { get; internal set; }
+        
+        /// <summary>
+        /// The maximum value this stat can have. -1 if no maximum.
+        /// </summary>
+        public int Maximum { get; internal set; }
     }
 }

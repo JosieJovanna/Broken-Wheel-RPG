@@ -9,7 +9,7 @@ namespace BrokenWheel.UI.StatBar.Implementation
     internal sealed class SimpleStatBar : StatBar, IListener<SimpleStatUpdatedEvent>
     {
         private readonly IStatBarDisplay _display;
-        private StatUpdate _stat;
+        private Stat _stat;
         
         /// <summary>
         /// Initiates the object controlling the display, then immediately calls <see cref="UpdateDisplay"/>.
