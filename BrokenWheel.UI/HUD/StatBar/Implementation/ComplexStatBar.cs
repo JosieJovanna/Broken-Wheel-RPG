@@ -1,5 +1,5 @@
 ﻿using System;
-using BrokenWheel.Core.Event.Listening;
+using BrokenWheel.Core.Event.Handling;
 using BrokenWheel.Core.Settings;
 using BrokenWheel.Core.Stats;
 using BrokenWheel.Core.Stats.Enum;
@@ -8,7 +8,7 @@ using BrokenWheel.Math.Utility;
 
 namespace BrokenWheel.UI.HUD.StatBar.Implementation
 {
-    internal sealed class ComplexStatBar : StatBar, IListener<ComplexStatUpdatedEvent>
+    internal sealed class ComplexStatBar : StatBar, IEventHandler<ComplexStatUpdatedEvent>
     {
         private readonly IComplexStatBarDisplay _display;
         private ComplexStat _stat;

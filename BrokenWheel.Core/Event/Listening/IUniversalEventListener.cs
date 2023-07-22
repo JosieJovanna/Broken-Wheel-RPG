@@ -2,12 +2,12 @@
 
 namespace BrokenWheel.Core.Event.Listening
 {
-    public interface IUniversalEventNexus : IEventNexus
+    public interface IUniversalEventListener : IEventListener
     {
         /// <summary>
-        /// Gets an <see cref="IEntityEventNexus"/> for a given entity, which tracks only events related to that entity.
+        /// Gets an <see cref="IEntityEventListener"/> for a given entity, which tracks only events related to that entity.
         /// </summary>
-        IEntityEventNexus GetEntityEventNexus(string entityId);
+        IEntityEventListener GetEntityEventNexus(string entityId);
         
         /// <summary>
         /// Adds an event handler to listen to <see cref="GameEvent"/>s of type T.

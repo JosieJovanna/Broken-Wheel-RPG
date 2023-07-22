@@ -1,8 +1,9 @@
 ﻿using System;
+using BrokenWheel.Core.Event.Handling;
 
 namespace BrokenWheel.Core.Event.Listening
 {
-    public interface IEventNexus
+    public interface IEventListener
     {
         /// <summary>
         /// Emits a <see cref="GameEvent"/> to be handled by listeners.
@@ -98,12 +99,12 @@ namespace BrokenWheel.Core.Event.Listening
         /// <summary>
         /// Adds an listener for <see cref="GameEvent"/>s of type T.
         /// </summary>
-        void SubscribeToEvent<T>(IListener<T> handler) where T : GameEvent;
+        void SubscribeToEvent<T>(IEventHandler<T> handler) where T : GameEvent;
         
         /// <summary>
         /// Removes a listener for <see cref="GameEvent"/>s of type T.
         /// </summary>
-        void UnsubscribeFromEvent<T>(IListener<T> handler) where T : GameEvent;
+        void UnsubscribeFromEvent<T>(IEventHandler<T> handler) where T : GameEvent;
 
         /// <summary>
         /// Adds an event listener based on enum value attached to the event.
@@ -112,7 +113,7 @@ namespace BrokenWheel.Core.Event.Listening
         /// <param name="handler"> The event handler for this type of event. </param>
         /// <typeparam name="E"> The enum being used to select against. </typeparam>
         /// <typeparam name="T"> The type of enumerated event to be listened to. </typeparam>
-        void SubscribeToEnumeratedEvent<E, T>(E enumValue, IListener<T> handler)
+        void SubscribeToEnumeratedEvent<E, T>(E enumValue, IEventHandler<T> handler)
             where E : struct, IConvertible where T : EnumeratedGameEvent<E>;
         
         /// <summary>
@@ -122,7 +123,7 @@ namespace BrokenWheel.Core.Event.Listening
         /// <param name="handler"> The event handler currently subscribed. </param>
         /// <typeparam name="E"> The enum being used to select against. </typeparam>
         /// <typeparam name="T"> The type of enumerated event to be unsubscribed from. </typeparam>
-        void UnsubscribeFromEnumeratedEvent<E, T>(E enumValue, IListener<T> handler) 
+        void UnsubscribeFromEnumeratedEvent<E, T>(E enumValue, IEventHandler<T> handler) 
             where E : struct, IConvertible where T : EnumeratedGameEvent<E>;
 
         /// <summary>
@@ -134,7 +135,7 @@ namespace BrokenWheel.Core.Event.Listening
         /// <param name="handler"> The event handler for this type of event. </param>
         /// <typeparam name="E"> The enum being used to select against. </typeparam>
         /// <typeparam name="T"> The type of enumerated event to be listened to. </typeparam>
-        void SubscribeToEnumeratedEvent<E, T>(string customCode, IListener<T> handler)
+        void SubscribeToEnumeratedEvent<E, T>(string customCode, IEventHandler<T> handler)
             where E : struct, IConvertible where T : CustomOverrideEnumGameEvent<E>;
         
         /// <summary>
@@ -146,7 +147,7 @@ namespace BrokenWheel.Core.Event.Listening
         /// <param name="handler"> The event handler currently subscribed. </param>
         /// <typeparam name="E"> The enum being used to select against. </typeparam>
         /// <typeparam name="T"> The type of enumerated event to be unsubscribed from. </typeparam>
-        void UnsubscribeFromEnumeratedEvent<E, T>(string customCode, IListener<T> handler)
+        void UnsubscribeFromEnumeratedEvent<E, T>(string customCode, IEventHandler<T> handler)
             where E : struct, IConvertible where T : CustomOverrideEnumGameEvent<E>;
     }
 }

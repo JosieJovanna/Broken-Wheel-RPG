@@ -13,7 +13,7 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
     public class StatBarSuite : IStatBarSuite
     {
         private readonly StatBarSettings _settings;
-        private readonly IEntityEventNexus _eventNexus;
+        private readonly IEntityEventListener _eventListener;
         private readonly IStatBarSuiteDisplay _groupDisplay;
         private readonly IList<StatBar> _statBars = new List<StatBar>();
         
@@ -23,13 +23,13 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
         /// <summary>
         /// Creates a group of stat bars, automatically populating 
         /// </summary>
-        /// <param name="eventNexus"> The event tracker for the entity the stat bars belong to. </param>
+        /// <param name="eventListener"> The event tracker for the entity the stat bars belong to. </param>
         /// <param name="suiteDisplay"> The object in charge of creating and displaying the stat bars in GUI. </param>
         /// <exception cref="ArgumentNullException"> If any argument is null. </exception>
-        public StatBarSuite(IEntityEventNexus eventNexus, IStatBarSuiteDisplay suiteDisplay)
+        public StatBarSuite(IEntityEventListener eventListener, IStatBarSuiteDisplay suiteDisplay)
         {
             _settings = SettingsRegistry.GetSettings<StatBarSettings>();
-            _eventNexus = eventNexus ?? throw new ArgumentNullException(nameof(eventNexus));
+            _eventListener = eventListener ?? throw new ArgumentNullException(nameof(eventListener));
             _groupDisplay = suiteDisplay ?? throw new ArgumentNullException(nameof(suiteDisplay));
 
             for (var i = 0; i < _settings.MainStatCodesInOrder.Length; i++)
@@ -113,18 +113,18 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
         {
             _groupDisplay.RemoveStatBarElement(statBar.Display);
             if (statBar.Info.IsCustom)
-                _eventNexus.UnsubscribeFromEnumeratedEvent<StatType, ComplexStatUpdatedEvent>(statBar.Info.Code, statBar);
+                _eventListener.UnsubscribeFromEnumeratedEvent<StatType, ComplexStatUpdatedEvent>(statBar.Info.Code, statBar);
             else
-                _eventNexus.UnsubscribeFromEnumeratedEvent(statBar.Info.Type, statBar);
+                _eventListener.UnsubscribeFromEnumeratedEvent(statBar.Info.Type, statBar);
         }
 
         private void RemoveSimpleStatBar(SimpleStatBar statBar)
         {
             _groupDisplay.RemoveStatBarElement(statBar.Display);
             if (statBar.Info.IsCustom)
-                _eventNexus.UnsubscribeFromEnumeratedEvent<StatType, StatUpdatedEvent>(statBar.Info.Code, statBar);
+                _eventListener.UnsubscribeFromEnumeratedEvent<StatType, StatUpdatedEvent>(statBar.Info.Code, statBar);
             else
-                _eventNexus.UnsubscribeFromEnumeratedEvent(statBar.Info.Type, statBar);
+                _eventListener.UnsubscribeFromEnumeratedEvent(statBar.Info.Type, statBar);
         }
 
         private void AddStatBar(StatInfo statInfo, int order = -1)
@@ -165,9 +165,9 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
             var display = _groupDisplay.CreateStatBarElement<IComplexStatBarDisplay>(statInfo.Name, colors);
             var statBar = new ComplexStatBar(_settings, display, statInfo, ReportPpp, HighestPpp, order);
             if (statInfo.IsCustom)
-                _eventNexus.SubscribeToEnumeratedEvent<StatType, ComplexStatUpdatedEvent>(statInfo.Code, statBar);
+                _eventListener.SubscribeToEnumeratedEvent<StatType, ComplexStatUpdatedEvent>(statInfo.Code, statBar);
             else
-                _eventNexus.SubscribeToEnumeratedEvent(statInfo.Type, statBar);
+                _eventListener.SubscribeToEnumeratedEvent(statInfo.Type, statBar);
             _statBars.Add(statBar);
         }
 
@@ -176,9 +176,9 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
             var display = _groupDisplay.CreateStatBarElement<IStatBarDisplay>(statInfo.Name, colors);
             var statBar = new SimpleStatBar(_settings, display, statInfo, ReportPpp, HighestPpp, order);
             if (statInfo.IsCustom)
-                _eventNexus.SubscribeToEnumeratedEvent<StatType, StatUpdatedEvent>(statInfo.Code, statBar);
+                _eventListener.SubscribeToEnumeratedEvent<StatType, StatUpdatedEvent>(statInfo.Code, statBar);
             else
-                _eventNexus.SubscribeToEnumeratedEvent(statInfo.Type, statBar);
+                _eventListener.SubscribeToEnumeratedEvent(statInfo.Type, statBar);
             _statBars.Add(statBar);
         }
     }
