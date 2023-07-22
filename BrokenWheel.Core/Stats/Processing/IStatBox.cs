@@ -1,5 +1,5 @@
 /*
-using BrokenWheel.Core.Events;
+using BrokenWheel.Core.Event;
 
 namespace BrokenWheel.Core.Stats.Processing
 {

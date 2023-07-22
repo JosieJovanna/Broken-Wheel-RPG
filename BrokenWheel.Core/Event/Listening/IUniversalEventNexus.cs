@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BrokenWheel.Core.Events.Listening
+namespace BrokenWheel.Core.Event.Listening
 {
     public interface IUniversalEventNexus : IEventNexus
     {

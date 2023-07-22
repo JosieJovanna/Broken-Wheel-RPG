@@ -1,5 +1,5 @@
 ﻿using System;
-using BrokenWheel.Core.Events.Listening;
+using BrokenWheel.Core.Event.Listening;
 using BrokenWheel.Core.Settings;
 using BrokenWheel.Core.Stats;
 using BrokenWheel.Core.Stats.Enum;

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BrokenWheel.Core.Events
+namespace BrokenWheel.Core.Event
 {
     /// <summary>
     /// A game event differentiated by enumerable values, with the ability to override the value with a string.

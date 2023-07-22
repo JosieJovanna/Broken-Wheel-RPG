@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using BrokenWheel.Core.Events.Listening;
+using BrokenWheel.Core.Event.Listening;
 using BrokenWheel.Core.Settings;
 using BrokenWheel.Core.Settings.Registration;
 using BrokenWheel.Core.Stats;
