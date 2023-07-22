@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using BrokenWheel.Core.Settings;
 using BrokenWheel.UI.Display;
 
-namespace BrokenWheel.UI.StatBar.Implementation
+namespace BrokenWheel.UI.HUD.StatBar.Implementation
 {
     internal static class StatBarPositioner
     {

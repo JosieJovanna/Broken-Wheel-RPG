@@ -1,7 +1,7 @@
 ﻿using BrokenWheel.Core.Settings;
 using BrokenWheel.UI.Common;
 
-namespace BrokenWheel.UI.StatBar
+namespace BrokenWheel.UI.HUD.StatBar
 {
     /// <summary>
     /// A simple interface for controlling the regions that constitute a stat bar.

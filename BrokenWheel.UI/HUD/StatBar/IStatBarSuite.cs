@@ -1,7 +1,7 @@
 ﻿using BrokenWheel.Core.Stats;
-using BrokenWheel.UI.StatBar.Implementation;
+using BrokenWheel.UI.HUD.StatBar.Implementation;
 
-namespace BrokenWheel.UI.StatBar
+namespace BrokenWheel.UI.HUD.StatBar
 {
     /// <summary>
     /// A controller for displaying multiple <see cref="StatBar"/>s on the UI, and coordinating their positions.

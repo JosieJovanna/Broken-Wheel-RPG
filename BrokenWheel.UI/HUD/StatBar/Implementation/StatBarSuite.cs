@@ -8,7 +8,7 @@ using BrokenWheel.Core.Stats;
 using BrokenWheel.Core.Stats.Enum;
 using BrokenWheel.Core.Stats.Events;
 
-namespace BrokenWheel.UI.StatBar.Implementation
+namespace BrokenWheel.UI.HUD.StatBar.Implementation
 {
     public class StatBarSuite : IStatBarSuite
     {

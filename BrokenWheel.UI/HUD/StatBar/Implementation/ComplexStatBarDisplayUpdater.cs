@@ -1,7 +1,7 @@
 ﻿using BrokenWheel.Core.Stats.Events;
 using BrokenWheel.Math.Utility;
 
-namespace BrokenWheel.UI.StatBar.Implementation
+namespace BrokenWheel.UI.HUD.StatBar.Implementation
 {
     internal static class ComplexStatBarDisplayUpdater
     {

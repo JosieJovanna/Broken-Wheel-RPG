@@ -1,10 +1,9 @@
 ﻿using System;
 using BrokenWheel.Core.Settings;
 using BrokenWheel.Core.Stats.Enum;
-using BrokenWheel.Math.Utility;
 using BrokenWheel.UI.Display;
 
-namespace BrokenWheel.UI.StatBar.Implementation
+namespace BrokenWheel.UI.HUD.StatBar.Implementation
 {
     /// <summary>
     /// An object which controls the GUI elements conveying a statistic.

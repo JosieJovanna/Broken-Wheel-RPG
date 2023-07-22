@@ -4,9 +4,8 @@ using BrokenWheel.Core.Settings;
 using BrokenWheel.Core.Stats.Enum;
 using BrokenWheel.Core.Stats.Events;
 using BrokenWheel.Math.Utility;
-using BrokenWheel.UI.Display;
 
-namespace BrokenWheel.UI.StatBar.Implementation
+namespace BrokenWheel.UI.HUD.StatBar.Implementation
 {
     internal sealed class ComplexStatBar : StatBar, IListener<ComplexStatUpdatedEvent>
     {

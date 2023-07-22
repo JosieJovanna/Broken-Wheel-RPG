@@ -1,4 +1,4 @@
-﻿namespace BrokenWheel.UI.StatBar
+﻿namespace BrokenWheel.UI.HUD.StatBar
 {
     public interface IComplexStatBarDisplay : IStatBarDisplay
     {

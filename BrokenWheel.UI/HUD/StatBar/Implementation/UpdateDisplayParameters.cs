@@ -2,7 +2,7 @@
 using BrokenWheel.Core.Settings;
 using BrokenWheel.Core.Stats.Events;
 
-namespace BrokenWheel.UI.StatBar.Implementation
+namespace BrokenWheel.UI.HUD.StatBar.Implementation
 {
     /// <summary>
     /// Stores several properties from settings to avoid race conditions and simplify method signatures.
