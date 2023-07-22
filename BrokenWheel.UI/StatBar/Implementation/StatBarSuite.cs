@@ -7,16 +7,15 @@ using BrokenWheel.Core.Settings.Registration;
 using BrokenWheel.Core.Stats;
 using BrokenWheel.Core.Stats.Enum;
 using BrokenWheel.Core.Stats.Events;
-using BrokenWheel.UI.StatBar.Implementation;
 
-namespace BrokenWheel.UI.StatBar
+namespace BrokenWheel.UI.StatBar.Implementation
 {
     public class StatBarSuite : IStatBarSuite
     {
         private readonly StatBarSettings _settings;
         private readonly IEntityEventNexus _eventNexus;
         private readonly IStatBarSuiteDisplay _groupDisplay;
-        private readonly IList<StatBarRelationship> _statBars = new List<StatBarRelationship>();
+        private readonly IList<IStatBar> _statBars = new List<IStatBar>();
         
         private bool _isHiding;
         private double _highestPpp;
@@ -34,7 +33,7 @@ namespace BrokenWheel.UI.StatBar
             _groupDisplay = suiteDisplay ?? throw new ArgumentNullException(nameof(suiteDisplay));
 
             for (var i = 0; i < _settings.MainStatCodesInOrder.Length; i++)
-                _statBars.Add(NewStatBarRelationship(new StatInfo(_settings.MainStatCodesInOrder[i]), i));
+                AddStatBar(new StatInfo(_settings.MainStatCodesInOrder[i]), i);
             RepositionDisplays();
         }
 
@@ -64,40 +63,28 @@ namespace BrokenWheel.UI.StatBar
         public void RepositionDisplays()
         {
             StatBarPositioner.PositionBars(_settings, _statBars
-                .Where(_ => !_.StatBar.IsHidden)
+                .Where(_ => !_.IsHidden)
                 .OrderBy(_ => _.Order)
                 .ToList());
         }
 
         public void AddStat(StatType type)
         {
-            if (HasStat(type))
-                return;
-
-            var sbr = NewStatBarRelationship(new StatInfo(type));
-            _eventNexus.SubscribeToEnumeratedEvent(sbr.StatInfo.Type, sbr.StatBar);
-            _statBars.Add(sbr);
+            if (!HasStat(type)) AddStatBar(new StatInfo(type));
         }
 
         public void AddCustomStat(string code)
         {
-            if (HasStat(code))
-                return;
-
-            var sbr = NewStatBarRelationship(new StatInfo(code));
-            _eventNexus.SubscribeToEnumeratedEvent<StatType, ComplexStatUpdatedEvent>(sbr.StatInfo.Code, sbr.StatBar);
-            _statBars.Add(sbr);
+            if (!HasStat(code)) AddStatBar(new StatInfo(code));
         }
-
+        
         public void RemoveStat(StatType type)
         {
             if (!HasStat(type))
                 return;
             
-            var toRemove = _statBars.First(_ => _.StatInfo.Type != type);
-            _eventNexus.UnsubscribeFromEnumeratedEvent(toRemove.StatInfo.Type, toRemove.StatBar);
-            _groupDisplay.RemoveStatBarElement(toRemove.StatBar.UIElement);
-            _statBars.Remove(toRemove);
+            var toRemove = _statBars.First(_ => _.Info.Type != type);
+            RemoveStatBar(toRemove);
         }
 
         public void RemoveCustomStat(string code)
@@ -105,24 +92,50 @@ namespace BrokenWheel.UI.StatBar
             if (!HasStat(code))
                 return;
             
-            var toRemove = _statBars.First(_ => _.StatBar.Info.Code == code);
-            _eventNexus.UnsubscribeFromEnumeratedEvent<StatType, ComplexStatUpdatedEvent>(toRemove.StatInfo.Code, toRemove.StatBar);
-            _groupDisplay.RemoveStatBarElement(toRemove.StatBar.UIElement);
-            _statBars.Remove(toRemove);
+            var toRemove = _statBars.First(_ => _.Info.Code == code);
+            RemoveStatBar(toRemove);
         }
 
-        private bool HasStat(StatType type) => _statBars.Any(_ => _.StatInfo.Type == type);
+        private bool HasStat(StatType type) => _statBars.Any(_ => _.Info.Type == type);
 
-        private bool HasStat(string code) => _statBars.Any(_ => _.StatBar.Info.Code == code);
+        private bool HasStat(string code) => _statBars.Any(_ => _.Info.Code == code);
 
-        private StatBarRelationship NewStatBarRelationship(StatInfo statInfo, int order = -1)
+        private void RemoveStatBar(IStatBar statBar)
+        {
+            if (statBar.Info.IsComplex)
+                RemoveComplexStatBar((ComplexStatBar)statBar);
+            else
+                RemoveSimpleStatBar((SimpleStatBar)statBar);
+            _statBars.Remove(statBar);
+        }
+
+        private void RemoveComplexStatBar(ComplexStatBar statBar)
+        {
+            _groupDisplay.RemoveStatBarElement(statBar.Display);
+            if (statBar.Info.IsCustom)
+                _eventNexus.UnsubscribeFromEnumeratedEvent<StatType, ComplexStatUpdatedEvent>(statBar.Info.Code, statBar);
+            else
+                _eventNexus.UnsubscribeFromEnumeratedEvent(statBar.Info.Type, statBar);
+        }
+
+        private void RemoveSimpleStatBar(SimpleStatBar statBar)
+        {
+            _groupDisplay.RemoveStatBarElement(statBar.Display);
+            if (statBar.Info.IsCustom)
+                _eventNexus.UnsubscribeFromEnumeratedEvent<StatType, SimpleStatUpdatedEvent>(statBar.Info.Code, statBar);
+            else
+                _eventNexus.UnsubscribeFromEnumeratedEvent(statBar.Info.Type, statBar);
+        }
+
+        private void AddStatBar(StatInfo statInfo, int order = -1)
         {
             if (order < 0)
                 order = _statBars.Count;
             var colors = ColorSettingsForStat(statInfo);
-            var display = _groupDisplay.CreateStatBarElement<IStatBarUIElement>(statInfo.Name);
-            display.SetColorProfile(colors);
-            return new StatBarRelationship(_settings, statInfo, display, ReportPpp, HighestPpp, order);
+            if (statInfo.IsComplex)
+                AddComplexStatBar(statInfo, colors, order);
+            else
+                AddSimpleStatBar(statInfo, colors, order);
         }
 
         private StatBarColorSettings ColorSettingsForStat(StatInfo statInfo)
@@ -145,6 +158,28 @@ namespace BrokenWheel.UI.StatBar
             return _settings.ColorsByCode.Any(kvp => kvp.Key == customStatCode)
                 ? _settings.ColorsByCode.First(kvp => kvp.Key == customStatCode).Value 
                 : _settings.DefaultColors;
+        }
+
+        private void AddComplexStatBar(StatInfo statInfo, StatBarColorSettings colors, int order)
+        {
+            var display = _groupDisplay.CreateStatBarElement<IComplexStatBarDisplay>(statInfo.Name, colors);
+            var statBar = new ComplexStatBar(_settings, display, statInfo, ReportPpp, HighestPpp, order);
+            if (statInfo.IsCustom)
+                _eventNexus.SubscribeToEnumeratedEvent<StatType, ComplexStatUpdatedEvent>(statInfo.Code, statBar);
+            else
+                _eventNexus.SubscribeToEnumeratedEvent(statInfo.Type, statBar);
+            _statBars.Add(statBar);
+        }
+
+        private void AddSimpleStatBar(StatInfo statInfo, StatBarColorSettings colors, int order)
+        {
+            var display = _groupDisplay.CreateStatBarElement<IStatBarUIElement>(statInfo.Name, colors);
+            var statBar = new SimpleStatBar(_settings, display, statInfo, ReportPpp, HighestPpp, order);
+            if (statInfo.IsCustom)
+                _eventNexus.SubscribeToEnumeratedEvent<StatType, SimpleStatUpdatedEvent>(statInfo.Code, statBar);
+            else
+                _eventNexus.SubscribeToEnumeratedEvent(statInfo.Type, statBar);
+            _statBars.Add(statBar);
         }
     }
 }

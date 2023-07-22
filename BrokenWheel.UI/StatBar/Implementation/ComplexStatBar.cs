@@ -1,4 +1,5 @@
 ﻿using System;
+using BrokenWheel.Core.Events.Listening;
 using BrokenWheel.Core.Settings;
 using BrokenWheel.Core.Stats.Enum;
 using BrokenWheel.Core.Stats.Events;
@@ -7,7 +8,7 @@ using BrokenWheel.UI.Display;
 
 namespace BrokenWheel.UI.StatBar.Implementation
 {
-    internal class StatBar : IStatBar
+    internal class ComplexStatBar : IStatBar, IListener<ComplexStatUpdatedEvent>
     {
         private const string EX_FORMAT = "Stat bar type '{0}' does not match event's stat type '{1}'.";
         
@@ -27,36 +28,40 @@ namespace BrokenWheel.UI.StatBar.Implementation
         /// Initiates the object controlling the display, then immediately calls <see cref="UpdateDisplay"/>.
         /// </summary>
         /// <param name="statBarSettings"> The statBarSettings for stat bars. </param>
-        /// <param name="statBarUIElement"> The GUI element this object controls. </param>
+        /// <param name="complexStatBarDisplay"> The GUI element this object controls. </param>
         /// <param name="statInfo"> The stat this stat bar is assigned to track. </param>
         /// <param name="reportPointsPerPixel"> A delegate to report back when the ratio of points per pixel changes. </param>
         /// <param name="highestPointsPerPixel"> A delegate which gets the highest ratio of points per pixel. </param>
+        /// <param name="order"> The order in which the stat bar is displayed. </param>
         /// <exception cref="ArgumentNullException"> When these parameters are null. </exception>
-        public StatBar(
+        public ComplexStatBar(
             StatBarSettings statBarSettings,
-            IStatBarUIElement statBarUIElement,
+            IComplexStatBarDisplay complexStatBarDisplay,
             StatInfo statInfo,
             ReportPointsPerPixel reportPointsPerPixel,
-            HighestPointsPerPixel highestPointsPerPixel)
+            HighestPointsPerPixel highestPointsPerPixel,
+            int order = 99)
         {
             _settings = statBarSettings ?? throw new ArgumentNullException(nameof(statBarSettings));
-            UIElement = statBarUIElement ?? throw new ArgumentNullException(nameof(statBarUIElement));
+            Display = complexStatBarDisplay ?? throw new ArgumentNullException(nameof(complexStatBarDisplay));
             Info = statInfo ?? throw new ArgumentNullException(nameof(statInfo));
             _reportPpp = reportPointsPerPixel ?? throw new ArgumentNullException(nameof(reportPointsPerPixel));
             _highestPpp = highestPointsPerPixel ?? throw new ArgumentNullException(nameof(highestPointsPerPixel));
+            Order = order;
             UpdateDisplay();
         }
 
-        public IStatBarUIElement UIElement { get; }
+        public IComplexStatBarDisplay Display { get; }
         public StatInfo Info { get; }
-        public bool IsHidden { get => UIElement.IsHidden; }
+        public bool IsHidden { get => Display.IsHidden; }
+        public int Order { get; set; }
 
         public void Show()
         {
             if (!_isHiding)
                 return;
             UpdateDisplay();
-            UIElement.Show();
+            Display.Show();
             _isHiding = false;
         }
 
@@ -64,7 +69,7 @@ namespace BrokenWheel.UI.StatBar.Implementation
         {
             if (_isHiding)
                 return;
-            UIElement.Hide();
+            Display.Hide();
             _isHiding = true;
         }
 
@@ -90,8 +95,8 @@ namespace BrokenWheel.UI.StatBar.Implementation
             var ppp = CalculatePointsPerPixel();
             var length = MathUtil.RaiseDoubleToInt(ppp * _stat.EffectiveMaximum);
             var y = CalculateYAdjustingForLengthIfOnTop(length);
-            var parameters = new UpdateDisplayParameters(_settings, _stat, ppp, length, _x, y);
-            StatBarDisplayUpdater.UpdateDisplay(UIElement, parameters);
+            var parameters = new UpdateDisplayParameters<ComplexStatUpdate>(_settings, _stat, ppp, length, _x, y);
+            ComplexStatBarDisplayUpdater.UpdateDisplay(Display, parameters);
         }
 
         private int CalculateYAdjustingForLengthIfOnTop(int length)

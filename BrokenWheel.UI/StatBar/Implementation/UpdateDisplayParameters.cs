@@ -7,9 +7,9 @@ namespace BrokenWheel.UI.StatBar.Implementation
     /// <summary>
     /// Stores several properties from settings to avoid race conditions and simplify method signatures.
     /// </summary>
-    internal class UpdateDisplayParameters
+    internal class UpdateDisplayParameters<T> where T : StatUpdate
     {
-        public ComplexStatUpdate Stat { get; }
+        public T Stat { get; }
         public bool IsVertical { get; }
         public double PPP { get; }
         public int BorderSize { get; }
@@ -20,7 +20,7 @@ namespace BrokenWheel.UI.StatBar.Implementation
         
         public UpdateDisplayParameters(
             StatBarSettings settings, 
-            ComplexStatUpdate stat, 
+            T stat, 
             double ppp, 
             int length, 
             int x, 

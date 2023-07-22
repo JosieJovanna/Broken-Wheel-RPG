@@ -1,19 +1,12 @@
-﻿using BrokenWheel.Core.Events.Listening;
-using BrokenWheel.Core.Stats.Enum;
-using BrokenWheel.Core.Stats.Events;
+﻿using BrokenWheel.Core.Stats.Enum;
 
 namespace BrokenWheel.UI.StatBar
 {
     /// <summary>
     /// An object which controls the <see cref="IStatBarUIElement"/>s conveying a <see cref="IComplexStatistic"/>.
     /// </summary>
-    internal interface IStatBar : IListener<ComplexStatUpdatedEvent>
+    internal interface IStatBar
     {
-        /// <summary>
-        /// The GUI representation of the stat bar.
-        /// </summary>
-        IStatBarUIElement UIElement { get; }
-
         /// <summary>
         /// The type of stat being tracked.
         /// </summary>
@@ -23,6 +16,11 @@ namespace BrokenWheel.UI.StatBar
         /// Whether the individual stat bar is currently being rendered.
         /// </summary>
         bool IsHidden { get; }
+        
+        /// <summary>
+        /// The order in which the stat bar is displayed. Results are unpredictable if two stat bars have the same order.
+        /// </summary>
+        int Order { get; set; }
 
         /// <summary>
         /// Shows the individual stat bar.
