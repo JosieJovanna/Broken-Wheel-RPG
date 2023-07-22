@@ -6,59 +6,46 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
     internal static class ComplexStatBarDisplayUpdater
     {
         public static void UpdateDisplay(
-            IComplexStatBarDisplay uiElement, UpdateDisplayParameters<ComplexStat> parameters)
+            IComplexStatBarDisplay display, UpdateDisplayParameters<ComplexStat> parameters)
         {
-            uiElement.SetPosition(parameters.BaseX, parameters.BaseY);
-            UpdateBorder(uiElement, parameters);
-            UpdateBackground(uiElement, parameters);
-            UpdatePrimary(uiElement, parameters, out var primaryLength);
-            UpdateSecondary(uiElement, parameters, primaryLength);
-            UpdateExhaustion(uiElement, parameters);
+            display.SetPosition(parameters.BaseX, parameters.BaseY);
+            SimpleStatBarDisplayUpdater.UpdateBorder(display, parameters);
+            SimpleStatBarDisplayUpdater.UpdateBackground(display, parameters);
+            UpdatePrimary(display, parameters, out var primaryLength);
+            UpdateSecondary(display, parameters, primaryLength);
+            UpdateExhaustion(display, parameters);
         }
         
-        private static void UpdateBorder(
-            IStatBarDisplay display, UpdateDisplayParameters<ComplexStat> parameters)
-        {
-            var borderSizeX2 = parameters.BorderSize * 2;
-            var length = parameters.FullLength + borderSizeX2;
-            var thickness = parameters.Thickness + borderSizeX2;
-            var width = parameters.IsVertical ? thickness : length;
-            var height = parameters.IsVertical ? length : thickness;
-            display.SetBorderDimensions(0, 0, width, height);
-        }
-
-        private static void UpdateBackground(
-            IComplexStatBarDisplay uiElement, UpdateDisplayParameters<ComplexStat> parameters)
-        {
-            var width = parameters.IsVertical ? parameters.Thickness : parameters.FullLength;
-            var height = parameters.IsVertical ? parameters.FullLength : parameters.Thickness;
-            uiElement.SetBackgroundDimensions(parameters.BorderSize, parameters.BorderSize, width, height);
-        }
-
         private static void UpdatePrimary(
-            IComplexStatBarDisplay uiElement, UpdateDisplayParameters<ComplexStat> parameters, out int length)
+            IComplexStatBarDisplay display, UpdateDisplayParameters<ComplexStat> parameters, out int length)
         {
-            length = 10; // TODO: current value/destination value
+            var primaryStat = parameters.Stat.Value >= parameters.Stat.DestinationValue // decreasing?
+                ? parameters.Stat.DestinationValue // colored up to destination
+                : parameters.Stat.Value; // colored up to current value
+            length = MathUtil.LowerDoubleToInt(parameters.PPP * primaryStat);
             var width = parameters.IsVertical ? parameters.Thickness : length;
             var height = parameters.IsVertical ? length : parameters.Thickness;
-            uiElement.SetPrimaryDimensions(parameters.BorderSize, parameters.BorderSize, width, height);
+            display.SetPrimaryDimensions(parameters.BorderSize, parameters.BorderSize, width, height);
         }
 
         private static void UpdateSecondary(
-            IComplexStatBarDisplay uiElement, UpdateDisplayParameters<ComplexStat> parameters, int primaryLength)
+            IComplexStatBarDisplay display, UpdateDisplayParameters<ComplexStat> parameters, int primaryLength)
         {
+            var secondaryStat = parameters.Stat.Value >= parameters.Stat.DestinationValue // decreasing?
+                ? parameters.Stat.Value - parameters.Stat.DestinationValue // color value above destination
+                : parameters.Stat.DestinationValue - parameters.Stat.Value; // color value yet to be gained
             var length = 5; // TODO: destination value/current value
             var (x, y, width, height) = parameters.IsVertical 
                 ? VerticalSecondaryDimensions(parameters, primaryLength, length) 
                 : HorizontalSecondaryDimensions(parameters, primaryLength, length);
-            uiElement.SetSecondaryDimensions(x, y, width, height);
+            display.SetSecondaryDimensions(x, y, width, height);
         }
 
         private static (int, int, int, int) VerticalSecondaryDimensions(
             UpdateDisplayParameters<ComplexStat> parameters, int primaryLength, int length)
         {
             var x = parameters.BorderSize;
-            var y = parameters.BorderSize + primaryLength + length;
+            var y = parameters.BorderSize + primaryLength;
             var width = parameters.Thickness;
             var height = length;
             return (x, y, width, height);
@@ -67,7 +54,7 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
         private static (int, int, int, int) HorizontalSecondaryDimensions(
             UpdateDisplayParameters<ComplexStat> parameters, int primaryLength, int length)
         {
-            var x = parameters.BorderSize + primaryLength + length;
+            var x = parameters.BorderSize + primaryLength;
             var y = parameters.BorderSize;
             var width = length;
             var height = parameters.Thickness;

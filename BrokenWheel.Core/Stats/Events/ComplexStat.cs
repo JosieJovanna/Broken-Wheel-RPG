@@ -7,7 +7,7 @@
         /// <summary>
         /// The value this stat is set to reach over time.
         /// </summary>
-        public int Destination { get; internal set; }
+        public int DestinationValue { get; internal set; }
         
         /// <summary>
         /// How many points of a stat are currently unusable.
