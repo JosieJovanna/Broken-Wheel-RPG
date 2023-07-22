@@ -120,6 +120,14 @@ namespace BrokenWheel.Core.Settings
         public int MaxLength { get; internal set; } = 320;
 
         /// <summary>
+        /// When a simple stat is being tracked, most have some hard limit.
+        /// When they do not, and even when they do, a stat bar is unlikely to be necessary.
+        /// However, rather than checking if a stat has a maximum, it will assume one, in hopes of making the display
+        /// at least somewhat readable.
+        /// </summary>
+        public int MaximumWhenSimpleStatHasNone { get; internal set; } = 100;
+
+        /// <summary>
         /// The default length of stat bars, in pixels. When the bars are not set to a <see cref="DisplayMode"/> which scales,
         /// will stay at this length. If stat bars are set to have a set ratio of points per pixel, this setting will not be used.
         /// </summary>

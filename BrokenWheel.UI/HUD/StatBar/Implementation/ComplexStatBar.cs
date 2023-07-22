@@ -53,7 +53,7 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
                 case StatBarDisplayMode.UniformPointsPerPixel:
                     return CalculateUniformPpp();
                 case StatBarDisplayMode.UniformPointsPerPixelUntilMaxLength:
-                    return CalculateUniformPppUpToMax();
+                    return CalculateUniformPppUpToMaxLength();
                 case StatBarDisplayMode.FixedLength:
                 default:
                     return (double)_stat.EffectiveMaximum / Settings.DefaultLength;
@@ -80,7 +80,7 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
             return newPpp;
         }
 
-        private double CalculateUniformPppUpToMax()
+        private double CalculateUniformPppUpToMaxLength()
         {
             var maxLength = System.Math.Min(Settings.MaxLength, ConstrainingDimension());
             var ppp = Settings.DefaultPointPerPixelRatio; // prevent race conditions
