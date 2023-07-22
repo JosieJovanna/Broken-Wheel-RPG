@@ -8,7 +8,7 @@ using BrokenWheel.Math.Utility;
 
 namespace BrokenWheel.UI.HUD.StatBar.Implementation
 {
-    internal sealed class SimpleStatBar : StatBar, IListener<SimpleStatUpdatedEvent>
+    internal sealed class SimpleStatBar : StatBar, IListener<StatUpdatedEvent>
     {
         private readonly IStatBarDisplay _display;
         private Stat _stat;
@@ -30,7 +30,7 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
             UpdateDisplay();
         }
 
-        public void HandleEvent(SimpleStatUpdatedEvent gameEvent)
+        public void HandleEvent(StatUpdatedEvent gameEvent)
         {
             _stat = gameEvent.Stat;
             UpdateDisplay();

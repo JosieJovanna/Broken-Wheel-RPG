@@ -122,7 +122,7 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
         {
             _groupDisplay.RemoveStatBarElement(statBar.Display);
             if (statBar.Info.IsCustom)
-                _eventNexus.UnsubscribeFromEnumeratedEvent<StatType, SimpleStatUpdatedEvent>(statBar.Info.Code, statBar);
+                _eventNexus.UnsubscribeFromEnumeratedEvent<StatType, StatUpdatedEvent>(statBar.Info.Code, statBar);
             else
                 _eventNexus.UnsubscribeFromEnumeratedEvent(statBar.Info.Type, statBar);
         }
@@ -176,7 +176,7 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
             var display = _groupDisplay.CreateStatBarElement<IStatBarDisplay>(statInfo.Name, colors);
             var statBar = new SimpleStatBar(_settings, display, statInfo, ReportPpp, HighestPpp, order);
             if (statInfo.IsCustom)
-                _eventNexus.SubscribeToEnumeratedEvent<StatType, SimpleStatUpdatedEvent>(statInfo.Code, statBar);
+                _eventNexus.SubscribeToEnumeratedEvent<StatType, StatUpdatedEvent>(statInfo.Code, statBar);
             else
                 _eventNexus.SubscribeToEnumeratedEvent(statInfo.Type, statBar);
             _statBars.Add(statBar);
