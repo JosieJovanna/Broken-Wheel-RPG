@@ -32,16 +32,16 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
         public void HandleEvent(SimpleStatUpdatedEvent gameEvent)
         {
             _stat = gameEvent.Stat;
-            throw new System.NotImplementedException();
+            UpdateDisplay();
         }
 
         protected override void UpdateDisplay()
         {
             var ppp = CalculatePointsPerPixel();
-            var length = MathUtil.RaiseDoubleToInt(ppp * _stat.Maximum + _stat.Modifier);
+            var length = MathUtil.RaiseDoubleToInt(ppp * StatMax());
             var y = CalculateYAdjustingForLengthIfOnTop(length);
-            var parameters = new UpdateDisplayParameters<ComplexStat>(Settings, _stat, ppp, length, X, y);
-            ComplexStatBarDisplayUpdater.UpdateDisplay(_display, parameters);
+            var parameters = new UpdateDisplayParameters<Stat>(Settings, _stat, ppp, length, X, y);
+            SimpleStatBarDisplayUpdater.UpdateDisplay(_display, parameters);
         }
 
         private double CalculatePointsPerPixel()
