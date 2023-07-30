@@ -3,6 +3,9 @@ using BrokenWheel.UI.Common;
 
 namespace BrokenWheel.UI.HUD.StatBar
 {
+    /// <summary>
+    /// The container for <see cref="IStatBarDisplay"/>s, which keeps them all relative to this element.
+    /// </summary>
     public interface IStatBarSuiteDisplay : IUIElement
     {
         /// <summary>

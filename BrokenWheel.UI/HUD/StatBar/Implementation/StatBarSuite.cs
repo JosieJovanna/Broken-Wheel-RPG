@@ -13,24 +13,30 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
     public class StatBarSuite : IStatBarSuite
     {
         private readonly StatBarSettings _settings;
-        private readonly IEntityEventListener _eventListener;
         private readonly IStatBarSuiteDisplay _groupDisplay;
+        private readonly ICustomCategorizedEventListener<StatUpdatedEvent, StatType> _simpleListener;
+        private readonly ICustomCategorizedEventListener<ComplexStatUpdatedEvent, StatType> _complexListener;
         private readonly IList<StatBar> _statBars = new List<StatBar>();
         
         private bool _isHiding;
         private double _highestPpp;
 
         /// <summary>
-        /// Creates a group of stat bars, automatically populating 
+        /// Creates a group of stat bars, automatically populating the main vitals.
         /// </summary>
-        /// <param name="eventListener"> The event tracker for the entity the stat bars belong to. </param>
+        /// <param name="simpleListener"> The event listener for simple stat update events. </param>
+        /// <param name="complexListener"> The event listener for complex stat update events. </param>
         /// <param name="suiteDisplay"> The object in charge of creating and displaying the stat bars in GUI. </param>
         /// <exception cref="ArgumentNullException"> If any argument is null. </exception>
-        public StatBarSuite(IEntityEventListener eventListener, IStatBarSuiteDisplay suiteDisplay)
+        public StatBarSuite(
+            ICustomCategorizedEventListener<StatUpdatedEvent, StatType> simpleListener, 
+            ICustomCategorizedEventListener<ComplexStatUpdatedEvent, StatType> complexListener, 
+            IStatBarSuiteDisplay suiteDisplay)
         {
             _settings = SettingsRegistry.GetSettings<StatBarSettings>();
-            _eventListener = eventListener ?? throw new ArgumentNullException(nameof(eventListener));
             _groupDisplay = suiteDisplay ?? throw new ArgumentNullException(nameof(suiteDisplay));
+            _simpleListener = simpleListener ?? throw new ArgumentNullException(nameof(simpleListener));
+            _complexListener = complexListener ?? throw new ArgumentNullException(nameof(complexListener));
 
             for (var i = 0; i < _settings.MainStatCodesInOrder.Length; i++)
                 AddStatBar(new StatInfo(_settings.MainStatCodesInOrder[i]), i);
@@ -113,18 +119,18 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
         {
             _groupDisplay.RemoveStatBarElement(statBar.Display);
             if (statBar.Info.IsCustom)
-                _eventListener.UnsubscribeFromEnumeratedEvent<StatType, ComplexStatUpdatedEvent>(statBar.Info.Code, statBar);
+                _complexListener.UnsubscribeFromCategory(statBar.Info.Code, statBar);
             else
-                _eventListener.UnsubscribeFromEnumeratedEvent(statBar.Info.Type, statBar);
+                _complexListener.UnsubscribeFromCategory(statBar.Info.Type, statBar);
         }
 
         private void RemoveSimpleStatBar(SimpleStatBar statBar)
         {
             _groupDisplay.RemoveStatBarElement(statBar.Display);
             if (statBar.Info.IsCustom)
-                _eventListener.UnsubscribeFromEnumeratedEvent<StatType, StatUpdatedEvent>(statBar.Info.Code, statBar);
+                _simpleListener.UnsubscribeFromCategory(statBar.Info.Code, statBar);
             else
-                _eventListener.UnsubscribeFromEnumeratedEvent(statBar.Info.Type, statBar);
+                _simpleListener.UnsubscribeFromCategory(statBar.Info.Type, statBar);
         }
 
         private void AddStatBar(StatInfo statInfo, int order = -1)
@@ -165,9 +171,9 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
             var display = _groupDisplay.CreateStatBarElement<IComplexStatBarDisplay>(statInfo.Name, colors);
             var statBar = new ComplexStatBar(_settings, display, statInfo, ReportPpp, HighestPpp, order);
             if (statInfo.IsCustom)
-                _eventListener.SubscribeToEnumeratedEvent<StatType, ComplexStatUpdatedEvent>(statInfo.Code, statBar);
+                _complexListener.SubscribeToCategory(statInfo.Code, statBar);
             else
-                _eventListener.SubscribeToEnumeratedEvent(statInfo.Type, statBar);
+                _complexListener.SubscribeToCategory(statInfo.Type, statBar);
             _statBars.Add(statBar);
         }
 
@@ -176,9 +182,9 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
             var display = _groupDisplay.CreateStatBarElement<IStatBarDisplay>(statInfo.Name, colors);
             var statBar = new SimpleStatBar(_settings, display, statInfo, ReportPpp, HighestPpp, order);
             if (statInfo.IsCustom)
-                _eventListener.SubscribeToEnumeratedEvent<StatType, StatUpdatedEvent>(statInfo.Code, statBar);
+                _simpleListener.SubscribeToCategory(statInfo.Code, statBar);
             else
-                _eventListener.SubscribeToEnumeratedEvent(statInfo.Type, statBar);
+                _simpleListener.SubscribeToCategory(statInfo.Type, statBar);
             _statBars.Add(statBar);
         }
     }

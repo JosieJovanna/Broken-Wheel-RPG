@@ -8,7 +8,7 @@ namespace BrokenWheel.Core.Event
     /// It is assumed that the custom value is the default value of that enum, but it is possible to set the enum value
     /// to a different value than default, while still having an override. 
     /// </summary>
-    public abstract class CustomOverrideEnumGameEvent<T> : EnumeratedGameEvent<T> where T : struct, IConvertible
+    public abstract class CustomOverrideEnumGameEvent<T> : CategorizedGameEvent<T> where T : struct, IConvertible
     {
         public bool IsOverridden { get; protected set; }
         public string OverrideCode { get; protected set; }

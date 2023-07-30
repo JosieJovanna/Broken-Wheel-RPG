@@ -2,12 +2,12 @@
 
 namespace BrokenWheel.Core.Event
 {
-    public abstract class EnumeratedGameEvent<T> : GameEvent 
+    public abstract class CategorizedGameEvent<T> : GameEvent 
         where T : struct, IConvertible // since prior to .Net7.3, cannot use enum as generic
     {
         public T EnumValue { get; }
         
-        protected EnumeratedGameEvent(object sender, string entityId, T? type)
+        protected CategorizedGameEvent(object sender, string entityId, T? type)
             : base(sender, entityId)
         {
             if (!typeof(T).IsEnum)
