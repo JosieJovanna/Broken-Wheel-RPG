@@ -1,7 +1,7 @@
 ﻿using System;
 using BrokenWheel.Core.Stats.Extensions;
 
-namespace BrokenWheel.Core.Stats.Enum
+namespace BrokenWheel.Core.Stats
 {
     public class StatInfo
     {
@@ -18,21 +18,30 @@ namespace BrokenWheel.Core.Stats.Enum
             
             Type = statType;
             Name = statType.GetName();
-            Code = statType.ToString();
+            Code = statType.GetCode();
             IsCustom = false;
             IsComplex = statType.IsComplex();
         }
 
-        public StatInfo(string customTypeCode)
+        public StatInfo(string customTypeCode, string customTypeName, bool isComplex)
         {
             if (string.IsNullOrWhiteSpace(customTypeCode))
                 throw new ArgumentException($"{nameof(customTypeCode)} cannot be null or whitespace.");
+            if (string.IsNullOrWhiteSpace(customTypeName))
+                throw new ArgumentException($"{nameof(customTypeName)} cannot be null or whitespace.");
 
             Type = StatType.Custom;
-            Name = ""; // TODO: get this from some service
-            Code = customTypeCode;
             IsCustom = true;
-            IsComplex = false; // TODO: get this from some service
+            
+            Name = customTypeName;
+            Code = customTypeCode;
+            IsComplex = isComplex;
+        }
+
+        public static StatInfo FromCode(string code)
+        {
+            // TODO
+            throw new NotImplementedException();
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace BrokenWheel.Core.Stats.Extensions
 {
-    internal static class StatisticExtensions
+    internal static class StatisticExtensions // TODO: this should be covered by methods/stat info
     {
         public static bool IsComplex(this IStatistic statistic)
         {

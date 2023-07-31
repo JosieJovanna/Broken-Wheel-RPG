@@ -2,7 +2,6 @@
 using BrokenWheel.Core.Event.Handling;
 using BrokenWheel.Core.Settings;
 using BrokenWheel.Core.Stats;
-using BrokenWheel.Core.Stats.Enum;
 using BrokenWheel.Core.Stats.Events;
 using BrokenWheel.Math.Utility;
 

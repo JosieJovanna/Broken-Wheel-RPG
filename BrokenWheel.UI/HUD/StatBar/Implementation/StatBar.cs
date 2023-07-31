@@ -1,6 +1,6 @@
 ﻿using System;
 using BrokenWheel.Core.Settings;
-using BrokenWheel.Core.Stats.Enum;
+using BrokenWheel.Core.Stats;
 using BrokenWheel.UI.Display;
 
 namespace BrokenWheel.UI.HUD.StatBar.Implementation

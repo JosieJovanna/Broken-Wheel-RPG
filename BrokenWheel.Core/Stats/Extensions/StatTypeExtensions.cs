@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using BrokenWheel.Core.Stats.Attributes;
+using BrokenWheel.Core.Stats.Meta;
 
 namespace BrokenWheel.Core.Stats.Extensions
 {
@@ -15,7 +16,7 @@ namespace BrokenWheel.Core.Stats.Extensions
         {
             var infoAttribute = stat.GetAttribute<InfoAttribute>();
             return infoAttribute == null 
-                ? stat.GetName() 
+                ? stat.ToString()
                 : infoAttribute.Name;
         }
 
@@ -36,15 +37,21 @@ namespace BrokenWheel.Core.Stats.Extensions
         }
 
 
-        public static bool IsComplex(this StatType stat) 
-            => stat.HasAttribute<ComplexAttribute>();
-        public static bool IsAttribute(this StatType stat) 
-            => stat.HasAttribute<AttributeAttribute>();
-        public static bool IsSkill(this StatType stat) 
-            => stat.HasAttribute<SkillAttribute>();
-        public static bool IsProficiency(this StatType stat) 
-            => stat.HasAttribute<ProficiencyAttribute>();
+        public static bool IsComplex(this StatType stat) => stat.HasAttribute<ComplexStatAttribute>();
+        public static bool IsAttribute(this StatType stat) => stat.GetCategory() == StatCategory.Attribute;
 
+        public static bool IsSkill(this StatType stat) => stat.GetCategory() == StatCategory.Skill;
+        public static bool IsProficiency(this StatType stat) => stat.GetCategory() == StatCategory.Proficiency;
+
+        public static StatCategory GetCategory(this StatType stat)
+        {
+            return stat.GetAttribute<StatCategoriesAttribute>()?.Category ?? default;
+        }
+
+        public static StatSubCategory GetSubCategory(this StatType stat)
+        {
+            return stat.GetAttribute<StatCategoriesAttribute>()?.SubCategory ?? default;
+        }
 
         private static bool HasAttribute<T>(this StatType stat) where T : Attribute
         {
@@ -54,7 +61,8 @@ namespace BrokenWheel.Core.Stats.Extensions
         private static T GetAttribute<T>(this StatType stat) where T : Attribute
         {
             return stat.GetType()
-                .GetMember(stat.ToString()).FirstOrDefault()
+                .GetMember(stat.ToString())
+                .FirstOrDefault()
                 ?.GetCustomAttributes(typeof(T), false)
                 .FirstOrDefault() as T;
         }

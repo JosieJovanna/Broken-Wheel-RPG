@@ -1,6 +1,4 @@
-﻿using BrokenWheel.Core.Stats.Enum;
-
-namespace BrokenWheel.Core.Stats.Events
+﻿namespace BrokenWheel.Core.Stats.Events
 {
     public class ComplexStatUpdatedEvent : AbstractStatUpdatedEvent<ComplexStat>
     {

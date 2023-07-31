@@ -1,6 +1,4 @@
-﻿using BrokenWheel.Core.Stats.Enum;
-
-namespace BrokenWheel.Core.Stats.Processing
+﻿namespace BrokenWheel.Core.Stats.Processing
 {
     /// <summary>
     /// A statistic tracker with a <see cref="StatType"/> type, value, and modifier.

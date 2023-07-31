@@ -5,7 +5,6 @@ using BrokenWheel.Core.Event.Listening;
 using BrokenWheel.Core.Settings;
 using BrokenWheel.Core.Settings.Registration;
 using BrokenWheel.Core.Stats;
-using BrokenWheel.Core.Stats.Enum;
 using BrokenWheel.Core.Stats.Events;
 
 namespace BrokenWheel.UI.HUD.StatBar.Implementation
@@ -74,27 +73,62 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
                 .ToList());
         }
 
+        public void AddStat(StatInfo info)
+        {
+            if (info == null)
+                throw new ArgumentNullException(nameof(info));
+            
+            if (!HasStat(info.Code)) 
+                AddStatBar(info);
+        }
+
         public void AddStat(StatType type)
         {
-            if (!HasStat(type)) AddStatBar(new StatInfo(type));
+            if (type == StatType.Custom)
+                throw new InvalidOperationException("Cannot add custom stat bar without a code being given.");
+            
+            if (!HasStat(type)) 
+                AddStatBar(new StatInfo(type));
         }
 
         public void AddCustomStat(string code)
         {
-            if (!HasStat(code)) AddStatBar(new StatInfo(code));
+            if (string.IsNullOrWhiteSpace(code))
+                throw new ArgumentException($"{nameof(code)} cannot be null or whitespace.");
+            
+            if (!HasStat(code)) 
+                AddStatBar(StatInfo.FromCode(code));
+        }
+        
+        public void RemoveStat(StatInfo info)
+        {
+            if (info == null)
+                throw new ArgumentNullException(nameof(info));
+            
+            if (!HasStat(info.Code))
+                return;
+            
+            var toRemove = _statBars.First(_ => _.Info.Code == info.Code);
+            RemoveStatBar(toRemove);
         }
         
         public void RemoveStat(StatType type)
         {
+            if (type == StatType.Custom)
+                throw new InvalidOperationException("Cannot remove custom stat bar without a code being given.");
+            
             if (!HasStat(type))
                 return;
             
-            var toRemove = _statBars.First(_ => _.Info.Type != type);
+            var toRemove = _statBars.First(_ => _.Info.Type == type);
             RemoveStatBar(toRemove);
         }
 
         public void RemoveCustomStat(string code)
         {
+            if (string.IsNullOrWhiteSpace(code))
+                throw new ArgumentException($"{nameof(code)} cannot be null or whitespace.");
+            
             if (!HasStat(code))
                 return;
             
