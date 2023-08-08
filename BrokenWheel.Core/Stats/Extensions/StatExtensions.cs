@@ -7,7 +7,25 @@ namespace BrokenWheel.Core.Stats.Extensions
 {
     internal static class StatExtensions
     {
-        public static StatInfoAttribute GetInfoAttribute(this Stat stat)
+        public static StatInfo GetStatInfo(this Stat stat)
+        {
+            if (stat == Stat.Custom)
+                throw new InvalidOperationException("The custom stat value has no set information.");
+            var infoAttr = stat.GetStatInfoAttribute();
+            return new StatInfo
+            {
+                Stat = stat,
+                Type = infoAttr.Type,
+                Category = infoAttr.Category,
+                Code = infoAttr.Code,
+                Name = infoAttr.Name,
+                Description = infoAttr.Description,
+                IsComplex = infoAttr.IsComplex,
+                IsCustom = false
+            };
+        }
+
+        private static StatInfoAttribute GetStatInfoAttribute(this Stat stat)
         {
             if (!HasAttribute<StatInfoAttribute>(stat))
                 throw NoStatInfoException(stat);
@@ -15,7 +33,7 @@ namespace BrokenWheel.Core.Stats.Extensions
             return infoAttribute ?? throw NoStatInfoException(stat);
 
         }
-
+        
         private static bool HasAttribute<T>(this Stat stat) where T : Attribute
         {
             return stat.GetAttribute<T>() != null;
