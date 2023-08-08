@@ -1,16 +1,18 @@
-﻿namespace BrokenWheel.Core.Stats.Processing
+﻿using BrokenWheel.Core.Stats.Enum;
+
+namespace BrokenWheel.Core.Stats.Processing
 {
     /// /// <summary>
     /// A simple implementation of <see cref="IComplexStatisticProcessor"/>.
     /// Has a value, which ranges between zero and the <see cref="EffectiveMaximum"/>. This would be the current value.
     /// Has a maximum, which is what often changes with level, in the case of HP, WP, et cetera. More stable; non-negative.
     /// Has a modifier to the <see cref="EffectiveMaximum"/>, positive or negative. Set by effects, equipment, et cetera.
-    /// Has exhaustion, which is a gradual drain on the <see cref="StatType"/> that happens with time and use.
+    /// Has exhaustion, which is a gradual drain on the <see cref="Stat"/> that happens with time and use.
     /// </summary>
     internal interface IComplexStatisticProcessor : IStatisticProcessor
     {
         /// <summary>
-        /// The current value of the <see cref="StatType"/>.
+        /// The current value of the <see cref="Stat"/>.
         /// Will be equal to or lower than the <see cref="EffectiveMaximum"/>, and non-negative.
         /// </summary>
         new int Value { get; set; }
@@ -21,13 +23,13 @@
         new int Modifier { get; set; }
 
         /// <summary>
-        /// The value of the <see cref="StatType"/>, which has no modifiers. Equal to <see cref="Value"/>;
+        /// The value of the <see cref="Stat"/>, which has no modifiers. Equal to <see cref="Value"/>;
         /// will be greater than or equal to zero, and less than or equal to <see cref="EffectiveMaximum"/>.
         /// </summary>
         new int EffectiveValue { get; }
         
         /// <summary>
-        /// The value that the <see cref="StatType"/> is determined, by other mechanism, to reach.
+        /// The value that the <see cref="Stat"/> is determined, by other mechanism, to reach.
         /// Does not progress on its own, but rather, is useful mainly for display.
         /// </summary>
         int DestinationValue { get; set; }

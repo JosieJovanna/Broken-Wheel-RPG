@@ -1,6 +1,6 @@
 ﻿namespace BrokenWheel.Core.Stats
 {
-    public class Stat
+    public class Statistic
     {
         public const int NO_MAX = -1;
         

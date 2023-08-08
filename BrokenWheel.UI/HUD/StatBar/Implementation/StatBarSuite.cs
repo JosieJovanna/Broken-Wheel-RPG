@@ -5,6 +5,7 @@ using BrokenWheel.Core.Events.Listening;
 using BrokenWheel.Core.Settings;
 using BrokenWheel.Core.Settings.Registration;
 using BrokenWheel.Core.Stats;
+using BrokenWheel.Core.Stats.Enum;
 using BrokenWheel.Core.Stats.Events;
 
 namespace BrokenWheel.UI.HUD.StatBar.Implementation
@@ -13,8 +14,8 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
     {
         private readonly StatBarSettings _settings;
         private readonly IStatBarSuiteDisplay _groupDisplay;
-        private readonly ICustomCategorizedEventListener<StatUpdatedEvent, StatType> _simpleListener;
-        private readonly ICustomCategorizedEventListener<ComplexStatUpdatedEvent, StatType> _complexListener;
+        private readonly ICustomCategorizedEventListener<StatUpdatedEvent, Stat> _simpleListener;
+        private readonly ICustomCategorizedEventListener<ComplexStatUpdatedEvent, Stat> _complexListener;
         private readonly IList<StatBar> _statBars = new List<StatBar>();
         
         private bool _isHiding;
@@ -28,8 +29,8 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
         /// <param name="suiteDisplay"> The object in charge of creating and displaying the stat bars in GUI. </param>
         /// <exception cref="ArgumentNullException"> If any argument is null. </exception>
         public StatBarSuite(
-            ICustomCategorizedEventListener<StatUpdatedEvent, StatType> simpleListener, 
-            ICustomCategorizedEventListener<ComplexStatUpdatedEvent, StatType> complexListener, 
+            ICustomCategorizedEventListener<StatUpdatedEvent, Stat> simpleListener, 
+            ICustomCategorizedEventListener<ComplexStatUpdatedEvent, Stat> complexListener, 
             IStatBarSuiteDisplay suiteDisplay)
         {
             _settings = SettingsRegistry.GetSettings<StatBarSettings>();
@@ -38,7 +39,7 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
             _complexListener = complexListener ?? throw new ArgumentNullException(nameof(complexListener));
 
             for (var i = 0; i < _settings.MainStatCodesInOrder.Length; i++)
-                AddStatBar(new StatInfo(_settings.MainStatCodesInOrder[i]), i);
+                AddStatBar(new StatInfo(_settings.MainStatCodesInOrder[i]), i); // TODO: stat info factory
             RepositionDisplays();
         }
 
@@ -73,39 +74,39 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
                 .ToList());
         }
         
-        public void RemoveStat(StatInfo info)
+        public void RemoveStat(StatInfo statInfo)
         {
-            if (info == null)
-                throw new ArgumentNullException(nameof(info));
+            if (statInfo == null)
+                throw new ArgumentNullException(nameof(statInfo));
             
-            if (!HasStat(info.Code))
+            if (!HasStat(statInfo.Code))
                 return;
             
-            var toRemove = _statBars.First(_ => _.Info.Code == info.Code);
+            var toRemove = _statBars.First(_ => _.Info.Code == statInfo.Code);
             RemoveStatBar(toRemove);
         }
         
-        public void RemoveStat(StatType type)
+        public void RemoveStat(Stat stat)
         {
-            if (type == StatType.Custom)
+            if (stat == Stat.Custom)
                 throw new InvalidOperationException("Cannot remove custom stat bar without a code being given.");
             
-            if (!HasStat(type))
+            if (!HasStat(stat))
                 return;
             
-            var toRemove = _statBars.First(_ => _.Info.Type == type);
+            var toRemove = _statBars.First(_ => _.Info.Stat == stat);
             RemoveStatBar(toRemove);
         }
 
-        public void RemoveCustomStat(string code)
+        public void RemoveCustomStat(string customStatCode)
         {
-            if (string.IsNullOrWhiteSpace(code))
-                throw new ArgumentException($"{nameof(code)} cannot be null or whitespace.");
+            if (string.IsNullOrWhiteSpace(customStatCode))
+                throw new ArgumentException($"{nameof(customStatCode)} cannot be null or whitespace.");
             
-            if (!HasStat(code))
+            if (!HasStat(customStatCode))
                 return;
             
-            var toRemove = _statBars.First(_ => _.Info.Code == code);
+            var toRemove = _statBars.First(_ => _.Info.Code == customStatCode);
             RemoveStatBar(toRemove);
         }
 
@@ -124,7 +125,7 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
             if (statBar.Info.IsCustom)
                 _complexListener.UnsubscribeFromCategory(statBar.Info.Code, statBar);
             else
-                _complexListener.UnsubscribeFromCategory(statBar.Info.Type, statBar);
+                _complexListener.UnsubscribeFromCategory(statBar.Info.Stat, statBar);
         }
 
         private void RemoveSimpleStatBar(SimpleStatBar statBar)
@@ -132,34 +133,34 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
             if (statBar.Info.IsCustom)
                 _simpleListener.UnsubscribeFromCategory(statBar.Info.Code, statBar);
             else
-                _simpleListener.UnsubscribeFromCategory(statBar.Info.Type, statBar);
+                _simpleListener.UnsubscribeFromCategory(statBar.Info.Stat, statBar);
         }
 
-        public void AddStat(StatInfo info)
+        public void AddStat(StatInfo statInfo)
         {
-            if (info == null)
-                throw new ArgumentNullException(nameof(info));
+            if (statInfo == null)
+                throw new ArgumentNullException(nameof(statInfo));
             
-            if (!HasStat(info.Code)) 
-                AddStatBar(info);
+            if (!HasStat(statInfo.Code)) 
+                AddStatBar(statInfo);
         }
 
-        public void AddStat(StatType type)
+        public void AddStat(Stat stat)
         {
-            if (type == StatType.Custom)
+            if (stat == Stat.Custom)
                 throw new InvalidOperationException("Cannot add custom stat bar without a code being given.");
             
-            if (!HasStat(type)) 
-                AddStatBar(new StatInfo(type));
+            if (!HasStat(stat)) 
+                AddStatBar(new StatInfo(stat)); // TODO: stat info factory
         }
 
-        public void AddCustomStat(string code)
+        public void AddCustomStat(string customStatCode)
         {
-            if (string.IsNullOrWhiteSpace(code))
-                throw new ArgumentException($"{nameof(code)} cannot be null or whitespace.");
+            if (string.IsNullOrWhiteSpace(customStatCode))
+                throw new ArgumentException($"{nameof(customStatCode)} cannot be null or whitespace.");
             
-            if (!HasStat(code)) 
-                AddStatBar(StatInfo.FromCode(code));
+            if (!HasStat(customStatCode)) 
+                AddStatBar(StatInfo.FromCode(customStatCode)); // TODO: stat info factory
         }
 
         private void AddStatBar(StatInfo statInfo, int order = -1)
@@ -175,13 +176,13 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
 
         private StatBarColorSettings ColorSettingsForStat(StatInfo statInfo)
         {
-            switch (statInfo.Type)
+            switch (statInfo.Stat)
             {
-                case StatType.HP:
+                case Stat.HP:
                     return _settings.HpColors;
-                case StatType.SP:
+                case Stat.SP:
                     return _settings.SpColors;
-                case StatType.WP:
+                case Stat.WP:
                     return _settings.WpColors;
                 default:
                     return ColorSettingForStat(statInfo.Code);
@@ -202,7 +203,7 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
             if (statInfo.IsCustom)
                 _complexListener.SubscribeToCategory(statInfo.Code, statBar);
             else
-                _complexListener.SubscribeToCategory(statInfo.Type, statBar);
+                _complexListener.SubscribeToCategory(statInfo.Stat, statBar);
             _statBars.Add(statBar);
         }
 
@@ -213,11 +214,11 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
             if (statInfo.IsCustom)
                 _simpleListener.SubscribeToCategory(statInfo.Code, statBar);
             else
-                _simpleListener.SubscribeToCategory(statInfo.Type, statBar);
+                _simpleListener.SubscribeToCategory(statInfo.Stat, statBar);
             _statBars.Add(statBar);
         }
 
-        private bool HasStat(StatType type) => _statBars.Any(_ => _.Info.Type == type);
+        private bool HasStat(Stat stat) => _statBars.Any(_ => _.Info.Stat == stat);
 
         private bool HasStat(string code) => _statBars.Any(_ => _.Info.Code == code);
     }

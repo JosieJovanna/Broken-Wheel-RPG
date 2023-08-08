@@ -1,10 +1,11 @@
-﻿using BrokenWheel.Math.Utility;
+﻿using BrokenWheel.Core.Stats.Enum;
+using BrokenWheel.Math.Utility;
 
 namespace BrokenWheel.Core.Stats.Processing.Implementation
 {
     /// <summary>
     /// A simple implementation of <see cref="IComplexStatisticProcessor"/>.
-    /// Used for HP, SP, WP, and misc. <see cref="StatType"/>s like the amount of oil.
+    /// Used for HP, SP, WP, and misc. <see cref="Stat"/>s like the amount of oil.
     /// </summary>
     internal class ComplexStatisticProcessor : StatisticProcessor, IComplexStatisticProcessor
     {
@@ -15,7 +16,7 @@ namespace BrokenWheel.Core.Stats.Processing.Implementation
         /// <summary> Exhaustion </summary>
         protected int Exh;
 
-        /// <param name="type"> The <see cref="StatType"/> being tracked. </param>
+        /// <param name="type"> The <see cref="Stat"/> being tracked. </param>
         /// <param name="value"> The current value of the stat; will be set between zero and <see cref="EffectiveMaximum"/>. </param>
         /// <param name="maximum"> The maximum value before modification; will be set above or equal to zero. </param>
         /// <param name="modifier"> The modifier to the maximum value. Optional; defaults to zero. </param>

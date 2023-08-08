@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using BrokenWheel.Core.Settings.Registration;
-using BrokenWheel.Core.Stats;
 
 namespace BrokenWheel.Core.Settings
 {
-    public sealed class StatBarSettings : ISettings
+    public sealed class StatBarSettings : ISettings // TODO: move settings to own project
     {
         /// <summary>
         /// Which corner the stat bars are displayed in.
@@ -25,7 +24,7 @@ namespace BrokenWheel.Core.Settings
         /// <summary>
         /// The order of the main health, stamina, and willpower stats.
         /// </summary>
-        public StatType[] MainStatCodesInOrder { get; internal set; } = { StatType.HP, StatType.SP, StatType.WP };
+        public string[] MainStatCodesInOrder { get; internal set; } = { "HP", "SP", "WP" };
 
         /// <summary>
         /// The color profile of the health bar.

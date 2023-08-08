@@ -6,15 +6,27 @@ namespace BrokenWheel.Core.Stats.Attributes
     /// A basic attribute used to describe stats in text.
     /// </summary>
     [AttributeUsage(AttributeTargets.Field)]
-    public class InfoAttribute : Attribute
+    internal class InfoAttribute : Attribute
     {
+        public readonly string Code;
         public readonly string Name;
         public readonly string Description;
 
-        public InfoAttribute(string name, string description)
+        public InfoAttribute(
+            string code, 
+            string name, 
+            string description)
         {
-            Name = name ?? throw new ArgumentNullException(nameof(name));
-            Description = description ?? throw new ArgumentNullException(nameof(description));
+            if (string.IsNullOrWhiteSpace(code))
+                throw new ArgumentException($"{nameof(code)} cannot be null or blank.");
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentException($"{nameof(name)} cannot be null or blank.");
+            if (string.IsNullOrWhiteSpace(description))
+                throw new ArgumentException($"{nameof(description)} cannot be null or blank.");
+            
+            Code = code;
+            Name = name;
+            Description = description;
         }
     }
 }

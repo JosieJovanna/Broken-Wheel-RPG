@@ -10,7 +10,7 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
     internal sealed class ComplexStatBar : StatBar, IEventHandler<ComplexStatUpdatedEvent>
     {
         private readonly IComplexStatBarDisplay _display;
-        private ComplexStat _stat;
+        private ComplexStatistic _stat;
         
         /// <summary>
         /// Initiates the object controlling the display, then immediately calls <see cref="UpdateDisplay"/>.
@@ -31,7 +31,7 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
 
         public void HandleEvent(ComplexStatUpdatedEvent gameEvent)
         {
-            _stat = gameEvent.Stat;
+            _stat = gameEvent.Statistic;
             UpdateDisplay();
         }
 
@@ -40,7 +40,7 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
             var ppp = CalculatePointsPerPixel();
             var length = MathUtil.RaiseDoubleToInt(ppp * _stat.EffectiveMaximum);
             var y = CalculateYAdjustingForLengthIfOnTop(length);
-            var parameters = new UpdateDisplayParameters<ComplexStat>(Settings, _stat, ppp, length, X, y);
+            var parameters = new UpdateDisplayParameters<ComplexStatistic>(Settings, _stat, ppp, length, X, y);
             ComplexStatBarDisplayUpdater.UpdateDisplay(_display, parameters);
         }
 

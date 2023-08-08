@@ -1,6 +1,6 @@
 ﻿namespace BrokenWheel.Core.Stats
 {
-    public class ComplexStat : Stat
+    public class ComplexStatistic : Statistic
     {
         // Inherits Value, Modifier
         

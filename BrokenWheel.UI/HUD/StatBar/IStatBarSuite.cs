@@ -1,4 +1,5 @@
 ﻿using BrokenWheel.Core.Stats;
+using BrokenWheel.Core.Stats.Enum;
 
 namespace BrokenWheel.UI.HUD.StatBar
 {
@@ -25,34 +26,34 @@ namespace BrokenWheel.UI.HUD.StatBar
         /// <summary>
         /// Adds a bar for the specified stat, if there is not already a stat of that type being displayed.
         /// </summary>
-        void AddStat(StatInfo info);
+        void AddStat(StatInfo statInfo);
         
         /// <summary>
         /// Adds a bar for the specified stat, if there is not already a stat of that type being displayed.
         /// </summary>
-        void AddStat(StatType type);
+        void AddStat(Stat stat);
         
         /// <summary>
         /// Adds a bar for the specified custom stat, if there is not already a stat of that type being displayed.
         /// </summary>
-        void AddCustomStat(string code);
+        void AddCustomStat(string customStatCode);
         
         /// <summary>
         /// Removes the stat bar for the specified stat type, if it exists.
         /// May not remove health, stamina, or willpower bars.
         /// </summary>
-        void RemoveStat(StatInfo info);
+        void RemoveStat(StatInfo statInfo);
         
         /// <summary>
         /// Removes the stat bar for the specified stat type, if it exists.
         /// May not remove health, stamina, or willpower bars.
         /// </summary>
-        void RemoveStat(StatType type);
+        void RemoveStat(Stat stat);
 
         /// <summary>
         /// Removes the stat bar for the specified stat type, if it exists.
         /// May not remove health, stamina, or willpower bars.
         /// </summary>
-        void RemoveCustomStat(string code);
+        void RemoveCustomStat(string customStatCode);
     }
 }

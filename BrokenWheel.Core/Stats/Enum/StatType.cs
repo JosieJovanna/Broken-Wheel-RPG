@@ -1,6 +1,6 @@
-﻿namespace BrokenWheel.Core.Stats.Meta
+﻿namespace BrokenWheel.Core.Stats.Enum
 {
-    public enum StatCategory
+    public enum StatType
     {
         Custom = default,
         

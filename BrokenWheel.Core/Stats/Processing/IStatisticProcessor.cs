@@ -1,14 +1,16 @@
-﻿namespace BrokenWheel.Core.Stats.Processing
+﻿using BrokenWheel.Core.Stats.Enum;
+
+namespace BrokenWheel.Core.Stats.Processing
 {
     /// <summary>
-    /// A statistic tracker with a <see cref="StatType"/> type, value, and modifier.
+    /// A statistic tracker with a <see cref="Stat"/> type, value, and modifier.
     /// The <see cref="Value"/> is more stable, being for example skill, which only changes during level-ups.
     /// The <see cref="Modifier"/> is more erratic, being set by spells, equipment, et cetera.
     /// </summary>
     internal interface IStatisticProcessor
     {
         /// <summary>
-        /// The type of <see cref="StatType"/> this object represents.
+        /// The type of <see cref="Stat"/> this object represents.
         /// </summary>
         StatInfo StatInfo { get; }
         

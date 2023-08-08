@@ -6,7 +6,7 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
     internal static class SimpleStatBarDisplayUpdater
     {
         internal static void UpdateDisplay(
-            IStatBarDisplay display, UpdateDisplayParameters<Stat> parameters)
+            IStatBarDisplay display, UpdateDisplayParameters<Statistic> parameters)
         {
             display.SetPosition(parameters.BaseX, parameters.BaseY);
             UpdateBorder(display, parameters);
@@ -16,7 +16,7 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
         
         internal static void UpdateBorder<TStat>(
             IStatBarDisplay display, UpdateDisplayParameters<TStat> parameters)
-            where TStat : Stat
+            where TStat : Statistic
         {
             var borderSizeX2 = parameters.BorderSize * 2;
             var length = parameters.FullLength + borderSizeX2;
@@ -28,7 +28,7 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
 
         internal static void UpdateBackground<TStat>(
             IStatBarDisplay display, UpdateDisplayParameters<TStat> parameters)
-            where TStat : Stat
+            where TStat : Statistic
         {
             var width = parameters.IsVertical ? parameters.Thickness : parameters.FullLength;
             var height = parameters.IsVertical ? parameters.FullLength : parameters.Thickness;
@@ -36,7 +36,7 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
         }
 
         private static void UpdatePrimary(
-            IStatBarDisplay display, UpdateDisplayParameters<Stat> parameters)
+            IStatBarDisplay display, UpdateDisplayParameters<Statistic> parameters)
         {
             var length = MathUtil.LowerDoubleToInt(parameters.PPP * parameters.Stat.EffectiveValue);
             var width = parameters.IsVertical ? parameters.Thickness : length;

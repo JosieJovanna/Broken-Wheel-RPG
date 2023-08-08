@@ -1,5 +1,5 @@
 using System;
-using BrokenWheel.Core.Stats.Meta;
+using BrokenWheel.Core.Stats.Enum;
 
 namespace BrokenWheel.Core.Stats.Attributes
 {
@@ -7,15 +7,15 @@ namespace BrokenWheel.Core.Stats.Attributes
     /// The grouping of stats with similar areas of effect, more specific than Attribute/Skill/Proficiency.
     /// </summary>
     [AttributeUsage(AttributeTargets.Field)]
-    public class StatCategoriesAttribute : Attribute
+    internal class StatCategoriesAttribute : Attribute
     {
+        public readonly StatType Type;
         public readonly StatCategory Category;
-        public readonly StatSubCategory SubCategory;
 
-        public StatCategoriesAttribute(StatCategory category, StatSubCategory subCategory)
+        public StatCategoriesAttribute(StatType type, StatCategory category)
         {
+            Type = type;
             Category = category;
-            SubCategory = subCategory;
         }
     }
 }
