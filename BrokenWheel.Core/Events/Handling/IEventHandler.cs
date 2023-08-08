@@ -1,4 +1,4 @@
-﻿namespace BrokenWheel.Core.Event.Handling
+﻿namespace BrokenWheel.Core.Events.Handling
 {
     public interface IEventHandler<in TEvent> where TEvent : GameEvent
     {

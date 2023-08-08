@@ -11,7 +11,7 @@
   <ItemGroup>
     <Folder Include="Damage\Events" />
     <Folder Include="Equipment\" />
-    <Folder Include="Event\Listening\Implementation" />
+    <Folder Include="Events\Listening\Implementation" />
     <Folder Include="Properties" />
   </ItemGroup>
 

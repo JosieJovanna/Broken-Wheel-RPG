@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BrokenWheel.Core.Event.Emitting
+namespace BrokenWheel.Core.Events.Emitting
 {
     public interface IEventEmitter
     {

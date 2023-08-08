@@ -6,7 +6,8 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
     internal static class ComplexStatBarDisplayUpdater
     {
         public static void UpdateDisplay(
-            IComplexStatBarDisplay display, UpdateDisplayParameters<ComplexStat> parameters)
+            IComplexStatBarDisplay display, 
+            UpdateDisplayParameters<ComplexStat> parameters)
         {
             display.SetPosition(parameters.BaseX, parameters.BaseY);
             SimpleStatBarDisplayUpdater.UpdateBorder(display, parameters);
@@ -17,7 +18,8 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
         }
         
         private static void UpdatePrimary(
-            IComplexStatBarDisplay display, UpdateDisplayParameters<ComplexStat> parameters, out int length)
+            IComplexStatBarDisplay display, 
+            UpdateDisplayParameters<ComplexStat> parameters, out int length)
         {
             var primaryStat = parameters.Stat.Value >= parameters.Stat.DestinationValue // decreasing?
                 ? parameters.Stat.DestinationValue // colored up to destination

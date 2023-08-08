@@ -1,4 +1,4 @@
-﻿using BrokenWheel.Core.Event;
+﻿using BrokenWheel.Core.Events;
 using BrokenWheel.Core.Stats;
 
 namespace ConsoleApp

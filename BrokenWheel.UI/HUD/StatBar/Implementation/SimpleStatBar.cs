@@ -1,5 +1,5 @@
 ﻿using System;
-using BrokenWheel.Core.Event.Handling;
+using BrokenWheel.Core.Events.Handling;
 using BrokenWheel.Core.Settings;
 using BrokenWheel.Core.Stats;
 using BrokenWheel.Core.Stats.Events;
@@ -10,7 +10,7 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
     internal sealed class SimpleStatBar : StatBar, IEventHandler<StatUpdatedEvent>
     {
         private readonly IStatBarDisplay _display;
-        private Stat _stat;
+        private Stat _stat; // changed each update
         
         /// <summary>
         /// Initiates the object controlling the display, then immediately calls <see cref="UpdateDisplay"/>.

@@ -16,9 +16,7 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
         private static int _distance;
         private static int _thickness;
 
-        public static void PositionBars(
-            StatBarSettings statBarSettings, 
-            IList<StatBar> statBarRelationships)
+        public static void PositionBars(StatBarSettings statBarSettings, IList<StatBar> statBarRelationships)
         {
             _settings = statBarSettings ?? throw new ArgumentNullException(nameof(statBarSettings));
             _list = statBarRelationships ?? throw new ArgumentException(nameof(statBarRelationships));

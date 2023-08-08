@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BrokenWheel.Core.Event
+namespace BrokenWheel.Core.Events
 {
     public abstract class GameEvent : EventArgs
     {
