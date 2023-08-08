@@ -1,13 +1,13 @@
 ﻿namespace BrokenWheel.Core.Stats.Processing
 {
     /// /// <summary>
-    /// A simple implementation of <see cref="IComplexStatistic"/>.
+    /// A simple implementation of <see cref="IComplexStatisticProcessor"/>.
     /// Has a value, which ranges between zero and the <see cref="EffectiveMaximum"/>. This would be the current value.
     /// Has a maximum, which is what often changes with level, in the case of HP, WP, et cetera. More stable; non-negative.
     /// Has a modifier to the <see cref="EffectiveMaximum"/>, positive or negative. Set by effects, equipment, et cetera.
     /// Has exhaustion, which is a gradual drain on the <see cref="StatType"/> that happens with time and use.
     /// </summary>
-    internal interface IComplexStatistic : IStatistic
+    internal interface IComplexStatisticProcessor : IStatisticProcessor
     {
         /// <summary>
         /// The current value of the <see cref="StatType"/>.

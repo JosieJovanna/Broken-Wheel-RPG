@@ -1,12 +1,12 @@
 ﻿using BrokenWheel.Math.Utility;
 
-namespace BrokenWheel.Core.Stats.Processing
+namespace BrokenWheel.Core.Stats.Processing.Implementation
 {
     /// <summary>
-    /// A simple implementation of <see cref="IStatistic"/>.
+    /// A simple implementation of <see cref="IStatisticProcessor"/>.
     /// Used for skills, proficiencies, et cetera, but not things like HP.
     /// </summary>
-    internal class Statistic : IStatistic
+    internal class StatisticProcessor : IStatisticProcessor
     {
         protected readonly StatInfo Stat;
         protected int Val;
@@ -15,14 +15,14 @@ namespace BrokenWheel.Core.Stats.Processing
         /// <param name="type"> The type of statistic being tracked. </param>
         /// <param name="value"> The value of the stat before modification. Value min is zero. </param>
         /// <param name="modifier"> The amount the stat is modified by for the <see cref="EffectiveValue"/>. </param>
-        public Statistic(StatInfo type, int value, int modifier = 0)
+        public StatisticProcessor(StatInfo type, int value, int modifier = 0)
         {
             Stat = type;
             Val = MathUtil.NonNeg(value);
             Mod = modifier;
         }
 
-        public StatInfo Info { get => Stat; }
+        public StatInfo StatInfo { get => Stat; }
 
         public int Value { get => Val; set => Val = MathUtil.NonNeg(value); }
 

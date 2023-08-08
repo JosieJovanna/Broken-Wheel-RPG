@@ -5,12 +5,12 @@
     /// The <see cref="Value"/> is more stable, being for example skill, which only changes during level-ups.
     /// The <see cref="Modifier"/> is more erratic, being set by spells, equipment, et cetera.
     /// </summary>
-    internal interface IStatistic
+    internal interface IStatisticProcessor
     {
         /// <summary>
         /// The type of <see cref="StatType"/> this object represents.
         /// </summary>
-        StatInfo Info { get; }
+        StatInfo StatInfo { get; }
         
         /// <summary>
         /// The value of the stat. Cannot be negative; attempting to set a negative value will in fact set it to zero.

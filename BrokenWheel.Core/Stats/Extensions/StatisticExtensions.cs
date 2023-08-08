@@ -4,21 +4,21 @@ namespace BrokenWheel.Core.Stats.Extensions
 {
     internal static class StatisticExtensions // TODO: this should be covered by methods/stat info
     {
-        public static bool IsComplex(this IStatistic statistic)
+        public static bool IsComplex(this IStatisticProcessor statisticProcessor)
         {
-            return statistic.GetType().IsAssignableFrom(typeof(IComplexStatistic));
+            return statisticProcessor.GetType().IsAssignableFrom(typeof(IComplexStatisticProcessor));
         }
 
-        public static bool TryAsComplex(this IStatistic statistic, out IComplexStatistic complexStatistic)
+        public static bool TryAsComplex(this IStatisticProcessor statisticProcessor, out IComplexStatisticProcessor complexStatisticProcessor)
         {
-            var isComplex = statistic.IsComplex();
-            complexStatistic = isComplex ? statistic.AsComplex() : null;
+            var isComplex = statisticProcessor.IsComplex();
+            complexStatisticProcessor = isComplex ? statisticProcessor.AsComplex() : null;
             return isComplex;
         }
 
-        public static IComplexStatistic AsComplex(this IStatistic statistic)
+        public static IComplexStatisticProcessor AsComplex(this IStatisticProcessor statisticProcessor)
         {
-            return (IComplexStatistic)statistic;
+            return (IComplexStatisticProcessor)statisticProcessor;
         }
     }
 }
