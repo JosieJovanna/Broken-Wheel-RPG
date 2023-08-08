@@ -7,10 +7,8 @@ namespace BrokenWheel.Core.Stats.Extensions
 {
     internal static class StatExtensions
     {
-        public static StatInfo GetStatInfo(this Stat stat)
+        public static StatInfo StatInfoFromAttribute(this Stat stat)
         {
-            if (stat == Stat.Custom)
-                throw new InvalidOperationException("The custom stat value has no set information.");
             var infoAttr = stat.GetStatInfoAttribute();
             return new StatInfo
             {
