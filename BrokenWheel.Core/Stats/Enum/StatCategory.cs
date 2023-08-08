@@ -5,6 +5,7 @@
         Custom = default,
         
         // ATTRIBUTES
+        Meta,
         Vitals,
         Survival,
         Movement,
@@ -15,7 +16,7 @@
         Sorcery,
         Wizardry,
         Crafting,
-        Misc,
+        Miscellaneous,
 
         // PROFICIENCIES
         Melee,

@@ -7,23 +7,13 @@ namespace BrokenWheel.Core.Stats.Extensions
 {
     internal static class StatExtensions
     {
-        public static bool IsComplex(this Stat stat) => stat.HasAttribute<ComplexStatAttribute>();
+        public static StatInfoAttribute GetInfoAttribute(this Stat stat)
+        {
+            if (!HasAttribute<StatInfoAttribute>(stat))
+                throw NoStatInfoException(stat);
+            var infoAttribute = stat.GetAttribute<StatInfoAttribute>();
+            return infoAttribute ?? throw NoStatInfoException(stat);
 
-        public static InfoAttribute GetInfoAttribute(this Stat stat)
-        {
-            var infoAttribute = stat.GetAttribute<InfoAttribute>();
-            return infoAttribute ??
-                   throw new InvalidOperationException($"Given {nameof(Stat)} '{stat}' does not have information attached to it.");
-        }
-        
-        public static StatType GetType(this Stat stat)
-        {
-            return stat.GetAttribute<StatCategoriesAttribute>()?.Type ?? default;
-        }
-
-        public static StatCategory GetCategory(this Stat stat)
-        {
-            return stat.GetAttribute<StatCategoriesAttribute>()?.Category ?? default;
         }
 
         private static bool HasAttribute<T>(this Stat stat) where T : Attribute
@@ -38,6 +28,12 @@ namespace BrokenWheel.Core.Stats.Extensions
                 .FirstOrDefault()
                 ?.GetCustomAttributes(typeof(T), false)
                 .FirstOrDefault() as T;
+        }
+
+        private static InvalidOperationException NoStatInfoException(Stat stat)
+        {
+            return new InvalidOperationException(
+                $"Given {nameof(Stat)} '{stat}' does not have information attached to it.");
         }
     }
 }
