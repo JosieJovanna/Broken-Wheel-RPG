@@ -1,4 +1,4 @@
-﻿namespace BrokenWheel.Core.Constants
+﻿namespace BrokenWheel.Core.Logging
 {
     public static class LogCategory
     {
