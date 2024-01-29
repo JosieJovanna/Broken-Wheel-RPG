@@ -5,14 +5,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Damage\Events\**" />
+    <Compile Remove="Properties\**" />
+    <EmbeddedResource Remove="Damage\Events\**" />
+    <EmbeddedResource Remove="Properties\**" />
+    <None Remove="Damage\Events\**" />
+    <None Remove="Properties\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Damage\Events" />
     <Folder Include="Equipment\" />
     <Folder Include="Events\Listening\Implementation" />
-    <Folder Include="Properties" />
   </ItemGroup>
 
   <ItemGroup>
