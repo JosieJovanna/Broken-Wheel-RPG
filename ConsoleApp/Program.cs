@@ -1,5 +1,5 @@
-﻿using System;
-using BrokenWheel.Core;
+﻿using BrokenWheel.Core.Events;
+using BrokenWheel.Core.Stats;
 
 namespace ConsoleApp
 {
