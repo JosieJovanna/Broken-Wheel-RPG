@@ -2,14 +2,11 @@
 
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
+        <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\BrokenWheel.Control\BrokenWheel.Control.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Player" />
     </ItemGroup>
 
 </Project>

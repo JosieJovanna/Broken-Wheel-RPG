@@ -25,14 +25,13 @@ namespace BrokenWheel.Control.Implementations
 
         private AltMuxBehavior CreateBehavior()
         {
-            throw new NotImplementedException();
-            /*return new AltMuxBehavior(ref StaticSettings.Controls.HoldToReadyWeapon) 
+            return new AltMuxBehavior(ref StaticSettings.Controls.HoldToReadyWeapon) 
             {
                 OnReleaseHold = ReadyWeapon,
                 OnAltReleaseHold = ReadyWeapon,
                 OnReleaseClick = Reload,
                 OnAltReleaseClick = AltReload
-            };*/
+            };
         }
 
         public void ReloadOrReady(PressData press) => _behavior.Execute(press);

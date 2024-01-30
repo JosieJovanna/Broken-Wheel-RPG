@@ -1,29 +1,26 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Update="FractionConstructors.cs">
-      <DependentUpon>Fraction.cs</DependentUpon>
-    </Compile>
-    <Compile Update="FractionMath.cs">
-      <DependentUpon>Fraction.cs</DependentUpon>
-    </Compile>
-    <Compile Update="FractionOperators.cs">
-      <DependentUpon>Fraction.cs</DependentUpon>
-    </Compile>
-    <Compile Update="FractionUtilities.cs">
-      <DependentUpon>Fraction.cs</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-
-  <ItemGroup>
-    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
-      <_Parameter1>BrokenWheel.Math.Tests</_Parameter1>
-    </AssemblyAttribute>
-  </ItemGroup>
+    <ItemGroup>
+      <Compile Update="FractionConstructors.cs">
+        <DependentUpon>Fraction.cs</DependentUpon>
+      </Compile>
+      <Compile Update="FractionConversions.cs">
+        <DependentUpon>Fraction.cs</DependentUpon>
+      </Compile>
+      <Compile Update="FractionMath.cs">
+        <DependentUpon>Fraction.cs</DependentUpon>
+      </Compile>
+      <Compile Update="FractionOperators.cs">
+        <DependentUpon>Fraction.cs</DependentUpon>
+      </Compile>
+      <Compile Update="FractionUtilities.cs">
+        <DependentUpon>Fraction.cs</DependentUpon>
+      </Compile>
+    </ItemGroup>
 
 </Project>

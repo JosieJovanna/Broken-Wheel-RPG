@@ -1,130 +1,54 @@
 using System;
 using BrokenWheel.Math.Options;
 
+/*
+ * ORIGINAL COMMENT
+ * 
+ * Author: Syed Mehroz Alam
+ * Email: smehrozalam@yahoo.com
+ * URL: Programming Home 'http://www.geocities.com/smehrozalam/'
+ * Date: 6/15/2004
+ * Time: 10:54 AM
+ * Version: 2.0
+ * 
+ * What's new in version 2.0:
+ *     Changed Numerator and Denominator from Int32(integer) to Int64(long) for increased range
+ *     renamed ConvertToString() to (overloaded) ToString()
+ *     added the capability of detecting/raising overflow exceptions
+ *     Fixed the bug that very small numbers e.g. 0.00000001 could not be converted to fraction
+ *     Other minor bugs fixed
+ * 
+ * What's new in version 2.1
+ *     overloaded user-defined conversions to/from Fractions
+ * 	
+ * Overloaded Operators (overloaded for Fractions, Integers and Doubles)
+ * 	   Unary: -
+ * 	   Binary: +, -, *, / 
+ * 	   Relational and Logical Operators: ==, !=, <, >, <=, >=
+ * 
+ * Overloaded user-defined conversions
+ * 	   Implicit: From double/long/string to Fraction
+ * 	   Explicit: From Fraction to double/string
+ */
+
 namespace BrokenWheel.Math
 {
-    /*
-     * Author: Syed Mehroz Alam
-     * Email: smehrozalam@yahoo.com
-     * URL: Programming Home "http://www.geocities.com/smehrozalam/" 
-     * Date: 6/15/2004
-     * Time: 10:54 AM
-     * Version: 2.0
-     * 
-     * What's new in version 2.0:
-     *     Changed Numerator and Denominator from Int32(integer) to Int64(long) for increased range
-     *     renamed ConvertToString() to (overloaded) ToString()
-     *     added the capability of detecting/raising overflow exceptions
-     *     Fixed the bug that very small numbers e.g. 0.00000001 could not be converted to fraction
-     *     Other minor bugs fixed
-     * 
-     * What's new in version 2.1
-     *     overloaded user-defined conversions to/from Fractions
-     * 	
-     * 
-     * Properties:
-     * 	   Numerator: Set/Get value for Numerator
-     * 	   Denominator:  Set/Get value for Numerator
-     * 	   Value:  Set an integer value for the fraction
-     * 
-     * Constructors:
-     *     no arguments: initializes fraction as 0/1
-     *     (Numerator, Denominator): initializes fraction with the given numerator and denominator values
-     *     (integer):	 initializes fraction with the given integer value
-     *     (long):	     initializes fraction with the given long value
-     *     (double):	 initializes fraction with the given double value
-     *     (string):	 initializes fraction with the given string value
-     *     			     the string can be an in the form of and integer, double or fraction.
-     *     			     e.g it can be like "123" or "123.321" or "123/456"
-     * 
-     * Public Methods (Description is given with respective methods' definitions)
-     * 	   (override) string ToString(Fraction)
-     * 	   Fraction ToFraction(string)
-     * 	   Fraction ToFraction(double)
-     * 	   double ToDouble(Fraction)
-     * 	   Fraction Duplicate()
-     * 	   Fraction Inverse(integer)
-     * 	   Fraction Inverse(Fraction)
-     * 	   ReduceFraction(Fraction)
-     * 	   Equals(object)
-     * 	   GetHashCode()
-     *    
-     * Private Methods (Description is given with respective methods' definitions)
-     * 	   Initialize(Numerator, Denominator)
-     * 	   Fraction Negate(Fraction)
-     * 	   Fraction Add(Fraction1, Fraction2)
-     * 
-     * Overloaded Operators (overloaded for Fractions, Integers and Doubles)
-     * 	   Unary: -
-     * 	   Binary: +, -, *, / 
-     * 	   Relational and Logical Operators: ==, !=, <, >, <=, >=
-     * 
-     * Overloaded user-defined conversions
-     * 	   Implicit: From double/long/string to Fraction
-     * 	   Explicit: From Fraction to double/string
-     */
+    /// <summary>
+    /// An open-source fraction class, originally written by Syed Mehroz Alam, and edited for this project.
+    /// </summary>
     public sealed partial class Fraction
     {
-        private long _numerator;
         private long _denominator;
-
-        public ZeroDenominatorOption Option { get; set; }
-        public bool IsPositive { get; }
-
-        public long Numerator
-        {
-            get => _numerator;
-            set => _numerator = value;
-        }
-
+        
+        public long Numerator { get; set; }
+        
         public long Denominator
         {
             get => _denominator;
             set => _denominator = HandleZeroDenominators(value);
         }
         
-        /// <summary>
-        /// The function returns the current Fraction object as double
-        /// </summary>
-        public double AsDouble()
-        {
-            if (Denominator != 0 || Option == ZeroDenominatorOption.Ignore)
-                return (double)Numerator / Denominator;
-            if (Option == ZeroDenominatorOption.GetValueAsZero)
-                return 0;
-            throw new FractionException("Cannot evaluate a fraction with zero denominator.");
-        }
-
-        /// <summary>
-        /// The function returns the current Fraction object as a string
-        /// </summary>
-        public override string ToString()
-        {
-            string str;
-            if (_denominator == 1)
-                str = _numerator.ToString();
-            else
-                str = _numerator + "/" + _denominator;
-            return str;
-        }
-
-        /// <summary>
-        /// Checks whether two fractions are equal
-        /// </summary>
-        public override bool Equals(object value)
-        {
-            var fraction = (Fraction) value;
-            return fraction != null && _numerator == fraction._numerator && _denominator == fraction._denominator;
-        }
-
-        /// <summary>
-        /// Returns a hash code for this fraction
-        /// </summary>
-        public override int GetHashCode()
-        {
-            // ReSharper disable once NonReadonlyMemberInGetHashCode
-            return Convert.ToInt32((Numerator ^ Denominator) & 0xFFFFFFFF);
-        }
+        public ZeroDenominatorOption Option { get; set; }
         
         private long HandleZeroDenominators(long denominator)
         {
@@ -156,6 +80,56 @@ namespace BrokenWheel.Math
             return fraction1.Option == fraction2.Option 
                 ? fraction1.Option 
                 : default;
+        }
+
+        /// <summary>
+        /// The function returns the current Fraction object as a string
+        /// </summary>
+        public override string ToString()
+        {
+            string str;
+            if (Denominator == 1)
+                str = Numerator.ToString();
+            else
+                str = Numerator + "/" + Denominator;
+            return str;
+        }
+
+        /// <summary>
+        /// Checks whether two fractions are equal
+        /// </summary>
+        public override bool Equals(object value)
+        {
+            var fraction1 = Duplicate().TryReduce(out var wasReduced);
+            if (!TryCastToReducedFraction(value, out var fraction2) )
+                return false;
+            if (fraction1 == null && fraction2 == null)
+                return true;
+            return fraction1.Numerator == fraction2.Numerator && fraction1.Denominator == fraction2.Denominator;
+        }
+
+        private static bool TryCastToReducedFraction(object value, out Fraction result)
+        {
+            try
+            {
+                result = (Fraction)value;
+                result.TryReduce(out var wasReduced);
+                return true;
+            }
+            catch (Exception)
+            {
+                result = null;
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Returns a hash code for this fraction
+        /// </summary>
+        public override int GetHashCode()
+        {
+            // ReSharper disable once NonReadonlyMemberInGetHashCode
+            return Convert.ToInt32((Numerator ^ Denominator) & 0xFFFFFFFF);
         }
     }
 }

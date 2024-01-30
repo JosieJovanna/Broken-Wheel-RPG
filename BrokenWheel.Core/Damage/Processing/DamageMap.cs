@@ -96,7 +96,7 @@ namespace BrokenWheel.Core.Damage.Processing
 
         /// <summary>
         /// Creates a new map for interpolating damage over time.
-        /// Damage is floored.
+        /// Damage is rounded down.
         /// </summary>
         /// <param name="deltaTime">  Fraction of a second. Must be less than or equal to one.  </param>
         /// <returns>  A new <see cref="DamageMap"/>.  </returns>
@@ -107,7 +107,7 @@ namespace BrokenWheel.Core.Damage.Processing
 
             return new DamageMap(_map.ToDictionary(
                 k => k.Key, 
-                v => MathUtil.LowerDoubleToInt(v.Value * deltaTime)));
+                v => MathUtil.FloorDouble(v.Value * deltaTime)));
         }
 
         /// <summary>
