@@ -3,7 +3,7 @@ using BrokenWheel.Core.Logging;
 
 namespace BrokenWheel.Core.DependencyInjection
 {
-    public static class DI
+    public static class Injection
     {
         private static bool _isInitialized = false;
         private static ILogger _logger;

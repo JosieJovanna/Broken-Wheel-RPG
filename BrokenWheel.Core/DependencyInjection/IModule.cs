@@ -10,14 +10,14 @@ namespace BrokenWheel.Core.DependencyInjection
         ILogger GetLogger();
 
         /// <summary>
-        /// Gets singleton interfaced services to be statically accessible through <see cref="DI"/>.
+        /// Gets singleton interfaced services to be statically accessible through <see cref="Injection"/>.
         /// </summary>
         /// <typeparam name="TInterface"> The registered interface type. </typeparam>
         /// <returns> Instance of interface implementation. </returns>
         TInterface Get<TInterface>();
 
         /// <summary>
-        /// Registers singleton interfaced services to be statically accessible through <see cref="DI"/>.
+        /// Registers singleton interfaced services to be statically accessible through <see cref="Injection"/>.
         /// </summary>
         /// <typeparam name="TInterface"> The interface that the implementation inherits. </typeparam>
         /// <typeparam name="TImplementation"> The implementation of the interface type. </typeparam>
