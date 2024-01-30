@@ -1,18 +1,25 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <Compile Remove="Damage\Events\**" />
+    <Compile Remove="Properties\**" />
+    <EmbeddedResource Remove="Damage\Events\**" />
+    <EmbeddedResource Remove="Properties\**" />
+    <None Remove="Damage\Events\**" />
+    <None Remove="Properties\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Damage\Events" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Equipment\" />
     <Folder Include="Events\Listening\Implementation" />
-    <Folder Include="Properties" />
   </ItemGroup>
 
   <ItemGroup>
