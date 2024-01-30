@@ -1,34 +1,28 @@
-﻿using BrokenWheel.Core.Stats.Enum;
-using BrokenWheel.Math.Utility;
-
-namespace BrokenWheel.Core.Stats
+﻿namespace BrokenWheel.Core.Stats
 {
-    /// <summary>
-    /// A simple implementation of <see cref="IStatistic"/>.
-    /// Used for skills, proficiencies, et cetera, but not things like HP.
-    /// </summary>
-    public class Statistic : IStatistic
+    public class Statistic
     {
-        protected readonly StatInfo Stat;
-        protected int Val;
-        protected int Mod;
+        public const int NO_MAX = -1;
+        
+        /// <summary>
+        /// The current value of the stat. Will not be higher than <see cref="Maximum"/>, if applicable.
+        /// </summary>
+        public int Value { get; internal set; }
+        
+        /// <summary>
+        /// The amount added to or subtracted from the stat.
+        /// </summary>
+        public int Modifier { get; internal set; }
+        
+        /// <summary>
+        /// The final number needed for most stat checks. Will not be higher than <see cref="Maximum"/>, if applicable.
+        /// For simple stats, value plus modifier; for complex, just the value, no higher than effective maximum.
+        /// </summary>
+        public int EffectiveValue { get; internal set; }
 
-        /// <param name="type"> The type of statistic being tracked. </param>
-        /// <param name="value"> The value of the stat before modification. Value min is zero. </param>
-        /// <param name="modifier"> The amount the stat is modified by for the <see cref="EffectiveValue"/>. </param>
-        public Statistic(StatInfo type, int value, int modifier = 0)
-        {
-            Stat = type;
-            Val = MathUtil.NonNeg(value);
-            Mod = modifier;
-        }
-
-        public StatInfo Info { get => Stat; }
-
-        public int Value { get => Val; set => Val = MathUtil.NonNeg(value); }
-
-        public int Modifier { get => Mod; set => Mod = value; }
-
-        public int EffectiveValue { get => MathUtil.NonNeg(Val + Mod); }
+        /// <summary>
+        /// The maximum value this stat can have. -1 if no maximum.
+        /// </summary>
+        public int Maximum { get; internal set; } = NO_MAX;
     }
 }

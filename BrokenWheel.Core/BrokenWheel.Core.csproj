@@ -33,12 +33,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Stats\ComplexStatistic.cs">
-      <DependentUpon>IComplexStatistic.cs</DependentUpon>
-    </Compile>
-    <Compile Update="Stats\Statistic.cs">
-      <DependentUpon>IStatistic.cs</DependentUpon>
-    </Compile>
     <Compile Update="Settings\StatBarDisplayMode.cs">
       <DependentUpon>StatBarSettings.cs</DependentUpon>
     </Compile>

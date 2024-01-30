@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using BrokenWheel.Core.Settings.Registration;
-using BrokenWheel.Core.Stats;
 
 namespace BrokenWheel.Core.Settings
 {
-    public sealed class StatBarSettings : ISettings
+    public sealed class StatBarSettings : ISettings // TODO: move settings to own project
     {
         /// <summary>
         /// Which corner the stat bars are displayed in.
@@ -25,7 +24,7 @@ namespace BrokenWheel.Core.Settings
         /// <summary>
         /// The order of the main health, stamina, and willpower stats.
         /// </summary>
-        public StatType[] MainStatCodesInOrder { get; internal set; } = { StatType.HP, StatType.SP, StatType.WP };
+        public string[] MainStatCodesInOrder { get; internal set; } = { "HP", "SP", "WP" };
 
         /// <summary>
         /// The color profile of the health bar.
@@ -118,6 +117,14 @@ namespace BrokenWheel.Core.Settings
         /// if they scale up, then this is the maximum they will reach.
         /// </summary>
         public int MaxLength { get; internal set; } = 320;
+
+        /// <summary>
+        /// When a simple stat is being tracked, most have some hard limit.
+        /// When they do not, and even when they do, a stat bar is unlikely to be necessary.
+        /// However, rather than checking if a stat has a maximum, it will assume one, in hopes of making the display
+        /// at least somewhat readable.
+        /// </summary>
+        public int MaximumWhenSimpleStatHasNone { get; internal set; } = 100;
 
         /// <summary>
         /// The default length of stat bars, in pixels. When the bars are not set to a <see cref="DisplayMode"/> which scales,

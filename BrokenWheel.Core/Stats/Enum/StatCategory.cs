@@ -1,37 +1,27 @@
-﻿using BrokenWheel.Core.Stats.Attributes;
-
-namespace BrokenWheel.Core.Stats
+﻿namespace BrokenWheel.Core.Stats.Enum
 {
     public enum StatCategory
     {
+        Custom = default,
+        
         // ATTRIBUTES
-        [Attribute]
+        Meta,
         Vitals,
-        [Attribute]
+        Survival,
         Movement,
 
         // SKILLS
-        [Skill]
         Defense,
-        [Skill]
         Combat,
-        [Skill]
         Sorcery,
-        [Skill]
         Wizardry,
-        [Skill]
         Crafting,
-        [Skill]
-        Misc,
+        Miscellaneous,
 
         // PROFICIENCIES
-        [Proficiency]
         Melee,
-        [Proficiency]
         Ranged,
-        [Proficiency]
         Unarmed,
-        [Proficiency]
         Casting,
     }
 }

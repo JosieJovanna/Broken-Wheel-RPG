@@ -1,12 +1,12 @@
 ﻿namespace BrokenWheel.Core.Stats.Events
 {
-    public class ComplexStatUpdatedEvent : AbstractStatUpdatedEvent<ComplexStatistic>
+    public class StatUpdatedEvent : AbstractStatUpdatedEvent<Statistic>
     {
-        public ComplexStatUpdatedEvent(
+        public StatUpdatedEvent(
             object sender, 
             string entityId, 
             StatInfo statInfo, 
-            ComplexStatistic stat)
+            Statistic stat)
             : base(sender, entityId, statInfo, stat)
         {
         }

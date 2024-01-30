@@ -8,4 +8,8 @@
       <ProjectReference Include="..\BrokenWheel.Core\BrokenWheel.Core.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="HUD" />
+    </ItemGroup>
+
 </Project>
