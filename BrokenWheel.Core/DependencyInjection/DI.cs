@@ -32,7 +32,7 @@ namespace BrokenWheel.Core.DependencyInjection
             return _logger;
         }
 
-        public static Module GetModule()
+        public static IModule GetModule()
         {
             if (_module == null)
                 throw new InvalidOperationException("Dependency Injection has not yet been initialized.");
