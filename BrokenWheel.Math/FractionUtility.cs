@@ -10,7 +10,7 @@ namespace BrokenWheel.Math
             var denominator = fraction.Numerator;
             return new Fraction(numerator, denominator, fraction.Option);
         }
-        
+
         public Fraction Duplicate()
         {
             return new Fraction
@@ -55,7 +55,7 @@ namespace BrokenWheel.Math
             }
             void MakeNumeratorNegativeInsteadOfTheDenominator()
             {
-                if (tempDenominator >= 0) 
+                if (tempDenominator >= 0)
                     return;
                 tempNumerator *= -1;
                 tempDenominator *= -1;
@@ -67,13 +67,13 @@ namespace BrokenWheel.Math
         /// </summary>
         private static long GreatestCommonDenominator(long value1, long value2)
         {
-            if (value1 < 0) 
+            if (value1 < 0)
                 value1 = -value1;
-            if (value2 < 0) 
+            if (value2 < 0)
                 value2 = -value2;
             CalculateGcd();
             return value2;
-            
+
             // LOCAL FX
             void CalculateGcd()
             {

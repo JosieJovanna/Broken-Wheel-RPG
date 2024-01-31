@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using BrokenWheel.Math.Options;
 
 namespace BrokenWheel.Math
@@ -82,7 +82,7 @@ namespace BrokenWheel.Math
             get => _denominator;
             set => _denominator = HandleZeroDenominators(value);
         }
-        
+
         /// <summary>
         /// The function returns the current Fraction object as double
         /// </summary>
@@ -113,7 +113,7 @@ namespace BrokenWheel.Math
         /// </summary>
         public override bool Equals(object value)
         {
-            var fraction = (Fraction) value;
+            var fraction = (Fraction)value;
             return fraction != null && _numerator == fraction._numerator && _denominator == fraction._denominator;
         }
 
@@ -125,11 +125,11 @@ namespace BrokenWheel.Math
             // ReSharper disable once NonReadonlyMemberInGetHashCode
             return Convert.ToInt32((Numerator ^ Denominator) & 0xFFFFFFFF);
         }
-        
+
         private long HandleZeroDenominators(long denominator)
         {
-            return denominator == 0 
-                ? HandleZeroDenominator(denominator) 
+            return denominator == 0
+                ? HandleZeroDenominator(denominator)
                 : denominator;
         }
 
@@ -153,8 +153,8 @@ namespace BrokenWheel.Math
 
         private static ZeroDenominatorOption SameOrDefaultZeroOption(Fraction fraction1, Fraction fraction2)
         {
-            return fraction1.Option == fraction2.Option 
-                ? fraction1.Option 
+            return fraction1.Option == fraction2.Option
+                ? fraction1.Option
                 : default;
         }
     }

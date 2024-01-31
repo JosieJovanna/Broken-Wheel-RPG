@@ -1,6 +1,6 @@
 ﻿using Xunit;
 
-namespace BrokenWheel.Math.Tests.FractionTests;
+namespace BrokenWheel.Math.Fractions.Tests;
 
 public class UtilityTests
 {
@@ -13,17 +13,17 @@ public class UtilityTests
     {
         var fraction = new Fraction(numThenDen, denThenNum);
         var inversed = Fraction.Inverse(fraction);
-        
+
         Assert.Equal(numThenDen, inversed.Denominator);
         Assert.Equal(denThenNum, inversed.Numerator);
     }
-    
+
     [Fact]
     public void Duplicate_Returns_DifferentInstanceOfMatchingFraction()
     {
         var originalFraction = new Fraction(2, 3);
         var newFraction = originalFraction.Duplicate();
-        
+
         Assert.Equal(originalFraction.Numerator, newFraction.Numerator);
         Assert.Equal(originalFraction.Denominator, newFraction.Denominator);
         // different instance
@@ -40,7 +40,7 @@ public class UtilityTests
     {
         var fraction = new Fraction(numerator, denominator);
         fraction.Reduce();
-        
+
         Assert.Equal(expectedNumerator, fraction.Numerator);
         Assert.Equal(expectedDenominator, fraction.Denominator);
     }
@@ -54,7 +54,7 @@ public class UtilityTests
     {
         var fraction = new Fraction(numerator, denominator);
         fraction.Reduce();
-        
+
         Assert.Equal(expectedNumerator, fraction.Numerator);
         Assert.Equal(expectedDenominator, fraction.Denominator);
     }
@@ -68,7 +68,7 @@ public class UtilityTests
     {
         var fraction = new Fraction(numerator, denominator);
         fraction.Reduce();
-        
+
         Assert.Equal(expectedNumerator, fraction.Numerator);
         Assert.Equal(expectedDenominator, fraction.Denominator);
     }
@@ -82,7 +82,7 @@ public class UtilityTests
     {
         var fraction = new Fraction(numerator, denominator);
         fraction.Reduce();
-        
+
         Assert.Equal(expectedNumerator, fraction.Numerator);
         Assert.Equal(expectedDenominator, fraction.Denominator);
     }

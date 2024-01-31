@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using BrokenWheel.Core.Stats.Enum;
-using BrokenWheel.Core.Utilities;
 using Xunit;
 
-namespace BrokenWheel.Core.Tests.Utilities.EnumUtilsTests;
+namespace BrokenWheel.Core.Utilities.EnumUtilsTests.Tests;
 
 public class GetAllEnumValuesTests
 {

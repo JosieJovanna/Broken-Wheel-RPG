@@ -1,13 +1,13 @@
 ﻿using BrokenWheel.Math.Options;
 using Xunit;
 
-namespace BrokenWheel.Math.Tests.FractionTests;
+namespace BrokenWheel.Math.Fractions.Tests;
 
 public class ConstructorTests
 {
     private const ZeroDenominatorOption IGNORE_OPTION = ZeroDenominatorOption.Ignore;
     private const int VALID_NUMBER = 3;
-    
+
     [Fact]
     public void PlainConstructor_HasDefaultZeroOption_WhenNoneGiven()
     {
@@ -24,7 +24,7 @@ public class ConstructorTests
         Assert.Equal(VALID_NUMBER, fraction.Denominator);
         Assert.Equal(IGNORE_OPTION, fraction.Option);
     }
-    
+
     [Fact]
     public void NumeratorDenominatorConstructor_HasDefaultZeroOption_WhenNoneGiven()
     {
@@ -120,7 +120,7 @@ public class ConstructorTests
         Assert.Equal(expectedDenominator, fraction.Denominator);
         Assert.Equal(IGNORE_OPTION, fraction.Option);
     }
-    
+
     [Theory]
     [InlineData("not a fraction")]
     [InlineData("0123456789abcdef")]
