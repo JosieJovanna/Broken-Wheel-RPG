@@ -2,18 +2,16 @@
 {
     public class Statistic
     {
-        public const int NO_MAX = -1;
-        
         /// <summary>
         /// The current value of the stat. Will not be higher than <see cref="Maximum"/>, if applicable.
         /// </summary>
         public int Value { get; internal set; }
-        
+
         /// <summary>
         /// The amount added to or subtracted from the stat.
         /// </summary>
         public int Modifier { get; internal set; }
-        
+
         /// <summary>
         /// The final number needed for most stat checks. Will not be higher than <see cref="Maximum"/>, if applicable.
         /// For simple stats, value plus modifier; for complex, just the value, no higher than effective maximum.
@@ -21,8 +19,8 @@
         public int EffectiveValue { get; internal set; }
 
         /// <summary>
-        /// The maximum value this stat can have. -1 if no maximum.
+        /// The maximum value this stat can have.
         /// </summary>
-        public int Maximum { get; internal set; } = NO_MAX;
+        public int Maximum { get; internal set; }
     }
 }

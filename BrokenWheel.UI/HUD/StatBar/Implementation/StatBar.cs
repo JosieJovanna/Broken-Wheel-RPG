@@ -1,6 +1,6 @@
 ﻿using System;
 using BrokenWheel.Core.Settings;
-using BrokenWheel.Core.Stats;
+using BrokenWheel.Core.Stats.Info;
 using BrokenWheel.UI.Display;
 
 namespace BrokenWheel.UI.HUD.StatBar.Implementation
@@ -12,14 +12,14 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
     {
         public delegate void ReportPointsPerPixel(double ratio);
         public delegate double HighestPointsPerPixel();
-        
+
         protected readonly StatBarSettings Settings;
         protected readonly ReportPointsPerPixel ReportPpp;
         protected readonly HighestPointsPerPixel HighestPpp;
 
         protected int X;
         protected int Y;
-        
+
         protected StatBar(
             StatBarSettings statBarSettings,
             StatInfo statInfo,
@@ -35,7 +35,7 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
             HighestPpp = highestPointsPerPixel ?? throw new ArgumentNullException(nameof(highestPointsPerPixel));
             Order = order;
         }
-        
+
         public StatInfo Info { get; }
         public IStatBarDisplay Display { get; }
         public int Order { get; set; }
@@ -55,12 +55,12 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
 
         protected int CalculateYAdjustingForLengthIfOnTop(int length)
         {
-            return Settings.DisplayCorner == StatBarCorner.TopLeft 
+            return Settings.DisplayCorner == StatBarCorner.TopLeft
                    || Settings.DisplayCorner == StatBarCorner.TopRight
                 ? Y - length
                 : Y;
         }
-        
+
         protected int MaxLength() => System.Math.Min(Settings.MaxLength, ConstrainingDimension());
 
         protected int ConstrainingDimension() => Settings.IsVertical ? DisplayInfo.UIHeight() : DisplayInfo.UIWidth();

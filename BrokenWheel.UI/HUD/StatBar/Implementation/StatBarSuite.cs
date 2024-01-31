@@ -4,9 +4,9 @@ using System.Linq;
 using BrokenWheel.Core.Events.Listening;
 using BrokenWheel.Core.Settings;
 using BrokenWheel.Core.Settings.Registration;
-using BrokenWheel.Core.Stats;
 using BrokenWheel.Core.Stats.Enum;
 using BrokenWheel.Core.Stats.Events;
+using BrokenWheel.Core.Stats.Info;
 
 namespace BrokenWheel.UI.HUD.StatBar.Implementation
 {
@@ -17,7 +17,7 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
         private readonly ICustomCategorizedEventListener<StatUpdatedEvent, Stat> _simpleListener;
         private readonly ICustomCategorizedEventListener<ComplexStatUpdatedEvent, Stat> _complexListener;
         private readonly IList<StatBar> _statBars = new List<StatBar>();
-        
+
         private bool _isHiding;
         private double _highestPpp;
 
@@ -29,8 +29,8 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
         /// <param name="suiteDisplay"> The object in charge of creating and displaying the stat bars in GUI. </param>
         /// <exception cref="ArgumentNullException"> If any argument is null. </exception>
         public StatBarSuite(
-            ICustomCategorizedEventListener<StatUpdatedEvent, Stat> simpleListener, 
-            ICustomCategorizedEventListener<ComplexStatUpdatedEvent, Stat> complexListener, 
+            ICustomCategorizedEventListener<StatUpdatedEvent, Stat> simpleListener,
+            ICustomCategorizedEventListener<ComplexStatUpdatedEvent, Stat> complexListener,
             IStatBarSuiteDisplay suiteDisplay)
         {
             _settings = SettingsRegistry.GetSettings<StatBarSettings>();
@@ -38,8 +38,8 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
             _simpleListener = simpleListener ?? throw new ArgumentNullException(nameof(simpleListener));
             _complexListener = complexListener ?? throw new ArgumentNullException(nameof(complexListener));
 
-            for (var i = 0; i < _settings.MainStatCodesInOrder.Length; i++)
-                AddStatBar(new StatInfo(_settings.MainStatCodesInOrder[i]), i); // TODO: stat info factory
+            for (var i = 0; i < _settings.MainStatCodesInOrder.Count; i++)
+                AddStatBar(StatInfoFactory.FromEnum(_settings.MainStatCodesInOrder[i]), i); // TODO: stat info factory
             RepositionDisplays();
         }
 
@@ -51,7 +51,7 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
         {
             if (!_isHiding)
                 return;
-            
+
             RepositionDisplays();
             _groupDisplay.Show();
             _isHiding = false;
@@ -61,7 +61,7 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
         {
             if (_isHiding)
                 return;
-            
+
             _groupDisplay.Hide();
             _isHiding = true;
         }
@@ -73,27 +73,27 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
                 .OrderBy(_ => _.Order)
                 .ToList());
         }
-        
+
         public void RemoveStat(StatInfo statInfo)
         {
             if (statInfo == null)
                 throw new ArgumentNullException(nameof(statInfo));
-            
+
             if (!HasStat(statInfo.Code))
                 return;
-            
+
             var toRemove = _statBars.First(_ => _.Info.Code == statInfo.Code);
             RemoveStatBar(toRemove);
         }
-        
+
         public void RemoveStat(Stat stat)
         {
             if (stat == Stat.Custom)
                 throw new InvalidOperationException("Cannot remove custom stat bar without a code being given.");
-            
+
             if (!HasStat(stat))
                 return;
-            
+
             var toRemove = _statBars.First(_ => _.Info.Stat == stat);
             RemoveStatBar(toRemove);
         }
@@ -102,10 +102,10 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
         {
             if (string.IsNullOrWhiteSpace(customStatCode))
                 throw new ArgumentException($"{nameof(customStatCode)} cannot be null or whitespace.");
-            
+
             if (!HasStat(customStatCode))
                 return;
-            
+
             var toRemove = _statBars.First(_ => _.Info.Code == customStatCode);
             RemoveStatBar(toRemove);
         }
@@ -140,8 +140,8 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
         {
             if (statInfo == null)
                 throw new ArgumentNullException(nameof(statInfo));
-            
-            if (!HasStat(statInfo.Code)) 
+
+            if (!HasStat(statInfo.Code))
                 AddStatBar(statInfo);
         }
 
@@ -149,18 +149,18 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
         {
             if (stat == Stat.Custom)
                 throw new InvalidOperationException("Cannot add custom stat bar without a code being given.");
-            
-            if (!HasStat(stat)) 
-                AddStatBar(new StatInfo(stat)); // TODO: stat info factory
+
+            if (!HasStat(stat))
+                AddStatBar(StatInfoFactory.FromEnum(stat));
         }
 
         public void AddCustomStat(string customStatCode)
         {
             if (string.IsNullOrWhiteSpace(customStatCode))
                 throw new ArgumentException($"{nameof(customStatCode)} cannot be null or whitespace.");
-            
-            if (!HasStat(customStatCode)) 
-                AddStatBar(StatInfo.FromCode(customStatCode)); // TODO: stat info factory
+
+            if (!HasStat(customStatCode))
+                AddStatBar(StatInfoFactory.FromCode(customStatCode));
         }
 
         private void AddStatBar(StatInfo statInfo, int order = -1)
@@ -178,7 +178,7 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
         {
             switch (statInfo.Stat)
             {
-                case Stat.HP:
+                case Stat.HP: // TODO: change settings to include enum and colors in same object, then refactor.
                     return _settings.HpColors;
                 case Stat.SP:
                     return _settings.SpColors;
@@ -192,7 +192,7 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
         private StatBarColorSettings ColorSettingForStat(string customStatCode)
         {
             return _settings.ColorsByCode.Any(kvp => kvp.Key == customStatCode)
-                ? _settings.ColorsByCode.First(kvp => kvp.Key == customStatCode).Value 
+                ? _settings.ColorsByCode.First(kvp => kvp.Key == customStatCode).Value
                 : _settings.DefaultColors;
         }
 

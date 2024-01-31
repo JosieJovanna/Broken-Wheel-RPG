@@ -3,6 +3,7 @@ using BrokenWheel.Core.Events.Handling;
 using BrokenWheel.Core.Settings;
 using BrokenWheel.Core.Stats;
 using BrokenWheel.Core.Stats.Events;
+using BrokenWheel.Core.Stats.Info;
 using BrokenWheel.Math.Utility;
 
 namespace BrokenWheel.UI.HUD.StatBar.Implementation
@@ -11,7 +12,7 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
     {
         private readonly IComplexStatBarDisplay _display;
         private ComplexStatistic _stat;
-        
+
         /// <summary>
         /// Initiates the object controlling the display, then immediately calls <see cref="UpdateDisplay"/>.
         /// </summary>
@@ -22,7 +23,7 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
             StatInfo statInfo,
             ReportPointsPerPixel reportPointsPerPixel,
             HighestPointsPerPixel highestPointsPerPixel,
-            int order = 99) 
+            int order = 99)
             : base(statBarSettings, statInfo, complexStatBarDisplay, reportPointsPerPixel, highestPointsPerPixel, order)
         {
             _display = complexStatBarDisplay;

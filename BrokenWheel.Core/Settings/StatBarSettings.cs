@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using BrokenWheel.Core.Settings.Registration;
+using BrokenWheel.Core.Stats.Enum;
 
 namespace BrokenWheel.Core.Settings
 {
@@ -24,7 +25,7 @@ namespace BrokenWheel.Core.Settings
         /// <summary>
         /// The order of the main health, stamina, and willpower stats.
         /// </summary>
-        public string[] MainStatCodesInOrder { get; internal set; } = { "HP", "SP", "WP" };
+        public IList<Stat> MainStatCodesInOrder { get; internal set; } = new Stat[] { Stat.HP, Stat.SP, Stat.WP };
 
         /// <summary>
         /// The color profile of the health bar.

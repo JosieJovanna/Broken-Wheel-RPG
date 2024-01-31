@@ -3,6 +3,7 @@ using BrokenWheel.Core.Events.Handling;
 using BrokenWheel.Core.Settings;
 using BrokenWheel.Core.Stats;
 using BrokenWheel.Core.Stats.Events;
+using BrokenWheel.Core.Stats.Info;
 using BrokenWheel.Math.Utility;
 
 namespace BrokenWheel.UI.HUD.StatBar.Implementation
@@ -11,7 +12,7 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
     {
         private readonly IStatBarDisplay _display;
         private Statistic _stat; // changed each update
-        
+
         /// <summary>
         /// Initiates the object controlling the display, then immediately calls <see cref="UpdateDisplay"/>.
         /// </summary>

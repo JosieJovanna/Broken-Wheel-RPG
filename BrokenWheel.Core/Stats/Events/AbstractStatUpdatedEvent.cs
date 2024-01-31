@@ -1,6 +1,7 @@
 ﻿using System;
 using BrokenWheel.Core.Events;
 using BrokenWheel.Core.Stats.Enum;
+using BrokenWheel.Core.Stats.Info;
 
 namespace BrokenWheel.Core.Stats.Events
 {

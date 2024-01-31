@@ -1,4 +1,5 @@
 ﻿using BrokenWheel.Core.Stats.Enum;
+using BrokenWheel.Core.Stats.Info;
 using BrokenWheel.Math.Utility;
 
 namespace BrokenWheel.Core.Stats.Processing.Implementation

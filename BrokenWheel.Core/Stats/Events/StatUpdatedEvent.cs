@@ -1,4 +1,6 @@
-﻿namespace BrokenWheel.Core.Stats.Events
+﻿using BrokenWheel.Core.Stats.Info;
+
+namespace BrokenWheel.Core.Stats.Events
 {
     public class StatUpdatedEvent : AbstractStatUpdatedEvent<Statistic>
     {

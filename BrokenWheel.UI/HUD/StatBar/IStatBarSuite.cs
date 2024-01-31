@@ -1,5 +1,5 @@
-﻿using BrokenWheel.Core.Stats;
-using BrokenWheel.Core.Stats.Enum;
+﻿using BrokenWheel.Core.Stats.Enum;
+using BrokenWheel.Core.Stats.Info;
 
 namespace BrokenWheel.UI.HUD.StatBar
 {
