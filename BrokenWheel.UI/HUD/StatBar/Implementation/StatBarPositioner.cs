@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using BrokenWheel.Core.Settings;
 using BrokenWheel.UI.Display;
+using BrokenWheel.UI.Settings.StatBar;
+using BrokenWheel.UI.Settings.StatBar.Enum;
 
 namespace BrokenWheel.UI.HUD.StatBar.Implementation
 {

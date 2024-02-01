@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using BrokenWheel.Core.Utilities;
 using BrokenWheel.Math;
 using BrokenWheel.Math.Utility;
@@ -38,7 +38,7 @@ namespace BrokenWheel.Core.Damage.Dps
 
             _dps = new Fraction(amount, duration);
         }
-        
+
         protected override int CalculateDps()
         {
             var temp = _overflow + _dps;
@@ -47,10 +47,10 @@ namespace BrokenWheel.Core.Damage.Dps
             return amount;
         }
 
-        public override string ToDataString() 
+        public override string ToDataString()
             => $"[({DamageDealt}/{TotalDamage}){Type.GetName()}/({SecondsPassed}/{Duration})s@{_dps}DPS]";
 
-        protected override string ChildInfoString() 
+        protected override string ChildInfoString()
             => $"{DamageDealt}/{TotalDamage} {Type.GetName()} damage dealt over {SecondsPassed}/{Duration} seconds at {_dps}DPS";
     }
 }

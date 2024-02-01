@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using BrokenWheel.Core.Utilities;
 using BrokenWheel.Math.Utility;
 
@@ -102,11 +102,11 @@ namespace BrokenWheel.Core.Damage.Processing
         /// <returns>  A new <see cref="DamageMap"/>.  </returns>
         public DamageMap Fraction(double deltaTime)
         {
-            if (deltaTime > 1) 
+            if (deltaTime > 1)
                 throw new ArgumentException($"{nameof(deltaTime)} must be less than one second.");
 
             return new DamageMap(_map.ToDictionary(
-                k => k.Key, 
+                k => k.Key,
                 v => MathUtil.LowerDoubleToInt(v.Value * deltaTime)));
         }
 
@@ -119,7 +119,7 @@ namespace BrokenWheel.Core.Damage.Processing
         public DamageMap Difference(DamageMap other)
         {
             return new DamageMap(_map.ToDictionary(
-                k => k.Key, 
+                k => k.Key,
                 v => Get(v.Key) - other.Get(v.Key)));
         }
 

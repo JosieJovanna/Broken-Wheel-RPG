@@ -16,7 +16,7 @@ namespace BrokenWheel.Core.Stats.Processing
         /// Will be equal to or lower than the <see cref="EffectiveMaximum"/>, and non-negative.
         /// </summary>
         new int Value { get; set; }
-        
+
         /// <summary>
         /// The modifier of the <see cref="EffectiveMaximum"/> value the stat can have.
         /// </summary>
@@ -27,7 +27,7 @@ namespace BrokenWheel.Core.Stats.Processing
         /// will be greater than or equal to zero, and less than or equal to <see cref="EffectiveMaximum"/>.
         /// </summary>
         new int EffectiveValue { get; }
-        
+
         /// <summary>
         /// The value that the <see cref="Stat"/> is determined, by other mechanism, to reach.
         /// Does not progress on its own, but rather, is useful mainly for display.
@@ -45,7 +45,7 @@ namespace BrokenWheel.Core.Stats.Processing
         /// Cannot be negative; attempting to set a negative value will in fact set it to zero.
         /// </summary>
         int Exhaustion { get; set; }
-        
+
         /// <summary>
         /// The total amount which the <see cref="Value"/> can reach,
         /// as calculated by '<see cref="Maximum"/> + <see cref="Modifier"/> - <see cref="Exhaustion"/>'

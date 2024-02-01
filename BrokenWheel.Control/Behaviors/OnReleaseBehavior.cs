@@ -7,7 +7,7 @@ namespace BrokenWheel.Control.Behaviors
     {
         protected SimpleDelegate OnRelease;
 
-        public OnReleaseBehavior(SimpleDelegate onRelease) 
+        public OnReleaseBehavior(SimpleDelegate onRelease)
         {
             OnRelease = onRelease;
         }

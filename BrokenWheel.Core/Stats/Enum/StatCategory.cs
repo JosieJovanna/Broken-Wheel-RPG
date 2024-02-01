@@ -3,7 +3,7 @@
     public enum StatCategory
     {
         Custom = default,
-        
+
         // ATTRIBUTES
         Meta,
         Vitals,

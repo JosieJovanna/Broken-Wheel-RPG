@@ -3,7 +3,7 @@
     public interface IChargedFlailAttacker
     {
         bool IsChargingFlail { get; }
-        
+
         void StartSwinging();
         void ReleaseSwing();
     }

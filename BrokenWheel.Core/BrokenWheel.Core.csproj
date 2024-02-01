@@ -32,19 +32,4 @@
     </AssemblyAttribute>
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="Settings\StatBarDisplayMode.cs">
-      <DependentUpon>StatBarSettings.cs</DependentUpon>
-    </Compile>
-    <Compile Update="Settings\StatBarColorSettings.cs">
-      <DependentUpon>StatBarSettings.cs</DependentUpon>
-    </Compile>
-    <Compile Update="Settings\StatBarCorner.cs">
-      <DependentUpon>StatBarSettings.cs</DependentUpon>
-    </Compile>
-    <Compile Update="Settings\StatBarFading.cs">
-      <DependentUpon>StatBarSettings.cs</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
 </Project>

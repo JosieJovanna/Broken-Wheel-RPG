@@ -13,7 +13,7 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
             UpdateBackground(display, parameters);
             UpdatePrimary(display, parameters);
         }
-        
+
         internal static void UpdateBorder<TStat>(
             IStatBarDisplay display, UpdateDisplayParameters<TStat> parameters)
             where TStat : Statistic

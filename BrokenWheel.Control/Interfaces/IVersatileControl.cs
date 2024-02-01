@@ -9,7 +9,7 @@ namespace BrokenWheel.Control.Interfaces
     {
         bool IsOneHandedGrip { get; }
         bool IsTwoHandedGrip { get; }
-        
+
         /// <summary>
         /// Toggles the grip of the implement between one- and two-handed.
         /// </summary>

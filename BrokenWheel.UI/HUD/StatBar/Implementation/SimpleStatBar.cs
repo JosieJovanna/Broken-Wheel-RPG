@@ -1,10 +1,11 @@
 ﻿using System;
 using BrokenWheel.Core.Events.Handling;
-using BrokenWheel.Core.Settings;
 using BrokenWheel.Core.Stats;
 using BrokenWheel.Core.Stats.Events;
 using BrokenWheel.Core.Stats.Info;
 using BrokenWheel.Math.Utility;
+using BrokenWheel.UI.Settings.StatBar;
+using BrokenWheel.UI.Settings.StatBar.Enum;
 
 namespace BrokenWheel.UI.HUD.StatBar.Implementation
 {

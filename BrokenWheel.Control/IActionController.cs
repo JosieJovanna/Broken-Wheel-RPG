@@ -25,7 +25,7 @@ namespace BrokenWheel.Control
 
         /// <summary> Resets the action controller of the grab to do nothing. </summary>
         void ResetGrabControl();
-        
+
         /// <summary> Main action, usually performed with 'E'. Opening doors, talking, etc. </summary>
         void Interact(PressData press);
 

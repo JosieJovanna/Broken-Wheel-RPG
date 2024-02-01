@@ -9,7 +9,7 @@ namespace BrokenWheel.Core.Player
     public interface IContextControlChecker
     {
         bool IsInCombat { get; }
-        
+
         IOneHandControl GetInteractControl();
         IOneHandControl GetGrabControl();
     }

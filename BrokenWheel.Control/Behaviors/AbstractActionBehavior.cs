@@ -25,7 +25,7 @@ namespace BrokenWheel.Control.Behaviors
         protected abstract void Held(bool isAltPress);
         protected abstract void ReleaseClick(bool isAltPress);
         protected abstract void ReleaseHold(bool isAltPress);
-        
+
         public void Execute(PressData press)
         {
             _heldFor += press.DeltaTime;

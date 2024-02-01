@@ -8,21 +8,21 @@ namespace BrokenWheel.Control.Models
     /// tapping to hip-fire.
     /// </summary>
 	public readonly struct PressData
-	{
-		/// <summary>
-		/// Time passed in seconds since the last event happened.
-		/// </summary>
-		public double DeltaTime { get; }
-		
-		public bool IsAltPress { get; }
+    {
+        /// <summary>
+        /// Time passed in seconds since the last event happened.
+        /// </summary>
+        public double DeltaTime { get; }
 
-		/// <summary>
-		/// The <see cref="PressType"/> of the input.
-		/// </summary>
-		public PressType Type { get; }
+        public bool IsAltPress { get; }
+
+        /// <summary>
+        /// The <see cref="PressType"/> of the input.
+        /// </summary>
+        public PressType Type { get; }
 
 
-		public PressData(double deltaTime, bool isAltPress, bool isPressed, bool isHeld)
+        public PressData(double deltaTime, bool isAltPress, bool isPressed, bool isHeld)
         {
             DeltaTime = deltaTime;
             IsAltPress = isAltPress;
@@ -35,5 +35,5 @@ namespace BrokenWheel.Control.Models
             IsAltPress = isAltPress;
             Type = pressType;
         }
-	}
+    }
 }

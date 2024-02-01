@@ -3,7 +3,7 @@
     public interface IBackSwingAttacker
     {
         bool IsOnBackSwing { get; }
-        
+
         void SwingBack();
         void SwingForward();
     }

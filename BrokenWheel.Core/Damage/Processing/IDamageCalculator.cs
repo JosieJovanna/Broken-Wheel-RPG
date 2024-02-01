@@ -16,7 +16,7 @@ namespace BrokenWheel.Core.Damage.Processing
         /// <see cref="DpsCalculator"/>s will not leave the queue until they deal all damage.
         /// </summary>
         void AddToQueue(IList<DpsCalculator> damage);
-        
+
         /// <summary>
         /// Adds damage to the group to be calculated to completion.
         /// <see cref="DpsCalculator"/>s will not leave the queue until they deal all damage.

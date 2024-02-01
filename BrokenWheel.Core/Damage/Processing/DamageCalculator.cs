@@ -22,7 +22,7 @@ namespace BrokenWheel.Core.Damage.Processing
             foreach (var dmg in damages)
                 AddToQueue(dmg);
         }
-        
+
         public void AddToQueue(DpsCalculator damage)
         {
             if (damage.GetType() != typeof(InstantDpsCalculator))
@@ -91,7 +91,7 @@ namespace BrokenWheel.Core.Damage.Processing
             _dmgDone.Add(deal);
             return deal;
         }
-        
+
         private void CalculateDps()
         {
             _dmgTick = new DamageMap();

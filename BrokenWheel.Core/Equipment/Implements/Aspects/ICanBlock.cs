@@ -6,7 +6,7 @@
     public interface ICanBlock
     {
         bool IsBlocking { get; }
-        
+
         void StartBlocking();
         void StopBlocking();
     }

@@ -1,7 +1,7 @@
 ﻿using System;
-using BrokenWheel.Core.Settings;
 using BrokenWheel.Core.Stats;
 using BrokenWheel.Core.Stats.Events;
+using BrokenWheel.UI.Settings.StatBar;
 
 namespace BrokenWheel.UI.HUD.StatBar.Implementation
 {
@@ -18,13 +18,13 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
         public int FullLength { get; }
         public int BaseX { get; }
         public int BaseY { get; }
-        
+
         public UpdateDisplayParameters(
-            StatBarSettings settings, 
-            T stat, 
-            double ppp, 
-            int length, 
-            int x, 
+            StatBarSettings settings,
+            T stat,
+            double ppp,
+            int length,
+            int x,
             int y)
         {
             if (settings == null)

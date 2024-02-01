@@ -1,4 +1,4 @@
-using BrokenWheel.Control.Interfaces;
+﻿using BrokenWheel.Control.Interfaces;
 using BrokenWheel.Core.Equipment;
 
 namespace BrokenWheel.Control.Models
@@ -15,7 +15,7 @@ namespace BrokenWheel.Control.Models
         /// The object in charge of tracking what items are equipped.
         /// </summary>
         public IEquipment Equipment;
-        
+
         /// <summary>
         /// The dominant hand, whether that be left or right.
         /// </summary>

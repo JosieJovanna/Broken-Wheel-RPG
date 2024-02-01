@@ -8,7 +8,7 @@ namespace BrokenWheel.Core.Exceptions
     /// </summary>
     public class StaticServiceNotInitializedException : Exception
     {
-        public StaticServiceNotInitializedException(string nameOfService) 
+        public StaticServiceNotInitializedException(string nameOfService)
             : base($"The static service '{nameOfService}' has not been initialized during startup.")
         { }
     }

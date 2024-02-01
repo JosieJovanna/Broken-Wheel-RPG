@@ -18,7 +18,7 @@ namespace BrokenWheel.Control.Util
 
         public static bool ButtonPressTypeWasJustPressed(PressType type)
         {
-            return type == PressType.Clicked 
+            return type == PressType.Clicked
                 || type == PressType.Held;
         }
 

@@ -1,4 +1,4 @@
-namespace BrokenWheel.Core.Equipment.Implements.Aspects
+﻿namespace BrokenWheel.Core.Equipment.Implements.Aspects
 {
     public interface ITriggerWeapon
     {

@@ -7,20 +7,20 @@ namespace BrokenWheel.Core.Damage.Dps
         public readonly int Delay;
 
         private readonly DpsCalculator _delayedDpsCalculator;
-        
-        public DelayedDpsCalculator(DpsCalculator damage, int delay) 
+
+        public DelayedDpsCalculator(DpsCalculator damage, int delay)
             : base(damage.Type, damage.TotalDamage, damage.Duration + delay)
         {
             Validate.ThrowIfNotPositive(delay, nameof(delay));
-            
+
             Delay = delay;
             _delayedDpsCalculator = damage;
         }
 
         protected override int CalculateDps()
         {
-            return SecondsPassed < Delay 
-                ? 0 
+            return SecondsPassed < Delay
+                ? 0
                 : _delayedDpsCalculator.Dps();
         }
 

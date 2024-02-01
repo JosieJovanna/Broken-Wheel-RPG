@@ -64,14 +64,14 @@ namespace BrokenWheel.Math
             var temp = FromString(valueAsString);
             Initialize(temp.Numerator, temp.Denominator, option);
         }
-        
+
         private void Initialize(long numerator, long denominator, ZeroDenominatorOption zeroDenominatorOption = default)
         {
             Option = zeroDenominatorOption; // set first so that setting denominator behaves correctly
             Numerator = numerator;
             Denominator = denominator;
         }
-        
+
         /// <summary>
         /// Attempts to find a sufficiently similar fraction to the given double.
         /// <remarks> Algorithm edited from: https://stackoverflow.com/a/32903747. </remarks>
@@ -97,7 +97,7 @@ namespace BrokenWheel.Math
             {
                 throw new FractionException("Conversion not possible", ex);
             }
-            
+
             // LOCAL FX
             void ValidateParameters()
             {
@@ -113,7 +113,7 @@ namespace BrokenWheel.Math
                 checked
                 {
                     return value % 1 == 0 // if whole number
-                        ? new Fraction((long) value) 
+                        ? new Fraction((long)value)
                         : ToFractionFromFloatingPoint();
                 }
             }
@@ -126,7 +126,7 @@ namespace BrokenWheel.Math
                 // Accuracy is the maximum relative error; convert to absolute maxError
                 var maxError = sign == 0 ? accuracy : value * accuracy;
 
-                var n = (int) System.Math.Floor(value);
+                var n = (int)System.Math.Floor(value);
                 value -= n;
 
                 if (value < maxError)
@@ -151,7 +151,7 @@ namespace BrokenWheel.Math
                 }
             }
         }
-  
+
         /// <summary>
         /// Formats a string into a Fraction, with several possible formats.
         /// All numbers can have commas or underscore inserted; they will be ignored.
@@ -209,8 +209,8 @@ namespace BrokenWheel.Math
             }
             long ConvertSubStringToLong(int startIndex, int? length = null)
             {
-                var substring = length == null 
-                    ? value.Substring(startIndex) 
+                var substring = length == null
+                    ? value.Substring(startIndex)
                     : value.Substring(startIndex, length.Value);
                 return Convert.ToInt64(SanitizeString(substring));
             }

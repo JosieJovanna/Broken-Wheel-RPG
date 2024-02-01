@@ -1,4 +1,4 @@
-using System.Globalization;
+﻿using System.Globalization;
 using System.Text;
 using BrokenWheel.Math;
 using BrokenWheel.Math.Utility;
@@ -22,7 +22,7 @@ namespace BrokenWheel.Core.Damage.Dps
         {
             _func = new Polynomial(coefficients);
         }
-        
+
         protected override int CalculateDps()
         {
             var y = Fx();
@@ -63,7 +63,7 @@ namespace BrokenWheel.Core.Damage.Dps
             sb.Append(_func.GetCoefficientForExponent(0).ToString(CultureInfo.InvariantCulture));
             AppendCoefficients();
             return sb.ToString();
-            
+
             // LOCAL FX
             void AppendCoefficients()
             {
@@ -75,7 +75,7 @@ namespace BrokenWheel.Core.Damage.Dps
                 }
             }
         }
-        
+
 
         private static int GetTotal(double[] coefficients, int x)
         {

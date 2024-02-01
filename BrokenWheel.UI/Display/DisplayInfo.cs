@@ -9,7 +9,7 @@ namespace BrokenWheel.UI.Display
     public static class DisplayInfo
     {
         private const string ERR_NOT_INITIALIZED = nameof(DisplayInfo) + " has not been properly initialized.";
-        
+
         /// <summary>
         /// The service in charge of actually getting the information from the real implementation of this system.
         /// </summary>
@@ -46,7 +46,7 @@ namespace BrokenWheel.UI.Display
         /// </summary>
         /// <exception cref="InvalidOperationException"> When not initialized. </exception>
         public static int WindowHeight() => WindowResolution().Item2;
-        
+
         /// <summary>
         /// Gets the real pixel resolution of the display.
         /// </summary>

@@ -1,4 +1,4 @@
-/*
+﻿/*
 using System.Collections.Generic;
 using BrokenWheel.Core.Events;
 using BrokenWheel.Core.Stats.Extensions;

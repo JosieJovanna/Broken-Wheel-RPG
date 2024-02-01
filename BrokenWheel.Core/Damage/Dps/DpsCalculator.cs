@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using BrokenWheel.Core.Utilities;
 
 namespace BrokenWheel.Core.Damage.Dps
@@ -33,7 +33,7 @@ namespace BrokenWheel.Core.Damage.Dps
             SecondsPassed++;
             if (IsDone)
                 return 0;
-            
+
             var amount = CalculateDps();
             RemainingDamage -= amount;
             return amount;
@@ -46,13 +46,13 @@ namespace BrokenWheel.Core.Damage.Dps
         /// Only called if not <see cref="IsDone"/>.
         /// </summary>
         protected abstract int CalculateDps();
-        
+
         /// <returns>  A string containing variables and minimal formatting.  </returns>
         public abstract string ToDataString();
-        
+
         /// <returns>  A string containing the variables of the extending class.  </returns>
         protected abstract string ChildInfoString();
-        
+
         /// <returns>  A string verbosely describing the <see cref="DpsCalculator"/>.  </returns>
         public override string ToString() => ChildInfoString();
     }

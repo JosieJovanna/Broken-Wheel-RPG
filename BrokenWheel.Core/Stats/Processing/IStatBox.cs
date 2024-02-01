@@ -1,4 +1,4 @@
-/*
+﻿/*
 using BrokenWheel.Core.Events;
 
 namespace BrokenWheel.Core.Stats.Processing

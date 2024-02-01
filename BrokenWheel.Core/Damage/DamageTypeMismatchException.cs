@@ -13,7 +13,7 @@ namespace BrokenWheel.Core.Damage
         /// <summary> 
         /// An exception with a basic warning of types not being able to mistmatch. 
         /// </summary>
-        public DamageTypeMismatchException() 
+        public DamageTypeMismatchException()
             : base(BASIC_MESSAGE) { }
 
         /// <summary> 

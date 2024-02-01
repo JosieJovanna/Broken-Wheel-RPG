@@ -1,7 +1,7 @@
-﻿using Moq;
-using Xunit;
+﻿using System;
 using BrokenWheel.Core.Logging;
-using System;
+using Moq;
+using Xunit;
 
 namespace BrokenWheel.Core.DependencyInjection.DI.Tests;
 

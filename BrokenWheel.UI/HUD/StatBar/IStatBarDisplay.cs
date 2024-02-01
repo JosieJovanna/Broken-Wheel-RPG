@@ -1,5 +1,5 @@
-﻿using BrokenWheel.Core.Settings;
-using BrokenWheel.UI.Common;
+﻿using BrokenWheel.UI.Common;
+using BrokenWheel.UI.Settings.StatBar;
 
 namespace BrokenWheel.UI.HUD.StatBar
 {
@@ -15,7 +15,7 @@ namespace BrokenWheel.UI.HUD.StatBar
         /// Sets the colors of the bar to a new setting.
         /// </summary>
         void SetColorProfile(StatBarColorSettings colors);
-        
+
         /// <summary>
         /// Sets the stat bar's position relative to the master position, and the size of the outline.
         /// The border is overlapped by all other display sections.

@@ -13,8 +13,8 @@ namespace BrokenWheel.Control.Behaviors
         protected SimpleDelegate ToggleOff;
 
         public ToggleOrHoldBehavior(ref double holdTime) : base(ref holdTime) { }
-        
-        public ToggleOrHoldBehavior(ref double holdTime, SimpleDelegate toggleOn, SimpleDelegate toggleOff) 
+
+        public ToggleOrHoldBehavior(ref double holdTime, SimpleDelegate toggleOn, SimpleDelegate toggleOff)
             : base(ref holdTime)
         {
             ToggleOn = toggleOn;

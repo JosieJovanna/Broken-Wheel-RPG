@@ -6,7 +6,7 @@ namespace BrokenWheel.Math
     public class Polynomial
     {
         public int NumberOfExponents => _coefficients.Length;
-        
+
         /// <summary>
         /// Array of coefficients, starting from the constant at index 0.
         /// Index corresponds to exponent of x to which the coefficient applies.
@@ -36,8 +36,8 @@ namespace BrokenWheel.Math
                 return 0;
             return _coefficients[exponent];
         }
-        
-        
+
+
         #region Utility
         private static void ValidateCoefficients(double[] coefficients)
         {

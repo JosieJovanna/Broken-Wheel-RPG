@@ -1,6 +1,6 @@
-using System;
-using System.Linq;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using BrokenWheel.Control.Interfaces;
 
 namespace BrokenWheel.Control.Extensions
@@ -13,7 +13,7 @@ namespace BrokenWheel.Control.Extensions
             var implementsTwoHandedInterface = control.ImplementsInterface<ITwoHandControl>();
             var isVersatile = control.TryCastToInterface<IVersatileControl>(out var asVersatile);
             return !isVersatile
-                ? implementsTwoHandedInterface 
+                ? implementsTwoHandedInterface
                 : asVersatile.IsTwoHandedGrip;
         }
 
@@ -43,7 +43,7 @@ namespace BrokenWheel.Control.Extensions
                 return false;
             }
         }
-        
+
         /// <summary>
         /// Tries casting the implement to another interface, but will throw an exception if it cannot be cast.
         /// For safe casting, use <see cref="TryCastToInterface{T}"/>, which will not throw exceptions.
@@ -57,14 +57,14 @@ namespace BrokenWheel.Control.Extensions
                 throw new InvalidCastException($"The Implement does not inherit interface '{typeof(T)}'.");
             return (T)control;
         }
-        
+
         /// <typeparam name="T">Must be an interface.</typeparam>
         /// <exception cref="InvalidOperationException">Thrown if T is not an interface.</exception>
         public static bool ImplementsInterface<T>(this IOneHandControl control)
         {
             if (control == null)
                 return false;
-            
+
             if (!typeof(T).IsInterface)
                 throw new InvalidOperationException($"Type '{typeof(T)}' is not an interface.");
             return control.GetInterfaces().Contains(typeof(T));

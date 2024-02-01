@@ -1,4 +1,5 @@
 ﻿using System;
+using BrokenWheel.Core.Events.Abstract;
 
 namespace BrokenWheel.Core.Events.Emitting
 {
@@ -23,7 +24,7 @@ namespace BrokenWheel.Core.Events.Emitting
         /// <typeparam name="E"> The enum being used to select against. </typeparam>
         /// <typeparam name="T"> The type of enumerated event emit. </typeparam>
         void EmitEnumeratedEvent<E, T>(E enumValue, T gameEvent, bool emitToCatchallListeners = true)
-            where E : struct, IConvertible where T : CategorizedGameEvent<E>;
+            where E : struct, IConvertible where T : EnumSwitchGameEvent<E>;
 
         /// <summary>
         /// Emits an event for listeners based on enum value attached to the event.
@@ -39,6 +40,6 @@ namespace BrokenWheel.Core.Events.Emitting
         /// <typeparam name="E"> The enum being used to select against. </typeparam>
         /// <typeparam name="T"> The type of enumerated event emit. </typeparam>
         void EmitEnumeratedEvent<E, T>(string customCode, T gameEvent, bool emitToCatchallListeners = true)
-            where E : struct, IConvertible where T : CustomOverrideEnumGameEvent<E>;
+            where E : struct, IConvertible where T : CustomEnumSwitchEvent<E>;
     }
 }

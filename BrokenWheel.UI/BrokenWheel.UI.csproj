@@ -12,4 +12,19 @@
       <Folder Include="HUD" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Update="Settings\StatBar\StatBarColorSettings.cs">
+        <DependentUpon>StatBarSettings.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Settings\StatBar\Enum\StatBarCorner.cs">
+        <DependentUpon>StatBarSettings.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Settings\StatBar\Enum\StatBarDisplayMode.cs">
+        <DependentUpon>StatBarSettings.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Settings\StatBar\Enum\StatBarFading.cs">
+        <DependentUpon>StatBarSettings.cs</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
 </Project>

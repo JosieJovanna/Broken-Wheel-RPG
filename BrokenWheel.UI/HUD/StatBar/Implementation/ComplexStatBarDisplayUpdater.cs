@@ -6,7 +6,7 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
     internal static class ComplexStatBarDisplayUpdater
     {
         public static void UpdateDisplay(
-            IComplexStatBarDisplay display, 
+            IComplexStatBarDisplay display,
             UpdateDisplayParameters<ComplexStatistic> parameters)
         {
             display.SetPosition(parameters.BaseX, parameters.BaseY);
@@ -16,9 +16,9 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
             UpdateSecondary(display, parameters, primaryLength);
             UpdateExhaustion(display, parameters);
         }
-        
+
         private static void UpdatePrimary(
-            IComplexStatBarDisplay display, 
+            IComplexStatBarDisplay display,
             UpdateDisplayParameters<ComplexStatistic> parameters, out int length)
         {
             var primaryStat = parameters.Stat.Value >= parameters.Stat.DestinationValue // decreasing?
@@ -37,8 +37,8 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
                 ? parameters.Stat.Value - parameters.Stat.DestinationValue // color value above destination
                 : parameters.Stat.DestinationValue - parameters.Stat.Value; // color value yet to be gained
             var length = 5; // TODO: destination value/current value
-            var (x, y, width, height) = parameters.IsVertical 
-                ? VerticalSecondaryDimensions(parameters, primaryLength, length) 
+            var (x, y, width, height) = parameters.IsVertical
+                ? VerticalSecondaryDimensions(parameters, primaryLength, length)
                 : HorizontalSecondaryDimensions(parameters, primaryLength, length);
             display.SetSecondaryDimensions(x, y, width, height);
         }
@@ -72,7 +72,7 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
                 : HorizontalExhaustionDimensions(parameters, length);
             display.SetExhaustionDimensions(x, y, width, height);
         }
-        
+
 
         private static (int, int, int, int) VerticalExhaustionDimensions(
             UpdateDisplayParameters<ComplexStatistic> parameters, int length)

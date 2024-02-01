@@ -1,4 +1,4 @@
-﻿namespace BrokenWheel.Core.Settings
+﻿namespace BrokenWheel.UI.Settings.StatBar.Enum
 {
     /// <summary>
     /// Where on the screen stat bars should be displayed from.

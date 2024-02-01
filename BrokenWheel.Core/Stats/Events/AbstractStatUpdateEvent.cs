@@ -1,17 +1,17 @@
 ﻿using System;
-using BrokenWheel.Core.Events;
+using BrokenWheel.Core.Events.Abstract;
 using BrokenWheel.Core.Stats.Enum;
 using BrokenWheel.Core.Stats.Info;
 
 namespace BrokenWheel.Core.Stats.Events
 {
-    public abstract class AbstractStatUpdatedEvent<T> : CustomOverrideEnumGameEvent<Stat>
+    public abstract class AbstractStatUpdateEvent<T> : CustomEnumSwitchEvent<Stat>
         where T : Statistic
     {
         public StatInfo StatInfo { get; }
         public T Statistic { get; }
-        
-        protected AbstractStatUpdatedEvent(object sender, string entityId, StatInfo statInfo, T statUpdateData) 
+
+        protected AbstractStatUpdateEvent(object sender, string entityId, StatInfo statInfo, T statUpdateData)
             : base(sender, entityId, statInfo?.Stat)
         {
             Statistic = statUpdateData;

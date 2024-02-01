@@ -10,7 +10,7 @@
         /// </summary>
         /// <returns> Item 1: width, Item 2: height. </returns>
         (int, int) WindowResolution();
-        
+
         /// <summary>
         /// Gets the resolution of the low-res user interface.
         /// </summary>

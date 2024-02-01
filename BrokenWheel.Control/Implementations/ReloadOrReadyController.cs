@@ -44,13 +44,13 @@ namespace BrokenWheel.Control.Implementations
             var reloadableList = GetReloadableControls();
             if (!reloadableList.Any())
                 return;
-            
+
             // TODO
         }
 
         private void AltReload()
         {
-            
+
         }
 
         private void TryFirstThenSecond(IOneHandControl ctrlOne, IOneHandControl ctrlTwo)

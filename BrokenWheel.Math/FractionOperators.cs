@@ -23,27 +23,27 @@
         public static Fraction operator /(Fraction frac1, int iNo) => TryMultiply(frac1, Inverse(new Fraction(iNo)));
         public static Fraction operator /(double dbl, Fraction frac1) => TryMultiply(Inverse(frac1), FromDouble(dbl));
         public static Fraction operator /(Fraction frac1, double dbl) => TryMultiply(frac1, Inverse(FromDouble(dbl)));
-        
-        public static bool operator ==(Fraction frac1, Fraction frac2) 
+
+        public static bool operator ==(Fraction frac1, Fraction frac2)
             => frac1 != null && frac1.Equals(frac2);
-        public static bool operator ==(Fraction frac1, int iNo) 
+        public static bool operator ==(Fraction frac1, int iNo)
             => frac1 != null && frac1.Equals(new Fraction(iNo));
-        public static bool operator ==(Fraction frac1, double dbl) 
+        public static bool operator ==(Fraction frac1, double dbl)
             => frac1 != null && frac1.Equals(new Fraction(dbl));
-        public static bool operator !=(Fraction frac1, Fraction frac2) 
+        public static bool operator !=(Fraction frac1, Fraction frac2)
             => frac1 == null || !frac1.Equals(frac2);
-        public static bool operator !=(Fraction frac1, int iNo) 
+        public static bool operator !=(Fraction frac1, int iNo)
             => frac1 == null || !frac1.Equals(new Fraction(iNo));
-        public static bool operator !=(Fraction frac1, double dbl) 
+        public static bool operator !=(Fraction frac1, double dbl)
             => frac1 == null || !frac1.Equals(new Fraction(dbl));
 
-        public static bool operator <(Fraction frac1, Fraction frac2) 
+        public static bool operator <(Fraction frac1, Fraction frac2)
             => frac1.Numerator * frac2.Denominator < frac2.Numerator * frac1.Denominator;
-        public static bool operator >(Fraction frac1, Fraction frac2) 
+        public static bool operator >(Fraction frac1, Fraction frac2)
             => frac1.Numerator * frac2.Denominator > frac2.Numerator * frac1.Denominator;
-        public static bool operator <=(Fraction frac1, Fraction frac2) 
+        public static bool operator <=(Fraction frac1, Fraction frac2)
             => frac1.Numerator * frac2.Denominator <= frac2.Numerator * frac1.Denominator;
-        public static bool operator >=(Fraction frac1, Fraction frac2) 
+        public static bool operator >=(Fraction frac1, Fraction frac2)
             => frac1.Numerator * frac2.Denominator >= frac2.Numerator * frac1.Denominator;
 
         public static implicit operator Fraction(long lNo) => new Fraction(lNo);
