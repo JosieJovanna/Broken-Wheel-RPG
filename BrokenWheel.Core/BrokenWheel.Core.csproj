@@ -1,20 +1,50 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <Compile Remove="Damage\Events\**" />
+    <Compile Remove="Properties\**" />
+    <EmbeddedResource Remove="Damage\Events\**" />
+    <EmbeddedResource Remove="Properties\**" />
+    <None Remove="Damage\Events\**" />
+    <None Remove="Properties\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Equipment\" />
+    <Folder Include="Events\Listening\Implementation" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\BrokenWheel.Math\BrokenWheel.Math.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>BrokenWheel.Core.Tests</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Settings\StatBarDisplayMode.cs">
+      <DependentUpon>StatBarSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Settings\StatBarColorSettings.cs">
+      <DependentUpon>StatBarSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Settings\StatBarCorner.cs">
+      <DependentUpon>StatBarSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Settings\StatBarFading.cs">
+      <DependentUpon>StatBarSettings.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
 
 </Project>

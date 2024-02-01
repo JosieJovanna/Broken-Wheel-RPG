@@ -1,14 +1,15 @@
 ﻿using System.Collections.Generic;
+using BrokenWheel.Core.Damage.Dps;
 
 namespace BrokenWheel.Core.Damage.Processing
 {
     /// <summary>
     /// The default implementation of <see cref="IDamageCalculator"/>.
     /// </summary>
-    public class DamageCalculator : IDamageCalculator
+    internal class DamageCalculator : IDamageCalculator
     {
-        protected readonly List<Damage> _queue = new List<Damage>();
-        protected readonly List<Damage> _instants = new List<Damage>();
+        protected readonly List<DpsCalculator> _queue = new List<DpsCalculator>();
+        protected readonly List<DpsCalculator> _instants = new List<DpsCalculator>();
         protected readonly List<DamageMap> _lastTicks = new List<DamageMap>();
         protected DamageMap _dmgDone = new DamageMap();
         protected DamageMap _dmgTick = new DamageMap();
@@ -16,15 +17,15 @@ namespace BrokenWheel.Core.Damage.Processing
         protected bool _justTicked = false;
 
 
-        public void AddToQueue(IEnumerable<Damage> damages)
+        public void AddToQueue(IList<DpsCalculator> damages)
         {
             foreach (var dmg in damages)
                 AddToQueue(dmg);
         }
         
-        public void AddToQueue(Damage damage)
+        public void AddToQueue(DpsCalculator damage)
         {
-            if (damage.GetType() != typeof(InstantDamage))
+            if (damage.GetType() != typeof(InstantDpsCalculator))
                 _queue.Add(damage);
             else
                 _instants.Add(damage);
@@ -35,15 +36,14 @@ namespace BrokenWheel.Core.Damage.Processing
             _queue.Clear();
         }
 
-        public List<DamageMap> DpsMapIfJustTicked()
+        public List<DamageMap> DamageThisSecond()
         {
             return _justTicked
                 ? _lastTicks
                 : new List<DamageMap>();
         }
 
-        #region Calculation
-        public DamageMap Calculate(double delta)
+        public DamageMap DamageTick(double delta)
         {
             _time += delta;
             _justTicked = false;
@@ -63,7 +63,7 @@ namespace BrokenWheel.Core.Damage.Processing
         private void CalculateInstantDamage(DamageMap deal)
         {
             foreach (var dmg in _instants)
-                deal.Add(dmg.Type, dmg.Tick());
+                deal.Add(dmg.Type, dmg.Dps());
             _instants.Clear();
         }
 
@@ -72,7 +72,7 @@ namespace BrokenWheel.Core.Damage.Processing
             while (_time > 1)
             {
                 deal.Add(_dmgTick - _dmgDone);
-                CalculateTick();
+                CalculateDps();
                 TrackThatJustTicked();
             }
         }
@@ -91,31 +91,21 @@ namespace BrokenWheel.Core.Damage.Processing
             _dmgDone.Add(deal);
             return deal;
         }
-
-
-        /// <summary>
-        /// Calculates the damage dealt per second. 
-        /// This process is irreversable.
-        /// </summary>
-        /// <returns>
-        /// A dictionary with <see cref="DamageType"/> as the key, and the raw <see cref="Common.Damage"/> as the value. 
-        /// Will not include any <see cref="DamageType"/>s without any damage to deal.
-        /// </returns>
-        private void CalculateTick()
+        
+        private void CalculateDps()
         {
             _dmgTick = new DamageMap();
             _dmgDone = new DamageMap();
             foreach (var damage in _queue)
-                CaculateDamage(damage);
+                IncludeDamage(damage);
         }
 
-        private void CaculateDamage(Damage damage)
+        private void IncludeDamage(DpsCalculator damage)
         {
             if (damage.IsDone)
                 _queue.Remove(damage);
             else
-                _dmgTick.Add(damage.Type, damage.Tick());
+                _dmgTick.Add(damage.Type, damage.Dps());
         }
-        #endregion
     }
 }

@@ -1,9 +1,10 @@
-using System;
+﻿using System;
 using BrokenWheel.Core.Damage;
+using BrokenWheel.Core.Damage.Dps;
 using BrokenWheel.Math;
 using Xunit;
 
-namespace BrokenWheel.Core.Tests.Damage;
+namespace BrokenWheel.Core.Damage.Tests;
 
 public class SimpleDamageTests
 {
@@ -17,19 +18,19 @@ public class SimpleDamageTests
     {
         // setup
         var type = DamageType.Generic;
-        var damage = new SimpleDamage(type, amount, duration);
+        var damage = new SimpleDpsCalculator(type, amount, duration);
         var expectedDps = new Fraction(amount, duration);
 
         // test
-        Assert.Equal(amount, damage.Total);
-        Assert.Equal(amount, damage.Remaining);
-        Assert.Equal(0, damage.Dealt);
+        Assert.Equal(amount, damage.TotalDamage);
+        Assert.Equal(amount, damage.RemainingDamage);
+        Assert.Equal(0, damage.DamageDealt);
 
         Assert.Equal(duration, damage.Duration);
         Assert.Equal(duration, damage.TimeRemaining);
-        Assert.Equal(0, damage.TimePassed);
+        Assert.Equal(0, damage.SecondsPassed);
 
-        Assert.Equal(expectedDps.ToDouble(), damage.DPS);
+        Assert.Equal(expectedDps.AsDouble(), damage.DPS);
         Assert.Equal(type, damage.Type);
     }
 
@@ -39,7 +40,7 @@ public class SimpleDamageTests
     [InlineData(-100)]
     public void Constructor_Throws_ArgumentException_OnInvalidAmounts(int amount)
     {
-        Assert.Throws<ArgumentException>(() => new SimpleDamage(DamageType.Generic, amount, 1));
+        Assert.Throws<ArgumentException>(() => new SimpleDpsCalculator(DamageType.Generic, amount, 1));
     }
 
     [Theory]
@@ -48,23 +49,23 @@ public class SimpleDamageTests
     [InlineData(-100)]
     public void Constructor_Throws_ArgumentException_OnInvalidDurations(int duration)
     {
-        Assert.Throws<ArgumentException>(() => new SimpleDamage(DamageType.Generic, 1, duration));
+        Assert.Throws<ArgumentException>(() => new SimpleDpsCalculator(DamageType.Generic, 1, duration));
     }
 
     [Fact]
     public void Tick_NoDamageIsDealtAfterDone()
     {
         // setup
-        var damage = new SimpleDamage(DamageType.Generic, 10, 1);
+        var damage = new SimpleDpsCalculator(DamageType.Generic, 10, 1);
 
         // execute
-        damage.Tick();
+        damage.Dps();
         Assert.True(damage.IsDone);
-        var nextTick = damage.Tick();
+        var nextTick = damage.Dps();
 
         // test
         Assert.Equal(0, nextTick);
-        Assert.Equal(10, damage.Dealt);
+        Assert.Equal(10, damage.DamageDealt);
     }
 
     [Theory]
@@ -77,7 +78,7 @@ public class SimpleDamageTests
     public void Tick_Properties_CorrectWhileRunning(int amount, int duration)
     {
         // setup
-        var damage = new SimpleDamage(DamageType.Generic, amount, duration);
+        var damage = new SimpleDpsCalculator(DamageType.Generic, amount, duration);
 
         var expectedDps = new Fraction(amount, duration);
         var expectedDealt = 0;
@@ -90,18 +91,18 @@ public class SimpleDamageTests
             // execute
             timePassed++;
             timeRemaining--;
-            var tick = damage.Tick();
-            var newExpectedDealt = (int)System.Math.Floor((expectedDps * timePassed).ToDouble());
+            var tick = damage.Dps();
+            var newExpectedDealt = (int)System.Math.Floor((expectedDps * timePassed).AsDouble());
             var expectedTick = newExpectedDealt - expectedDealt;
             var expectedRemaining = amount - newExpectedDealt;
             expectedDealt = newExpectedDealt;
 
             // test
             Assert.Equal(expectedTick, tick);
-            Assert.Equal(timePassed, damage.TimePassed);
+            Assert.Equal(timePassed, damage.SecondsPassed);
             Assert.Equal(timeRemaining, damage.TimeRemaining);
-            Assert.Equal(expectedDealt, damage.Dealt);
-            Assert.Equal(expectedRemaining, damage.Remaining);
+            Assert.Equal(expectedDealt, damage.DamageDealt);
+            Assert.Equal(expectedRemaining, damage.RemainingDamage);
         }
     }
 
@@ -115,18 +116,18 @@ public class SimpleDamageTests
     public void Tick_Properties_CorrectAfterCompletion(int amount, int duration)
     {
         // setup
-        var damage = new SimpleDamage(DamageType.Generic, amount, duration);
+        var damage = new SimpleDpsCalculator(DamageType.Generic, amount, duration);
 
         // execute
         while (!damage.IsDone)
-            damage.Tick();
-        damage.Tick();
+            damage.Dps();
+        damage.Dps();
 
         // test
-        Assert.Equal(amount, damage.Dealt);
-        Assert.Equal(0, damage.Remaining);
+        Assert.Equal(amount, damage.DamageDealt);
+        Assert.Equal(0, damage.RemainingDamage);
         Assert.Equal(0, damage.TimeRemaining);
-        Assert.Equal(duration + 1, damage.TimePassed);
+        Assert.Equal(duration + 1, damage.SecondsPassed);
     }
 
     [Theory]
@@ -141,14 +142,14 @@ public class SimpleDamageTests
     public void ToString_Contains_RelevantInfo(DamageType type, int amount, int duration, int time)
     {
         // setup
-        var damage = new SimpleDamage(type, amount, duration);
+        var damage = new SimpleDpsCalculator(type, amount, duration);
         var expectedTime = System.Math.Min(duration, time);
         var expectedDps = new Fraction(amount, duration);
-        var expectedDealt = (int)System.Math.Floor(expectedDps.ToDouble() * expectedTime);
+        var expectedDealt = (int)System.Math.Floor(expectedDps.AsDouble() * expectedTime);
 
         // execute
         for (var i = 0; i < time; i++)
-            damage.Tick();
+            damage.Dps();
         var result = damage.ToString();
 
         // test
@@ -172,14 +173,14 @@ public class SimpleDamageTests
     public void ToDataString_Contains_RelevantInfo(DamageType type, int amount, int duration, int time)
     {
         // setup
-        var damage = new SimpleDamage(type, amount, duration);
+        var damage = new SimpleDpsCalculator(type, amount, duration);
         var expectedTime = System.Math.Min(duration, time);
         var expectedDps = new Fraction(amount, duration);
-        var expectedDealt = (int)System.Math.Floor(expectedDps.ToDouble() * expectedTime);
+        var expectedDealt = (int)System.Math.Floor(expectedDps.AsDouble() * expectedTime);
 
         // execute
         for (var i = 0; i < time; i++)
-            damage.Tick();
+            damage.Dps();
         var result = damage.ToDataString();
 
         // test

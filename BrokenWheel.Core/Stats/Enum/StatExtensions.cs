@@ -1,57 +1,73 @@
 ﻿using System;
 using System.Linq;
-using BrokenWheel.Core.Stats.Attributes;
+using BrokenWheel.Core.Constants;
+using BrokenWheel.Core.Stats.Info;
 
 namespace BrokenWheel.Core.Stats.Enum
 {
-    public static class StatExtensions
+    /// <summary>
+    /// An internal utility for getting stat info from attribute metadata. 
+    /// Outside of Core, it should be accessed by static methods which support custom stats gracefully.
+    /// </summary>
+    internal static class StatExtensions
     {
-        public static string GetName(this Stat stat)
+        /// <summary>
+        /// A method for getting <see cref="StatInfo"/> from the attributes attached to the default engine <see cref="Stat"/>s.
+        /// Not as efficient as getting the info from <see cref="StatInfoFactory"/>.
+        /// </summary>
+        /// <param name="stat"> Any stat except for custom, as custom stats have info associated by just the code, not enum value. </param>
+        /// <exception cref="ArgumentException"> If parameter is <see cref="Stat.Custom"/> (the default value). </exception>
+        /// <returns></returns>
+        internal static StatInfo GetStatInfoFromAttribute(this Stat stat)
         {
-            var menuNameAttribute = stat.GetAttribute<MenuNameAttribute>();
-            return menuNameAttribute == null 
-                ? System.Enum.GetName(typeof(Stat), stat) 
-                : menuNameAttribute.MenuName;
+            if (stat == Stat.Custom)
+                throw new ArgumentException($"Custom {nameof(Stat)} does not have an assocciated stat info attribute.");
+            var infoAttr = stat.GetStatInfoAttribute();
+            return new StatInfo
+            {
+                IsCustom = false,
+                Namespace = MiscConstants.GAME_NAMESPACE,
+                Stat = stat,
+                Type = infoAttr.Type,
+                Category = infoAttr.Category,
+                Code = infoAttr.Code,
+                Name = infoAttr.Name,
+                Description = infoAttr.Description,
+                IsComplex = infoAttr.IsComplex,
+                MaxValue = infoAttr.MaxValue,
+                MinValue = infoAttr.MinValue,
+                DefaultValue = infoAttr.DefaultValue,
+            };
         }
 
-        public static string DescriptiveName(this Stat stat)
+        private static StatInfoAttribute GetStatInfoAttribute(this Stat stat)
         {
-            var infoAttribute = stat.GetAttribute<InfoAttribute>();
-            return infoAttribute == null 
-                ? stat.GetName() 
-                : infoAttribute.Name;
+            if (stat.TryGetAttribute<StatInfoAttribute>(out var attribute))
+                return attribute;
+            throw new Exception($"Could not find {nameof(StatInfoAttribute)} attached to {nameof(Stat)} `{stat}`");
         }
 
-        public static string Description(this Stat stat)
+        private static bool TryGetAttribute<T>(this Stat stat, out T attribute) where T : Attribute
         {
-            var infoAttribute = stat.GetAttribute<InfoAttribute>();
-            return infoAttribute == null
-                ? string.Empty
-                : infoAttribute.Description;
-        }
-
-
-        public static bool IsComplex(this Stat stat) 
-            => stat.HasAttribute<ComplexAttribute>();
-        public static bool IsAttribute(this Stat stat) 
-            => stat.HasAttribute<AttributeAttribute>();
-        public static bool IsSkill(this Stat stat) 
-            => stat.HasAttribute<SkillAttribute>();
-        public static bool IsProficiency(this Stat stat) 
-            => stat.HasAttribute<ProficiencyAttribute>();
-
-
-        private static bool HasAttribute<T>(this Stat stat) where T : Attribute
-        {
-            return stat.GetAttribute<T>() != null;
+            try
+            {
+                attribute = stat.GetAttribute<T>();
+                return true;
+            }
+            catch
+            {
+                attribute = null;
+                return false;
+            }
         }
 
         private static T GetAttribute<T>(this Stat stat) where T : Attribute
         {
             return stat.GetType()
-                .GetMember(stat.ToString()).First()
+                .GetMember(stat.ToString())
+                .FirstOrDefault()
                 ?.GetCustomAttributes(typeof(T), false)
-                .First() as T;
+                .FirstOrDefault() as T;
         }
     }
 }

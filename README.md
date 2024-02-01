@@ -2,6 +2,68 @@
 The net standard library to be used by Unity only at the outermost layers: UI, game objects, etc. -- only the physical. All calculations are handled by the core. This is so that a) programming is easier, and b) it can be used in another engine if so desired.
 
 
+## Stats
+
+### Statistic Code Table
+
+| Stat Name    | Code |
+|--------------|------|
+| Level        | LVL  |
+| Experience   | EXP  |
+| Luck         | LUCK |
+| HP           | HP   |
+| SP           | SP   |
+| WP           | WP   |
+| Hydration    | DRNK |
+| Satiation    | FOOD |
+| Rest         | REST |
+| Sprint       | SPRN |
+| Leap         | JUMP |
+| Climb        | CLMB |
+| Swim         | SWIM |
+| Fortitude    | FORT |
+| Evasion      | EVAD |
+| Block        | BLCK |
+| Parry        | PRRY |
+| OneHanded    | 1H   |
+| TwoHanded    | 2H   |
+| Ranged       | RNGD |
+| Unarmed      | UNRM |
+| Evocation    | EVOC |
+| WildMagic    | WILD |
+| Conjuration  | CONJ |
+| Faith        | FAI  |
+| Transmutation| TRNS |
+| Illusion     | ILSN |
+| Necromancy   | NCRO |
+| Psionics     | PSI  |
+| Cooking      | COOK |
+| Alchemy      | ALCH |
+| Enchantment  | ENCH |
+| Inscription  | INSC |
+| Perception   | PER  |
+| Intuition    | INT  |
+| Charisma     | CHA  |
+| Deftness     | DEFT |
+| Sword        | SWRD |
+| Axe          | AXE  |
+| Blunt        | BASH |
+| Flail        | FLAI |
+| SmallArm     | SML  |
+| PoleArm      | POLE |
+| Throwing     | THRO |
+| ShortBow     | SBOW |
+| LongBow      | LBOW |
+| Trigger      | TRIG |
+| Punch        | PNCH |
+| Kick         | KICK |
+| Grab         | GRAB |
+| Qi           | QI   |
+| Self         | SELF |
+| Touch        | TCH  |
+| Projectile   | PROJ |
+| AreaOfEffect | AOE  |
+
 ## Weapon Types
 *Swords*
 - (1H) Straight Sword (broadswords, shortswords, etc.)

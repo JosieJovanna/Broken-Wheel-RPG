@@ -1,21 +1,14 @@
 ﻿using System;
-using BrokenWheel.Math.Options;
 
 namespace BrokenWheel.Math
 {
     public sealed partial class Fraction
     {
-        private Fraction Negate()
-        {
-            Numerator = -Numerator;
-            return this;
-        }
-        
         private static Fraction Negate(Fraction fraction)
         {
-            var iNumerator = -fraction.Numerator;
-            var iDenominator = fraction.Denominator;
-            return new Fraction(iNumerator, iDenominator, fraction.Option);
+            var numerator = -fraction.Numerator;
+            var denominator = fraction.Denominator;
+            return new Fraction(numerator, denominator);
         }
 
         private static Fraction TryAdd(Fraction fraction1, Fraction fraction2)
@@ -38,11 +31,9 @@ namespace BrokenWheel.Math
         {
             checked
             {
-                var crossProduct1 = fraction1.Numerator * fraction2.Denominator;
-                var crossProduct2 = fraction2.Numerator * fraction1.Denominator;
-                var numerator = crossProduct1 + crossProduct2;
+                var numerator = fraction1.Numerator * fraction2.Denominator + fraction2.Numerator * fraction1.Denominator;
                 var denominator = fraction1.Denominator * fraction2.Denominator;
-                return new Fraction(numerator, denominator, SameOrDefaultZeroOption(fraction1, fraction2));
+                return new Fraction(numerator, denominator);
             }
         }
 
@@ -66,9 +57,9 @@ namespace BrokenWheel.Math
         {
             checked
             {
-                var iNumerator = fraction1.Numerator * fraction2.Numerator;
-                var iDenominator = fraction1.Denominator * fraction2.Denominator;
-                return new Fraction(iNumerator, iDenominator, SameOrDefaultZeroOption(fraction1, fraction2));
+                var numerator = fraction1.Numerator * fraction2.Numerator;
+                var denominator = fraction1.Denominator * fraction2.Denominator;
+                return new Fraction(numerator, denominator);
             }
         }
     }

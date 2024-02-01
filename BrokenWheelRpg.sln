@@ -1,23 +1,29 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.1.32210.238
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.34407.143
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BrokenWheel.Core", "BrokenWheel.Core\BrokenWheel.Core.csproj", "{DEE48793-6CAC-4874-89E5-C5FBEC8B4826}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp", "ConsoleApp\ConsoleApp.csproj", "{43793579-610D-4E66-BBFD-CA27F1985D9D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrokenWheel.Core.Tests", "BrokenWheel.Core.Tests\BrokenWheel.Core.Tests.csproj", "{3F2A39B4-B873-4926-A370-BC6730B7A275}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BrokenWheel.Core.Tests", "BrokenWheel.Core.Tests\BrokenWheel.Core.Tests.csproj", "{3F2A39B4-B873-4926-A370-BC6730B7A275}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrokenWheel.UI", "BrokenWheel.UI\BrokenWheel.UI.csproj", "{DD7B0CBD-DFCE-4BED-A41B-E7E0C1D55597}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BrokenWheel.UI", "BrokenWheel.UI\BrokenWheel.UI.csproj", "{DD7B0CBD-DFCE-4BED-A41B-E7E0C1D55597}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrokenWheel.Control", "BrokenWheel.Control\BrokenWheel.Control.csproj", "{F429AD95-4BDA-4533-89F0-C2F8955F8FA4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BrokenWheel.Control", "BrokenWheel.Control\BrokenWheel.Control.csproj", "{F429AD95-4BDA-4533-89F0-C2F8955F8FA4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrokenWheel.Entity", "BrokenWheel.Entity\BrokenWheel.Entity.csproj", "{016828F1-E1CC-4D57-83C9-201D4CF33C1A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BrokenWheel.Entity", "BrokenWheel.Entity\BrokenWheel.Entity.csproj", "{016828F1-E1CC-4D57-83C9-201D4CF33C1A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrokenWheel.Settings", "BrokenWheel.Settings\BrokenWheel.Settings.csproj", "{14C981DC-9C1F-4A16-A9D7-A66B07BDD00A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BrokenWheel.Math", "BrokenWheel.Math\BrokenWheel.Math.csproj", "{261A8299-AFF5-4FD9-B28D-6859B4D44483}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrokenWheel.Math", "BrokenWheel.Math\BrokenWheel.Math.csproj", "{261A8299-AFF5-4FD9-B28D-6859B4D44483}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BrokenWheel.Math.Tests", "BrokenWheel.Math.Tests\BrokenWheel.Math.Tests.csproj", "{4F0B5A6A-49B2-47F7-8A4B-AC4DBF07D57C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{23E40817-B829-4E3A-9AA2-C9F48139E694}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Slices", "Slices", "{4434E66D-8E9F-46A6-A08D-094278A5C0FB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrokenWheel.UI.Tests", "BrokenWheel.UI.Tests\BrokenWheel.UI.Tests.csproj", "{B9FF1D92-D73A-4B5C-A97B-405671200B8B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,17 +55,32 @@ Global
 		{016828F1-E1CC-4D57-83C9-201D4CF33C1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{016828F1-E1CC-4D57-83C9-201D4CF33C1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{016828F1-E1CC-4D57-83C9-201D4CF33C1A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{14C981DC-9C1F-4A16-A9D7-A66B07BDD00A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{14C981DC-9C1F-4A16-A9D7-A66B07BDD00A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{14C981DC-9C1F-4A16-A9D7-A66B07BDD00A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{14C981DC-9C1F-4A16-A9D7-A66B07BDD00A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{261A8299-AFF5-4FD9-B28D-6859B4D44483}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{261A8299-AFF5-4FD9-B28D-6859B4D44483}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{261A8299-AFF5-4FD9-B28D-6859B4D44483}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{261A8299-AFF5-4FD9-B28D-6859B4D44483}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F0B5A6A-49B2-47F7-8A4B-AC4DBF07D57C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F0B5A6A-49B2-47F7-8A4B-AC4DBF07D57C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F0B5A6A-49B2-47F7-8A4B-AC4DBF07D57C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F0B5A6A-49B2-47F7-8A4B-AC4DBF07D57C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9FF1D92-D73A-4B5C-A97B-405671200B8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9FF1D92-D73A-4B5C-A97B-405671200B8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9FF1D92-D73A-4B5C-A97B-405671200B8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9FF1D92-D73A-4B5C-A97B-405671200B8B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{DEE48793-6CAC-4874-89E5-C5FBEC8B4826} = {4434E66D-8E9F-46A6-A08D-094278A5C0FB}
+		{3F2A39B4-B873-4926-A370-BC6730B7A275} = {23E40817-B829-4E3A-9AA2-C9F48139E694}
+		{DD7B0CBD-DFCE-4BED-A41B-E7E0C1D55597} = {4434E66D-8E9F-46A6-A08D-094278A5C0FB}
+		{F429AD95-4BDA-4533-89F0-C2F8955F8FA4} = {4434E66D-8E9F-46A6-A08D-094278A5C0FB}
+		{016828F1-E1CC-4D57-83C9-201D4CF33C1A} = {4434E66D-8E9F-46A6-A08D-094278A5C0FB}
+		{261A8299-AFF5-4FD9-B28D-6859B4D44483} = {4434E66D-8E9F-46A6-A08D-094278A5C0FB}
+		{DD7B0CBD-DFCE-4BED-A41B-E7E0C1D55597} = {4434E66D-8E9F-46A6-A08D-094278A5C0FB}
+		{B9FF1D92-D73A-4B5C-A97B-405671200B8B} = {23E40817-B829-4E3A-9AA2-C9F48139E694}
+		{4F0B5A6A-49B2-47F7-8A4B-AC4DBF07D57C} = {23E40817-B829-4E3A-9AA2-C9F48139E694}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {00490D25-FD85-4AAD-9DD2-007EC7D8F97D}

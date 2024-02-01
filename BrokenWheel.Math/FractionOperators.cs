@@ -1,11 +1,4 @@
-﻿
-/*
- * Operators for the Fraction object
- * includes -(unary), and binary operators such as +, -, *, /
- * also includes relational and logical operators such as ==, !=, <, >, <=, >=
- */
-
-namespace BrokenWheel.Math
+﻿namespace BrokenWheel.Math
 {
     public sealed partial class Fraction
     {
@@ -31,22 +24,32 @@ namespace BrokenWheel.Math
         public static Fraction operator /(double dbl, Fraction frac1) => TryMultiply(Inverse(frac1), FromDouble(dbl));
         public static Fraction operator /(Fraction frac1, double dbl) => TryMultiply(frac1, Inverse(FromDouble(dbl)));
         
-        public static bool operator ==(Fraction frac1, Fraction frac2) => frac1 != null && frac1.Equals(frac2);
-        public static bool operator ==(Fraction frac1, int iNo) => frac1 != null && frac1.Equals(new Fraction(iNo));
-        public static bool operator ==(Fraction frac1, double dbl) => frac1 != null && frac1.Equals(new Fraction(dbl));
-        public static bool operator !=(Fraction frac1, Fraction frac2) => frac1 == null || !frac1.Equals(frac2);
-        public static bool operator !=(Fraction frac1, int iNo) => frac1 == null || !frac1.Equals(new Fraction(iNo));
-        public static bool operator !=(Fraction frac1, double dbl) => frac1 == null || !frac1.Equals(new Fraction(dbl));
+        public static bool operator ==(Fraction frac1, Fraction frac2) 
+            => frac1 != null && frac1.Equals(frac2);
+        public static bool operator ==(Fraction frac1, int iNo) 
+            => frac1 != null && frac1.Equals(new Fraction(iNo));
+        public static bool operator ==(Fraction frac1, double dbl) 
+            => frac1 != null && frac1.Equals(new Fraction(dbl));
+        public static bool operator !=(Fraction frac1, Fraction frac2) 
+            => frac1 == null || !frac1.Equals(frac2);
+        public static bool operator !=(Fraction frac1, int iNo) 
+            => frac1 == null || !frac1.Equals(new Fraction(iNo));
+        public static bool operator !=(Fraction frac1, double dbl) 
+            => frac1 == null || !frac1.Equals(new Fraction(dbl));
 
-        public static bool operator <(Fraction frac1, Fraction frac2) => frac1.Numerator * frac2.Denominator < frac2.Numerator * frac1.Denominator;
-        public static bool operator >(Fraction frac1, Fraction frac2) => frac1.Numerator * frac2.Denominator > frac2.Numerator * frac1.Denominator;
-        public static bool operator <=(Fraction frac1, Fraction frac2) => frac1.Numerator * frac2.Denominator <= frac2.Numerator * frac1.Denominator;
-        public static bool operator >=(Fraction frac1, Fraction frac2) => frac1.Numerator * frac2.Denominator >= frac2.Numerator * frac1.Denominator;
+        public static bool operator <(Fraction frac1, Fraction frac2) 
+            => frac1.Numerator * frac2.Denominator < frac2.Numerator * frac1.Denominator;
+        public static bool operator >(Fraction frac1, Fraction frac2) 
+            => frac1.Numerator * frac2.Denominator > frac2.Numerator * frac1.Denominator;
+        public static bool operator <=(Fraction frac1, Fraction frac2) 
+            => frac1.Numerator * frac2.Denominator <= frac2.Numerator * frac1.Denominator;
+        public static bool operator >=(Fraction frac1, Fraction frac2) 
+            => frac1.Numerator * frac2.Denominator >= frac2.Numerator * frac1.Denominator;
 
-        public static implicit operator Fraction(long longNumber) => new Fraction(longNumber);
-        public static implicit operator Fraction(double doubleNumber) => new Fraction(doubleNumber);
-        public static implicit operator Fraction(string stringValue) => new Fraction(stringValue);
-        public static explicit operator double(Fraction fraction) => fraction.ToDouble();
-        public static implicit operator string(Fraction fraction) => fraction.ToString();
+        public static implicit operator Fraction(long lNo) => new Fraction(lNo);
+        public static implicit operator Fraction(double dNo) => new Fraction(dNo);
+        public static implicit operator Fraction(string strNo) => new Fraction(strNo);
+        public static explicit operator double(Fraction frac) => frac.AsDouble();
+        public static implicit operator string(Fraction frac) => frac.ToString();
     }
 }
