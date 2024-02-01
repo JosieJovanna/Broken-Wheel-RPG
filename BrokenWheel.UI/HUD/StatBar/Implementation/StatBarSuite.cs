@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using BrokenWheel.Core.DependencyInjection;
 using BrokenWheel.Core.Events.Listening;
+using BrokenWheel.Core.Logging;
 using BrokenWheel.Core.Settings;
-using BrokenWheel.Core.Settings.Registration;
 using BrokenWheel.Core.Stats.Enum;
 using BrokenWheel.Core.Stats.Events;
 using BrokenWheel.Core.Stats.Info;
@@ -12,6 +13,8 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
 {
     public class StatBarSuite : IStatBarSuite
     {
+        private readonly IModule _module;
+        private readonly ILogger _logger;
         private readonly StatBarSettings _settings;
         private readonly IStatBarSuiteDisplay _groupDisplay;
         private readonly ICustomCategorizedEventListener<StatUpdatedEvent, Stat> _simpleListener;
@@ -33,13 +36,15 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
             ICustomCategorizedEventListener<ComplexStatUpdatedEvent, Stat> complexListener,
             IStatBarSuiteDisplay suiteDisplay)
         {
-            _settings = SettingsRegistry.GetSettings<StatBarSettings>();
+            _module = Injection.GetModule();
+            _logger = _module.GetLogger();
+            _settings = _module.GetSettings<StatBarSettings>();
             _groupDisplay = suiteDisplay ?? throw new ArgumentNullException(nameof(suiteDisplay));
             _simpleListener = simpleListener ?? throw new ArgumentNullException(nameof(simpleListener));
             _complexListener = complexListener ?? throw new ArgumentNullException(nameof(complexListener));
 
             for (var i = 0; i < _settings.MainStatCodesInOrder.Count; i++)
-                AddStatBar(StatInfoFactory.FromEnum(_settings.MainStatCodesInOrder[i]), i); // TODO: stat info factory
+                AddStatBar(StatInfoFactory.FromEnum(_settings.MainStatCodesInOrder[i]), i);
             RepositionDisplays();
         }
 
@@ -55,6 +60,7 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
             RepositionDisplays();
             _groupDisplay.Show();
             _isHiding = false;
+            _logger.LogCategory("Display", $"{nameof(StatBarSuite)} shows");
         }
 
         public void Hide()
@@ -64,14 +70,17 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
 
             _groupDisplay.Hide();
             _isHiding = true;
+            _logger.LogCategory("Display", $"{nameof(StatBarSuite)} hides");
         }
 
         public void RepositionDisplays()
         {
-            StatBarPositioner.PositionBars(_settings, _statBars
-                .Where(_ => !_.Display.IsHidden)
-                .OrderBy(_ => _.Order)
-                .ToList());
+            StatBarPositioner
+                .PositionBars(_settings, _statBars
+                    .Where(_ => !_.Display.IsHidden)
+                    .OrderBy(_ => _.Order)
+                    .ToList());
+            _logger.LogCategory("Display", $"{nameof(StatBarSuite)} repositioned");
         }
 
         public void RemoveStat(StatInfo statInfo)
@@ -118,6 +127,7 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
             else
                 RemoveSimpleStatBar((SimpleStatBar)statBar);
             _statBars.Remove(statBar);
+            _logger.LogCategory("Display", $"{nameof(StatBarSuite)} removed {statBar.Info.Code}");
         }
 
         private void RemoveComplexStatBar(ComplexStatBar statBar)
@@ -172,6 +182,7 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
                 AddComplexStatBar(statInfo, colors, order);
             else
                 AddSimpleStatBar(statInfo, colors, order);
+            _logger.LogCategory("Display", $"{nameof(StatBarSuite)} added {statInfo.Code}");
         }
 
         private StatBarColorSettings ColorSettingsForStat(StatInfo statInfo)

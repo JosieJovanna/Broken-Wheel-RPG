@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
-using BrokenWheel.Core.Settings.Registration;
 using BrokenWheel.Core.Stats.Enum;
 
 namespace BrokenWheel.Core.Settings

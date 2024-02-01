@@ -1,4 +1,4 @@
-﻿namespace BrokenWheel.Core.Settings.Registration
+﻿namespace BrokenWheel.Core.Settings
 {
     /// <summary>
     /// An interface used only to identify the object as 'settings'.
@@ -8,6 +8,6 @@
     /// </summary>
     public interface ISettings
     {
-        
+
     }
 }
