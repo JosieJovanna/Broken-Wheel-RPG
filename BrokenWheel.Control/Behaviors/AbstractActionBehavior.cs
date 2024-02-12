@@ -47,7 +47,6 @@ namespace BrokenWheel.Control.Behaviors
                 case PressType.Held:
                     HoldIfLongEnough();
                     break;
-                case PressType.NotHeld:
                 default:
                     _isAltPressIsLocked = false;
                     break;

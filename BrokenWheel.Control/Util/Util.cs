@@ -13,7 +13,7 @@ namespace BrokenWheel.Control.Util
             else
                 return isHeld
                     ? PressType.Released
-                    : PressType.NotHeld;
+                    : default; // TODO
         }
 
         public static bool ButtonPressTypeWasJustPressed(PressType type)

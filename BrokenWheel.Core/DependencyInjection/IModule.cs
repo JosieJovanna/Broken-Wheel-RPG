@@ -27,7 +27,7 @@ namespace BrokenWheel.Core.DependencyInjection
         /// <param name="implementation"> The object to be registered. </param>
         /// <exception cref="InvalidOperationException"> If service is already registered. </exception>
         /// <exception cref="ArgumentException"> If the generic type is not an interface, or if implementation is null. </exception>
-        void RegisterService<TInterface, TImplementation>(TImplementation implementation) where TImplementation : class, TInterface;
+        IModule RegisterService<TInterface, TImplementation>(TImplementation implementation) where TImplementation : class, TInterface;
 
         /// <summary>
         /// Registers a settings POCO (which may be changed) to be accessed across the program.
@@ -43,6 +43,6 @@ namespace BrokenWheel.Core.DependencyInjection
         /// <param name="settings"> The instantiated settings object to register. </param>
         /// <exception cref="InvalidOperationException"> If settings are already registered. </exception>
         /// <exception cref="ArgumentNullException"> If settings are null. </exception>
-        void RegisterSettings<TSettings>(TSettings settings) where TSettings : class, ISettings;
+        IModule RegisterSettings<TSettings>(TSettings settings) where TSettings : class, ISettings;
     }
 }

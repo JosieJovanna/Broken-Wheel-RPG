@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using BrokenWheel.Core.DependencyInjection;
 using BrokenWheel.Core.Events;
-using BrokenWheel.Core.Events.Handling;
 using BrokenWheel.Core.Events.Listening;
 using BrokenWheel.Core.Logging;
 using BrokenWheel.Core.Stats.Enum;
@@ -13,7 +12,7 @@ using BrokenWheel.UI.Settings.StatBar;
 
 namespace BrokenWheel.UI.HUD.StatBar.Implementation
 {
-    public class StatBarSuite : IStatBarSuite, IEventHandler<SettingsUpdateEvent<StatBarSettings>>
+    public class StatBarSuite : IStatBarSuite
     {
         private const string CATEGORY = "Display";
 
@@ -52,7 +51,7 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
             for (var i = 0; i < _settings.MainStatsInOrder.Count; i++)
                 AddStatBar(StatInfoFactory.FromEnum(_settings.MainStatsInOrder[i].Stat), i);
             RepositionDisplays();
-            _settingsUpdates.Subscribe(HandleEvent);
+            _settingsUpdates.Subscribe((settingUpdate) => UpdateFromSettings(settingUpdate));
             _logger.LogCategory(CATEGORY, $"{nameof(StatBarSuite)} subscribed to {nameof(SettingsUpdateEvent<StatBarSettings>)}s");
         }
 
@@ -81,7 +80,7 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
             _isHiding = true;
         }
 
-        public void HandleEvent(SettingsUpdateEvent<StatBarSettings> gameEvent)
+        public void UpdateFromSettings(SettingsUpdateEvent<StatBarSettings> gameEvent)
         {
             _logger.LogCategory(CATEGORY, $"{nameof(StatBarSettings)} updated - repositioning and recoloring...");
             RepositionDisplays();

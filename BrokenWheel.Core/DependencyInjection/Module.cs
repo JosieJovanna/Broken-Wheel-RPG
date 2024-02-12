@@ -39,18 +39,19 @@ namespace BrokenWheel.Core.DependencyInjection
         }
 
         /// <inheritdoc/>
-        public void RegisterService<TInterface, TImplementation>(TImplementation implementation)
+        public IModule RegisterService<TInterface, TImplementation>(TImplementation implementation)
             where TImplementation : class, TInterface
         {
             var type = ThrowArgumentExceptionIfInvalidTypes<TInterface>();
             if (_serviceRegistry.ContainsKey(type))
             {
                 ThrowAlreadyRegistered(type, "service");
-                return;
+                return this;
             }
 
             _serviceRegistry.Add(type, implementation);
             _logger.LogCategory(LogCategory.DEPENDENCY_INJECTION, $"Registered `{typeof(TImplementation).FullName}` to `{type.FullName}`.");
+            return this;
         }
 
         private Type ThrowArgumentExceptionIfInvalidTypes<TInterface>()
@@ -76,7 +77,7 @@ namespace BrokenWheel.Core.DependencyInjection
         }
 
         /// <inheritdoc/>
-        public void RegisterSettings<TSettings>(TSettings settings) where TSettings : class, ISettings
+        public IModule RegisterSettings<TSettings>(TSettings settings) where TSettings : class, ISettings
         {
             var type = typeof(TSettings);
             if (_settingsRegistry.ContainsKey(type))
@@ -84,6 +85,7 @@ namespace BrokenWheel.Core.DependencyInjection
 
             _settingsRegistry.Add(type, settings);
             _logger.LogCategory(LogCategory.DEPENDENCY_INJECTION, $"Registered `{typeof(TSettings).FullName}`.");
+            return this;
         }
 
         private void ThrowNotRegistered(Type type, string notRegistered)
