@@ -16,7 +16,7 @@ namespace BrokenWheel.Control.Models
         /// <summary>
         /// Whether just pressed, just released, held, or not held.
         /// </summary>
-        public PressType LastPressType { set; get; }
+        public PressType PressType { set; get; }
 
         /// <summary>
         /// The amount of time since the last tick.
@@ -29,16 +29,9 @@ namespace BrokenWheel.Control.Models
         /// </summary>
         public double HeldTime { set; get; }
 
-        public InputData(
-            RPGInput input,
-            PressType pressType,
-            double deltaTime,
-            double heldTime)
+        public override string ToString()
         {
-            Input = input;
-            LastPressType = pressType;
-            DeltaTime = deltaTime;
-            HeldTime = heldTime;
+            return $"I[{Input}: {PressType} - d{DeltaTime} h{HeldTime}]";
         }
     }
 }

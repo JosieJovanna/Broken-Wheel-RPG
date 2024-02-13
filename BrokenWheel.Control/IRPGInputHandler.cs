@@ -1,4 +1,4 @@
-﻿using BrokenWheel.Control.Models;
+﻿using BrokenWheel.Control.Enum;
 
 namespace BrokenWheel.Control
 {
@@ -11,7 +11,7 @@ namespace BrokenWheel.Control
         /// Caches current input state for processing.
         /// </summary>
         /// <param name="data"> RPG input data. </param>
-        void HandleInput(InputData data);
+        void HandleInput(RPGInput input, bool isPressed);
 
         /// <summary>
         /// Processes input based on current state.

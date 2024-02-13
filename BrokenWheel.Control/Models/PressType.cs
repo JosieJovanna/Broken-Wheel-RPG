@@ -8,7 +8,7 @@
         /// <summary>
         /// Not pressed and not held last frame.
         /// </summary>
-        NotHeld,
+        NotHeld = default,
 
         /// <summary>
         /// Pressed but not held last frame.

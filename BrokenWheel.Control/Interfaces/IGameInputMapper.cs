@@ -1,6 +1,7 @@
-﻿using BrokenWheel.Control.Enum;
+﻿using System.Collections.Generic;
+using BrokenWheel.Control.Enum;
 
-namespace BrokenWheel.Control.Implementations.GameInputHandler
+namespace BrokenWheel.Control.Interfaces
 {
     /// <summary>
     /// Handles translating the game engine input into RPG input data.
@@ -18,6 +19,6 @@ namespace BrokenWheel.Control.Implementations.GameInputHandler
         /// </summary>
         /// <param name="inputEvent"></param>
         /// <returns> The mapped RPG input. </returns>
-        RPGInput Map(TGameInputEvent inputEvent);
+        IEnumerable<RPGInput> Map(TGameInputEvent inputEvent);
     }
 }

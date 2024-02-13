@@ -6,8 +6,10 @@ namespace BrokenWheel.Control.Enum
     [JsonConverter(typeof(StringEnumConverter))]
     public enum RPGInput
     {
+        NotRecognized = default,
+
         #region Main Input
-        Menu = default,
+        Menu,
         Modifier,
         Action,
         Interact,
