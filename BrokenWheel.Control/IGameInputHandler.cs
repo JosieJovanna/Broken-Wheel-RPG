@@ -2,7 +2,7 @@
 {
     /// <summary>
     /// An object in charge of keeping track of raw player input.
-    /// Translates into BrokenWheel input and is responsible for calling the <see cref="IRPGInputHandler"/> when processing.
+    /// Translates into BrokenWheel input and is responsible for calling the <see cref="IRPGInputTracker"/> when processing.
     /// </summary>
     /// <typeparam name="TGameInputEvent"> The type of action which is used on the implementation level. </typeparam>
     public interface IGameInputHandler<TGameInputEvent>
