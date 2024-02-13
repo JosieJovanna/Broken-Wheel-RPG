@@ -1,4 +1,4 @@
-﻿using BrokenWheel.Control;
+﻿using BrokenWheel.Control.Actions;
 //using BrokenWheel.Core.Stats.Processing;
 
 namespace BrokenWheel.Entity

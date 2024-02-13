@@ -1,7 +1,7 @@
 ﻿using BrokenWheel.Control.Interfaces;
 using BrokenWheel.Control.Models;
 
-namespace BrokenWheel.Control
+namespace BrokenWheel.Control.Actions
 {
     /// <summary>
     /// The object which maps actions and their input to control.

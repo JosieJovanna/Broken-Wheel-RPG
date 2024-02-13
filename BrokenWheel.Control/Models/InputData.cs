@@ -2,35 +2,43 @@
 
 namespace BrokenWheel.Control.Models
 {
-    public class InputData
+    /// <summary>
+    /// A struct tracking a single input's state.
+    /// Actively changed in the <see cref="IRPGInputHandler"/> but unaffected by downstream changes.
+    /// </summary>
+    public struct InputData
     {
         /// <summary>
         /// The abstracted input.
         /// </summary>
-        public GameInput Input { get; }
+        public RPGInput Input { get; } // TODO: add support for custom input
 
         /// <summary>
         /// Whether just pressed, just released, held, or not held.
         /// </summary>
-        public PressType PressType { get; }
+        public PressType LastPressType { set; get; }
 
         /// <summary>
         /// The amount of time since the last tick.
         /// </summary>
-        public double DeltaTime { get; }
+        public double DeltaTime { set; get; }
 
         /// <summary>
         /// Total time the button has been held, from press to release.
         /// Does not reset until the tick after release.
         /// </summary>
-        public double HeldTime { get; }
+        public double HeldTime { set; get; }
 
-        public InputData(GameInput input, PressType pressType, double deltaTime, double heldTime)
+        public InputData(
+            RPGInput input,
+            PressType pressType,
+            double deltaTime,
+            double heldTime)
         {
             Input = input;
-            PressType = pressType;
+            LastPressType = pressType;
             DeltaTime = deltaTime;
-
+            HeldTime = heldTime;
         }
     }
 }

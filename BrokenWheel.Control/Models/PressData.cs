@@ -7,7 +7,7 @@ namespace BrokenWheel.Control.Models
     /// For example, holding left click to aim a rifle and releasing to fire, versus
     /// tapping to hip-fire.
     /// </summary>
-	public readonly struct PressData
+	public readonly struct PressData // TODO: merge with InputData? Or diverge function
     {
         /// <summary>
         /// Time passed in seconds since the last event happened.

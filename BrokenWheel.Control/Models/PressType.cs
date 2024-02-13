@@ -5,10 +5,10 @@
     /// </summary>
     public enum PressType
     {
-        /*/// <summary>
+        /// <summary>
         /// Not pressed and not held last frame.
         /// </summary>
-        NotHeld,*/
+        NotHeld,
 
         /// <summary>
         /// Pressed but not held last frame.

@@ -1,4 +1,5 @@
-﻿using BrokenWheel.Control.Models;
+﻿using BrokenWheel.Control.Actions;
+using BrokenWheel.Control.Models;
 
 namespace BrokenWheel.Control.Behaviors
 {
@@ -47,6 +48,7 @@ namespace BrokenWheel.Control.Behaviors
                 case PressType.Held:
                     HoldIfLongEnough();
                     break;
+                case PressType.NotHeld:
                 default:
                     _isAltPressIsLocked = false;
                     break;
