@@ -19,6 +19,6 @@ namespace BrokenWheel.Control.Interfaces
         /// </summary>
         /// <param name="inputEvent"></param>
         /// <returns> The mapped RPG input. </returns>
-        IEnumerable<RPGInput> Map(TGameInputEvent inputEvent);
+        IEnumerable<RPGInput> MapToRpgInput(TGameInputEvent inputEvent);
     }
 }
