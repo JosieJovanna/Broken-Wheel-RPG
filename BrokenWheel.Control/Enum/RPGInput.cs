@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using BrokenWheel.Control.Constants;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
 namespace BrokenWheel.Control.Enum
@@ -9,12 +10,13 @@ namespace BrokenWheel.Control.Enum
         NotRecognized = default,
 
         #region Main Input
-        Menu,
+        Menu = RPGInputCategoryValue.MISC,
+        Look,
         Modifier,
         Action,
         Interact,
 
-        Inventory,
+        Inventory = RPGInputCategoryValue.MENU,
         QuickSelect,
         Map,
         Calendar,
@@ -22,14 +24,14 @@ namespace BrokenWheel.Control.Enum
         Crafting,
         Rest,
 
-        MoveUp,
+        MoveUp = RPGInputCategoryValue.MOVEMENT,
         MoveDown,
         MoveLeft,
         MoveRight,
         ToggleStance,
         ToggleSpeed,
 
-        AttackPrimary,
+        AttackPrimary = RPGInputCategoryValue.COMBAT,
         AttackSecondary,
         UseAbility,
         Reload,
@@ -37,7 +39,7 @@ namespace BrokenWheel.Control.Enum
         Kick,
         Bash,
 
-        HotbarToggle,
+        HotbarToggle = RPGInputCategoryValue.HOTBAR,
         Hotbar1,
         Hotbar2,
         Hotbar3,
@@ -49,7 +51,7 @@ namespace BrokenWheel.Control.Enum
         Hotbar9,
         Hotbar10,
 
-        Debug1,
+        Debug1 = RPGInputCategoryValue.DEBUG,
         Debug2,
         Debug3,
         Debug4,
@@ -64,7 +66,7 @@ namespace BrokenWheel.Control.Enum
         #endregion
 
         #region User Interface Input
-        UIAccept,
+        UIAccept = RPGInputCategoryValue.UI,
         UISelect,
         UICancel,
         UIFocusNext,
