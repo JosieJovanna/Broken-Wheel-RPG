@@ -40,6 +40,8 @@ namespace BrokenWheel.Control.Enum
         Bash,
 
         HotbarToggle = RPGInputCategoryValue.HOTBAR,
+        HotbarNext,
+        HotbarPrev,
         Hotbar1,
         Hotbar2,
         Hotbar3,
