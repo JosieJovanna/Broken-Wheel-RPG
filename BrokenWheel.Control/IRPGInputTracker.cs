@@ -8,10 +8,18 @@ namespace BrokenWheel.Control
     public interface IRPGInputTracker
     {
         /// <summary>
-        /// Caches current input state for processing.
+        /// Caches current digital input state for processing.
         /// </summary>
         /// <param name="data"> RPG input data. </param>
-        void RegisterInput(RPGInput input, bool isPressed);
+        void HandleButtonInput(RPGInput input, bool isPressed);
+
+        /// <summary>
+        /// Caches current analog input state for processing.
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="x"> Horizontal strength of the analog input, from -1.0 to +1.0. </param>
+        /// <param name="y"> Vertical strength of the analog input, from -1.0 to +1.0. </param>
+        void HandleAnalogInput(RPGInput input, double x, double y);
 
         /// <summary>
         /// Processes input based on current state.

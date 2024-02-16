@@ -22,8 +22,9 @@ namespace BrokenWheel.Control.Implementations
                 .ToDictionary(_ => _, _ => new InputDataObject(_));
         }
 
-        public void RegisterInput(RPGInput input, bool isPressed)
+        public void HandleButtonInput(RPGInput input, bool isPressed)
         {
+            _logger.LogCategory("RPG Input", $"{input}-{(isPressed ? "pressed" : "released")}");
             var tracker = _inputTrackers[input];
             SwitchPressType(isPressed, tracker);
             AddOrRemoveActiveTracker(tracker);
@@ -60,6 +61,11 @@ namespace BrokenWheel.Control.Implementations
             {
                 _activeInputs.Add(tracker);
             }
+        }
+
+        public void HandleAnalogInput(RPGInput input, double x, double y)
+        {
+            _logger.LogCategory("RPG Input", $"{input}-{x},{y}");
         }
 
         public void ProcessInputs(double delta)

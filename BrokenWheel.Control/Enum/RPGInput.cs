@@ -11,7 +11,6 @@ namespace BrokenWheel.Control.Enum
 
         #region Main Input
         Menu = RPGInputCategoryValue.MISC,
-        Look,
         Modifier,
         Action,
         Interact,
@@ -24,7 +23,10 @@ namespace BrokenWheel.Control.Enum
         Crafting,
         Rest,
 
-        MoveUp = RPGInputCategoryValue.MOVEMENT,
+        LookMouse = RPGInputCategoryValue.MOVEMENT,
+        LookJoypad,
+        MoveAnalog,
+        MoveUp,
         MoveDown,
         MoveLeft,
         MoveRight,
