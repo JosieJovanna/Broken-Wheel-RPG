@@ -77,5 +77,15 @@ namespace BrokenWheel.Control.Implementations
 
             }
         }
+
+        public void HandleMoveInput(MovementInputData moveInput)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void HandleLookInput(LookInputData lookInput)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -33,9 +33,10 @@ namespace BrokenWheel.Control.Models.InputData
             HeldTime = heldTime;
         }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
-            return $"I[{Input}: {PressType} - d{DeltaTime} h{HeldTime}]";
+            return $"I[{Input}: {PressType}-d{DeltaTime}h{HeldTime}]";
         }
     }
 }

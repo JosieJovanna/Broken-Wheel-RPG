@@ -1,4 +1,5 @@
 ﻿using BrokenWheel.Control.Enum;
+using BrokenWheel.Control.Models.InputData;
 
 namespace BrokenWheel.Control
 {
@@ -14,12 +15,14 @@ namespace BrokenWheel.Control
         void HandleButtonInput(RPGInput input, bool isPressed);
 
         /// <summary>
-        /// Caches current analog input state for processing.
+        /// Handles move input per tick.
         /// </summary>
-        /// <param name="input"></param>
-        /// <param name="x"> Horizontal strength of the analog input, from -1.0 to +1.0. </param>
-        /// <param name="y"> Vertical strength of the analog input, from -1.0 to +1.0. </param>
-        void HandleAnalogInput(RPGInput input, double x, double y);
+        void HandleMoveInput(MovementInputData moveInput);
+
+        /// <summary>
+        /// Handles look input per tick.
+        /// </summary>
+        void HandleLookInput(LookInputData lookInput);
 
         /// <summary>
         /// Processes input based on current state.
