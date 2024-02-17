@@ -23,7 +23,7 @@ namespace BrokenWheel.Control.Implementations
                 .ToDictionary(_ => _, _ => new InputDataObject(_));
         }
 
-        public void HandleButtonInput(RPGInput input, bool isPressed)
+        public void TrackButtonInput(RPGInput input, bool isPressed)
         {
             _logger.LogCategory("RPG Input", $"{input}-{(isPressed ? "pressed" : "released")}");
             var tracker = _inputTrackers[input];
@@ -64,11 +64,6 @@ namespace BrokenWheel.Control.Implementations
             }
         }
 
-        public void HandleAnalogInput(RPGInput input, double x, double y)
-        {
-            _logger.LogCategory("RPG Input", $"{input}-{x},{y}");
-        }
-
         public void ProcessInputs(double delta)
         {
             foreach (var tracker in _activeInputs)
@@ -78,12 +73,17 @@ namespace BrokenWheel.Control.Implementations
             }
         }
 
-        public void HandleMoveInput(MovementInputData moveInput)
+        public void TrackLookInput(LookInputData lookInput)
         {
             throw new NotImplementedException();
         }
 
-        public void HandleLookInput(LookInputData lookInput)
+        public void TrackMoveInput(double vX, double vY)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void TrackLookInput(double vX, double vY, int posX, int posY)
         {
             throw new NotImplementedException();
         }

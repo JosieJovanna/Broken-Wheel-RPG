@@ -12,17 +12,17 @@ namespace BrokenWheel.Control
         /// Caches current digital input state for processing.
         /// </summary>
         /// <param name="data"> RPG input data. </param>
-        void HandleButtonInput(RPGInput input, bool isPressed);
+        void TrackButtonInput(RPGInput input, bool isPressed);
 
         /// <summary>
-        /// Handles move input per tick.
+        /// Caches current movement input state for processing
         /// </summary>
-        void HandleMoveInput(MovementInputData moveInput);
+        void TrackMoveInput(double vX, double vY);
 
         /// <summary>
-        /// Handles look input per tick.
+        /// Caches current look input state for processing.
         /// </summary>
-        void HandleLookInput(LookInputData lookInput);
+        void TrackLookInput(double vX, double vY, int posX, int posY);
 
         /// <summary>
         /// Processes input based on current state.

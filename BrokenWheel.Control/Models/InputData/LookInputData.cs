@@ -26,39 +26,27 @@
         /// <summary>
         /// The X position of the cursor, relative to the centre of the screen.
         /// </summary>
-        public int CentreX { get; }
+        public int PositionX { get; }
 
         /// <summary>
         /// The Y position of the cursor, relative to the centre of the screen.
         /// </summary>
-        public int CentreY { get; }
+        public int PositionY { get; }
 
-        /// <summary>
-        /// The X position relative to the top-left corner of the window.
-        /// </summary>
-        public int CornerX { get; }
-
-        /// <summary>
-        /// The Y position relative to the top-left corner of the window.
-        /// </summary>
-        public int CornerY { get; }
-
-        public LookInputData(double delta, double held, double vX, double vY, int centreX, int centreY, int cornerX, int cornerY)
+        public LookInputData(double delta, double held, double vX, double vY, int centreX, int centreY)
         {
             DeltaTime = delta;
             HeldTime = held;
             VelocityX = vX;
             VelocityY = vY;
-            CentreX = centreX;
-            CentreY = centreY;
-            CornerX = cornerX;
-            CornerY = cornerY;
+            PositionX = centreX;
+            PositionY = centreY;
         }
 
         /// <inheritdoc/>
         public override string ToString()
         {
-            return $"I[Move-d{DeltaTime}h{HeldTime}-v{VelocityX},{VelocityY}-@{CentreX},{CentreY}/{CornerX},{CornerY}]";
+            return $"I[Move-d{DeltaTime}h{HeldTime}-v{VelocityX},{VelocityY}-@{PositionX},{PositionY}]";
         }
     }
 }

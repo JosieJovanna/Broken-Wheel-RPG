@@ -1,6 +1,6 @@
 ﻿namespace BrokenWheel.Control.Models.InputData
 {
-    public class MovementInputDataObject
+    internal class MovementInputDataObject
     {
         public double HeldTime { get; set; } = 0.0;
         public double VelocityX { get; set; } = 0.0;
