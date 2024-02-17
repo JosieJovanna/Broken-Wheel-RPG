@@ -1,11 +1,14 @@
-﻿namespace BrokenWheel.Control
+﻿using BrokenWheel.Core.Events;
+using BrokenWheel.Core.Events.Handling;
+
+namespace BrokenWheel.Control
 {
     /// <summary>
     /// An object in charge of keeping track of raw player input.
     /// Translates into BrokenWheel input and is responsible for calling the <see cref="IRPGInputTracker"/> when processing.
     /// </summary>
     /// <typeparam name="TGameInputEvent"> The type of action which is used on the implementation level. </typeparam>
-    public interface IGameInputHandler<TGameInputEvent>
+    public interface IGameInputHandler<TGameInputEvent> : IEventHandler<GameModeUpdateEvent>
     {
         /// <summary>
         /// Processes game engine input mapping, in case it has been changed via in-game settings.
