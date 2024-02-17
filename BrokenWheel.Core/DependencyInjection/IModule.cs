@@ -4,7 +4,7 @@ using BrokenWheel.Core.Settings;
 
 namespace BrokenWheel.Core.DependencyInjection
 {
-    public interface IModule
+    public interface IModule //TODO: add lamda registration
     {
         /// <summary>
         /// Gets the <see cref="ILogger"/>.

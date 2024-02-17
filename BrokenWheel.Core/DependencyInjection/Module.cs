@@ -71,9 +71,17 @@ namespace BrokenWheel.Core.DependencyInjection
         {
             var type = typeof(TSettings);
             if (!_settingsRegistry.ContainsKey(type))
-                ThrowNotRegistered(type, "settings");
+                return CreateNewSettings<TSettings>();
 
             return (TSettings)_serviceRegistry[type];
+        }
+
+        private TSettings CreateNewSettings<TSettings>() where TSettings : class, ISettings
+        {
+            var constructor = typeof(TSettings).GetConstructor(Type.EmptyTypes);
+            var settings = (TSettings)constructor.Invoke(null);
+            RegisterSettings(settings);
+            return settings;
         }
 
         /// <inheritdoc/>
