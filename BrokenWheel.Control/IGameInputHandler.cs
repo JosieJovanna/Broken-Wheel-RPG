@@ -10,7 +10,7 @@
         /// <summary>
         /// Processes game engine input mapping, in case it has been changed via in-game settings.
         /// </summary>
-        void RefreshInputMapping();
+        void RefreshInputMap();
 
         /// <summary>
         /// Process results of input.

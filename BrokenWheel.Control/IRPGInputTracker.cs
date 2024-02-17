@@ -26,5 +26,6 @@ namespace BrokenWheel.Control
         /// </summary>
         /// <param name="delta"> Time passed since last call. </param>
         void ProcessInputs(double delta);
+
     }
 }

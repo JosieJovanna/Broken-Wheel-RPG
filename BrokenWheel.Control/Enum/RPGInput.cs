@@ -23,8 +23,7 @@ namespace BrokenWheel.Control.Enum
         Crafting,
         Rest,
 
-        LookMouse = RPGInputCategoryValue.MOVEMENT,
-        LookJoypad,
+        Look = RPGInputCategoryValue.MOVEMENT,
         MoveAnalog,
         MoveUp,
         MoveDown,

@@ -5,6 +5,7 @@ using BrokenWheel.Core.Logging;
 using BrokenWheel.Control.Enum;
 using BrokenWheel.Control.Models;
 using BrokenWheel.Core.Utilities;
+using BrokenWheel.Control.Models.InputData;
 
 namespace BrokenWheel.Control.Implementations
 {

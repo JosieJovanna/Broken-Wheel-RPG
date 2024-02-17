@@ -1,8 +1,8 @@
 ﻿using BrokenWheel.Control.Enum;
 
-namespace BrokenWheel.Control.Models
+namespace BrokenWheel.Control.Models.InputData
 {
-    internal class InputDataObject
+    public class InputDataObject
     {
         public RPGInput Input { get; set; }
         public PressType PressType { get; set; } = PressType.NotHeld;

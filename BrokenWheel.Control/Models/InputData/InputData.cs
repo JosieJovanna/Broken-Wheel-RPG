@@ -1,12 +1,8 @@
 ﻿using BrokenWheel.Control.Enum;
 
-namespace BrokenWheel.Control.Models
+namespace BrokenWheel.Control.Models.InputData
 {
-    /// <summary>
-    /// A struct tracking a single input's state.
-    /// Actively changed in the <see cref="IRPGInputTracker"/> but unaffected by downstream changes.
-    /// </summary>
-    public struct InputData
+    public readonly struct InputData
     {
         /// <summary>
         /// The abstracted input.
