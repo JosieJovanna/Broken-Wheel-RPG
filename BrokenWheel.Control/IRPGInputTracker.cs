@@ -1,5 +1,4 @@
 ﻿using BrokenWheel.Control.Enum;
-using BrokenWheel.Control.Models.InputData;
 
 namespace BrokenWheel.Control
 {
@@ -29,6 +28,5 @@ namespace BrokenWheel.Control
         /// </summary>
         /// <param name="delta"> Time passed since last call. </param>
         void ProcessInputs(double delta);
-
     }
 }
