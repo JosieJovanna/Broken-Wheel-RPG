@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using BrokenWheel.Core.DependencyInjection;
-using BrokenWheel.Core.Events;
-using BrokenWheel.Core.Events.Listening;
+using BrokenWheel.Core.Events.Observables;
 using BrokenWheel.Core.Logging;
+using BrokenWheel.Core.Settings.Events;
 using BrokenWheel.Core.Stats.Enum;
 using BrokenWheel.Core.Stats.Events;
 using BrokenWheel.Core.Stats.Info;
@@ -19,10 +19,10 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
         private readonly IModule _module;
         private readonly ILogger _logger;
         private readonly StatBarSettings _settings;
-        private readonly IEventListener<SettingsUpdateEvent<StatBarSettings>> _settingsUpdates;
+        private readonly Core.Events.Observables.IObservable<SettingsUpdateEvent<StatBarSettings>> _settingsUpdates;
         private readonly IStatBarSuiteDisplay _groupDisplay;
-        private readonly ICustomCategorizedEventListener<StatUpdatedEvent, Stat> _simpleListener;
-        private readonly ICustomCategorizedEventListener<ComplexStatUpdatedEvent, Stat> _complexListener;
+        private readonly IStringEnumSwitchObservable<StatUpdatedEvent, Stat> _simpleListener;
+        private readonly IStringEnumSwitchObservable<ComplexStatUpdatedEvent, Stat> _complexListener;
         private readonly IList<StatBar> _statBars = new List<StatBar>();
 
         private bool _isHiding;
@@ -37,8 +37,8 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
         /// <exception cref="ArgumentNullException"> If any argument is null. </exception>
         public StatBarSuite(
             IModule module,
-            ICustomCategorizedEventListener<StatUpdatedEvent, Stat> simpleListener,
-            ICustomCategorizedEventListener<ComplexStatUpdatedEvent, Stat> complexListener,
+            IStringEnumSwitchObservable<StatUpdatedEvent, Stat> simpleListener,
+            IStringEnumSwitchObservable<ComplexStatUpdatedEvent, Stat> complexListener,
             IStatBarSuiteDisplay suiteDisplay)
         {
             _module = module;
@@ -178,7 +178,7 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
         private void RemoveComplexStatBar(ComplexStatBar statBar)
         {
             if (statBar.Info.IsCustom)
-                _complexListener.UnsubscribeFromCategory(statBar.Info.Code, statBar);
+                _complexListener.UnsubscribeFromCustomCategory(statBar.Info.Code, statBar);
             else
                 _complexListener.UnsubscribeFromCategory(statBar.Info.Stat, statBar);
         }
@@ -186,7 +186,7 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
         private void RemoveSimpleStatBar(SimpleStatBar statBar)
         {
             if (statBar.Info.IsCustom)
-                _simpleListener.UnsubscribeFromCategory(statBar.Info.Code, statBar);
+                _simpleListener.UnsubscribeFromCustomCategory(statBar.Info.Code, statBar);
             else
                 _simpleListener.UnsubscribeFromCategory(statBar.Info.Stat, statBar);
         }
@@ -238,7 +238,7 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
             var display = _groupDisplay.CreateStatBarElement<IComplexStatBarDisplay>(statInfo.Name, colors);
             var statBar = new ComplexStatBar(_settings, display, statInfo, ReportPpp, HighestPpp, order);
             if (statInfo.IsCustom)
-                _complexListener.SubscribeToCategory(statInfo.Code, statBar);
+                _complexListener.SubscribeToCustomCategory(statInfo.Code, statBar);
             else
                 _complexListener.SubscribeToCategory(statInfo.Stat, statBar);
             _statBars.Add(statBar);
@@ -249,7 +249,7 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
             var display = _groupDisplay.CreateStatBarElement<IStatBarDisplay>(statInfo.Name, colors);
             var statBar = new SimpleStatBar(_settings, display, statInfo, ReportPpp, HighestPpp, order);
             if (statInfo.IsCustom)
-                _simpleListener.SubscribeToCategory(statInfo.Code, statBar);
+                _simpleListener.SubscribeToCustomCategory(statInfo.Code, statBar);
             else
                 _simpleListener.SubscribeToCategory(statInfo.Stat, statBar);
             _statBars.Add(statBar);

@@ -1,4 +1,4 @@
-﻿namespace BrokenWheel.Core.Enum
+﻿namespace BrokenWheel.Core.GameModes
 {
     public enum GameMode
     {

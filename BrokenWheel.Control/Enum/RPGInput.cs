@@ -8,6 +8,7 @@ namespace BrokenWheel.Control.Enum
     public enum RPGInput
     {
         NotRecognized = default,
+        Custom,
 
         #region Main Input
         Menu = RPGInputCategoryValue.MISC,

@@ -1,7 +1,6 @@
-﻿using BrokenWheel.Core.Enum;
-using BrokenWheel.Core.Events.Abstract;
+﻿using BrokenWheel.Core.Events;
 
-namespace BrokenWheel.Core.Events
+namespace BrokenWheel.Core.GameModes
 {
     public class GameModeUpdateEvent : GameEvent
     {

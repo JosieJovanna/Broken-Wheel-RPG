@@ -1,11 +1,11 @@
 ﻿using System;
-using BrokenWheel.Core.Events.Abstract;
+using BrokenWheel.Core.Events;
 using BrokenWheel.Core.Stats.Enum;
 using BrokenWheel.Core.Stats.Info;
 
 namespace BrokenWheel.Core.Stats.Events
 {
-    public abstract class AbstractStatUpdateEvent<T> : CustomEnumSwitchEvent<Stat>
+    public abstract class AbstractStatUpdateEvent<T> : StringEnumSwitchGameEvent<Stat>
         where T : Statistic
     {
         public StatInfo StatInfo { get; }

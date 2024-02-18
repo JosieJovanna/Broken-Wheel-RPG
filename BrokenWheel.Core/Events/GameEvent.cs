@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace BrokenWheel.Core.Events.Abstract
+namespace BrokenWheel.Core.Events
 {
-    public abstract class GameEvent : EventArgs
+    public abstract class GameEvent
     {
         public object Sender { get; }
         public string EntityId { get; }

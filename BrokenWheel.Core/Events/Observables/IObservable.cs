@@ -1,14 +1,13 @@
-﻿using BrokenWheel.Core.Events.Abstract;
-using BrokenWheel.Core.Events.Handling;
+﻿using BrokenWheel.Core.Events.Handling;
 
-namespace BrokenWheel.Core.Events.Listening
+namespace BrokenWheel.Core.Events.Observables
 {
     /// <summary>
     /// A class which allows its consumer to subscribe and unsubscribe any number of handlers for game events
     /// of the specified type.
     /// </summary>
     /// <typeparam name="TEvent"> The type of <see cref="GameEvent"/> being listened to. </typeparam>
-    public interface IEventListener<out TEvent> where TEvent : GameEvent
+    public interface IObservable<out TEvent> where TEvent : GameEvent
     {
         /// <summary>
         /// Adds an event handler object, if not already subscribed.

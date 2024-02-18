@@ -1,8 +1,7 @@
 ﻿using System;
-using BrokenWheel.Core.Events.Abstract;
 using BrokenWheel.Core.Events.Handling;
 
-namespace BrokenWheel.Core.Events.Listening
+namespace BrokenWheel.Core.Events.Observables
 {
     /// <summary>
     /// A class which allows its consumer to subscribe and unsubscribe any number of handlers for game events
@@ -10,7 +9,7 @@ namespace BrokenWheel.Core.Events.Listening
     /// </summary>
     /// <typeparam name="TEvent"> The type of <see cref="GameEvent"/> being listened to. </typeparam>
     /// <typeparam name="TEnum"> The enumerator type that the events are categorized by. </typeparam>
-    public interface ICategorizedEventListener<out TEvent, in TEnum> : IEventListener<TEvent>
+    public interface IEnumSwitchObservable<out TEvent, in TEnum> : IObservable<TEvent>
         where TEvent : EnumSwitchGameEvent<TEnum>
         where TEnum : struct, IConvertible // enum
     {

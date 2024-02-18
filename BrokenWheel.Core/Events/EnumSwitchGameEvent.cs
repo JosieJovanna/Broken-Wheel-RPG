@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BrokenWheel.Core.Events.Abstract
+namespace BrokenWheel.Core.Events
 {
     public abstract class EnumSwitchGameEvent<T> : GameEvent
         where T : struct, IConvertible // since prior to .Net7.3, cannot use enum as generic
