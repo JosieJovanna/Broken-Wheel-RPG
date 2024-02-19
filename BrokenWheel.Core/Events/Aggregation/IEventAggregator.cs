@@ -6,10 +6,10 @@ namespace BrokenWheel.Core.Events.Aggregation
 {
     public interface IEventAggregator
     {
-        Observables.IObservable<TEvent> GetObservable<TEvent>()
+        Observables.IEventObservable<TEvent> GetObservable<TEvent>()
             where TEvent : GameEvent;
 
-        ISubject<TEvent> GetSubject<TEvent>()
+        IEventSubject<TEvent> GetSubject<TEvent>()
             where TEvent : GameEvent;
 
         IEnumSwitchObservable<TEvent, TEnum> GetEnumSwitchObservable<TEvent, TEnum>()

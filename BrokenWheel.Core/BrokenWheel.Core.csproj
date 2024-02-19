@@ -6,13 +6,10 @@
 
   <ItemGroup>
     <Compile Remove="Damage\Events\**" />
-    <Compile Remove="Events\Observables\Implementation\**" />
     <Compile Remove="Properties\**" />
     <EmbeddedResource Remove="Damage\Events\**" />
-    <EmbeddedResource Remove="Events\Observables\Implementation\**" />
     <EmbeddedResource Remove="Properties\**" />
     <None Remove="Damage\Events\**" />
-    <None Remove="Events\Observables\Implementation\**" />
     <None Remove="Properties\**" />
   </ItemGroup>
 

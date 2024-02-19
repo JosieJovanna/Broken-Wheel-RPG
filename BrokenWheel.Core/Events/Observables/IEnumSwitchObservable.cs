@@ -9,7 +9,7 @@ namespace BrokenWheel.Core.Events.Observables
     /// </summary>
     /// <typeparam name="TEvent"> The type of <see cref="GameEvent"/> being listened to. </typeparam>
     /// <typeparam name="TEnum"> The enumerator type that the events are categorized by. </typeparam>
-    public interface IEnumSwitchObservable<out TEvent, in TEnum> : IObservable<TEvent>
+    public interface IEnumSwitchObservable<out TEvent, in TEnum> : IEventObservable<TEvent>
         where TEvent : EnumSwitchGameEvent<TEnum>
         where TEnum : struct, IConvertible // enum
     {

@@ -5,7 +5,7 @@ using BrokenWheel.Core.Events.Handling;
 namespace BrokenWheel.Core.Events.Observables.Subjects.Implementation
 {
     internal class EnumSwitchSubject<TEvent, TEnum> 
-        : Subject<TEvent>, IEnumSwitchSubject<TEvent, TEnum>
+        : EventSubject<TEvent>, IEnumSwitchSubject<TEvent, TEnum>
         where TEvent : EnumSwitchGameEvent<TEnum>
         where TEnum : struct, IConvertible // enum
     {

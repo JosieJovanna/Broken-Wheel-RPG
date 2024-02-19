@@ -3,7 +3,7 @@
 namespace BrokenWheel.Core.Events.Observables.Subjects
 {
     public interface IEnumSwitchSubject<TEvent, TEnum>
-        : IEnumSwitchObservable<TEvent, TEnum>, ISubject<TEvent>
+        : IEnumSwitchObservable<TEvent, TEnum>, IEventSubject<TEvent>
         where TEvent : EnumSwitchGameEvent<TEnum>
         where TEnum : struct, IConvertible // enum
     {

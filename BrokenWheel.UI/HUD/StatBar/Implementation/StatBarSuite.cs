@@ -19,7 +19,7 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
         private readonly IModule _module;
         private readonly ILogger _logger;
         private readonly StatBarSettings _settings;
-        private readonly Core.Events.Observables.IObservable<SettingsUpdateEvent<StatBarSettings>> _settingsUpdates;
+        private readonly Core.Events.Observables.IEventObservable<SettingsUpdateEvent<StatBarSettings>> _settingsUpdates;
         private readonly IStatBarSuiteDisplay _groupDisplay;
         private readonly IStringEnumSwitchObservable<StatUpdatedEvent, Stat> _simpleListener;
         private readonly IStringEnumSwitchObservable<ComplexStatUpdatedEvent, Stat> _complexListener;

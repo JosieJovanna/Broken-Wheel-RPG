@@ -2,12 +2,12 @@
 
 namespace BrokenWheel.Core.Events.Observables.Subjects.Implementation
 {
-    internal class Subject<TEvent> : ISubject<TEvent>
+    internal class EventSubject<TEvent> : IEventSubject<TEvent>
         where TEvent : GameEvent
     {
         private EventHandlerFunction<TEvent> _handlersForAllEvents;
 
-        public IObservable<TEvent> AsObservable() => this;
+        public IEventObservable<TEvent> AsObservable() => this;
 
         public void EmitEvent(TEvent @event) => _handlersForAllEvents?.Invoke(@event);
 

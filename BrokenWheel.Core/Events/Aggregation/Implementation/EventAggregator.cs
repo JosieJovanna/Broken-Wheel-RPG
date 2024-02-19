@@ -16,10 +16,10 @@ namespace BrokenWheel.Core.Events.Aggregation.Implementation
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public Observables.IObservable<TEvent> GetObservable<TEvent>()
+        public Observables.IEventObservable<TEvent> GetObservable<TEvent>()
             where TEvent : GameEvent
             => GetSubject<TEvent>().AsObservable();
-        public ISubject<TEvent> GetSubject<TEvent>() where TEvent : GameEvent
+        public IEventSubject<TEvent> GetSubject<TEvent>() where TEvent : GameEvent
         {
             throw new NotImplementedException();
         }
@@ -52,21 +52,25 @@ namespace BrokenWheel.Core.Events.Aggregation.Implementation
             throw new NotImplementedException();
         }
 
-        private void AddSubject<TEvent>
+        private TSubject CreateSubject<TSubject, TEvent>()
+            where TSubject : IEventSubject<TEvent>
+        {
+
+        }
 
         private class SubjectWrapper
         {
             public Type SubjectType { get; set; }
-            private readonly ISubject<GameEvent> _subject;
+            private readonly IEventSubject<GameEvent> _subject;
 
-            public SubjectWrapper(ISubject<GameEvent> subject)
+            public SubjectWrapper(IEventSubject<GameEvent> subject)
             {
                 _subject = subject ?? throw new ArgumentNullException(nameof(subject));
                 SubjectType = _subject.GetType();
             }
 
             public bool TryGetAs<TSubject, TEvent>(out TSubject subject)
-                where TSubject : ISubject<TEvent>
+                where TSubject : IEventSubject<TEvent>
                 where TEvent : GameEvent
             {
                 subject = default;
