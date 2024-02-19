@@ -7,8 +7,7 @@ namespace BrokenWheel.Control.Enum
     [JsonConverter(typeof(StringEnumConverter))]
     public enum RPGInput
     {
-        NotRecognized = default,
-        Custom,
+        Custom = default,
 
         #region Main Input
         Menu = RPGInputCategoryValue.MISC,

@@ -7,8 +7,8 @@ namespace BrokenWheel.Core.Events
     {
         public T EnumValue { get; }
 
-        protected EnumSwitchGameEvent(object sender, string entityId, T? type)
-            : base(sender, entityId)
+        protected EnumSwitchGameEvent(object sender, T? type)
+            : base(sender)
         {
             if (!typeof(T).IsEnum)
                 throw new InvalidOperationException($"Generic type {nameof(T)} must be an enum.");

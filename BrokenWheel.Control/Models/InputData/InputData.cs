@@ -1,4 +1,5 @@
-﻿using BrokenWheel.Control.Enum;
+﻿using System;
+using BrokenWheel.Control.Enum;
 
 namespace BrokenWheel.Control.Models.InputData
 {
@@ -7,7 +8,17 @@ namespace BrokenWheel.Control.Models.InputData
         /// <summary>
         /// The abstracted input.
         /// </summary>
-        public RPGInput Input { get; } // TODO: add support for custom input
+        public RPGInput Input { get; }
+
+        /// <summary>
+        /// Whether the input is of a custom type.
+        /// </summary>
+        public bool IsCustomInput { get; }
+
+        /// <summary>
+        /// A custom input not included in the base system.
+        /// </summary>
+        public string CustomInput { get; }
 
         /// <summary>
         /// Whether just pressed, just released, held, or not held.
@@ -28,6 +39,18 @@ namespace BrokenWheel.Control.Models.InputData
         public InputData(RPGInput input, PressType pressType, double deltaTime, double heldTime)
         {
             Input = input;
+            IsCustomInput = input == RPGInput.Custom;
+            CustomInput = "";
+            PressType = pressType;
+            DeltaTime = deltaTime;
+            HeldTime = heldTime;
+        }
+
+        public InputData(string input, PressType pressType, double deltaTime, double heldTime)
+        {
+            Input = RPGInput.Custom;
+            IsCustomInput = true;
+            CustomInput = input ?? throw new ArgumentNullException(nameof(input));
             PressType = pressType;
             DeltaTime = deltaTime;
             HeldTime = heldTime;
@@ -36,7 +59,9 @@ namespace BrokenWheel.Control.Models.InputData
         /// <inheritdoc/>
         public override string ToString()
         {
-            return $"I[{Input}: {PressType}-d{DeltaTime}h{HeldTime}]";
+            return IsCustomInput
+                ? $"I[Custom({CustomInput}): {PressType}-d{DeltaTime}h{HeldTime}]"
+                : $"I[{Input}: {PressType}-d{DeltaTime}h{HeldTime}]";
         }
     }
 }

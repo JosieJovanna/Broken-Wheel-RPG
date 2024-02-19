@@ -13,25 +13,13 @@ namespace BrokenWheel.Core.Events
         public bool IsOverridden { get; protected set; }
         public string OverrideCode { get; protected set; }
 
-        protected StringEnumSwitchGameEvent(object sender, string entityId, T? type)
-            : base(sender, entityId, type)
-        {
-            IsOverridden = false;
-        }
-
         /// <param name="overrideCode">
         /// If the override code is not null, will iset it as the override, ignoring enum value given.
         /// </param>
-        protected StringEnumSwitchGameEvent(object sender, string entityId, T? type, string overrideCode = null)
-            : base(sender, entityId, type)
+        protected StringEnumSwitchGameEvent(object sender, T? type, bool isOverridden = false, string overrideCode = null)
+            : base(sender, type)
         {
-            IsOverridden = false;
-        }
-
-        protected StringEnumSwitchGameEvent(object sender, string entityId, string overrideCode)
-            : base(sender, entityId, default)
-        {
-            IsOverridden = true;
+            IsOverridden = isOverridden;
             OverrideCode = overrideCode;
         }
     }
