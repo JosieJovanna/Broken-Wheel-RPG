@@ -9,7 +9,9 @@ namespace BrokenWheel.Core.Events.Observables.Subjects.Implementation
 
         public IEventObservable<TEvent> AsObservable() => this;
 
-        public void EmitEvent(TEvent @event) => _handlersForAllEvents?.Invoke(@event);
+        public virtual void Emit(TEvent @event) => EmitEvent(@event);
+
+        protected void EmitEvent(TEvent @event) => _handlersForAllEvents?.Invoke(@event);
 
         public void Subscribe(IEventHandler<TEvent> handler) => _handlersForAllEvents += handler.HandleEvent;
 

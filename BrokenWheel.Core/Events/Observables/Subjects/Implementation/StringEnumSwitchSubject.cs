@@ -14,9 +14,15 @@ namespace BrokenWheel.Core.Events.Observables.Subjects.Implementation
 
         public IStringEnumSwitchObservable<TEvent, TEnum> AsStringEnumSwitchObservable() => this;
 
-        public void EmitStringEnumSwitch(TEvent @event)
+        public override void Emit(TEvent @event)
         {
+            EmitEvent(@event);
             EmitEnumSwitchEvent(@event);
+            EmitStringEnumSwitch(@event);
+        }
+
+        protected void EmitStringEnumSwitch(TEvent @event)
+        {
             if (_customCategoryHandlers.TryGetValue(@event.OverrideCode, out var handlers))
                 handlers.Invoke(@event);
         }

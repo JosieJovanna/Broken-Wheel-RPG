@@ -10,6 +10,6 @@
         /// <summary>
         /// Update value and emit a <see cref="GameEvent"/> to all 
         /// </summary>
-        void EmitEvent(TEvent @event);
+        void Emit(TEvent @event);
     }
 }

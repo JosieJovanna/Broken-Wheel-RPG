@@ -4,7 +4,7 @@ using BrokenWheel.Core.Events.Handling;
 
 namespace BrokenWheel.Core.Events.Observables.Subjects.Implementation
 {
-    internal class EnumSwitchSubject<TEvent, TEnum> 
+    internal class EnumSwitchSubject<TEvent, TEnum>
         : EventSubject<TEvent>, IEnumSwitchSubject<TEvent, TEnum>
         where TEvent : EnumSwitchGameEvent<TEnum>
         where TEnum : struct, IConvertible // enum
@@ -14,14 +14,19 @@ namespace BrokenWheel.Core.Events.Observables.Subjects.Implementation
 
         public IEnumSwitchObservable<TEvent, TEnum> AsEnumSwitchObservable() => this;
 
-        public void EmitEnumSwitchEvent(TEvent @event)
+        public override void Emit(TEvent @event)
         {
             EmitEvent(@event);
+            EmitEnumSwitchEvent(@event);
+        }
+
+        protected void EmitEnumSwitchEvent(TEvent @event)
+        {
             if (_enumSwitchHandlers.TryGetValue(@event.EnumValue, out var handlers))
                 handlers.Invoke(@event);
         }
 
-        public void SubscribeToCategory(TEnum category, IEventHandler<TEvent> handler) 
+        public void SubscribeToCategory(TEnum category, IEventHandler<TEvent> handler)
             => SubscribeToCategory(category, handler.HandleEvent);
         public void SubscribeToCategory(TEnum category, EventHandlerFunction<TEvent> function)
         {
@@ -31,7 +36,7 @@ namespace BrokenWheel.Core.Events.Observables.Subjects.Implementation
                 _enumSwitchHandlers.Add(category, function);
         }
 
-        public void UnsubscribeFromCategory(TEnum category, IEventHandler<TEvent> handler) 
+        public void UnsubscribeFromCategory(TEnum category, IEventHandler<TEvent> handler)
             => UnsubscribeFromCategory(category, handler.HandleEvent);
         public void UnsubscribeFromCategory(TEnum category, EventHandlerFunction<TEvent> function)
         {

@@ -11,11 +11,5 @@ namespace BrokenWheel.Core.Events.Observables.Subjects
         /// Gets the subject as an observable with no emit capability.
         /// </summary>
         IStringEnumSwitchObservable<TEvent, TEnum> AsStringEnumSwitchObservable();
-
-        /// <summary>
-        /// Emits a <see cref="StringEnumSwitchGameEvent{T}"/> to any subscribers of that particular custom or enum value.
-        /// Also emits the event for subscribers that listen to any category, as well as listeners of the custom enum value.
-        /// </summary>
-        void EmitStringEnumSwitch(TEvent @event);
     }
 }
