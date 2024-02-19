@@ -7,18 +7,27 @@ namespace BrokenWheel.Core.Events.Observables.Subjects.Implementation
     {
         private EventHandlerFunction<TEvent> _handlersForAllEvents;
 
+        /// <inheritdoc/>
         public IEventObservable<TEvent> AsObservable() => this;
 
-        public virtual void Emit(TEvent @event) => EmitEvent(@event);
+        /// <inheritdoc/>
+        public virtual void Emit(TEvent @event) => EmitUniversalEvent(@event);
 
-        protected void EmitEvent(TEvent @event) => _handlersForAllEvents?.Invoke(@event);
+        /// <summary>
+        /// Emits the general event to all universal listeners.
+        /// </summary>
+        protected void EmitUniversalEvent(TEvent @event) => _handlersForAllEvents?.Invoke(@event);
 
+        /// <inheritdoc/>
         public void Subscribe(IEventHandler<TEvent> handler) => _handlersForAllEvents += handler.HandleEvent;
 
+        /// <inheritdoc/>
         public void Subscribe(EventHandlerFunction<TEvent> function) => _handlersForAllEvents += function;
 
+        /// <inheritdoc/>
         public void Unsubscribe(IEventHandler<TEvent> handler) => _handlersForAllEvents -= handler.HandleEvent;
 
+        /// <inheritdoc/>
         public void Unsubscribe(EventHandlerFunction<TEvent> function) => _handlersForAllEvents -= function;
     }
 }
