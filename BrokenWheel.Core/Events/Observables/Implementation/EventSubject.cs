@@ -3,7 +3,8 @@ using BrokenWheel.Core.Events.Handling;
 
 namespace BrokenWheel.Core.Events.Observables.Implementation
 {
-    internal class EventSubject<TEvent> : IEventSubject<TEvent>
+    internal class EventSubject<TEvent>
+        : IEventSubject<TEvent>
         where TEvent : GameEvent
     {
         private readonly IDictionary<string, EventHandlerFunction<TEvent>> _handlersByCategory
@@ -48,10 +49,10 @@ namespace BrokenWheel.Core.Events.Observables.Implementation
         /// <inheritdoc/>
         public void SubscribeToCategory(string category, EventHandlerFunction<TEvent> function)
         {
-            if (_handlersByCategory.ContainsKey(category))
-                _handlersByCategory[category] += function;
+            if (IsEventUncategorized())
+                Subscribe(function);
             else
-                _handlersByCategory.Add(category, function);
+                CategorySubscribe(category, function);
         }
 
         /// <inheritdoc/>
@@ -60,6 +61,27 @@ namespace BrokenWheel.Core.Events.Observables.Implementation
 
         /// <inheritdoc/>
         public void UnsubscribeFromCategory(string category, EventHandlerFunction<TEvent> function)
+        {
+            if (IsEventUncategorized())
+                Unsubscribe(function);
+            else
+                CategoryUnsubscribe(category, function);
+        }
+
+        private bool IsEventUncategorized()
+        {
+            return typeof(UncategorizedGameEvent).IsAssignableFrom(typeof(TEvent));
+        }
+
+        private void CategorySubscribe(string category, EventHandlerFunction<TEvent> function)
+        {
+            if (_handlersByCategory.ContainsKey(category))
+                _handlersByCategory[category] += function;
+            else
+                _handlersByCategory.Add(category, function);
+        }
+
+        private void CategoryUnsubscribe(string category, EventHandlerFunction<TEvent> function)
         {
             if (_handlersByCategory.ContainsKey(category))
                 _handlersByCategory[category] -= function;
