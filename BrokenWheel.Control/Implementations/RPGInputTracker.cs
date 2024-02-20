@@ -6,21 +6,34 @@ using BrokenWheel.Control.Enum;
 using BrokenWheel.Control.Models;
 using BrokenWheel.Core.Utilities;
 using BrokenWheel.Control.Models.InputData;
+using BrokenWheel.Core.Events.Observables;
+using BrokenWheel.Control.Events;
 
 namespace BrokenWheel.Control.Implementations
 {
     public class RPGInputTracker : IRPGInputTracker
     {
         private readonly ILogger _logger;
-        private readonly IDictionary<RPGInput, InputDataObject> _inputTrackers;
-        private readonly IList<InputDataObject> _activeInputs = new List<InputDataObject>();
+        private readonly IDictionary<RPGInput, ButtonInputDataObject> _inputTrackers;
+        private readonly IList<ButtonInputDataObject> _activeInputs = new List<ButtonInputDataObject>();
+        private readonly IEventSubject<ButtonInputEvent> _buttonSubject;
+        private readonly IEventSubject<MoveInputEvent> _moveSubject;
+        private readonly IEventSubject<LookInputEvent> _lookSubject;
 
-        public RPGInputTracker(ILogger logger)
+        public RPGInputTracker(
+            ILogger logger,
+            IEventAggregator eventAggregator)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
             _inputTrackers = EnumUtils.GetAllEnumValues<RPGInput>()
-                .ToDictionary(_ => _, _ => new InputDataObject(_));
+                .ToDictionary(_ => _, _ => new ButtonInputDataObject(_));
+
+            if (eventAggregator == null)
+                throw new ArgumentNullException(nameof(eventAggregator));
+            _buttonSubject = eventAggregator.GetSubject<ButtonInputEvent>();
+            _moveSubject = eventAggregator.GetSubject<MoveInputEvent>();
+            _lookSubject = eventAggregator.GetSubject<LookInputEvent>();
         }
 
         public void TrackButtonInput(RPGInput input, bool isPressed)
@@ -31,7 +44,7 @@ namespace BrokenWheel.Control.Implementations
             AddOrRemoveActiveTracker(tracker);
         }
 
-        private static void SwitchPressType(bool isPressed, InputDataObject tracker)
+        private static void SwitchPressType(bool isPressed, ButtonInputDataObject tracker)
         {
             switch (tracker.PressType)
             {
@@ -51,7 +64,7 @@ namespace BrokenWheel.Control.Implementations
             }
         }
 
-        private void AddOrRemoveActiveTracker(InputDataObject tracker)
+        private void AddOrRemoveActiveTracker(ButtonInputDataObject tracker)
         {
             if (tracker.PressType == PressType.NotHeld)
             {

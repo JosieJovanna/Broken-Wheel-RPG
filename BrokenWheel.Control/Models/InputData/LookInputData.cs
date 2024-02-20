@@ -2,6 +2,9 @@
 {
     public readonly struct LookInputData
     {
+        public const string CATEGORY_STOPPED = "Stopped";
+        public const string CATEGORY_MOVING = "Moving";
+
         /// <summary>
         /// The amount of time since the last tick.
         /// </summary>
@@ -33,6 +36,8 @@
         /// </summary>
         public int PositionY { get; }
 
+        public bool IsStopped { get; }
+
         public LookInputData(double delta, double held, double vX, double vY, int centreX, int centreY)
         {
             DeltaTime = delta;
@@ -41,12 +46,14 @@
             VelocityY = vY;
             PositionX = centreX;
             PositionY = centreY;
+
+            IsStopped = vX == 0.0 && vY == 0.0;
         }
 
         /// <inheritdoc/>
         public override string ToString()
         {
-            return $"I[Move-d{DeltaTime}h{HeldTime}-v{VelocityX},{VelocityY}-@{PositionX},{PositionY}]";
+            return $"I[Move-d{DeltaTime}h{HeldTime}-v{VelocityX},{VelocityY}-@{PositionX},{PositionY}{(IsStopped ? " (stopped)" : "")}]";
         }
     }
 }

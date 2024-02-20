@@ -2,17 +2,17 @@
 
 namespace BrokenWheel.Control.Models.InputData
 {
-    public class InputDataObject
+    public class ButtonInputDataObject
     {
         public RPGInput Input { get; set; }
         public PressType PressType { get; set; } = PressType.NotHeld;
         public double HeldTime { get; set; } = 0;
 
-        public InputDataObject(RPGInput input)
+        public ButtonInputDataObject(RPGInput input)
         {
             Input = input;
         }
 
-        public InputData GetTick(double delta) => new InputData(Input, PressType, delta, HeldTime);
+        public ButtonInputData GetTick(double delta) => new ButtonInputData(Input, PressType, delta, HeldTime);
     }
 }

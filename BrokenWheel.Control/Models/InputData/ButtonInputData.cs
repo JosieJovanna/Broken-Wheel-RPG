@@ -3,7 +3,7 @@ using BrokenWheel.Control.Enum;
 
 namespace BrokenWheel.Control.Models.InputData
 {
-    public readonly struct InputData
+    public readonly struct ButtonInputData
     {
         /// <summary>
         /// The abstracted input.
@@ -36,7 +36,7 @@ namespace BrokenWheel.Control.Models.InputData
         /// </summary>
         public double HeldTime { get; }
 
-        public InputData(RPGInput input, PressType pressType, double deltaTime, double heldTime)
+        public ButtonInputData(RPGInput input, PressType pressType, double deltaTime, double heldTime)
         {
             Input = input;
             IsCustomInput = input == RPGInput.Custom;
@@ -46,7 +46,7 @@ namespace BrokenWheel.Control.Models.InputData
             HeldTime = heldTime;
         }
 
-        public InputData(string input, PressType pressType, double deltaTime, double heldTime)
+        public ButtonInputData(string input, PressType pressType, double deltaTime, double heldTime)
         {
             Input = RPGInput.Custom;
             IsCustomInput = true;

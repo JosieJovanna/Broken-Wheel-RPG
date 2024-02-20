@@ -4,6 +4,6 @@ namespace BrokenWheel.Control
 {
     public interface IInputProcessor
     {
-        void ProcessInput(InputData data);
+        void ProcessInput(ButtonInputData data);
     }
 }

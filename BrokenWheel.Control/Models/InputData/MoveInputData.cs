@@ -1,7 +1,9 @@
 ﻿namespace BrokenWheel.Control.Models.InputData
 {
-    public readonly struct MovementInputData
+    public readonly struct MoveInputData
     {
+        public const string CATEGORY = "Movement";
+
         /// <summary>
         /// The amount of time since the last tick.
         /// </summary>
@@ -23,7 +25,7 @@
         /// </summary>
         public double VelocityY { get; }
 
-        public MovementInputData(double delta, double heldTime, double vX, double vY)
+        public MoveInputData(double delta, double heldTime, double vX, double vY)
         {
             DeltaTime = delta;
             HeldTime = heldTime;

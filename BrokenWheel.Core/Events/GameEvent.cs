@@ -2,7 +2,7 @@
 
 namespace BrokenWheel.Core.Events
 {
-    public abstract class GameEvent
+    public abstract class GameEvent // TODO: add override where all categories are effectively the same
     {
         public object Sender { get; }
 
