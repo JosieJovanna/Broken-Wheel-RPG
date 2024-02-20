@@ -1,5 +1,5 @@
-﻿using BrokenWheel.Control.Models.InputData;
-using BrokenWheel.Core.Events;
+﻿using BrokenWheel.Core.Events;
+using BrokenWheel.Control.Models.InputData;
 
 namespace BrokenWheel.Control.Events
 {

@@ -10,7 +10,7 @@ public class GetAllEnumValuesTests
     [Fact]
     public void GetAllEnumValues_ThrowsArgumentException_WhenTypeIsNotEnum()
     {
-        Assert.Throws<ArgumentException>(() => EnumUtils.GetAllEnumValues<TestClass>());
+        Assert.Throws<ArgumentException>(() => EnumUtil.GetAllEnumValues<TestClass>());
     }
 
     private class TestClass
@@ -21,7 +21,7 @@ public class GetAllEnumValuesTests
     [Fact]
     public void GetAllEnumValues_ReturnsAllStats_ForEnum()
     {
-        var values = EnumUtils.GetAllEnumValues<TestEnum>();
+        var values = EnumUtil.GetAllEnumValues<TestEnum>();
         Assert.Contains(TestEnum.ValueOne, values);
         Assert.Contains(TestEnum.ValueTwo, values);
     }
@@ -35,7 +35,7 @@ public class GetAllEnumValuesTests
     [Fact]
     public void GetAllEnumValues_ReturnsAllStats_WhenTypeIsStat()
     {
-        var values = EnumUtils.GetAllEnumValues<Stat>();
+        var values = EnumUtil.GetAllEnumValues<Stat>();
         var expected = AllStats();
 
         foreach (var stat in expected)

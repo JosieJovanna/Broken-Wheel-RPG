@@ -8,6 +8,8 @@
         public int PositionX { get; set; } = 0;
         public int PositionY { get; set; } = 0;
 
+        public bool IsStopped() => VelocityX == 0 && VelocityY == 0;
+
         public LookInputData GetTick(double delta) => new LookInputData(delta, HeldTime, VelocityX, VelocityY, PositionX, PositionY);
     }
 }

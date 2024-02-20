@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace BrokenWheel.Core.Utilities
 {
-    public static class EnumUtils
+    public static class EnumUtil
     {
         /// <summary>
         /// Gets all values for a given enum type. Useful for instantiating <see cref="Stats.Enum.Stat"/>s.

@@ -2,11 +2,11 @@
 using System.Linq;
 using System.Collections.Generic;
 using BrokenWheel.Core.Logging;
+using BrokenWheel.Core.Utilities;
+using BrokenWheel.Core.Events.Observables;
 using BrokenWheel.Control.Enum;
 using BrokenWheel.Control.Models;
-using BrokenWheel.Core.Utilities;
 using BrokenWheel.Control.Models.InputData;
-using BrokenWheel.Core.Events.Observables;
 using BrokenWheel.Control.Events;
 
 namespace BrokenWheel.Control.Implementations
@@ -15,19 +15,20 @@ namespace BrokenWheel.Control.Implementations
     {
         private readonly ILogger _logger;
         private readonly IDictionary<RPGInput, ButtonInputDataObject> _inputTrackers;
-        private readonly IList<ButtonInputDataObject> _activeInputs = new List<ButtonInputDataObject>();
         private readonly IEventSubject<ButtonInputEvent> _buttonSubject;
         private readonly IEventSubject<MoveInputEvent> _moveSubject;
         private readonly IEventSubject<LookInputEvent> _lookSubject;
+
+        private readonly IDictionary<RPGInput, ButtonInputDataObject> _inputObjectByType = FullEnumDictionary();
+        private readonly IList<ButtonInputDataObject> _activeInputs = new List<ButtonInputDataObject>();
+        private readonly MoveInputDataObject _moveInput = new MoveInputDataObject();
+        private readonly LookInputDataObject _lookInput = new LookInputDataObject();
 
         public RPGInputTracker(
             ILogger logger,
             IEventAggregator eventAggregator)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-
-            _inputTrackers = EnumUtils.GetAllEnumValues<RPGInput>()
-                .ToDictionary(_ => _, _ => new ButtonInputDataObject(_));
 
             if (eventAggregator == null)
                 throw new ArgumentNullException(nameof(eventAggregator));
@@ -36,7 +37,14 @@ namespace BrokenWheel.Control.Implementations
             _lookSubject = eventAggregator.GetSubject<LookInputEvent>();
         }
 
-        public void TrackButtonInput(RPGInput input, bool isPressed)
+        private static IDictionary<RPGInput, ButtonInputDataObject> FullEnumDictionary()
+        {
+            return EnumUtil.GetAllEnumValues<RPGInput>()
+                .ToDictionary(_ => _, _ => new ButtonInputDataObject(_));
+        }
+
+        /// <inheritdoc/>
+        public void TrackButtonInput(RPGInput input, bool isPressed) // TODO: add support for custom input
         {
             _logger.LogCategory("RPG Input", $"{input}-{(isPressed ? "pressed" : "released")}");
             var tracker = _inputTrackers[input];
@@ -77,28 +85,54 @@ namespace BrokenWheel.Control.Implementations
             }
         }
 
+        /// <inheritdoc/>
+        public void TrackMoveInput(double vX, double vY)
+        {
+            _moveInput.VelocityX = vX;
+            _moveInput.VelocityY = vY;
+        }
+
+        /// <inheritdoc/>
+        public void TrackLookInput(double vX, double vY, int posX, int posY)
+        {
+            _lookInput.VelocityX = vX;
+            _lookInput.VelocityY = vY;
+            _lookInput.PositionX = posX;
+            _lookInput.PositionY = posY;
+        }
+
+        /// <inheritdoc/>
         public void ProcessInputs(double delta)
         {
             foreach (var tracker in _activeInputs)
-            {
-                var inputData = tracker.GetTick(delta);
-
-            }
+                EmitActiveButtonInput(delta, tracker);
+            EmitMoveInput(delta);
+            EmitLookInput(delta);
         }
 
-        public void TrackLookInput(LookInputData lookInput)
+        private void EmitActiveButtonInput(double delta, ButtonInputDataObject tracker)
         {
-            throw new NotImplementedException();
+            if (tracker.PressType != PressType.NotHeld)
+                tracker.HeldTime += delta;
+            var inputData = tracker.GetTick(delta);
+            var buttonEvent = new ButtonInputEvent(this, inputData);
+            _buttonSubject.Emit(buttonEvent);
         }
 
-        public void TrackMoveInput(double vX, double vY)
+        private void EmitMoveInput(double delta)
         {
-            throw new NotImplementedException();
+            _moveInput.HeldTime = _moveInput.IsStopped() ? 0 : _moveInput.HeldTime + delta;
+            var moveData = _moveInput.GetTick(delta);
+            var moveEvent = new MoveInputEvent(this, moveData);
+            _moveSubject.Emit(moveEvent);
         }
 
-        public void TrackLookInput(double vX, double vY, int posX, int posY)
+        private void EmitLookInput(double delta)
         {
-            throw new NotImplementedException();
+            _lookInput.HeldTime = _lookInput.IsStopped() ? 0 : _lookInput.HeldTime + delta;
+            var lookData = _lookInput.GetTick(delta);
+            var lookEvent = new LookInputEvent(this, lookData);
+            _lookSubject.Emit(lookEvent);
         }
     }
 }

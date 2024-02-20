@@ -77,7 +77,7 @@ namespace BrokenWheel.Core.Stats.Info
 
         private static IList<Stat> GetAllNonCustomEnums()
         {
-            var allEnumVals = EnumUtils.GetAllEnumValues<Stat>();
+            var allEnumVals = EnumUtil.GetAllEnumValues<Stat>();
             allEnumVals.Remove(Stat.Custom);
             return allEnumVals;
         }

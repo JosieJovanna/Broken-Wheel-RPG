@@ -6,6 +6,8 @@
         public double VelocityX { get; set; } = 0.0;
         public double VelocityY { get; set; } = 0.0;
 
+        public bool IsStopped() => VelocityX == 0 && VelocityY == 0;
+
         public MoveInputData GetTick(double delta) => new MoveInputData(delta, HeldTime, VelocityX, VelocityY);
     }
 }
