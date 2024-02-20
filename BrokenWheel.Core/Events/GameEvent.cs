@@ -6,14 +6,23 @@ namespace BrokenWheel.Core.Events
     {
         public object Sender { get; }
 
+        public string Category { get; }
+
         /// <summary>
-        /// Creates a new game event to be delivered to subscribers.
+        /// A game event with metadata for the sending object, and the category of event.
+        /// This allows handlers to listen to only certain categories of event.
         /// </summary>
-        /// <param name="sender"> The object which sent this event. </param>
-        /// <exception cref="ArgumentNullException"> When any argument is null. </exception>
-        protected GameEvent(object sender)
+        /// <param name="sender"> The object that created this event. </param>
+        /// <param name="category"> The category of event. </param>
+        /// <exception cref="ArgumentNullException"> If sender is null. </exception>
+        /// <exception cref="InvalidOperationException"> If category is null or whitespace. </exception>
+        protected GameEvent(object sender, string category)
         {
             Sender = sender ?? throw new ArgumentNullException(nameof(sender));
+
+            if (string.IsNullOrWhiteSpace(category))
+                throw new InvalidOperationException($"{nameof(category)} cannot be null or whitespace.");
+            Category = category;
         }
     }
 }

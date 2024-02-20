@@ -19,5 +19,13 @@ namespace BrokenWheel.Core.Stats.Info
         public int MaxValue { get; internal set; } = 100;
         public int MinValue { get; internal set; } = 0;
         public int DefaultValue { get; internal set; } = 10;
+
+        /// <summary>
+        /// Returns <see cref="Stat"/>.ToString() if not custom; otherwise returns <see cref="Code"/>.
+        /// </summary>
+        public string Id()
+        {
+            return IsCustom ? Stat.ToString() : Code;
+        }
     }
 }

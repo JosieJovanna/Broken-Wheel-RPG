@@ -6,10 +6,9 @@ namespace BrokenWheel.Core.Stats.Events
     {
         public StatUpdatedEvent(
             object sender,
-            string entityId,
             StatInfo statInfo,
             Statistic stat)
-            : base(sender, entityId, statInfo, stat)
+            : base(sender, statInfo, stat)
         {
         }
     }
