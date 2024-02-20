@@ -2,9 +2,6 @@
 {
     public readonly struct LookInputData
     {
-        public const string CATEGORY_STOPPED = "Stopped";
-        public const string CATEGORY_MOVING = "Moving";
-
         /// <summary>
         /// The amount of time since the last tick.
         /// </summary>

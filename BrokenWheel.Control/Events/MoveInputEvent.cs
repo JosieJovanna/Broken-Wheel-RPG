@@ -3,12 +3,12 @@ using BrokenWheel.Core.Events;
 
 namespace BrokenWheel.Control.Events
 {
-    internal class MoveInputEvent : GameEvent
+    internal class MoveInputEvent : UncategorizedGameEvent
     {
         public MoveInputData Data { get; }
 
         public MoveInputEvent(object sender, MoveInputData data)
-            : base(sender, MoveInputData.CATEGORY)
+            : base(sender)
         {
             Data = data;
         }

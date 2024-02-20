@@ -2,8 +2,6 @@
 {
     public readonly struct MoveInputData
     {
-        public const string CATEGORY = "Movement";
-
         /// <summary>
         /// The amount of time since the last tick.
         /// </summary>
