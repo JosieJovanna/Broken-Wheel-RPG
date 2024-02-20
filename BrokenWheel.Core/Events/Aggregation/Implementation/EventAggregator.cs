@@ -26,28 +26,13 @@ namespace BrokenWheel.Core.Events.Aggregation.Implementation
             where TEvent : GameEvent
             => FindOrCreateSubject<IEventSubject<TEvent>, TEvent>();
 
-        public IEnumSwitchObservable<TEvent, TEnum> GetEnumSwitchObservable<TEvent, TEnum>()
-            where TEvent : EnumSwitchGameEvent<TEnum>
-            where TEnum : struct, IConvertible
-            => GetEnumSwitchSubject<TEvent, TEnum>().AsEnumSwitchObservable();
+        public ICategorizedObservable<TEvent> GetCategorizedObservable<TEvent>()
+            where TEvent : CategorizedEvent
+            => GetCategorizedSubject<TEvent>().AsCategorizedObservable();
 
-        public IEnumSwitchSubject<TEvent, TEnum> GetEnumSwitchSubject<TEvent, TEnum>()
-            where TEvent : EnumSwitchGameEvent<TEnum>
-            where TEnum : struct, IConvertible
-            => FindOrCreateSubject<IEnumSwitchSubject<TEvent, TEnum>, TEvent>();
-
-        public IStringEnumSwitchObservable<TEvent, TEnum> GetStringEnumSwitchObservable<TEvent, TEnum>()
-            where TEvent : StringEnumSwitchGameEvent<TEnum>
-            where TEnum : struct, IConvertible
-            => GetStringEnumSwitchSubject<TEvent, TEnum>().AsStringEnumSwitchObservable();
-
-        public IStringEnumSwitchSubject<TEvent, TEnum> GetStringEnumSwitchSubject<TEvent, TEnum>()
-            where TEvent : StringEnumSwitchGameEvent<TEnum>
-            where TEnum : struct, IConvertible
-        {
-            if (TryGetSubject<IStringEnumSwitchSubject<TEvent, TEnum>, TEvent>(out var subject))
-                return subject;
-        }
+        public ICategorizedSubject<TEvent> GetCategorizedSubject<TEvent>()
+            where TEvent : CategorizedEvent
+            => FindOrCreateSubject<ICategorizedSubject<TEvent>, TEvent>();
 
         /// <summary>
         /// Gets a subject for the given type if it exists.
@@ -92,9 +77,8 @@ namespace BrokenWheel.Core.Events.Aggregation.Implementation
             where TSubject : IEventSubject<TEvent>
             where TEvent : GameEvent
         {
-            var eventType = typeof(TEvent);
-            if (typeof(EnumSwitchGameEvent<>).IsAssignableFrom(eventType))
-                typeof(IEnumSwitchSubject<TEvent, >)
+            if (typeof(CategorizedEvent).IsAssignableFrom(typeof(TEvent)))
+                return new CategorizedSubject<TEvent>();
         }
 
         /*private TSubject CreateSubject<TSubject, TEvent>()

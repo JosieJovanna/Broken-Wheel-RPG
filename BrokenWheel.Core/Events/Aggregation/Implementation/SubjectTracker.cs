@@ -14,7 +14,7 @@ namespace BrokenWheel.Core.Events.Aggregation.Implementation
             where TSubject : IEventSubject<TEvent>
             where TEvent : GameEvent
         {
-            _wrappers.Where(_ => _.GetType().IsAssignableFrom(typeof(TSubject)))
+            _wrappers.Where(_ => _.EventType == typeof(TEvent));
         }
     }
 }
