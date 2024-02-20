@@ -23,12 +23,18 @@
         /// </summary>
         public double VelocityY { get; }
 
+        /// <summary>
+        /// Whether velocity is 0.
+        /// </summary>
+        public bool IsStopped { get; }
+
         public MoveInputData(double delta, double heldTime, double vX, double vY)
         {
             DeltaTime = delta;
             HeldTime = heldTime;
             VelocityX = vX;
             VelocityY = vY;
+            IsStopped = VelocityX == 0 && VelocityY == 0;
         }
 
         /// <inheritdoc/>

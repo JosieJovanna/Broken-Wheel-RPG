@@ -3,12 +3,15 @@ using BrokenWheel.Core.Events;
 
 namespace BrokenWheel.Control.Events
 {
-    internal class MoveInputEvent : UncategorizedGameEvent
+    internal class MoveInputEvent : GameEvent
     {
+        public const string CATEGORY_STOPPED = "Stopped";
+        public const string CATEGORY_MOVING = "Moving";
+
         public MoveInputData Data { get; }
 
         public MoveInputEvent(object sender, MoveInputData data)
-            : base(sender)
+            : base(sender, data.IsStopped ? CATEGORY_STOPPED : CATEGORY_MOVING)
         {
             Data = data;
         }
