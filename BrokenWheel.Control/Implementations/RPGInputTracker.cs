@@ -14,7 +14,6 @@ namespace BrokenWheel.Control.Implementations
     public class RPGInputTracker : IRPGInputTracker
     {
         private readonly ILogger _logger;
-        private readonly IDictionary<RPGInput, ButtonInputDataObject> _inputTrackers;
         private readonly IEventSubject<ButtonInputEvent> _buttonSubject;
         private readonly IEventSubject<MoveInputEvent> _moveSubject;
         private readonly IEventSubject<LookInputEvent> _lookSubject;
@@ -46,42 +45,26 @@ namespace BrokenWheel.Control.Implementations
         /// <inheritdoc/>
         public void TrackButtonInput(RPGInput input, bool isPressed) // TODO: add support for custom input
         {
-            _logger.LogCategory("RPG Input", $"{input}-{(isPressed ? "pressed" : "released")}");
-            var tracker = _inputTrackers[input];
-            SwitchPressType(isPressed, tracker);
-            AddOrRemoveActiveTracker(tracker);
+            var tracker = _inputObjectByType[input];
+            tracker.PressType = SwitchPressType(isPressed, tracker);
+            tracker.IsInputThisTick = true;
+            if (tracker.PressType == PressType.Clicked)
+                _activeInputs.Add(tracker);
         }
 
-        private static void SwitchPressType(bool isPressed, ButtonInputDataObject tracker)
+        private static PressType SwitchPressType(bool isPressed, ButtonInputDataObject tracker)
         {
             switch (tracker.PressType)
             {
                 case PressType.Clicked:
-                    tracker.PressType = isPressed ? PressType.Held : PressType.Released;
-                    break;
+                    return isPressed ? PressType.Held : PressType.Released;
                 case PressType.Released:
-                    tracker.PressType = isPressed ? PressType.Clicked : PressType.NotHeld;
-                    break;
+                    return isPressed ? PressType.Clicked : PressType.NotHeld;
                 case PressType.Held:
-                    tracker.PressType = isPressed ? PressType.Held : PressType.Released;
-                    break;
+                    return isPressed ? PressType.Held : PressType.Released;
                 case PressType.NotHeld:
                 default:
-                    tracker.PressType = isPressed ? PressType.Clicked : PressType.NotHeld;
-                    break;
-            }
-        }
-
-        private void AddOrRemoveActiveTracker(ButtonInputDataObject tracker)
-        {
-            if (tracker.PressType == PressType.NotHeld)
-            {
-                tracker.HeldTime = 0;
-                _activeInputs.Remove(tracker);
-            }
-            else
-            {
-                _activeInputs.Add(tracker);
+                    return isPressed ? PressType.Clicked : PressType.NotHeld;
             }
         }
 
@@ -104,22 +87,46 @@ namespace BrokenWheel.Control.Implementations
         /// <inheritdoc/>
         public void ProcessInputs(double delta)
         {
-            foreach (var tracker in _activeInputs)
-                EmitActiveButtonInput(delta, tracker);
-            EmitMoveInput(delta);
-            EmitLookInput(delta);
+            foreach (var tracker in _activeInputs.ToArray())
+                ProcessActiveButtonInput(delta, tracker);
+            ProcessMoveInput(delta);
+            ProcessLookInput(delta);
         }
 
-        private void EmitActiveButtonInput(double delta, ButtonInputDataObject tracker)
+        private void ProcessActiveButtonInput(double delta, ButtonInputDataObject tracker)
         {
+            if (!tracker.IsInputThisTick)
+                TickActiveButtonInput(delta, tracker);
             if (tracker.PressType != PressType.NotHeld)
+                EmitButtonInput(delta, tracker);
+            tracker.IsInputThisTick = false;
+        }
+
+        private void TickActiveButtonInput(double delta, ButtonInputDataObject tracker)
+        {
+            if (tracker.PressType == PressType.Clicked)
+                tracker.PressType = PressType.Held;
+            if (tracker.PressType == PressType.Released)
+                EndButtonInput(tracker);
+            else
                 tracker.HeldTime += delta;
+        }
+
+        private void EndButtonInput(ButtonInputDataObject tracker)
+        {
+            tracker.PressType = PressType.NotHeld;
+            tracker.HeldTime = 0;
+            _activeInputs.Remove(tracker);
+        }
+
+        private void EmitButtonInput(double delta, ButtonInputDataObject tracker)
+        {
             var inputData = tracker.GetTick(delta);
             var buttonEvent = new ButtonInputEvent(this, inputData);
             _buttonSubject.Emit(buttonEvent);
         }
 
-        private void EmitMoveInput(double delta)
+        private void ProcessMoveInput(double delta)
         {
             _moveInput.HeldTime = _moveInput.IsStopped() ? 0 : _moveInput.HeldTime + delta;
             var moveData = _moveInput.GetTick(delta);
@@ -127,7 +134,7 @@ namespace BrokenWheel.Control.Implementations
             _moveSubject.Emit(moveEvent);
         }
 
-        private void EmitLookInput(double delta)
+        private void ProcessLookInput(double delta)
         {
             _lookInput.HeldTime = _lookInput.IsStopped() ? 0 : _lookInput.HeldTime + delta;
             var lookData = _lookInput.GetTick(delta);

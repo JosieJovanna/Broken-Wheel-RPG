@@ -7,6 +7,7 @@ namespace BrokenWheel.Control.Models.InputData
         public RPGInput Input { get; set; }
         public PressType PressType { get; set; } = PressType.NotHeld;
         public double HeldTime { get; set; } = 0;
+        public bool IsInputThisTick { get; set; } = false;
 
         public ButtonInputDataObject(RPGInput input)
         {
