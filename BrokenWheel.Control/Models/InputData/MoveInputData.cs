@@ -40,7 +40,7 @@
         /// <inheritdoc/>
         public override string ToString()
         {
-            return $"I[Move-d{DeltaTime}h{HeldTime}-v{VelocityX},{VelocityY}]";
+            return $"MI[Move:{HeldTime}s|v({VelocityX},{VelocityY})|d{DeltaTime}]";
         }
     }
 }

@@ -50,7 +50,7 @@
         /// <inheritdoc/>
         public override string ToString()
         {
-            return $"I[Look-d{DeltaTime}h{HeldTime}-v{VelocityX},{VelocityY}-@{PositionX},{PositionY}{(IsStopped ? " (stopped)" : "")}]";
+            return $"LI[Look:{HeldTime}s|v({VelocityX},{VelocityY})|@({PositionX},{PositionY})|d{DeltaTime}]";
         }
     }
 }

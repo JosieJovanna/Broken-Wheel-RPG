@@ -3,7 +3,7 @@ using BrokenWheel.Control.Models.InputData;
 
 namespace BrokenWheel.Control.Events
 {
-    internal class MoveInputEvent : GameEvent
+    public class MoveInputEvent : GameEvent
     {
         public const string CATEGORY_STOPPED = "Stopped";
         public const string CATEGORY_MOVING = "Moving";

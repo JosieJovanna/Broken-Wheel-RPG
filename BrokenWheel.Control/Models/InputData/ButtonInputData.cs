@@ -59,9 +59,10 @@ namespace BrokenWheel.Control.Models.InputData
         /// <inheritdoc/>
         public override string ToString()
         {
+            var pressData = $"{PressType}|{HeldTime}s|d{DeltaTime}";
             return IsCustomInput
-                ? $"I[Custom({CustomInput}): {PressType}-d{DeltaTime}h{HeldTime}]"
-                : $"I[{Input}: {PressType}-d{DeltaTime}h{HeldTime}]";
+                ? $"BI[Custom({CustomInput}):{pressData}]"
+                : $"BI[{Input}:{pressData}]";
         }
     }
 }

@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <Folder Include="Equipment\" />
+    <Folder Include="Extensions\" />
   </ItemGroup>
 
   <ItemGroup>

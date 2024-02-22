@@ -1,34 +1,27 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
-using BrokenWheel.Core.Logging;
 using BrokenWheel.Core.Utilities;
 using BrokenWheel.Core.Events.Observables;
 using BrokenWheel.Control.Enum;
 using BrokenWheel.Control.Models;
-using BrokenWheel.Control.Models.InputData;
 using BrokenWheel.Control.Events;
 
-namespace BrokenWheel.Control.Implementations
+namespace BrokenWheel.Control.Implementations.InputTracker
 {
     public class RPGInputTracker : IRPGInputTracker
     {
-        private readonly ILogger _logger;
         private readonly IEventSubject<ButtonInputEvent> _buttonSubject;
         private readonly IEventSubject<MoveInputEvent> _moveSubject;
         private readonly IEventSubject<LookInputEvent> _lookSubject;
 
-        private readonly IDictionary<RPGInput, ButtonInputDataObject> _inputObjectByType = FullEnumDictionary();
-        private readonly IList<ButtonInputDataObject> _activeInputs = new List<ButtonInputDataObject>();
-        private readonly MoveInputDataObject _moveInput = new MoveInputDataObject();
-        private readonly LookInputDataObject _lookInput = new LookInputDataObject();
+        private readonly IDictionary<RPGInput, ButtonInputDataTracker> _inputObjectByType = FullEnumDictionary();
+        private readonly IList<ButtonInputDataTracker> _activeInputs = new List<ButtonInputDataTracker>();
+        private readonly MoveInputDataTracker _moveTracker = new MoveInputDataTracker();
+        private readonly LookInputDataTracker _lookTracker = new LookInputDataTracker();
 
-        public RPGInputTracker(
-            ILogger logger,
-            IEventAggregator eventAggregator)
+        public RPGInputTracker(IEventAggregator eventAggregator)
         {
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-
             if (eventAggregator == null)
                 throw new ArgumentNullException(nameof(eventAggregator));
             _buttonSubject = eventAggregator.GetSubject<ButtonInputEvent>();
@@ -36,10 +29,10 @@ namespace BrokenWheel.Control.Implementations
             _lookSubject = eventAggregator.GetSubject<LookInputEvent>();
         }
 
-        private static IDictionary<RPGInput, ButtonInputDataObject> FullEnumDictionary()
+        private static IDictionary<RPGInput, ButtonInputDataTracker> FullEnumDictionary()
         {
             return EnumUtil.GetAllEnumValues<RPGInput>()
-                .ToDictionary(_ => _, _ => new ButtonInputDataObject(_));
+                .ToDictionary(_ => _, _ => new ButtonInputDataTracker(_));
         }
 
         /// <inheritdoc/>
@@ -52,7 +45,7 @@ namespace BrokenWheel.Control.Implementations
                 _activeInputs.Add(tracker);
         }
 
-        private static PressType SwitchPressType(bool isPressed, ButtonInputDataObject tracker)
+        private static PressType SwitchPressType(bool isPressed, ButtonInputDataTracker tracker)
         {
             switch (tracker.PressType)
             {
@@ -71,17 +64,21 @@ namespace BrokenWheel.Control.Implementations
         /// <inheritdoc/>
         public void TrackMoveInput(double vX, double vY)
         {
-            _moveInput.VelocityX = vX;
-            _moveInput.VelocityY = vY;
+            _moveTracker.VelocityX = vX;
+            _moveTracker.VelocityY = vY;
+            _moveTracker.IsStopped = vX == 0 && vY == 0;
+            if (!_moveTracker.IsStopped && _moveTracker.WasStoppedLastTick)
+                _moveTracker.HeldTimer.Restart();
         }
 
         /// <inheritdoc/>
         public void TrackLookInput(double vX, double vY, int posX, int posY)
         {
-            _lookInput.VelocityX = vX;
-            _lookInput.VelocityY = vY;
-            _lookInput.PositionX = posX;
-            _lookInput.PositionY = posY;
+            (_lookTracker.VelocityX, _lookTracker.VelocityY) = (vX, vY);
+            (_lookTracker.PositionX, _lookTracker.PositionY) = (posX, posY);
+            _lookTracker.IsStopped = vX == 0 && vY == 0;
+            if (!_lookTracker.IsStopped && _lookTracker.WasStoppedLastTick)
+                _lookTracker.HeldTimer.Restart();
         }
 
         /// <inheritdoc/>
@@ -93,33 +90,31 @@ namespace BrokenWheel.Control.Implementations
             ProcessLookInput(delta);
         }
 
-        private void ProcessActiveButtonInput(double delta, ButtonInputDataObject tracker)
+        private void ProcessActiveButtonInput(double delta, ButtonInputDataTracker tracker)
         {
             if (!tracker.IsInputThisTick)
-                TickActiveButtonInput(delta, tracker);
+                UpdateButtonPressType(tracker);
             if (tracker.PressType != PressType.NotHeld)
                 EmitButtonInput(delta, tracker);
             tracker.IsInputThisTick = false;
         }
 
-        private void TickActiveButtonInput(double delta, ButtonInputDataObject tracker)
+        private void UpdateButtonPressType(ButtonInputDataTracker tracker)
         {
             if (tracker.PressType == PressType.Clicked)
                 tracker.PressType = PressType.Held;
             if (tracker.PressType == PressType.Released)
-                EndButtonInput(tracker);
-            else
-                tracker.HeldTime += delta;
+                ReleaseButtonInput(tracker);
         }
 
-        private void EndButtonInput(ButtonInputDataObject tracker)
+        private void ReleaseButtonInput(ButtonInputDataTracker tracker)
         {
             tracker.PressType = PressType.NotHeld;
-            tracker.HeldTime = 0;
+            tracker.HeldTimer.Stop();
             _activeInputs.Remove(tracker);
         }
 
-        private void EmitButtonInput(double delta, ButtonInputDataObject tracker)
+        private void EmitButtonInput(double delta, ButtonInputDataTracker tracker)
         {
             var inputData = tracker.GetTick(delta);
             var buttonEvent = new ButtonInputEvent(this, inputData);
@@ -128,27 +123,28 @@ namespace BrokenWheel.Control.Implementations
 
         private void ProcessMoveInput(double delta)
         {
-            _moveInput.HeldTime = _moveInput.IsStopped() ? 0 : _moveInput.HeldTime + delta;
-            var moveData = _moveInput.GetTick(delta);
+            if (!_moveTracker.IsStopped || !_moveTracker.WasStoppedLastTick)
+                EmitMoveInput(delta);
+            _moveTracker.WasStoppedLastTick = _moveTracker.IsStopped;
+        }
+
+        private void EmitMoveInput(double delta)
+        {
+            var moveData = _moveTracker.GetTick(delta);
             var moveEvent = new MoveInputEvent(this, moveData);
             _moveSubject.Emit(moveEvent);
         }
 
         private void ProcessLookInput(double delta)
         {
-            var isStopped = _lookInput.IsStopped();
-            _lookInput.HeldTime += delta;
-            if (!(isStopped && _lookInput.WasStoppedLastTick))
-            {
+            if (!_lookTracker.IsStopped || !_lookTracker.WasStoppedLastTick)
                 EmitLookInput(delta);
-                _lookInput.HeldTime = 0;
-            }
-            _lookInput.WasStoppedLastTick = isStopped;
+            _lookTracker.WasStoppedLastTick = _lookTracker.IsStopped;
         }
 
         private void EmitLookInput(double delta)
         {
-            var lookData = _lookInput.GetTick(delta);
+            var lookData = _lookTracker.GetTick(delta);
             var lookEvent = new LookInputEvent(this, lookData);
             _lookSubject.Emit(lookEvent);
         }
