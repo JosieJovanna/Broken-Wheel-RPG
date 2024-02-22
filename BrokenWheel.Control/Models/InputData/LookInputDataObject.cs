@@ -7,6 +7,7 @@
         public double VelocityY { get; set; } = 0.0;
         public int PositionX { get; set; } = 0;
         public int PositionY { get; set; } = 0;
+        public bool WasStoppedLastTick { get; set; } = true;
 
         public bool IsStopped() => VelocityX == 0 && VelocityY == 0;
 

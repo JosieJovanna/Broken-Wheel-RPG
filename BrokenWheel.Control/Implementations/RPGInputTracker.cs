@@ -136,7 +136,18 @@ namespace BrokenWheel.Control.Implementations
 
         private void ProcessLookInput(double delta)
         {
-            _lookInput.HeldTime = _lookInput.IsStopped() ? 0 : _lookInput.HeldTime + delta;
+            var isStopped = _lookInput.IsStopped();
+            _lookInput.HeldTime += delta;
+            if (!(isStopped && _lookInput.WasStoppedLastTick))
+            {
+                EmitLookInput(delta);
+                _lookInput.HeldTime = 0;
+            }
+            _lookInput.WasStoppedLastTick = isStopped;
+        }
+
+        private void EmitLookInput(double delta)
+        {
             var lookData = _lookInput.GetTick(delta);
             var lookEvent = new LookInputEvent(this, lookData);
             _lookSubject.Emit(lookEvent);
