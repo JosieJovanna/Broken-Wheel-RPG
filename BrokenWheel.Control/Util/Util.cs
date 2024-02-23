@@ -1,4 +1,4 @@
-﻿using BrokenWheel.Control.Models;
+﻿using BrokenWheel.Control.Enum;
 
 namespace BrokenWheel.Control.Util
 {

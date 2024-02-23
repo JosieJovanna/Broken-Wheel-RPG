@@ -6,7 +6,8 @@ namespace BrokenWheel.Core.GameModes
     {
         public GameMode GameMode { get; }
 
-        public GameModeUpdateEvent(object sender, string entityId, GameMode gameMode) : base(sender, entityId)
+        public GameModeUpdateEvent(object sender, GameMode gameMode)
+            : base(sender, gameMode.ToString())
         {
             GameMode = gameMode;
         }

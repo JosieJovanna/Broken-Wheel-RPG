@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using BrokenWheel.Control.Enum;
-using BrokenWheel.Control.Models;
 using BrokenWheel.Control.Models.InputData;
 
 namespace BrokenWheel.Control.Implementations.InputTracker

@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
-using BrokenWheel.Core.Utilities;
-using BrokenWheel.Core.Events.Observables;
+using System.Linq;
 using BrokenWheel.Control.Enum;
-using BrokenWheel.Control.Models;
 using BrokenWheel.Control.Events;
 using BrokenWheel.Core.Events;
+using BrokenWheel.Core.Events.Observables;
+using BrokenWheel.Core.Utilities;
 
 namespace BrokenWheel.Control.Implementations.InputTracker
 {

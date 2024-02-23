@@ -1,4 +1,4 @@
-﻿namespace BrokenWheel.Control.Models
+﻿namespace BrokenWheel.Control.Enum
 {
     /// <summary>
     /// A button press's input state.
