@@ -17,7 +17,7 @@ namespace BrokenWheel.Control.Implementations.InputTracker
             Input = input;
         }
 
-        public ButtonInputData GetTick(double delta)
+        public ButtonInputData GetData(double delta)
         {
             double heldTime = 0;
             if (PressType == PressType.Held || PressType == PressType.Released)

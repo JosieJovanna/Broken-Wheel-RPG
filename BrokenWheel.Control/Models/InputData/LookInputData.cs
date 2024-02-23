@@ -43,7 +43,6 @@
             VelocityY = vY;
             PositionX = centreX;
             PositionY = centreY;
-
             IsStopped = vX == 0.0 && vY == 0.0;
         }
 

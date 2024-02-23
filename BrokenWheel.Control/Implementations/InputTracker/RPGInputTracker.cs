@@ -66,9 +66,7 @@ namespace BrokenWheel.Control.Implementations.InputTracker
         {
             _moveTracker.VelocityX = vX;
             _moveTracker.VelocityY = vY;
-            _moveTracker.IsStopped = vX == 0 && vY == 0;
-            if (!_moveTracker.IsStopped && _moveTracker.WasStoppedLastTick)
-                _moveTracker.HeldTimer.Restart();
+            _moveTracker.SetIsStopped(vX == 0 && vY == 0);
         }
 
         /// <inheritdoc/>
@@ -76,9 +74,7 @@ namespace BrokenWheel.Control.Implementations.InputTracker
         {
             (_lookTracker.VelocityX, _lookTracker.VelocityY) = (vX, vY);
             (_lookTracker.PositionX, _lookTracker.PositionY) = (posX, posY);
-            _lookTracker.IsStopped = vX == 0 && vY == 0;
-            if (!_lookTracker.IsStopped && _lookTracker.WasStoppedLastTick)
-                _lookTracker.HeldTimer.Restart();
+            _lookTracker.SetIsStopped(vX == 0 && vY == 0);
         }
 
         /// <inheritdoc/>
@@ -116,35 +112,35 @@ namespace BrokenWheel.Control.Implementations.InputTracker
 
         private void EmitButtonInput(double delta, ButtonInputDataTracker tracker)
         {
-            var inputData = tracker.GetTick(delta);
+            var inputData = tracker.GetData(delta);
             var buttonEvent = new ButtonInputEvent(this, inputData);
             _buttonSubject.Emit(buttonEvent);
         }
 
         private void ProcessMoveInput(double delta)
         {
-            if (!_moveTracker.IsStopped || !_moveTracker.WasStoppedLastTick)
+            if (!_moveTracker.IsDeadInput())
                 EmitMoveInput(delta);
-            _moveTracker.WasStoppedLastTick = _moveTracker.IsStopped;
+            _moveTracker.Tick();
         }
 
         private void EmitMoveInput(double delta)
         {
-            var moveData = _moveTracker.GetTick(delta);
+            var moveData = _moveTracker.GetData(delta);
             var moveEvent = new MoveInputEvent(this, moveData);
             _moveSubject.Emit(moveEvent);
         }
 
         private void ProcessLookInput(double delta)
         {
-            if (!_lookTracker.IsStopped || !_lookTracker.WasStoppedLastTick)
+            if (!_lookTracker.IsDeadInput())
                 EmitLookInput(delta);
-            _lookTracker.WasStoppedLastTick = _lookTracker.IsStopped;
+            _lookTracker.Tick();
         }
 
         private void EmitLookInput(double delta)
         {
-            var lookData = _lookTracker.GetTick(delta);
+            var lookData = _lookTracker.GetData(delta);
             var lookEvent = new LookInputEvent(this, lookData);
             _lookSubject.Emit(lookEvent);
         }
