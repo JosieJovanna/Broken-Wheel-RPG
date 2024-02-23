@@ -6,6 +6,7 @@ using BrokenWheel.Core.Events.Observables;
 using BrokenWheel.Control.Enum;
 using BrokenWheel.Control.Models;
 using BrokenWheel.Control.Events;
+using BrokenWheel.Core.Events;
 
 namespace BrokenWheel.Control.Implementations.InputTracker
 {
@@ -14,11 +15,11 @@ namespace BrokenWheel.Control.Implementations.InputTracker
         private readonly IEventSubject<ButtonInputEvent> _buttonSubject;
         private readonly IEventSubject<MoveInputEvent> _moveSubject;
         private readonly IEventSubject<LookInputEvent> _lookSubject;
+        private readonly MoveInputDataTracker _moveTracker;
+        private readonly LookInputDataTracker _lookTracker;
 
         private readonly IDictionary<RPGInput, ButtonInputDataTracker> _inputObjectByType = FullEnumDictionary();
         private readonly IList<ButtonInputDataTracker> _activeInputs = new List<ButtonInputDataTracker>();
-        private readonly MoveInputDataTracker _moveTracker = new MoveInputDataTracker();
-        private readonly LookInputDataTracker _lookTracker = new LookInputDataTracker();
 
         public RPGInputTracker(IEventAggregator eventAggregator)
         {
@@ -27,6 +28,8 @@ namespace BrokenWheel.Control.Implementations.InputTracker
             _buttonSubject = eventAggregator.GetSubject<ButtonInputEvent>();
             _moveSubject = eventAggregator.GetSubject<MoveInputEvent>();
             _lookSubject = eventAggregator.GetSubject<LookInputEvent>();
+            _moveTracker = new MoveInputDataTracker(this);
+            _lookTracker = new LookInputDataTracker(this);
         }
 
         private static IDictionary<RPGInput, ButtonInputDataTracker> FullEnumDictionary()
@@ -88,8 +91,8 @@ namespace BrokenWheel.Control.Implementations.InputTracker
         {
             foreach (var tracker in _activeInputs.ToArray())
                 ProcessActiveButtonInput(delta, tracker);
-            ProcessMoveInput(delta);
-            ProcessLookInput(delta);
+            ProcessInput(delta, _lookTracker, _lookSubject);
+            ProcessInput(delta, _moveTracker, _moveSubject);
         }
 
         private void ProcessActiveButtonInput(double delta, ButtonInputDataTracker tracker)
@@ -123,32 +126,12 @@ namespace BrokenWheel.Control.Implementations.InputTracker
             _buttonSubject.Emit(buttonEvent);
         }
 
-        private void ProcessMoveInput(double delta)
+        private void ProcessInput<TEvent>(double delta, TimedTracker<TEvent> tracker, IEventSubject<TEvent> subject)
+            where TEvent : GameEvent
         {
-            if (!_moveTracker.IsDeadInput())
-                EmitMoveInput(delta);
-            _moveTracker.Tick();
-        }
-
-        private void EmitMoveInput(double delta)
-        {
-            var moveData = _moveTracker.GetData(delta);
-            var moveEvent = new MoveInputEvent(this, moveData);
-            _moveSubject.Emit(moveEvent);
-        }
-
-        private void ProcessLookInput(double delta)
-        {
-            if (!_lookTracker.IsDeadInput())
-                EmitLookInput(delta);
-            _lookTracker.Tick();
-        }
-
-        private void EmitLookInput(double delta)
-        {
-            var lookData = _lookTracker.GetData(delta);
-            var lookEvent = new LookInputEvent(this, lookData);
-            _lookSubject.Emit(lookEvent);
+            if (!tracker.IsDeadInput())
+                tracker.EmitEvent(subject, delta);
+            tracker.Tick();
         }
     }
 }
