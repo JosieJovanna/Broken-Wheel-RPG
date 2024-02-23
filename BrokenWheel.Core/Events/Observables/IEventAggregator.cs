@@ -1,4 +1,6 @@
-﻿namespace BrokenWheel.Core.Events.Observables
+﻿using BrokenWheel.Core.Events.Handling;
+
+namespace BrokenWheel.Core.Events.Observables
 {
     public interface IEventAggregator
     {
@@ -6,6 +8,9 @@
             where TEvent : GameEvent;
 
         IEventSubject<TEvent> GetSubject<TEvent>()
+            where TEvent : GameEvent;
+
+        void Subscribe<TEvent>(EventHandlerFunction<TEvent> function)
             where TEvent : GameEvent;
     }
 }

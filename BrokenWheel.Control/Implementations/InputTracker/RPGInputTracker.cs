@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using BrokenWheel.Control.Enum;
 using BrokenWheel.Control.Events;
+using BrokenWheel.Control.Extensions;
 using BrokenWheel.Core.Events;
+using BrokenWheel.Core.Events.Handling;
 using BrokenWheel.Core.Events.Observables;
+using BrokenWheel.Core.GameModes;
 using BrokenWheel.Core.Utilities;
 
 namespace BrokenWheel.Control.Implementations.InputTracker
 {
-    public class RPGInputTracker : IRPGInputTracker
+    public class RPGInputTracker : IRPGInputTracker, IEventHandler<GameModeUpdateEvent>
     {
         private readonly IEventSubject<ButtonInputEvent> _buttonSubject;
         private readonly IEventSubject<MoveInputEvent> _moveSubject;
@@ -19,6 +22,8 @@ namespace BrokenWheel.Control.Implementations.InputTracker
 
         private readonly IDictionary<RPGInput, ButtonInputDataTracker> _buttonTrackersByInput = FullEnumDictionary();
         private readonly IList<ButtonInputDataTracker> _activeInputs = new List<ButtonInputDataTracker>();
+
+        private bool _isUI = false; // TODO: change to true once game starts in menu
 
         public RPGInputTracker(IEventAggregator eventAggregator)
         {
@@ -35,6 +40,12 @@ namespace BrokenWheel.Control.Implementations.InputTracker
         {
             return EnumUtil.GetAllEnumValues<RPGInput>()
                 .ToDictionary(_ => _, _ => new ButtonInputDataTracker(_));
+        }
+
+        public void HandleEvent(GameModeUpdateEvent gameEvent)
+        {
+            _isUI = gameEvent.GameMode != GameMode.Gameplay;
+            // TODO: pause all timers for the inappropriate input type and when switching back emit released event...
         }
 
         /// <inheritdoc/>
@@ -120,6 +131,8 @@ namespace BrokenWheel.Control.Implementations.InputTracker
 
         private void EmitButtonInput(double delta, ButtonInputDataTracker tracker)
         {
+            /*if (tracker.Input.IsUIInput() ^ _isUI) // UI input and not UI mode; not UI input and UI mode
+                return;*/
             var inputData = tracker.GetData(delta);
             var buttonEvent = new ButtonInputEvent(this, inputData);
             _buttonSubject.Emit(buttonEvent);

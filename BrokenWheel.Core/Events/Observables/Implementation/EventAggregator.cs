@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using BrokenWheel.Core.Events.Handling;
 using BrokenWheel.Core.Logging;
 
 namespace BrokenWheel.Core.Events.Observables.Implementation
@@ -21,6 +22,10 @@ namespace BrokenWheel.Core.Events.Observables.Implementation
         public IEventSubject<TEvent> GetSubject<TEvent>()
             where TEvent : GameEvent
             => FindOrCreateSubject<TEvent>();
+
+        public void Subscribe<TEvent>(EventHandlerFunction<TEvent> function)
+            where TEvent : GameEvent
+            => GetObservable<TEvent>().Subscribe(function);
 
         /// <summary>
         /// Gets a subject for the given type if it exists.
