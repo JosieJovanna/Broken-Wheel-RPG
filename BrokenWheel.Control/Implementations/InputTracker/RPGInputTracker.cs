@@ -42,7 +42,13 @@ namespace BrokenWheel.Control.Implementations.InputTracker
             tracker.PressType = SwitchPressType(isPressed, tracker);
             tracker.IsInputThisTick = true;
             if (tracker.PressType == PressType.Clicked)
-                _activeInputs.Add(tracker);
+                StartTrackingButtonInput(tracker);
+        }
+
+        private void StartTrackingButtonInput(ButtonInputDataTracker tracker)
+        {
+            _activeInputs.Add(tracker);
+            tracker.HeldTimer.Restart();
         }
 
         private static PressType SwitchPressType(bool isPressed, ButtonInputDataTracker tracker)
@@ -106,7 +112,7 @@ namespace BrokenWheel.Control.Implementations.InputTracker
         private void ReleaseButtonInput(ButtonInputDataTracker tracker)
         {
             tracker.PressType = PressType.NotHeld;
-            tracker.HeldTimer.Stop();
+            tracker.HeldTimer.Reset();
             _activeInputs.Remove(tracker);
         }
 
