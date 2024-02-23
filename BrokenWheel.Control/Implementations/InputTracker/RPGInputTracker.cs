@@ -18,7 +18,7 @@ namespace BrokenWheel.Control.Implementations.InputTracker
         private readonly MoveInputDataTracker _moveTracker;
         private readonly LookInputDataTracker _lookTracker;
 
-        private readonly IDictionary<RPGInput, ButtonInputDataTracker> _inputObjectByType = FullEnumDictionary();
+        private readonly IDictionary<RPGInput, ButtonInputDataTracker> _buttonTrackersByInput = FullEnumDictionary();
         private readonly IList<ButtonInputDataTracker> _activeInputs = new List<ButtonInputDataTracker>();
 
         public RPGInputTracker(IEventAggregator eventAggregator)
@@ -41,7 +41,7 @@ namespace BrokenWheel.Control.Implementations.InputTracker
         /// <inheritdoc/>
         public void TrackButtonInput(RPGInput input, bool isPressed) // TODO: add support for custom input
         {
-            var tracker = _inputObjectByType[input];
+            var tracker = _buttonTrackersByInput[input];
             tracker.PressType = SwitchPressType(isPressed, tracker);
             tracker.IsInputThisTick = true;
             if (tracker.PressType == PressType.Clicked)
