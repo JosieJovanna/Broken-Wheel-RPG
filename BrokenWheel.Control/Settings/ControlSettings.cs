@@ -1,4 +1,5 @@
 ﻿using BrokenWheel.Core.Settings;
+using BrokenWheel.Math.Utility;
 
 namespace BrokenWheel.Control.Settings
 {
@@ -15,9 +16,11 @@ namespace BrokenWheel.Control.Settings
         public float BaseLookSpeed { get; set; } = 0.02f;
 
         public float CameraPanSensitivity { get; set; } = 1.2f;
-        public float CameraTiltSensitivity { get; set; } = .85f;
+        public float CameraTiltSensitivity { get; set; } = 1.5f;
 
 
         public bool InvertLookVertical { get; set; } = false;
+        public float LowestCameraTilt { get; set; } = AngleUtil.DegreesToRadians(-85);
+        public float HighestCameraTilt { get; set; } = AngleUtil.DegreesToRadians(90);
     }
 }
