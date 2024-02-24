@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using BrokenWheel.Control.Enum;
 using BrokenWheel.Control.Events;
-using BrokenWheel.Control.Extensions;
+using BrokenWheel.Core.Constants;
 using BrokenWheel.Core.Events;
 using BrokenWheel.Core.Events.Handling;
 using BrokenWheel.Core.Events.Observables;
@@ -23,7 +23,7 @@ namespace BrokenWheel.Control.Implementations.InputTracker
         private readonly IDictionary<RPGInput, ButtonInputDataTracker> _buttonTrackersByInput = FullEnumDictionary();
         private readonly IList<ButtonInputDataTracker> _activeInputs = new List<ButtonInputDataTracker>();
 
-        private bool _isUI = false; // TODO: change to true once game starts in menu
+        private bool _isUI = DebugConstants.DOES_GAME_START_IN_MENU;
 
         public RPGInputTracker(IEventAggregator eventAggregator)
         {

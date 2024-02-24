@@ -12,6 +12,12 @@ namespace BrokenWheel.Control.Settings
         /// <summary>
         /// The base speed at which the camera rotates.
         /// </summary>
-        public float BaseLookSpeed { get; set; } = 10;
+        public float BaseLookSpeed { get; set; } = 0.02f;
+
+        public float CameraPanSensitivity { get; set; } = 1.2f;
+        public float CameraTiltSensitivity { get; set; } = .85f;
+
+
+        public bool InvertLookVertical { get; set; } = false;
     }
 }
