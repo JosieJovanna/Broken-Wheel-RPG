@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using BrokenWheel.Control.Enum;
 
 namespace BrokenWheel.Control.Puppeteering
 {
@@ -10,6 +8,9 @@ namespace BrokenWheel.Control.Puppeteering
     public interface IMarionette : IPuppet
     {
         void Jump(float strength);
+
+        void SetMovementState(MovementStance stance, MovementSpeed speed);
+
         // TODO: action handling
     }
 }

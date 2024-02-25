@@ -8,13 +8,13 @@ namespace BrokenWheel.Core.Damage.Processing
     /// </summary>
     internal class DamageCalculator : IDamageCalculator
     {
-        protected readonly List<DpsCalculator> _queue = new List<DpsCalculator>();
-        protected readonly List<DpsCalculator> _instants = new List<DpsCalculator>();
-        protected readonly List<DamageMap> _lastTicks = new List<DamageMap>();
-        protected DamageMap _dmgDone = new DamageMap();
-        protected DamageMap _dmgTick = new DamageMap();
-        protected double _time = 0;
-        protected bool _justTicked = false;
+        protected readonly List<DpsCalculator> Queue = new List<DpsCalculator>();
+        protected readonly List<DpsCalculator> Instants = new List<DpsCalculator>();
+        protected readonly List<DamageMap> LastTicks = new List<DamageMap>();
+        protected DamageMap DmgDone = new DamageMap();
+        protected DamageMap DmgTick = new DamageMap();
+        protected double Time = 0;
+        protected bool IsJustTicked = false;
 
 
         public void AddToQueue(IList<DpsCalculator> damages)
@@ -26,27 +26,27 @@ namespace BrokenWheel.Core.Damage.Processing
         public void AddToQueue(DpsCalculator damage)
         {
             if (damage.GetType() != typeof(InstantDpsCalculator))
-                _queue.Add(damage);
+                Queue.Add(damage);
             else
-                _instants.Add(damage);
+                Instants.Add(damage);
         }
 
         public void ClearQueue()
         {
-            _queue.Clear();
+            Queue.Clear();
         }
 
         public List<DamageMap> DamageThisSecond()
         {
-            return _justTicked
-                ? _lastTicks
+            return IsJustTicked
+                ? LastTicks
                 : new List<DamageMap>();
         }
 
         public DamageMap DamageTick(double delta)
         {
-            _time += delta;
-            _justTicked = false;
+            Time += delta;
+            IsJustTicked = false;
 
             var deal = GetInitialDamageToDeal();
             return CalculateFractionAndTrack(deal);
@@ -62,16 +62,16 @@ namespace BrokenWheel.Core.Damage.Processing
 
         private void CalculateInstantDamage(DamageMap deal)
         {
-            foreach (var dmg in _instants)
+            foreach (var dmg in Instants)
                 deal.Add(dmg.Type, dmg.Dps());
-            _instants.Clear();
+            Instants.Clear();
         }
 
         private void CompleteTickIfSecondPassed(DamageMap deal)
         {
-            while (_time > 1)
+            while (Time > 1)
             {
-                deal.Add(_dmgTick - _dmgDone);
+                deal.Add(DmgTick - DmgDone);
                 CalculateDps();
                 TrackThatJustTicked();
             }
@@ -79,33 +79,33 @@ namespace BrokenWheel.Core.Damage.Processing
 
         private void TrackThatJustTicked()
         {
-            _time -= 1;
-            _lastTicks.Clear();
-            _justTicked = true;
-            _lastTicks.Add(_dmgTick);
+            Time -= 1;
+            LastTicks.Clear();
+            IsJustTicked = true;
+            LastTicks.Add(DmgTick);
         }
 
         private DamageMap CalculateFractionAndTrack(DamageMap deal)
         {
-            deal.Add(_dmgTick.Fraction(_time));
-            _dmgDone.Add(deal);
+            deal.Add(DmgTick.Fraction(Time));
+            DmgDone.Add(deal);
             return deal;
         }
 
         private void CalculateDps()
         {
-            _dmgTick = new DamageMap();
-            _dmgDone = new DamageMap();
-            foreach (var damage in _queue)
+            DmgTick = new DamageMap();
+            DmgDone = new DamageMap();
+            foreach (var damage in Queue)
                 IncludeDamage(damage);
         }
 
         private void IncludeDamage(DpsCalculator damage)
         {
             if (damage.IsDone)
-                _queue.Remove(damage);
+                Queue.Remove(damage);
             else
-                _dmgTick.Add(damage.Type, damage.Dps());
+                DmgTick.Add(damage.Type, damage.Dps());
         }
     }
 }

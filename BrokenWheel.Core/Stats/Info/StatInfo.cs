@@ -1,4 +1,5 @@
-﻿using BrokenWheel.Core.Stats.Enum;
+﻿using BrokenWheel.Core.Constants;
+using BrokenWheel.Core.Stats.Enum;
 
 namespace BrokenWheel.Core.Stats.Info
 {
@@ -11,7 +12,7 @@ namespace BrokenWheel.Core.Stats.Info
         public bool IsCustom { get; internal set; } = false;
         public bool IsComplex { get; internal set; }
 
-        public string Namespace { get; internal set; } = "Core";
+        public string Namespace { get; internal set; } = DebugConstants.BROKEN_WHEEL_NAMESPACE;
         public string Code { get; internal set; }
         public string Name { get; internal set; }
         public string Description { get; internal set; }

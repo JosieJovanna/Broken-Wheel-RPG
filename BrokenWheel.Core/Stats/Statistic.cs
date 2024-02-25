@@ -22,5 +22,19 @@
         /// The maximum value this stat can have.
         /// </summary>
         public int Maximum { get; internal set; }
+
+        public bool TryAsComplex(out ComplexStatistic complex)
+        {
+            if (this is ComplexStatistic complexStatistic)
+            {
+                complex = complexStatistic;
+                return true;
+            }
+            else
+            {
+                complex = null;
+                return false;
+            }
+        }
     }
 }

@@ -6,6 +6,8 @@ namespace BrokenWheel.Entity
 {
     public interface IRPGEntity
     {
+        string Namespace { get; }
         string Name { get; }
+        string UniqueId { get; }
     }
 }

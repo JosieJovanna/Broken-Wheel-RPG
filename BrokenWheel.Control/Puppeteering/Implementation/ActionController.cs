@@ -39,7 +39,6 @@ namespace BrokenWheel.Control.Puppeteering.Implementation
 
         public void HandleEvent(ButtonInputEvent gameEvent)
         {
-            // TODO: translate to actions
         }
     }
 }
