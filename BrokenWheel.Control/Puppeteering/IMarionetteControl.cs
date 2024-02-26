@@ -42,6 +42,8 @@
         /// </summary>
         void Look(float horizontal, float vertical, float delta);
 
+        void Jump(float strength);
+
         void Action(); // TODO
     }
 }

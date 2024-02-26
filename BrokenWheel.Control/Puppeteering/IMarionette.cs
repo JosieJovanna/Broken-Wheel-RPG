@@ -7,6 +7,8 @@ namespace BrokenWheel.Control.Puppeteering
     /// </summary>
     public interface IMarionette : IPuppet
     {
+        bool IsOnGround { get; }
+
         void Jump(float strength);
 
         void SetMovementState(MovementStance stance, MovementSpeed speed);

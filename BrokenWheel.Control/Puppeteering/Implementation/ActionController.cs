@@ -39,6 +39,12 @@ namespace BrokenWheel.Control.Puppeteering.Implementation
 
         public void HandleEvent(ButtonInputEvent gameEvent)
         {
+            var data = gameEvent.Data;
+            if (data.Input == Enum.RPGInput.Action && gameEvent.Data.PressType is Enum.PressType.Released)
+            {
+                // TODO: additional logic for strength
+                _control.Jump((float)data.HeldTime);
+            }
         }
     }
 }

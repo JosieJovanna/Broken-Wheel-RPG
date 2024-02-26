@@ -5,7 +5,7 @@
         /// <summary>
         /// This individual entity's acceleration in meters per second per second.
         /// </summary>
-        public float Gravity { get; set; } = -9.8f;
+        public float Gravity { get; set; } = -9.8f; // TODO: const
 
         /// <summary>
         /// "Do you think that if you were falling in space, you would slow down after a while or go faster and faster?"

@@ -6,6 +6,8 @@ namespace BrokenWheel.Control.Puppeteering.Implementation
 {
     public class MarionetteControl : IMarionetteControl
     {
+        private delegate void MarionetteAction(IMarionette marionette);
+
         private readonly ILogger _logger;
 
         private IMarionette _mainMarionette;
@@ -57,21 +59,30 @@ namespace BrokenWheel.Control.Puppeteering.Implementation
 
         public void Look(float horizontal, float vertical, float delta)
         {
-            _mainMarionette.Look(tilt: vertical, pan: horizontal, delta: delta);
-            foreach (var marionette in _sideMarionettes)
-                marionette.Look(tilt: vertical, pan: horizontal, delta: delta);
+            ForAll(_ => _.Look(tilt: vertical, pan: horizontal, delta: delta));
         }
 
         public void Move(float horizontal, float vertical, float delta)
         {
-            _mainMarionette.Move(vDolly: vertical, vTruck: horizontal, delta: delta);
-            foreach (var marionette in _sideMarionettes)
-                marionette.Move(vDolly: vertical, vTruck: horizontal, delta: delta);
+            ForAll(_ => _.Move(vDolly: vertical, vTruck: horizontal, delta: delta));
         }
 
         public void Action()
         {
             throw new NotImplementedException();
+        }
+
+        public void Jump(float strength)
+        {
+            ForAll(_ => _.Jump(strength));
+
+        }
+
+        private void ForAll(MarionetteAction func)
+        {
+            func.Invoke(_mainMarionette);
+            foreach (var marionette in _sideMarionettes)
+                func.Invoke(marionette);
         }
     }
 }

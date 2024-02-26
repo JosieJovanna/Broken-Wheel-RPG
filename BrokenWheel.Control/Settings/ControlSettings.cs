@@ -10,7 +10,7 @@ namespace BrokenWheel.Control.Settings
         /// </summary>
         public float BaseLookSpeed { get; set; } = 0.02f;
 
-        public float CameraPanSensitivity { get; set; } = 1.2f;
+        public float CameraPanSensitivity { get; set; } = 1.7f;
         public float CameraTiltSensitivity { get; set; } = 1.5f;
 
 
