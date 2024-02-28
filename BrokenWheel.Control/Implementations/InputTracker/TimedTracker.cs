@@ -20,6 +20,16 @@ namespace BrokenWheel.Control.Implementations.InputTracker
 
         protected abstract TEvent GetEvent(object sender, double delta);
 
+        public void Pause()
+        {
+            _timer.Stop();
+        }
+
+        public void Resume()
+        {
+            _timer.Start();
+        }
+
         public void EmitEvent(IEventSubject<TEvent> subject, double delta)
         {
             var @event = GetEvent(_tracker, delta);

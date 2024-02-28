@@ -9,5 +9,11 @@ namespace BrokenWheel.Control.Extensions
         {
             return input >= RPGInputCategoryValue.UI_INPUT_START;
         }
+
+        public static bool IsDebugInput(this RPGInput input)
+        {
+            return input >= RPGInputCategoryValue.DEBUG_INPUT_START
+                && input <= RPGInputCategoryValue.DEBUG_INPUT_END;
+        }
     }
 }

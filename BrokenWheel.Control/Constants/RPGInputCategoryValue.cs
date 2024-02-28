@@ -4,6 +4,8 @@ namespace BrokenWheel.Control.Constants
 {
     public static class RPGInputCategoryValue
     {
+        public const RPGInput DEBUG_INPUT_START = RPGInput.Debug1;
+        public const RPGInput DEBUG_INPUT_END = RPGInput.Debug12;
         public const RPGInput UI_INPUT_START = RPGInput.UIAccept;
 
         public const int MISC = 1;

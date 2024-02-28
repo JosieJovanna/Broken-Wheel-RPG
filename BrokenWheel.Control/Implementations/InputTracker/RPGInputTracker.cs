@@ -1,32 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using BrokenWheel.Control.Enum;
-using BrokenWheel.Control.Events;
+using BrokenWheel.Core.Logging;
 using BrokenWheel.Core.Constants;
 using BrokenWheel.Core.Events;
 using BrokenWheel.Core.Events.Handling;
 using BrokenWheel.Core.Events.Observables;
 using BrokenWheel.Core.GameModes;
 using BrokenWheel.Core.Utilities;
+using BrokenWheel.Control.Enum;
+using BrokenWheel.Control.Events;
+using BrokenWheel.Control.Extensions;
 
 namespace BrokenWheel.Control.Implementations.InputTracker
 {
     public class RPGInputTracker : IRPGInputTracker, IEventHandler<GameModeUpdateEvent>
     {
+        private readonly ILogger _logger;
         private readonly IEventSubject<ButtonInputEvent> _buttonSubject;
         private readonly IEventSubject<MoveInputEvent> _moveSubject;
         private readonly IEventSubject<LookInputEvent> _lookSubject;
         private readonly MoveInputDataTracker _moveTracker;
         private readonly LookInputDataTracker _lookTracker;
 
-        private readonly IDictionary<RPGInput, ButtonInputDataTracker> _buttonTrackersByInput = FullEnumDictionary();
-        private readonly IList<ButtonInputDataTracker> _activeInputs = new List<ButtonInputDataTracker>();
+        private readonly IDictionary<RPGInput, ButtonInputDataTracker> _buttonTrackersByInput;
+        private readonly IList<ButtonInputDataTracker> _activeInputs;
+        private readonly IList<ButtonInputDataTracker> _nonUiInputs;
+        private readonly IList<ButtonInputDataTracker> _uiInputs;
 
         private bool _isUI = DebugConstants.DOES_GAME_START_IN_MENU;
 
-        public RPGInputTracker(IEventAggregator eventAggregator)
+        public RPGInputTracker(
+            ILogger logger,
+            IEventAggregator eventAggregator)
         {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             if (eventAggregator == null)
                 throw new ArgumentNullException(nameof(eventAggregator));
             _buttonSubject = eventAggregator.GetSubject<ButtonInputEvent>();
@@ -34,23 +42,36 @@ namespace BrokenWheel.Control.Implementations.InputTracker
             _lookSubject = eventAggregator.GetSubject<LookInputEvent>();
             _moveTracker = new MoveInputDataTracker(this);
             _lookTracker = new LookInputDataTracker(this);
-        }
+            eventAggregator.Subscribe<GameModeUpdateEvent>(HandleEvent);
 
-        private static IDictionary<RPGInput, ButtonInputDataTracker> FullEnumDictionary()
-        {
-            return EnumUtil.GetAllEnumValues<RPGInput>()
-                .ToDictionary(_ => _, _ => new ButtonInputDataTracker(_));
+            // trackers
+            _buttonTrackersByInput = EnumUtil.GetAllEnumValues<RPGInput>().ToDictionary(_ => _, _ => new ButtonInputDataTracker(_));
+            _activeInputs = new List<ButtonInputDataTracker>();
+            _nonUiInputs = _buttonTrackersByInput.Values.Where(_ => !_.Input.IsUIInput()).ToList();
+            _uiInputs = _buttonTrackersByInput.Values.Where(_ => _.Input.IsUIInput()).ToList();
         }
 
         public void HandleEvent(GameModeUpdateEvent gameEvent)
         {
             _isUI = gameEvent.GameMode != GameMode.Gameplay;
-            // TODO: pause all timers for the inappropriate input type and when switching back emit released event...
+            _logger.LogCategory("Input", $"Is UI = {_isUI}");
+            // buttons
+            foreach (var buttonTracker in _isUI ? _uiInputs : _nonUiInputs)
+                buttonTracker.Reset();
+            // move tracker
+            if (_isUI)
+                _moveTracker.Pause();
+            else
+                _moveTracker.Resume();
+            // looking
+            // TODO: separate cursor event from look event...
         }
 
         /// <inheritdoc/>
         public void TrackButtonInput(RPGInput input, bool isPressed) // TODO: add support for custom input
         {
+            if (!input.IsDebugInput() && (_isUI ^ input.IsUIInput())) // is UI & input is not UI -or- is not UI & input is UI
+                return;
             var tracker = _buttonTrackersByInput[input];
             tracker.PressType = SwitchPressType(isPressed, tracker);
             tracker.IsInputThisTick = true;

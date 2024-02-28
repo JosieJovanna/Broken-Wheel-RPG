@@ -5,7 +5,7 @@ using Newtonsoft.Json.Converters;
 namespace BrokenWheel.Control.Enum
 {
     [JsonConverter(typeof(StringEnumConverter))]
-    public enum RPGInput
+    public enum RPGInput : int
     {
         Custom = default,
 

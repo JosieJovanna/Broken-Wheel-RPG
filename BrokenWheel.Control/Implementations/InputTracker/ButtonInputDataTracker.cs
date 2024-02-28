@@ -16,6 +16,13 @@ namespace BrokenWheel.Control.Implementations.InputTracker
             Input = input;
         }
 
+        public void Reset()
+        {
+            PressType = PressType.NotHeld;
+            IsInputThisTick = false;
+            HeldTimer.Reset();
+        }
+
         public ButtonInputData GetData(double delta)
         {
             double heldTime = 0;
