@@ -14,6 +14,12 @@ namespace BrokenWheel.Control.Implementations.InputTracker
             : base(rpgTracker)
         { }
 
+        public CursorInputEvent GetCursorEvent(object sender)
+        {
+            var data = new CursorInputData(PositionX, PositionY);
+            return new CursorInputEvent(sender, data);
+        }
+
         protected override LookInputEvent GetEvent(object sender, double delta)
         {
             var data = GetData(delta);
@@ -23,7 +29,7 @@ namespace BrokenWheel.Control.Implementations.InputTracker
         private LookInputData GetData(double delta)
         {
             var heldTime = GetHeldTime();
-            return new LookInputData(delta, heldTime, VelocityX, VelocityY, PositionX, PositionY);
+            return new LookInputData(delta, heldTime, VelocityX, VelocityY);
         }
     }
 }

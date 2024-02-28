@@ -23,33 +23,21 @@
         /// </summary>
         public double VelocityY { get; }
 
-        /// <summary>
-        /// The X position of the cursor, relative to the centre of the screen.
-        /// </summary>
-        public int PositionX { get; }
-
-        /// <summary>
-        /// The Y position of the cursor, relative to the centre of the screen.
-        /// </summary>
-        public int PositionY { get; }
-
         public bool IsStopped { get; }
 
-        public LookInputData(double delta, double held, double vX, double vY, int centreX, int centreY)
+        public LookInputData(double delta, double held, double vX, double vY)
         {
             DeltaTime = delta;
             HeldTime = held;
             VelocityX = vX;
             VelocityY = vY;
-            PositionX = centreX;
-            PositionY = centreY;
             IsStopped = vX == 0.0 && vY == 0.0;
         }
 
         /// <inheritdoc/>
         public override string ToString()
         {
-            return $"LI[Look:{HeldTime}s|v({VelocityX},{VelocityY})|@({PositionX},{PositionY})|d{DeltaTime}]";
+            return $"LI[Look:{HeldTime}s|v({VelocityX},{VelocityY})|d{DeltaTime}]";
         }
     }
 }

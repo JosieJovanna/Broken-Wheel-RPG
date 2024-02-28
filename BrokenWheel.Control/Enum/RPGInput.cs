@@ -69,7 +69,8 @@ namespace BrokenWheel.Control.Enum
         #endregion
 
         #region User Interface Input
-        UIAccept = RPGInputCategoryValue.UI,
+        Cursor = RPGInputCategoryValue.UI,
+        UIAccept,
         UISelect,
         UICancel,
         UIFocusNext,

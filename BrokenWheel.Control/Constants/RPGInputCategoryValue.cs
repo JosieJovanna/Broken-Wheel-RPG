@@ -6,7 +6,7 @@ namespace BrokenWheel.Control.Constants
     {
         public const RPGInput DEBUG_INPUT_START = RPGInput.Debug1;
         public const RPGInput DEBUG_INPUT_END = RPGInput.Debug12;
-        public const RPGInput UI_INPUT_START = RPGInput.UIAccept;
+        public const RPGInput UI_INPUT_START = RPGInput.Cursor;
 
         public const int MISC = 1;
         public const int MENU = 100;
