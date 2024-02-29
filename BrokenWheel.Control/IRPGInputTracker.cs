@@ -21,7 +21,7 @@ namespace BrokenWheel.Control
         /// <summary>
         /// Caches current look input state for processing.
         /// </summary>
-        void TrackLookInput(double vX, double vY, int posX, int posY);
+        void TrackCursorLookInput(double vX, double vY, int posX, int posY);
 
         /// <summary>
         /// Processes input based on current state.

@@ -23,7 +23,7 @@ namespace BrokenWheel.Control.Implementations.InputTracker
         private readonly IEventSubject<LookInputEvent> _lookSubject;
         private readonly IEventSubject<CursorInputEvent> _cursorSubject;
         private readonly MoveInputDataTracker _moveTracker;
-        private readonly LookInputDataTracker _lookTracker;
+        private readonly LookCursorInputDataTracker _lookCursorTracker;
 
         private readonly IDictionary<RPGInput, ButtonInputDataTracker> _buttonTrackersByInput;
         private readonly IList<ButtonInputDataTracker> _activeInputs;
@@ -32,6 +32,11 @@ namespace BrokenWheel.Control.Implementations.InputTracker
 
         private bool _isUI = DebugConstants.DOES_GAME_START_IN_MENU;
 
+        /// <summary>
+        /// The default implementation of <see cref="IRPGInputTracker"/>.
+        /// Uses a dictionary to track button input, with lists also referencing those trackers, 
+        /// </summary>
+        /// <exception cref="ArgumentNullException"> If the aggregator or logger are null. </exception>
         public RPGInputTracker(
             ILogger logger,
             IEventAggregator eventAggregator)
@@ -44,7 +49,7 @@ namespace BrokenWheel.Control.Implementations.InputTracker
             _lookSubject = eventAggregator.GetSubject<LookInputEvent>();
             _cursorSubject = eventAggregator.GetSubject<CursorInputEvent>();
             _moveTracker = new MoveInputDataTracker(this);
-            _lookTracker = new LookInputDataTracker(this);
+            _lookCursorTracker = new LookCursorInputDataTracker(this);
             eventAggregator.Subscribe<GameModeUpdateEvent>(HandleEvent);
 
             // trackers
@@ -54,11 +59,14 @@ namespace BrokenWheel.Control.Implementations.InputTracker
             _uiInputs = _buttonTrackersByInput.Values.Where(_ => _.Input.IsUIInput()).ToList();
         }
 
+        /// <summary>
+        /// Handles <see cref="GameModeUpdateEvent"/>s to properly handle UI vs. Gameplay input.
+        /// </summary>
         public void HandleEvent(GameModeUpdateEvent gameEvent)
         {
             _isUI = gameEvent.GameMode != GameMode.Gameplay;
             _logger.LogCategory("Input", $"Is UI = {_isUI}");
-            PauseInputTrackingForNonCurrentInputType();
+            PauseInputTrackingForNonCurrentInputType(); // TODO: active input swapping?
         }
 
         private void PauseInputTrackingForNonCurrentInputType()
@@ -71,33 +79,39 @@ namespace BrokenWheel.Control.Implementations.InputTracker
                 _moveTracker.Resume();
         }
 
+        #region Input Tracking
+
+        /// <inheritdoc/>
+        public void TrackMoveInput(double vX, double vY)
+        {
+            if (_isUI)
+                return;
+            _moveTracker.VelocityX = vX;
+            _moveTracker.VelocityY = vY;
+            _moveTracker.SetIsStopped(vX == 0 && vY == 0);
+        }
+
+        /// <inheritdoc/>
+        public void TrackCursorLookInput(double vX, double vY, int posX, int posY)
+        {
+            (_lookCursorTracker.VelocityX, _lookCursorTracker.VelocityY) = (vX, vY);
+            (_lookCursorTracker.PositionX, _lookCursorTracker.PositionY) = (posX, posY);
+            _lookCursorTracker.SetIsStopped(vX == 0 && vY == 0);
+        }
+
         /// <inheritdoc/>
         public void TrackButtonInput(RPGInput input, bool isPressed) // TODO: add support for custom input
         {
-            if (!input.IsDebugInput() && !IsInputAllowed(input))
+            if (!input.IsDebugInput() && !(_isUI ^ input.IsUIInput()))
                 return;
             var tracker = _buttonTrackersByInput[input];
-            tracker.PressType = SwitchPressType(isPressed, tracker);
-            tracker.IsInputThisTick = true;
-            if (tracker.PressType == PressType.Clicked)
-                StartTrackingButtonInput(tracker);
+            tracker.PressThisTick(GetNextPressType(isPressed, tracker.PressType));
+            SetTrackerActiveIfClicked(tracker);
         }
 
-        private bool IsInputAllowed(RPGInput input)
+        private static PressType GetNextPressType(bool isPressed, PressType pressType)
         {
-            var isMismatch = _isUI ^ input.IsUIInput();
-            return !isMismatch;
-        }
-
-        private void StartTrackingButtonInput(ButtonInputDataTracker tracker)
-        {
-            _activeInputs.Add(tracker);
-            tracker.HeldTimer.Restart();
-        }
-
-        private static PressType SwitchPressType(bool isPressed, ButtonInputDataTracker tracker)
-        {
-            switch (tracker.PressType)
+            switch (pressType)
             {
                 case PressType.Clicked:
                     return isPressed ? PressType.Held : PressType.Released;
@@ -111,45 +125,48 @@ namespace BrokenWheel.Control.Implementations.InputTracker
             }
         }
 
-        /// <inheritdoc/>
-        public void TrackMoveInput(double vX, double vY)
+        private void SetTrackerActiveIfClicked(ButtonInputDataTracker tracker)
         {
-            if (_isUI)
+            if (tracker.PressType != PressType.Clicked)
                 return;
-            _moveTracker.VelocityX = vX;
-            _moveTracker.VelocityY = vY;
-            _moveTracker.SetIsStopped(vX == 0 && vY == 0);
+            _activeInputs.Add(tracker);
+            tracker.HeldTimer.Restart();
         }
 
-        /// <inheritdoc/>
-        public void TrackLookInput(double vX, double vY, int posX, int posY)
-        {
-            (_lookTracker.VelocityX, _lookTracker.VelocityY) = (vX, vY);
-            (_lookTracker.PositionX, _lookTracker.PositionY) = (posX, posY);
-            _lookTracker.SetIsStopped(vX == 0 && vY == 0);
-        }
+        #endregion
+
+        #region Input Processing
 
         /// <inheritdoc/>
         public void ProcessInputs(double delta)
         {
-            ProcessLookInput(delta);
+            ProcessLookCursorInput(delta);
             ProcessMoveInput(delta);
             foreach (var tracker in _activeInputs.ToArray())
                 ProcessActiveButtonInput(delta, tracker);
         }
 
-        private void ProcessLookInput(double delta)
+        /// <summary>
+        /// Emits a cursor event when in UI, or a look event when in gameplay.
+        /// </summary>
+        private void ProcessLookCursorInput(double delta)
         {
-            if (!_lookTracker.IsDeadInput())
-            {
-                if (_isUI)
-                    _cursorSubject.Emit(_lookTracker.GetCursorEvent(this));
-                else
-                    _lookTracker.EmitEvent(_lookSubject, delta);
-            }
-            _lookTracker.Tick();
+            if (!_lookCursorTracker.IsDeadInput())
+                EmitLookOrCursorEvent(delta);
+            _lookCursorTracker.Tick();
         }
 
+        private void EmitLookOrCursorEvent(double delta)
+        {
+            if (_isUI)
+                _cursorSubject.Emit(_lookCursorTracker.GetCursorEvent(this));
+            else
+                _lookCursorTracker.EmitEvent(_lookSubject, delta);
+        }
+
+        /// <summary>
+        /// Emits move events unless movement has been zero for two ticks.
+        /// </summary>
         private void ProcessMoveInput(double delta)
         {
             if (!_moveTracker.IsDeadInput() && !_isUI)
@@ -157,12 +174,15 @@ namespace BrokenWheel.Control.Implementations.InputTracker
             _moveTracker.Tick();
         }
 
+        /// <summary>
+        /// Emits button events when button is clicked, held, or just released.
+        /// </summary>
         private void ProcessActiveButtonInput(double delta, ButtonInputDataTracker tracker)
         {
             if (!tracker.IsInputThisTick)
                 UpdateButtonPressType(tracker);
             if (tracker.PressType != PressType.NotHeld)
-                EmitButtonInput(delta, tracker);
+                EmitButtonInput(delta, tracker); // TODO: check logic on tracking inputs over game mode changes
             tracker.IsInputThisTick = false;
         }
 
@@ -187,5 +207,7 @@ namespace BrokenWheel.Control.Implementations.InputTracker
             var buttonEvent = new ButtonInputEvent(this, inputData);
             _buttonSubject.Emit(buttonEvent);
         }
+
+        #endregion
     }
 }

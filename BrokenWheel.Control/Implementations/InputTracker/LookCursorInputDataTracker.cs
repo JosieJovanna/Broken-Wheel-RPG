@@ -3,14 +3,14 @@ using BrokenWheel.Control.Models.InputData;
 
 namespace BrokenWheel.Control.Implementations.InputTracker
 {
-    internal class LookInputDataTracker : TimedTracker<LookInputEvent>
+    internal class LookCursorInputDataTracker : TimedTracker<LookInputEvent>
     {
         public double VelocityX { get; set; } = 0.0;
         public double VelocityY { get; set; } = 0.0;
         public int PositionX { get; set; } = 0;
         public int PositionY { get; set; } = 0;
 
-        public LookInputDataTracker(IRPGInputTracker rpgTracker)
+        public LookCursorInputDataTracker(IRPGInputTracker rpgTracker)
             : base(rpgTracker)
         { }
 

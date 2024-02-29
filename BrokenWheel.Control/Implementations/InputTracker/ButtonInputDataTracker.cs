@@ -16,6 +16,18 @@ namespace BrokenWheel.Control.Implementations.InputTracker
             Input = input;
         }
 
+        /// <summary>
+        /// Updates the current press type and notes that there was input this tick.
+        /// </summary>
+        public void PressThisTick(PressType pressType)
+        {
+            PressType = pressType;
+            IsInputThisTick = true;
+        }
+
+        /// <summary>
+        /// Resets held-time timer and press type.
+        /// </summary>
         public void Reset()
         {
             PressType = PressType.NotHeld;
