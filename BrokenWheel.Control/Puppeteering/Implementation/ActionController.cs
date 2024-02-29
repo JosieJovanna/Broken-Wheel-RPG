@@ -1,6 +1,7 @@
 ﻿using System;
-using BrokenWheel.Control.Events;
 using BrokenWheel.Core.Events.Observables;
+using BrokenWheel.Control.Events;
+using BrokenWheel.Core.GameModes;
 
 namespace BrokenWheel.Control.Puppeteering.Implementation
 {
@@ -16,9 +17,17 @@ namespace BrokenWheel.Control.Puppeteering.Implementation
 
             if (eventAggregator == null)
                 throw new ArgumentNullException(nameof(eventAggregator));
-            eventAggregator.GetObservable<MoveInputEvent>().Subscribe(this);
-            eventAggregator.GetObservable<LookInputEvent>().Subscribe(this);
-            eventAggregator.GetObservable<ButtonInputEvent>().Subscribe(this); // TODO: method to listen to all handled events
+            eventAggregator.SubscribeToAllHandledEvents(this);
+        }
+
+        public void CancelPendingActions()
+        {
+            // TODO...
+        }
+
+        public void CancelAllActions()
+        {
+            // TODO...
         }
 
         public void HandleEvent(MoveInputEvent gameEvent)
@@ -45,6 +54,9 @@ namespace BrokenWheel.Control.Puppeteering.Implementation
                 // TODO: additional logic for strength
                 _control.Jump((float)data.HeldTime);
             }
+            // TODO: logic for handling each input...
         }
+
+        public void HandleEvent(GameModeUpdateEvent gameEvent) => CancelPendingActions();
     }
 }

@@ -102,7 +102,7 @@ namespace BrokenWheel.Control.Implementations.InputTracker
         /// <inheritdoc/>
         public void TrackButtonInput(RPGInput input, bool isPressed) // TODO: add support for custom input
         {
-            if (!input.IsDebugInput() && !(_isUI ^ input.IsUIInput()))
+            if (!input.IsDebugInput() && (_isUI ^ input.IsUIInput()))
                 return;
             var tracker = _buttonTrackersByInput[input];
             tracker.PressThisTick(GetNextPressType(isPressed, tracker.PressType));
