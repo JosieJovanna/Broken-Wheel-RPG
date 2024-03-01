@@ -18,7 +18,7 @@ namespace BrokenWheel.Core.Stats.Enum
         /// <param name="stat"> Any stat except for custom, as custom stats have info associated by just the code, not enum value. </param>
         /// <exception cref="ArgumentException"> If parameter is <see cref="Stat.Custom"/> (the default value). </exception>
         /// <returns></returns>
-        internal static StatInfo GetStatInfoFromAttribute(this Stat stat)
+        internal static StatInfo GetInfo(this Stat stat)
         {
             if (stat == Stat.Custom)
                 throw new ArgumentException($"Custom {nameof(Stat)} does not have an assocciated stat info attribute.");

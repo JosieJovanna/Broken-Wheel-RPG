@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using BrokenWheel.Core.Constants;
+using BrokenWheel.Core.DependencyInjection;
 using BrokenWheel.Core.Logging;
 using BrokenWheel.Core.Stats.Enum;
 using BrokenWheel.Core.Utilities;
@@ -9,13 +11,61 @@ namespace BrokenWheel.Core.Stats.Info
 {
     public static class StatInfoFactory
     {
-        private const string CATEGORY = "Stat Info Factory";
-
-        private static bool _isInitiated = false;
-        private static ILogger _logger;
-
+        private static readonly ILogger _logger;
         private static readonly IDictionary<Stat, StatInfo> _enumToInfo = new Dictionary<Stat, StatInfo>();
         private static readonly IDictionary<string, StatInfo> _codeToInfo = new Dictionary<string, StatInfo>();
+
+        static StatInfoFactory()
+        {
+            _logger = Injection.GetModule().GetLogger();
+            // register base stats
+            foreach (var stat in GetAllBaseRPGStats())
+                RegisterStat(stat);
+        }
+
+        private static IEnumerable<Stat> GetAllBaseRPGStats()
+        {
+            var allEnumVals = EnumUtil.GetAllEnumValues<Stat>();
+            allEnumVals.Remove(Stat.Custom);
+            return allEnumVals;
+        }
+
+        private static void RegisterStat(Stat stat)
+        {
+            var info = stat.GetInfo();
+            _enumToInfo.Add(stat, info);
+            _codeToInfo.Add(info.Code, info);
+            _codeToInfo.Add(info.Namespace + MiscConstants.NAMESPACE_SEPARATOR + info.Code, info);
+        }
+
+        /// <summary>
+        /// Registers custom stats with the factory. Should be called at launch.
+        /// </summary>
+        public static void RegisterCustomStats(IEnumerable<StatInfo> stats)
+        {
+            if (stats == null || stats.Count() < 1)
+                return;
+            AddCustomStatInfoToDictionary(stats);
+        }
+
+        private static void AddCustomStatInfoToDictionary(IEnumerable<StatInfo> customStats)
+        {
+            if (customStats == null || customStats.Count() < 1)
+                _logger.LogCategoryWarning(nameof(StatInfoFactory), "No custom stats - none registered");
+            else
+                foreach (var statInfo in customStats)
+                    AddCustomCodeIfNoConflict(statInfo);
+        }
+
+        private static void AddCustomCodeIfNoConflict(StatInfo statInfo)
+        {
+            if (_codeToInfo.ContainsKey(statInfo.Code))
+            {
+                _logger.LogCategoryError(nameof(StatInfoFactory), $"Duplicate custom stat code: {statInfo.Code} - not registered");
+                return;
+            }
+            _codeToInfo.Add(statInfo.Code, statInfo);
+        }
 
         /// <summary>
         /// Gets stat info from the enum values' cached attribute data.
@@ -24,8 +74,6 @@ namespace BrokenWheel.Core.Stats.Info
         /// <exception cref="Exception"> If not initiated. </exception>
         public static StatInfo FromEnum(Stat stat)
         {
-            if (!_isInitiated)
-                throw new Exception($"{nameof(StatInfoFactory)} is not initiated!");
             if (stat == Stat.Custom)
                 throw new ArgumentException($"{nameof(stat)} cannot be {nameof(Stat.Custom)} - custom stats have no default information, and must be specially built.");
             return EnumToStatInfo(stat);
@@ -35,7 +83,7 @@ namespace BrokenWheel.Core.Stats.Info
         {
             if (_enumToInfo.TryGetValue(stat, out var cachedStatInfo))
                 return cachedStatInfo;
-            var statInfo = stat.GetStatInfoFromAttribute();
+            var statInfo = stat.GetInfo();
             CacheStatInfo(statInfo); // It would be odd if an enum value to be registered that is not custom, but in case it happens, let's try getting info.
             return statInfo;
         }
@@ -55,58 +103,12 @@ namespace BrokenWheel.Core.Stats.Info
         /// <exception cref="InvalidOperationException"> If there is no default or custom stat with the given code. </exception>
         public static StatInfo FromCode(string code)
         {
-            if (!_isInitiated)
-                throw new Exception($"{nameof(StatInfoFactory)} is not initiated!");
             if (string.IsNullOrWhiteSpace(code))
                 throw new ArgumentException($"{nameof(code)} cannot be null or whitespace.");
             if (!_codeToInfo.ContainsKey(code))
                 throw new InvalidOperationException($"Custom stat with code '{code}' is not registered.");
 
             return _codeToInfo[code];
-        }
-
-        public static void Initialize(ILogger logger, IList<StatInfo> customStats)
-        {
-            _logger = logger;
-            var stats = GetAllNonCustomEnums();
-            foreach (var stat in stats)
-                AddInfoToDictionaries(stat);
-            AddCustomStatInfoToDictionary(customStats);
-            _isInitiated = true;
-        }
-
-        private static IList<Stat> GetAllNonCustomEnums()
-        {
-            var allEnumVals = EnumUtil.GetAllEnumValues<Stat>();
-            allEnumVals.Remove(Stat.Custom);
-            return allEnumVals;
-        }
-
-        private static void AddInfoToDictionaries(Stat stat)
-        {
-            var info = stat.GetStatInfoFromAttribute();
-            _enumToInfo.Add(stat, info);
-            _codeToInfo.Add(info.Code, info);
-            _codeToInfo.Add(info.Namespace + MiscConstants.NAMESPACE_SEPARATOR + info.Code, info);
-        }
-
-        private static void AddCustomStatInfoToDictionary(IList<StatInfo> customStats)
-        {
-            if (customStats == null || customStats.Count < 1)
-                _logger.LogCategoryWarning(CATEGORY, "No custom stats - none registered");
-            else
-                foreach (var statInfo in customStats)
-                    AddCustomCodeIfNoConflict(statInfo);
-        }
-
-        private static void AddCustomCodeIfNoConflict(StatInfo statInfo)
-        {
-            if (_codeToInfo.ContainsKey(statInfo.Code))
-            {
-                _logger.LogCategoryError(CATEGORY, $"Duplicate custom stat code: {statInfo.Code} - not registered");
-                return;
-            }
-            _codeToInfo.Add(statInfo.Code, statInfo);
         }
     }
 }
