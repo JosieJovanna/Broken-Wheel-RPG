@@ -16,7 +16,7 @@ namespace BrokenWheel.Control.Implementations
         private IOneHandControl _interactControl;
         private IOneHandControl _grabControl;
 
-        public ActionController(EquipmentControl equipmentControl)
+        public ActionController(Core.Events.Observables.IEventAggregator eventAggregator, EquipmentControl equipmentControl)
         {
             _equipment = equipmentControl ?? throw new ArgumentNullException(nameof(equipmentControl));
             _reloadOrReadyController = new ReloadOrReadyController(_equipment);

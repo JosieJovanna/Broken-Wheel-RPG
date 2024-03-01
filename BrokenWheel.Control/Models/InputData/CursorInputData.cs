@@ -32,7 +32,7 @@
         /// <inheritdoc/>
         public override string ToString()
         {
-            return $"CI[Cursor:{X},{Y}]";
+            return $"CI[Cursor:{X},{Y}({ScaledX},{ScaledY})]";
         }
     }
 }
