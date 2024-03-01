@@ -15,7 +15,7 @@ namespace BrokenWheel.Core.DependencyInjection
         /// Initializes a module with a logger.
         /// </summary>
         /// <exception cref="ArgumentNullException"> If logger is null. </exception>
-        internal Module(ILogger logger)
+        public Module(ILogger logger)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _serviceRegistry.Add(typeof(ILogger), _logger);
