@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using BrokenWheel.Core.Logging;
 using BrokenWheel.Core.Constants;
-using BrokenWheel.Core.Events;
 using BrokenWheel.Core.Events.Handling;
 using BrokenWheel.Core.Events.Observables;
 using BrokenWheel.Core.GameModes;
@@ -11,24 +10,26 @@ using BrokenWheel.Core.Utilities;
 using BrokenWheel.Control.Enum;
 using BrokenWheel.Control.Events;
 using BrokenWheel.Control.Extensions;
-using System.Diagnostics;
 
 namespace BrokenWheel.Control.Implementations.InputTracker
 {
-    public class RPGInputTracker : IRPGInputTracker, IEventHandler<GameModeUpdateEvent>
+    public class RPGInputTracker
+        : IRPGInputTracker,
+        IEventHandler<GameModeUpdateEvent>
     {
         private readonly ILogger _logger;
+
         private readonly IEventSubject<ButtonInputEvent> _buttonSubject;
         private readonly IEventSubject<MoveInputEvent> _moveSubject;
         private readonly IEventSubject<LookInputEvent> _lookSubject;
         private readonly IEventSubject<CursorInputEvent> _cursorSubject;
-        private readonly MoveInputDataTracker _moveTracker;
-        private readonly LookCursorInputDataTracker _lookCursorTracker;
 
         private readonly IDictionary<RPGInput, ButtonInputDataTracker> _buttonTrackersByInput;
         private readonly IList<ButtonInputDataTracker> _activeInputs;
         private readonly IList<ButtonInputDataTracker> _nonUiInputs;
         private readonly IList<ButtonInputDataTracker> _uiInputs;
+        private readonly LookCursorInputDataTracker _lookCursorTracker;
+        private readonly MoveInputDataTracker _moveTracker;
 
         private bool _isUI = DebugConstants.DOES_GAME_START_IN_MENU;
 
@@ -42,17 +43,17 @@ namespace BrokenWheel.Control.Implementations.InputTracker
             IEventAggregator eventAggregator)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            // subjects
             if (eventAggregator == null)
                 throw new ArgumentNullException(nameof(eventAggregator));
             _buttonSubject = eventAggregator.GetSubject<ButtonInputEvent>();
             _moveSubject = eventAggregator.GetSubject<MoveInputEvent>();
             _lookSubject = eventAggregator.GetSubject<LookInputEvent>();
             _cursorSubject = eventAggregator.GetSubject<CursorInputEvent>();
+            eventAggregator.Subscribe<GameModeUpdateEvent>(HandleEvent);
+            // trackers
             _moveTracker = new MoveInputDataTracker(this);
             _lookCursorTracker = new LookCursorInputDataTracker(this);
-            eventAggregator.Subscribe<GameModeUpdateEvent>(HandleEvent);
-
-            // trackers
             _buttonTrackersByInput = EnumUtil.GetAllEnumValues<RPGInput>().ToDictionary(_ => _, _ => new ButtonInputDataTracker(_));
             _activeInputs = new List<ButtonInputDataTracker>();
             _nonUiInputs = _buttonTrackersByInput.Values.Where(_ => !_.Input.IsUIInput()).ToList();
