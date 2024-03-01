@@ -73,7 +73,7 @@ namespace BrokenWheel.Core.DependencyInjection
             if (!_settingsRegistry.ContainsKey(type))
                 return CreateNewSettings<TSettings>();
 
-            return (TSettings)_serviceRegistry[type];
+            return (TSettings)_settingsRegistry[type];
         }
 
         private TSettings CreateNewSettings<TSettings>() where TSettings : class, ISettings
@@ -82,7 +82,7 @@ namespace BrokenWheel.Core.DependencyInjection
             _logger.LogCategory(LogCategory.DEPENDENCY_INJECTION, $"Creating default {type.Name} as there is no existing settings file...");
             var constructor = type.GetConstructor(Type.EmptyTypes);
             var settings = (TSettings)constructor.Invoke(null);
-            RegisterSettings(settings);
+            RegisterSettings<TSettings>(settings);
             return settings;
         }
 

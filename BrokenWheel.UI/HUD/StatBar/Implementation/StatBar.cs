@@ -11,6 +11,8 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
     /// </summary>
     internal abstract class StatBar
     {
+        private readonly IDisplayTool _display;
+
         public delegate void ReportPointsPerPixel(double ratio);
         public delegate double HighestPointsPerPixel();
 
@@ -23,6 +25,7 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
 
         protected StatBar(
             StatBarSettings statBarSettings,
+            IDisplayTool displayTool,
             StatInfo statInfo,
             IStatBarDisplay display,
             ReportPointsPerPixel reportPointsPerPixel,
@@ -30,6 +33,7 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
             int order)
         {
             Settings = statBarSettings ?? throw new ArgumentNullException(nameof(statBarSettings));
+            _display = displayTool ?? throw new ArgumentNullException(nameof(displayTool));
             Info = statInfo ?? throw new ArgumentNullException(nameof(statInfo));
             Display = display ?? throw new ArgumentNullException(nameof(display));
             ReportPpp = reportPointsPerPixel ?? throw new ArgumentNullException(nameof(reportPointsPerPixel));
@@ -64,6 +68,11 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
 
         protected int MaxLength() => System.Math.Min(Settings.MaxLength, ConstrainingDimension());
 
-        protected int ConstrainingDimension() => Settings.IsVertical ? DisplayInfo.UIHeight() : DisplayInfo.UIWidth();
+        protected int ConstrainingDimension()
+        {
+            return Settings.IsVertical
+                ? _display.ScaledResolution.Height
+                : _display.ScaledResolution.Width;
+        }
     }
 }

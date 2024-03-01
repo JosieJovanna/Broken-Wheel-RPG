@@ -8,6 +8,7 @@ using BrokenWheel.Core.Settings.Events;
 using BrokenWheel.Core.Stats.Enum;
 using BrokenWheel.Core.Stats.Events;
 using BrokenWheel.Core.Stats.Info;
+using BrokenWheel.UI.Display;
 using BrokenWheel.UI.Settings.StatBar;
 
 namespace BrokenWheel.UI.HUD.StatBar.Implementation
@@ -16,9 +17,9 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
     {
         private const string CATEGORY = "Display";
 
-        private readonly IModule _module;
         private readonly ILogger _logger;
         private readonly StatBarSettings _settings;
+        private readonly IDisplayTool _displayTool;
         private readonly IEventObservable<SettingsUpdateEvent<StatBarSettings>> _settingsUpdates;
         private readonly IEventObservable<StatUpdatedEvent> _simpleListener;
         private readonly IEventObservable<ComplexStatUpdatedEvent> _complexListener;
@@ -36,14 +37,16 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
         /// <param name="suiteDisplay"> The object in charge of creating and displaying the stat bars in GUI. </param>
         /// <exception cref="ArgumentNullException"> If any argument is null. </exception>
         public StatBarSuite(
-            IModule module,
+            ILogger logger,
+            StatBarSettings displaySettings,
+            IDisplayTool displayTool,
             IEventObservable<StatUpdatedEvent> simpleListener,
             IEventObservable<ComplexStatUpdatedEvent> complexListener,
             IStatBarSuiteDisplay suiteDisplay)
         {
-            _module = module;
-            _logger = _module.GetLogger();
-            _settings = _module.GetSettings<StatBarSettings>();
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _settings = displaySettings ?? throw new ArgumentNullException(nameof(displaySettings));
+            _displayTool = displayTool ?? throw new ArgumentNullException(nameof(displayTool));
             _groupDisplay = suiteDisplay ?? throw new ArgumentNullException(nameof(suiteDisplay));
             _simpleListener = simpleListener ?? throw new ArgumentNullException(nameof(simpleListener));
             _complexListener = complexListener ?? throw new ArgumentNullException(nameof(complexListener));
@@ -91,7 +94,7 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
         {
             _logger.LogCategory(CATEGORY, $"{nameof(StatBarSuite)} repositioning...");
             StatBarPositioner
-                .PositionBars(_settings, _statBars
+                .PositionBars(_statBars
                     .Where(_ => !_.Display.IsHidden)
                     .OrderBy(_ => _.Order)
                     .ToList());
@@ -220,7 +223,7 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
         private void AddComplexStatBar(StatInfo statInfo, StatBarColorSettings colors, int order)
         {
             var display = _groupDisplay.CreateStatBarElement<IComplexStatBarDisplay>(statInfo.Name, colors);
-            var statBar = new ComplexStatBar(_settings, display, statInfo, ReportPpp, HighestPpp, order);
+            var statBar = new ComplexStatBar(_settings, _displayTool, display, statInfo, ReportPpp, HighestPpp, order);
             _complexListener.SubscribeToCategory(statInfo.Id(), statBar);
             _statBars.Add(statBar);
         }
@@ -228,7 +231,7 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
         private void AddSimpleStatBar(StatInfo statInfo, StatBarColorSettings colors, int order)
         {
             var display = _groupDisplay.CreateStatBarElement<IStatBarDisplay>(statInfo.Name, colors);
-            var statBar = new SimpleStatBar(_settings, display, statInfo, ReportPpp, HighestPpp, order);
+            var statBar = new SimpleStatBar(_settings, _displayTool, display, statInfo, ReportPpp, HighestPpp, order);
             _simpleListener.SubscribeToCategory(statInfo.Id(), statBar);
             _statBars.Add(statBar);
         }

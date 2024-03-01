@@ -12,9 +12,20 @@
         /// </summary>
         public int Y { get; }
 
-        public CursorInputData(int x, int y)
+        /// <summary>
+        /// X coordinate relative to the centre of the screen, in UI's scale.
+        /// </summary>
+        public int ScaledX { get; }
+
+        /// <summary>
+        /// XY coordinate relative to the centre of the screen, in UI's scale.
+        /// </summary>
+        public int ScaledY { get; }
+
+        public CursorInputData(int x, int y, int scale)
         {
             (X, Y) = (x, y);
+            (ScaledX, ScaledY) = (x / scale, y / scale);
         }
 
 

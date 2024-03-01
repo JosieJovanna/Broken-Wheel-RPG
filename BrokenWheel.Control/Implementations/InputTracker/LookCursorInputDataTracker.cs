@@ -14,9 +14,9 @@ namespace BrokenWheel.Control.Implementations.InputTracker
             : base(rpgTracker)
         { }
 
-        public CursorInputEvent GetCursorEvent(object sender)
+        public CursorInputEvent GetCursorEvent(object sender, int scale)
         {
-            var data = new CursorInputData(PositionX, PositionY);
+            var data = new CursorInputData(PositionX, PositionY, scale);
             return new CursorInputEvent(sender, data);
         }
 

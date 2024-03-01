@@ -10,6 +10,7 @@ using BrokenWheel.Core.Utilities;
 using BrokenWheel.Control.Enum;
 using BrokenWheel.Control.Events;
 using BrokenWheel.Control.Extensions;
+using BrokenWheel.UI.Settings;
 
 namespace BrokenWheel.Control.Implementations.InputTracker
 {
@@ -18,6 +19,7 @@ namespace BrokenWheel.Control.Implementations.InputTracker
         IEventHandler<GameModeUpdateEvent>
     {
         private readonly ILogger _logger;
+        private readonly DisplaySettings _displaySettings;
 
         private readonly IEventSubject<ButtonInputEvent> _buttonSubject;
         private readonly IEventSubject<MoveInputEvent> _moveSubject;
@@ -40,9 +42,11 @@ namespace BrokenWheel.Control.Implementations.InputTracker
         /// <exception cref="ArgumentNullException"> If the aggregator or logger are null. </exception>
         public RPGInputTracker(
             ILogger logger,
+            DisplaySettings displaySettings,
             IEventAggregator eventAggregator)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _displaySettings = displaySettings ?? throw new ArgumentNullException(nameof(displaySettings));
             // subjects
             if (eventAggregator == null)
                 throw new ArgumentNullException(nameof(eventAggregator));
@@ -160,7 +164,7 @@ namespace BrokenWheel.Control.Implementations.InputTracker
         private void EmitLookOrCursorEvent(double delta)
         {
             if (_isUI)
-                _cursorSubject.Emit(_lookCursorTracker.GetCursorEvent(this));
+                _cursorSubject.Emit(_lookCursorTracker.GetCursorEvent(this, _displaySettings.UIScale));
             else
                 _lookCursorTracker.EmitEvent(_lookSubject, delta);
         }

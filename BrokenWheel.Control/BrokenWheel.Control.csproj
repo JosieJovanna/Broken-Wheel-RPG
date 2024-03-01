@@ -6,6 +6,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\BrokenWheel.Core\BrokenWheel.Core.csproj" />
+      <ProjectReference Include="..\BrokenWheel.UI\BrokenWheel.UI.csproj" />
     </ItemGroup>
 
 </Project>

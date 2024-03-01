@@ -4,6 +4,7 @@ using BrokenWheel.Core.Stats;
 using BrokenWheel.Core.Stats.Events;
 using BrokenWheel.Core.Stats.Info;
 using BrokenWheel.Math.Utility;
+using BrokenWheel.UI.Display;
 using BrokenWheel.UI.Settings.StatBar;
 using BrokenWheel.UI.Settings.StatBar.Enum;
 
@@ -20,12 +21,20 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
         /// <exception cref="ArgumentNullException"> When these parameters are null. </exception>
         public SimpleStatBar(
             StatBarSettings statBarSettings,
+            IDisplayTool displayTool,
             IStatBarDisplay simpleStatBarDisplay,
             StatInfo statInfo,
             ReportPointsPerPixel reportPointsPerPixel,
             HighestPointsPerPixel highestPointsPerPixel,
             int order = 99)
-            : base(statBarSettings, statInfo, simpleStatBarDisplay, reportPointsPerPixel, highestPointsPerPixel, order)
+            : base(
+                  statBarSettings,
+                  displayTool,
+                  statInfo,
+                  simpleStatBarDisplay,
+                  reportPointsPerPixel,
+                  highestPointsPerPixel,
+                  order)
         {
             _display = simpleStatBarDisplay;
             UpdateDisplay();
