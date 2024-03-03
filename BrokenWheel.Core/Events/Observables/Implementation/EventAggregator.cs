@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using BrokenWheel.Core.Events.Handling;
 using BrokenWheel.Core.Logging;
+using BrokenWheel.Core.Events.Handling;
 
 namespace BrokenWheel.Core.Events.Observables.Implementation
 {
@@ -62,7 +62,7 @@ namespace BrokenWheel.Core.Events.Observables.Implementation
                     HandleEventType(handler, generic, isSubscribing);
         }
 
-        public void HandleEventType(object handler, Type eventType, bool isSubscribing)
+        private void HandleEventType(object handler, Type eventType, bool isSubscribing)
         {
             var method = GetType().GetMethod(nameof(CastHandlerAndSubOrUnsub),
                 BindingFlags.NonPublic | BindingFlags.Instance);
