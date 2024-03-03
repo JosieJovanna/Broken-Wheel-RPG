@@ -51,9 +51,8 @@ namespace BrokenWheel.Core.Events.Observables.Implementation
         private void HandleAllHandledEvents(object handler, bool isSubscribing)
         {
             foreach (var @interface in handler.GetType().GetInterfaces())
-                if (@interface.IsInterface)
-                    if (typeof(IEventHandler<GameEvent>).Name == @interface.Name)
-                        HandleByGenericEventType(handler, @interface, isSubscribing);
+                if (typeof(IEventHandler<GameEvent>).Name == @interface.Name)
+                    HandleByGenericEventType(handler, @interface, isSubscribing);
         }
 
         private void HandleByGenericEventType(object handler, Type @interface, bool isSubscribing)
