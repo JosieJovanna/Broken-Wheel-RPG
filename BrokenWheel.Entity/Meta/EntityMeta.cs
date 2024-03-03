@@ -1,4 +1,6 @@
-﻿namespace BrokenWheel.Entity.Meta
+﻿using BrokenWheel.Entity.Meta.Movement;
+
+namespace BrokenWheel.Entity.Meta
 {
     public class EntityMeta
     {

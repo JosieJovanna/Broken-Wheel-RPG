@@ -1,4 +1,4 @@
-﻿namespace BrokenWheel.Entity.Meta
+﻿namespace BrokenWheel.Entity.Meta.Movement
 {
     public class MovementMeta
     {
@@ -21,5 +21,14 @@
         /// The total amount of time the entity has available for any extra jumps after the first.
         /// </summary>
         public double TimeToJump { get; set; } = 5;
+
+        public float JumpBaseSpeed { get; set; } = 7.0f;
+        public float JumpPowerMultiplier { get; set; } = 1.5f;
+        public float JumpMaxSpeed { get; set; } = 20.0f;
+        public float DirectionChangeAcceleration { get; set; } = 50.0f;
+
+        public SpeedMeta BaseStandingSpeeds { get; set; } = new SpeedMeta { Fast = 4.0f, Normal = 3.0f, Slow = 1.0f };
+        public SpeedMeta BaseCrouchingSpeeds { get; set; } = new SpeedMeta { Fast = 1.0f, Normal = 0.6f, Slow = 0.3f };
+        public SpeedMeta BaseCrawlingSpeeds { get; set; } = new SpeedMeta { Fast = 0.5f, Normal = 0.3f, Slow = 0.15f };
     }
 }
