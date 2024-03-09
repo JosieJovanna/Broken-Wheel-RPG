@@ -158,6 +158,7 @@ namespace BrokenWheel.Core.DependencyInjection
 
             _settingsRegistry.Add(type, settings);
             _logger.LogCategory(LogCategory.DEPENDENCY_INJECTION, $"Registered `{typeof(TSettings).FullName}`.");
+            // TODO: recursively register (if not already registered) any child settings AND if the settings is already registered when instantiating, then set those child properties to the initialized settings.
             return this;
         }
 
