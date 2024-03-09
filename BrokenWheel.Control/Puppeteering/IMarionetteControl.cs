@@ -1,4 +1,6 @@
-﻿namespace BrokenWheel.Control.Puppeteering
+﻿using BrokenWheel.Control.Enum;
+
+namespace BrokenWheel.Control.Puppeteering
 {
     /// <summary>
     /// Translates game input into actions and movements.
@@ -6,6 +8,9 @@
     /// </summary>
     public interface IMarionetteControl
     {
+        MovementStance Stance { get; }
+        MovementSpeed Speed { get; }
+
         /// <summary>
         /// Sets the primary <see cref="IMarionette"/> to be controlled by the player.
         /// Setting this removes any existing main marionette.
@@ -44,6 +49,7 @@
 
         void Jump(float strength);
 
-        void ChangeStance();
+        void SetStance(MovementStance stance);
+        void SetSpeed(MovementSpeed speed);
     }
 }

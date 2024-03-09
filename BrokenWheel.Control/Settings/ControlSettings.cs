@@ -17,5 +17,7 @@ namespace BrokenWheel.Control.Settings
         public bool InvertLookVertical { get; set; } = false;
         public float LowestCameraTilt { get; set; } = AngleUtil.DegreesToRadians(-85);
         public float HighestCameraTilt { get; set; } = AngleUtil.DegreesToRadians(90);
+
+        public float CrawlHoldTime { get; set; } = 1.0f;
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using BrokenWheel.Control.Enum;
 using BrokenWheel.Core.Logging;
 
 namespace BrokenWheel.Control.Puppeteering.Implementation
@@ -13,6 +14,10 @@ namespace BrokenWheel.Control.Puppeteering.Implementation
         private IMarionette _mainMarionette;
         private IList<IMarionette> _sideMarionettes = new List<IMarionette>();
 
+        public MovementStance Stance { get; protected set; }
+
+        public MovementSpeed Speed { get; protected set; }
+
         public MarionetteControl(ILogger logger)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -24,6 +29,7 @@ namespace BrokenWheel.Control.Puppeteering.Implementation
                 throw new ArgumentNullException(nameof(marionette));
             _logger.LogCategoryGood("Control", $"Setting main marionette to {marionette.Name}...");
             _mainMarionette = marionette;
+            marionette.SetMovementState(Stance, Speed);
         }
 
         public void AddSideMarionette(IMarionette marionette)
@@ -33,6 +39,7 @@ namespace BrokenWheel.Control.Puppeteering.Implementation
             _logger.LogCategoryGood("Control", $"Adding side marionette {marionette.Name}...");
             if (!_sideMarionettes.Contains(marionette))
                 _sideMarionettes.Add(marionette);
+            marionette.SetMovementState(Stance, Speed);
         }
 
         public void CutSideMarionette(IMarionette marionette)
@@ -75,7 +82,18 @@ namespace BrokenWheel.Control.Puppeteering.Implementation
         public void Jump(float strength)
         {
             ForAll(_ => _.Jump(strength));
+        }
 
+        public void SetStance(MovementStance stance)
+        {
+            Stance = stance;
+            ForAll(_ => _.SetMovementState(Stance, Speed));
+        }
+
+        public void SetSpeed(MovementSpeed speed)
+        {
+            Speed = speed;
+            ForAll(_ => _.SetMovementState(Stance, Speed));
         }
 
         private void ForAll(MarionetteAction func)
