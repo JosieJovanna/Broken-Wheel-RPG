@@ -1,4 +1,4 @@
-﻿using BrokenWheel.Core;
+﻿using System;
 
 namespace BrokenWheel.Control.Behaviors
 {
@@ -7,40 +7,51 @@ namespace BrokenWheel.Control.Behaviors
     /// </summary>
     public class ToggleOrHoldBehavior : AbstractActionBehavior
     {
-        private bool _isToggled = false;
+        protected bool IsToggled { get; private set; } = false;
 
-        protected SimpleDelegate ToggleOn;
-        protected SimpleDelegate ToggleOff;
+        protected Action ToggleOn;
+        protected Action ToggleOff;
 
-        public ToggleOrHoldBehavior(ref double holdTime) : base(ref holdTime) { }
-
-        public ToggleOrHoldBehavior(ref double holdTime, SimpleDelegate toggleOn, SimpleDelegate toggleOff)
-            : base(ref holdTime)
+        public ToggleOrHoldBehavior(
+            double holdTime,
+            Action toggleOn,
+            Action toggleOff)
+            : base(holdTime)
         {
             ToggleOn = toggleOn;
             ToggleOff = toggleOff;
         }
 
-        protected override void InitialPress(bool isAltPress) { } // do nothing...
-
-        protected override void Held(bool isAltPress)
+        public ToggleOrHoldBehavior(
+            Func<double> holdTimeGetter,
+            Action toggleOn,
+            Action toggleOff)
+            : base(holdTimeGetter)
         {
-            _isToggled = true;
-            ToggleOn();
+            ToggleOn = toggleOn;
+            ToggleOff = toggleOff;
         }
 
-        protected override void ReleaseClick(bool isAltPress)
+        protected override void Press() { } // do nothing...
+
+        protected override void Click()
         {
-            if (_isToggled)
+            if (IsToggled)
                 ToggleOff();
             else
                 ToggleOn();
-            _isToggled = !_isToggled;
+            IsToggled = !IsToggled;
         }
 
-        protected override void ReleaseHold(bool isAltPress)
+        protected override void Hold()
         {
-            _isToggled = false;
+            IsToggled = true;
+            ToggleOn();
+        }
+
+        protected override void Release()
+        {
+            IsToggled = false;
             ToggleOff();
         }
     }

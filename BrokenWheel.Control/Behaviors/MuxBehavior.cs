@@ -1,4 +1,4 @@
-﻿using BrokenWheel.Core;
+﻿using System;
 
 namespace BrokenWheel.Control.Behaviors
 {
@@ -10,16 +10,22 @@ namespace BrokenWheel.Control.Behaviors
     /// </summary>
     public class MuxBehavior : AbstractActionBehavior
     {
-        public SimpleDelegate OnInitialPress;
-        public SimpleDelegate OnHeld;
-        public SimpleDelegate OnReleaseClick;
-        public SimpleDelegate OnReleaseHold;
+        public Action OnInitialPress;
+        public Action OnHeld;
+        public Action OnReleaseClick;
+        public Action OnReleaseHold;
 
-        public MuxBehavior(ref double holdTime) : base(ref holdTime) { }
+        public MuxBehavior(double holdTime)
+            : base(holdTime)
+        { }
 
-        protected override void InitialPress(bool isAltPress) => OnInitialPress?.Invoke();
-        protected override void Held(bool isAltPress) => OnHeld?.Invoke();
-        protected override void ReleaseClick(bool isAltPress) => OnReleaseClick?.Invoke();
-        protected override void ReleaseHold(bool isAltPress) => OnReleaseHold?.Invoke();
+        public MuxBehavior(Func<double> holdTimeGetter)
+            : base(holdTimeGetter)
+        { }
+
+        protected override void Press() => OnInitialPress?.Invoke();
+        protected override void Hold() => OnHeld?.Invoke();
+        protected override void Click() => OnReleaseClick?.Invoke();
+        protected override void Release() => OnReleaseHold?.Invoke();
     }
 }

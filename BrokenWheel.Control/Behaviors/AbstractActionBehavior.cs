@@ -1,6 +1,7 @@
-﻿using BrokenWheel.Control.Actions;
+﻿using System;
+using BrokenWheel.Control.Actions;
 using BrokenWheel.Control.Enum;
-using BrokenWheel.Control.Models;
+using BrokenWheel.Control.Models.InputData;
 
 namespace BrokenWheel.Control.Behaviors
 {
@@ -13,63 +14,107 @@ namespace BrokenWheel.Control.Behaviors
     /// </summary>
     public abstract class AbstractActionBehavior : IActionBehavior
     {
-        private readonly double _holdTime;
-        private double _heldFor;
-        private bool _isAltPress;
-        private bool _isAltPressIsLocked;
+        private readonly bool _isPermanentHoldTime;
+        private readonly Func<double> _holdTimeGetter;
+        private double _holdTime;
+        private bool _isModifierLocked;
 
-        protected AbstractActionBehavior(ref double holdTime)
+        protected double HeldTime { get; private set; }
+        protected bool IsModified { get; private set; }
+
+        /// <summary>
+        /// Called when the button is initially depressed.
+        /// </summary>
+        protected abstract void Press();
+
+        /// <summary>
+        /// Called when the button is released before reaching the hold time.
+        /// </summary>
+        protected abstract void Click();
+
+        /// <summary>
+        /// Called on every frame where the button has been held at least as long as the hold time.
+        /// </summary>
+        protected abstract void Hold();
+
+        /// <summary>
+        /// Called when the button is released after having reached the hold time.
+        /// </summary>
+        protected abstract void Release();
+
+        /// <summary>
+        /// Creates an action behavior which differentiates actions based on the hold time.
+        /// This time cannot be changed except by creating a new instance of the behavior.
+        /// </summary>
+        protected AbstractActionBehavior(double permanentHoldTime)
         {
-            _holdTime = holdTime;
+            _isPermanentHoldTime = true;
+            _holdTime = permanentHoldTime;
         }
 
-        protected abstract void InitialPress(bool isAltPress);
-        protected abstract void Held(bool isAltPress);
-        protected abstract void ReleaseClick(bool isAltPress);
-        protected abstract void ReleaseHold(bool isAltPress);
-
-        public void Execute(PressData press)
+        /// <summary>
+        /// Creates an action behavior which differentiates actions based on the hold time.
+        /// This time may be updated with settings changes, and so uses a getter function to get the new value on demand.
+        /// </summary>
+        /// <param name="holdTimeGetter"> The function used to get the hold time on demand. </param>
+        /// <exception cref="ArgumentNullException"> If the function is null. </exception>
+        protected AbstractActionBehavior(Func<double> holdTimeGetter)
         {
-            _heldFor += press.DeltaTime;
-            if (!_isAltPressIsLocked)
-                _isAltPress = press.IsAltPress;
-            SwitchPress(press);
+            _isPermanentHoldTime = false;
+            _holdTimeGetter = holdTimeGetter ?? throw new ArgumentNullException(nameof(holdTimeGetter));
+            _holdTime = _holdTimeGetter.Invoke();
         }
 
-        private void SwitchPress(PressData press)
+        public void Refresh()
         {
-            switch (press.Type)
+            if (_isPermanentHoldTime)
+                return;
+            _holdTime = _holdTimeGetter();
+        }
+
+        public void Execute(ButtonInputData data, bool isModified = false)
+        {
+            HeldTime = data.HeldTime;
+
+            if (!_isModifierLocked)
+                IsModified = isModified;
+            SwitchPress(data);
+        }
+
+        private void SwitchPress(ButtonInputData data)
+        {
+            switch (data.PressType)
             {
                 case PressType.Clicked:
-                    InitialPress(_isAltPress);
+                    Press();
                     break;
                 case PressType.Released:
-                    ReleaseClickOrHold();
+                    ReleaseOrClick();
                     break;
                 case PressType.Held:
                     HoldIfLongEnough();
                     break;
                 case PressType.NotHeld:
                 default:
-                    _isAltPressIsLocked = false;
+                    _isModifierLocked = false;
                     break;
             }
         }
 
-        private void ReleaseClickOrHold()
+        private void ReleaseOrClick()
         {
-            if (_heldFor >= _holdTime)
-                ReleaseHold(_isAltPress);
+            if (HeldTime >= _holdTime)
+                Release();
             else
-                ReleaseClick(_isAltPress);
-            _heldFor = 0;
-            _isAltPressIsLocked = false;
+                Click();
+            HeldTime = 0;
+            _isModifierLocked = false;
         }
 
         private void HoldIfLongEnough()
         {
-            if (_heldFor >= _holdTime)
-                Held(_isAltPress);
+            if (HeldTime >= _holdTime)
+                Hold();
         }
     }
 }

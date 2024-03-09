@@ -1,23 +1,26 @@
-﻿using BrokenWheel.Control.Actions;
+﻿using System;
+using BrokenWheel.Control.Actions;
 using BrokenWheel.Control.Enum;
-using BrokenWheel.Control.Models;
-using BrokenWheel.Core;
+using BrokenWheel.Control.Models.InputData;
 
 namespace BrokenWheel.Control.Behaviors
 {
     public class OnReleaseBehavior : IActionBehavior
     {
-        protected SimpleDelegate OnRelease;
+        protected Action OnRelease;
 
-        public OnReleaseBehavior(SimpleDelegate onRelease)
+        public OnReleaseBehavior(Action onRelease)
         {
             OnRelease = onRelease;
         }
 
-        public void Execute(PressData press)
+        public virtual void Execute(ButtonInputData data, bool isModified = false)
         {
-            if (press.Type == PressType.Released)
+            if (data.PressType == PressType.Released)
                 OnRelease?.Invoke();
         }
+
+        public virtual void Refresh()
+        { }
     }
 }

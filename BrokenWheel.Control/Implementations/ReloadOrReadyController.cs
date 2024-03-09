@@ -24,7 +24,7 @@ namespace BrokenWheel.Control.Implementations
             _behavior = CreateBehavior();
         }
 
-        private AltMuxBehavior CreateBehavior()
+        private ModMuxBehavior CreateBehavior()
         {
             throw new NotImplementedException();
             /*return new AltMuxBehavior(ref StaticSettings.Controls.HoldToReadyWeapon) 

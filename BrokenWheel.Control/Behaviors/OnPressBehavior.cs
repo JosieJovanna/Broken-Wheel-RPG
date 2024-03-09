@@ -1,23 +1,26 @@
-﻿using BrokenWheel.Control.Actions;
+﻿using System;
+using BrokenWheel.Control.Actions;
 using BrokenWheel.Control.Enum;
-using BrokenWheel.Control.Models;
-using BrokenWheel.Core;
+using BrokenWheel.Control.Models.InputData;
 
 namespace BrokenWheel.Control.Behaviors
 {
     public class OnPressBehavior : IActionBehavior
     {
-        protected SimpleDelegate OnInitialPress;
+        protected Action OnInitialPress;
 
-        public OnPressBehavior(SimpleDelegate onInitialPress)
+        public OnPressBehavior(Action onInitialPress)
         {
             OnInitialPress = onInitialPress;
         }
 
-        public void Execute(PressData press)
+        public virtual void Execute(ButtonInputData data, bool isModified = false)
         {
-            if (press.Type == PressType.Clicked)
-                OnInitialPress?.Invoke();
+            if (data.PressType == PressType.Clicked)
+                OnInitialPress?.Invoke(); // TODO: differentiate by modifier?
         }
+
+        public virtual void Refresh()
+        { }
     }
 }

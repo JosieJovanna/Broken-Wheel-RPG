@@ -44,6 +44,6 @@
 
         void Jump(float strength);
 
-        void Action(); // TODO
+        void ChangeStance();
     }
 }
