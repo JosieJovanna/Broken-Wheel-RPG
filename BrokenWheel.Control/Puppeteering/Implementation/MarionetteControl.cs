@@ -1,26 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
-using BrokenWheel.Control.Enum;
 using BrokenWheel.Core.Logging;
+using BrokenWheel.Control.Actions;
+using BrokenWheel.Control.Behaviors;
+using BrokenWheel.Control.Enum;
+using BrokenWheel.Control.Settings;
 
 namespace BrokenWheel.Control.Puppeteering.Implementation
 {
     public class MarionetteControl : IMarionetteControl
     {
-        private delegate void MarionetteAction(IMarionette marionette);
-
         private readonly ILogger _logger;
+        private readonly ControlSettings _controlSettings;
 
         private IMarionette _mainMarionette;
         private IList<IMarionette> _sideMarionettes = new List<IMarionette>();
+
+        public IActionBehavior DefaultBehaviorToggleStance { get; }
+        public IActionBehavior DefaultBehaviorToggleSpeed { get; }
 
         public MovementStance Stance { get; protected set; }
 
         public MovementSpeed Speed { get; protected set; }
 
-        public MarionetteControl(ILogger logger)
+        public MarionetteControl(ILogger logger, ControlSettings controlSettings)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _controlSettings = controlSettings ?? throw new ArgumentNullException(nameof(controlSettings));
         }
 
         public void SetMainMarionette(IMarionette marionette)
@@ -74,11 +80,6 @@ namespace BrokenWheel.Control.Puppeteering.Implementation
             ForAll(_ => _.Move(vDolly: vertical, vTruck: horizontal, delta: delta));
         }
 
-        public void Action()
-        {
-            throw new NotImplementedException();
-        }
-
         public void Jump(float strength)
         {
             ForAll(_ => _.Jump(strength));
@@ -95,6 +96,8 @@ namespace BrokenWheel.Control.Puppeteering.Implementation
             Speed = speed;
             ForAll(_ => _.SetMovementState(Stance, Speed));
         }
+
+        private delegate void MarionetteAction(IMarionette marionette);
 
         private void ForAll(MarionetteAction func)
         {

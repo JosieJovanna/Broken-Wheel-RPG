@@ -25,13 +25,40 @@ namespace BrokenWheel.Control.Puppeteering.Implementation
         {
             _controlSettings = controlSettings ?? throw new ArgumentNullException(nameof(controlSettings)); // TODO: settings update refresh
             _marionetteCtrl = marionetteControl ?? throw new ArgumentNullException(nameof(marionetteControl));
-
             if (eventAggregator == null)
                 throw new ArgumentNullException(nameof(eventAggregator));
             eventAggregator.SubscribeToAllHandledEvents(this);
 
+            // behaviors
+            RegisterPlayerMarionetteControlToggleStanceBehavior();
+            RegisterPlayerMarionetteControlToggleSpeedBehavior();
+        }
 
-            _behaviors.Add(RPGInput.ToggleStance, new MuxBehavior(() => _controlSettings.CrawlHoldTime)
+        private void RegisterPlayerMarionetteControlToggleSpeedBehavior()
+        {
+            _behaviors.Add(RPGInput.ToggleSpeed, new MuxBehavior(() => _controlSettings.ToggleSpeedHoldTime)
+            {
+                OnClick = () =>
+                {
+                    if (_marionetteCtrl.Speed == MovementSpeed.Jogging)
+                        _marionetteCtrl.SetSpeed(MovementSpeed.Walking);
+                    else
+                        _marionetteCtrl.SetSpeed(MovementSpeed.Jogging);
+                },
+                OnHoldStart = () =>
+                {
+                    _marionetteCtrl.SetSpeed(MovementSpeed.Sprinting);
+                },
+                OnRelease = () =>
+                {
+                    _marionetteCtrl.SetSpeed(MovementSpeed.Jogging);
+                }
+            });
+        }
+
+        private void RegisterPlayerMarionetteControlToggleStanceBehavior()
+        {
+            _behaviors.Add(RPGInput.ToggleStance, new MuxBehavior(() => _controlSettings.ToggleStanceHoldTime)
             {
                 OnClick = () =>
                 {
@@ -42,7 +69,7 @@ namespace BrokenWheel.Control.Puppeteering.Implementation
                     else
                         _marionetteCtrl.SetStance(MovementStance.Crouching);
                 },
-                OnHeld = () =>
+                OnHoldStart = () =>
                 {
                     if (_marionetteCtrl.Stance == MovementStance.Standing)
                         _marionetteCtrl.SetStance(MovementStance.Crawling);

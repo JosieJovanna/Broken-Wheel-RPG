@@ -5,7 +5,7 @@ using BrokenWheel.Core.Settings;
 
 namespace BrokenWheel.Core.DependencyInjection
 {
-    public sealed class Module : IModule
+    public class Module : IModule
     {
         private readonly ILogger _logger;
         private readonly IDictionary<Type, ISettings> _settingsRegistry = new Dictionary<Type, ISettings>();

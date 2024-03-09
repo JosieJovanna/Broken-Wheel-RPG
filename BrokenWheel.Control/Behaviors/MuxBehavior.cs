@@ -12,7 +12,7 @@ namespace BrokenWheel.Control.Behaviors
     {
         public Action OnPress;
         public Action OnClick;
-        public Action OnHeld;
+        public Action OnHoldStart;
         public Action OnHold;
         public Action OnRelease;
 
@@ -26,7 +26,7 @@ namespace BrokenWheel.Control.Behaviors
 
         protected override void Press() => OnPress?.Invoke();
         protected override void Click() => OnClick?.Invoke();
-        protected override void Held() => OnHeld?.Invoke();
+        protected override void Held() => OnHoldStart?.Invoke();
         protected override void Hold() => OnHold?.Invoke();
         protected override void Release() => OnRelease?.Invoke();
     }

@@ -19,6 +19,7 @@ namespace BrokenWheel.Control.Settings
         public float LowestCameraTilt { get; set; } = AngleUtil.DegreesToRadians(-85);
         public float HighestCameraTilt { get; set; } = AngleUtil.DegreesToRadians(90);
 
-        public float CrawlHoldTime { get; set; } = 0.85f;
+        public float ToggleStanceHoldTime { get; set; } = 0.85f;
+        public float ToggleSpeedHoldTime { get; set; } = 0.85f;
     }
 }

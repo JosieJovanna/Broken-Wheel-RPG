@@ -27,8 +27,8 @@
         public float JumpMaxSpeed { get; set; } = 20.0f;
         public float DirectionChangeAcceleration { get; set; } = 50.0f;
 
-        public SpeedMeta BaseStandingSpeeds { get; set; } = new SpeedMeta { Fast = 4.0f, Normal = 3.0f, Slow = 1.0f };
-        public SpeedMeta BaseCrouchingSpeeds { get; set; } = new SpeedMeta { Fast = 1.0f, Normal = 0.6f, Slow = 0.3f };
-        public SpeedMeta BaseCrawlingSpeeds { get; set; } = new SpeedMeta { Fast = 0.5f, Normal = 0.3f, Slow = 0.15f };
+        public SpeedMeta BaseStandingSpeeds { get; set; } = new SpeedMeta { Fast = 4.0f, Normal = 3.0f, Slow = 2.0f };
+        public SpeedMeta BaseCrouchingSpeeds { get; set; } = new SpeedMeta { Fast = 3.0f, Normal = 1.8f, Slow = 1.0f };
+        public SpeedMeta BaseCrawlingSpeeds { get; set; } = new SpeedMeta { Fast = 1.0f, Normal = 0.8f, Slow = 0.5f };
     }
 }

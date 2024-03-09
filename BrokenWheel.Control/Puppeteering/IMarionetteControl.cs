@@ -8,7 +8,14 @@ namespace BrokenWheel.Control.Puppeteering
     /// </summary>
     public interface IMarionetteControl
     {
+        /// <summary>
+        /// The current stance which all marionettes are in, or trying to be.
+        /// </summary>
         MovementStance Stance { get; }
+
+        /// <summary>
+        /// The current speed which all marionettes are in, or trying to be.
+        /// </summary>
         MovementSpeed Speed { get; }
 
         /// <summary>
@@ -47,9 +54,19 @@ namespace BrokenWheel.Control.Puppeteering
         /// </summary>
         void Look(float horizontal, float vertical, float delta);
 
+        /// <summary>
+        /// Makes all marionettes jump (if able).
+        /// </summary>
         void Jump(float strength);
 
+        /// <summary>
+        /// Sets the current stance of all marionettes (if able).
+        /// </summary>
         void SetStance(MovementStance stance);
+
+        /// <summary>
+        /// Sets the current speed of all marionettes (if able).
+        /// </summary>
         void SetSpeed(MovementSpeed speed);
     }
 }
