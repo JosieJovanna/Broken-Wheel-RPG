@@ -19,7 +19,9 @@ namespace BrokenWheel.Control.Settings
         public float TiltMinimum { get; set; } = AngleUtil.DegreesToRadians(-85);
         public float TiltMaximum { get; set; } = AngleUtil.DegreesToRadians(90); // TODO: move to config? Or just hide?
 
-        public float InterpolateSpeed { get; set; } = 0.1f;
-        public float InterpolateAcceleration { get; set; } = 3.0f;
+        public float InterpolateSpeed { get; set; } = 2.85f;
+
+        public float FOVNormal { get; set; } = 80.0f;
+        public float FOVSprinting { get; set; } = 90.0f;
     }
 }

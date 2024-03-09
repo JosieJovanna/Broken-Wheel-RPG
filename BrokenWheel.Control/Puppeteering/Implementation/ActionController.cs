@@ -40,18 +40,18 @@ namespace BrokenWheel.Control.Puppeteering.Implementation
             {
                 OnClick = () =>
                 {
-                    if (_marionetteCtrl.Speed == MovementSpeed.Jogging)
-                        _marionetteCtrl.SetSpeed(MovementSpeed.Walking);
+                    if (_marionetteCtrl.Speed == MovementSpeed.Normal)
+                        _marionetteCtrl.SetSpeed(MovementSpeed.Slower);
                     else
-                        _marionetteCtrl.SetSpeed(MovementSpeed.Jogging);
+                        _marionetteCtrl.SetSpeed(MovementSpeed.Normal);
                 },
                 OnHoldStart = () =>
                 {
-                    _marionetteCtrl.SetSpeed(MovementSpeed.Sprinting);
+                    _marionetteCtrl.SetSpeed(MovementSpeed.Faster);
                 },
                 OnRelease = () =>
                 {
-                    _marionetteCtrl.SetSpeed(MovementSpeed.Jogging);
+                    _marionetteCtrl.SetSpeed(MovementSpeed.Normal);
                 }
             });
         }

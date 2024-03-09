@@ -23,14 +23,29 @@ namespace BrokenWheel.Control.Puppeteering
         int NumberOfJumps { get; }
 
         /// <summary>
-        /// Make this entity jump, with the specified strength.
+        /// The current effective height of the marionette.
         /// </summary>
-        void Jump(float strength);
+        float Height { get; }
+
+        /// <summary>
+        /// Current speed setting of the marionette.
+        /// </summary>
+        MovementSpeed MovementSpeed { get; }
+
+        /// <summary>
+        /// Current stance setting of the marionette.
+        /// </summary>
+        MovementStance MovementStance { get; }
 
         /// <summary>
         /// Sets the modes of movement for this entity.
         /// </summary>
         void SetMovementState(MovementStance stance, MovementSpeed speed);
+
+        /// <summary>
+        /// Make this entity jump, with the specified strength.
+        /// </summary>
+        void Jump(float strength);
 
         // TODO: action handling
     }

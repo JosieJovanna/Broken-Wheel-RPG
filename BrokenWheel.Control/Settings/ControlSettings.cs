@@ -7,6 +7,6 @@ namespace BrokenWheel.Control.Settings
         public CameraSettings Camera { get; set; } = new CameraSettings();
 
         public float ToggleStanceHoldTime { get; set; } = 0.85f;
-        public float ToggleSpeedHoldTime { get; set; } = 0.85f;
+        public float ToggleSpeedHoldTime { get; set; } = 0.2f;
     }
 }

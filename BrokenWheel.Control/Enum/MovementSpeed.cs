@@ -2,8 +2,8 @@
 {
     public enum MovementSpeed
     {
-        Jogging = default,
-        Walking = -1,
-        Sprinting = 1
+        Normal = default,
+        Slower = -1,
+        Faster = 1
     }
 }
