@@ -36,7 +36,7 @@ namespace BrokenWheel.Control.Implementations
             };*/
         }
 
-        public void ReloadOrReady(PressData press) => _behavior.Execute(press);
+        public void ReloadOrReady(PressData press) => throw new NotImplementedException(); //_behavior.Execute(press);
 
         private void ReadyWeapon() => _equipment.Equipment.ToggleWeaponsReady();
 

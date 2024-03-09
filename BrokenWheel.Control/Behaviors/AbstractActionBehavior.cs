@@ -17,7 +17,8 @@ namespace BrokenWheel.Control.Behaviors
         private readonly bool _isPermanentHoldTime;
         private readonly Func<double> _holdTimeGetter;
         private double _holdTime;
-        private bool _isModifierLocked;
+        private bool _isModifierLocked = false;
+        private bool _isHeld = false;
 
         protected double HeldTime { get; private set; }
         protected bool IsModified { get; private set; }
@@ -31,6 +32,11 @@ namespace BrokenWheel.Control.Behaviors
         /// Called when the button is released before reaching the hold time.
         /// </summary>
         protected abstract void Click();
+
+        /// <summary>
+        /// Called on the first frame where the button has been held at least as long as the hold time.
+        /// </summary>
+        protected abstract void Held();
 
         /// <summary>
         /// Called on every frame where the button has been held at least as long as the hold time.
@@ -109,12 +115,20 @@ namespace BrokenWheel.Control.Behaviors
                 Click();
             HeldTime = 0;
             _isModifierLocked = false;
+            _isHeld = false;
         }
 
         private void HoldIfLongEnough()
         {
-            if (HeldTime >= _holdTime)
-                Hold();
+            if (HeldTime < _holdTime)
+                return;
+
+            if (!_isHeld)
+            {
+                Held();
+                _isHeld = true;
+            }
+            Hold();
         }
     }
 }

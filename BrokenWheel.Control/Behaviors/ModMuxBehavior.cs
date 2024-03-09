@@ -29,6 +29,11 @@ namespace BrokenWheel.Control.Behaviors
             action.Invoke();
         }
 
+        protected override void Held()
+        {
+            throw new NotImplementedException();
+        }
+
         protected override void Hold()
         {
             var action = IsModified ? OnAltHeld : OnHeld;

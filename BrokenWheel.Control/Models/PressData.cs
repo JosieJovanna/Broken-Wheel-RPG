@@ -21,7 +21,6 @@ namespace BrokenWheel.Control.Models
         /// </summary>
         public PressType Type { get; }
 
-
         public PressData(double deltaTime, bool isAltPress, bool isPressed, bool isHeld)
         {
             DeltaTime = deltaTime;

@@ -10,10 +10,11 @@ namespace BrokenWheel.Control.Behaviors
     /// </summary>
     public class MuxBehavior : AbstractActionBehavior
     {
-        public Action OnInitialPress;
+        public Action OnPress;
+        public Action OnClick;
         public Action OnHeld;
-        public Action OnReleaseClick;
-        public Action OnReleaseHold;
+        public Action OnHold;
+        public Action OnRelease;
 
         public MuxBehavior(double holdTime)
             : base(holdTime)
@@ -23,9 +24,10 @@ namespace BrokenWheel.Control.Behaviors
             : base(holdTimeGetter)
         { }
 
-        protected override void Press() => OnInitialPress?.Invoke();
-        protected override void Hold() => OnHeld?.Invoke();
-        protected override void Click() => OnReleaseClick?.Invoke();
-        protected override void Release() => OnReleaseHold?.Invoke();
+        protected override void Press() => OnPress?.Invoke();
+        protected override void Click() => OnClick?.Invoke();
+        protected override void Held() => OnHeld?.Invoke();
+        protected override void Hold() => OnHold?.Invoke();
+        protected override void Release() => OnRelease?.Invoke();
     }
 }

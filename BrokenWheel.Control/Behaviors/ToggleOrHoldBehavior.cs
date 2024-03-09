@@ -54,5 +54,10 @@ namespace BrokenWheel.Control.Behaviors
             IsToggled = false;
             ToggleOff();
         }
+
+        protected override void Held()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
