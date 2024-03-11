@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using BrokenWheel.Core.Logging;
 using BrokenWheel.Control.Actions;
-using BrokenWheel.Control.Behaviors;
 using BrokenWheel.Control.Enum;
 using BrokenWheel.Control.Settings;
 

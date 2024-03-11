@@ -19,6 +19,7 @@
         {
             TimeScale = timeScale;
             RecalculateEffectiveCalendarTimeScale();
+            EmitChangeEvent();
             _logger.LogCategory("Time", $"Set time scale to {timeScale} (ECT={EffectiveCalendarTimeScale})");
         }
 
@@ -26,6 +27,7 @@
         {
             CalendarTimeScale = timeScale;
             RecalculateEffectiveCalendarTimeScale();
+            EmitChangeEvent();
             _logger.LogCategory("Time", $"Set calendar time scale to {timeScale} (ECT={EffectiveCalendarTimeScale})");
         }
 
@@ -33,6 +35,7 @@
         {
             TimeScale = _timeSettings.DefaultTimeScale;
             RecalculateEffectiveCalendarTimeScale();
+            EmitChangeEvent();
             _logger.LogCategory("Time", $"Reset time scale to {TimeScale} (ECT={EffectiveCalendarTimeScale})");
         }
 
@@ -40,10 +43,14 @@
         {
             CalendarTimeScale = _timeSettings.DefaultCalendarTimeScale;
             RecalculateEffectiveCalendarTimeScale();
+            EmitChangeEvent();
             _logger.LogCategory("Time", $"Reset calendar time scale to {CalendarTimeScale} (ECT={EffectiveCalendarTimeScale})");
         }
 
         private void RecalculateEffectiveCalendarTimeScale()
             => EffectiveCalendarTimeScale = CalendarTimeScale * TimeScale;
+
+        private void EmitChangeEvent()
+            => _timeChangeSubject.Emit(new Events.TimeChangeEvent(this, TimeScale, EffectiveCalendarTimeScale));
     }
 }

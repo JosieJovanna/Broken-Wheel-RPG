@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using BrokenWheel.Core.GameModes;
-using BrokenWheel.Core.Events.Observables;
 using BrokenWheel.Control.Actions;
 using BrokenWheel.Control.Behaviors;
 using BrokenWheel.Control.Enum;
@@ -20,14 +19,10 @@ namespace BrokenWheel.Control.Puppeteering.Implementation
 
         public ActionController(
             ControlSettings controlSettings,
-            IEventAggregator eventAggregator,
             IMarionetteControl marionetteControl)
         {
             _controlSettings = controlSettings ?? throw new ArgumentNullException(nameof(controlSettings)); // TODO: settings update refresh
             _marionetteCtrl = marionetteControl ?? throw new ArgumentNullException(nameof(marionetteControl));
-            if (eventAggregator == null)
-                throw new ArgumentNullException(nameof(eventAggregator));
-            eventAggregator.SubscribeToAllHandledEvents(this);
 
             // behaviors
             RegisterPlayerMarionetteControlToggleStanceBehavior();

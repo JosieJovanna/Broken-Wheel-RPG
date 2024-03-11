@@ -9,7 +9,7 @@ namespace BrokenWheel.Control
     /// Translates into BrokenWheel input and is responsible for calling the <see cref="IRPGInputTracker"/> when processing.
     /// </summary>
     /// <typeparam name="TGameInputEvent"> The type of action which is used on the implementation level. </typeparam>
-    public interface IGameInputHandler<TGameInputEvent> 
+    public interface IGameInputHandler<TGameInputEvent>
         : IEventHandler<GameModeUpdateEvent>
         , IOnTickTime
     {

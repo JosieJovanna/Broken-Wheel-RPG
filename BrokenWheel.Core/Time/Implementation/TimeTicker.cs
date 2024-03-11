@@ -1,4 +1,6 @@
 ﻿using System;
+using BrokenWheel.Core.Events;
+using BrokenWheel.Core.Events.Observables;
 using BrokenWheel.Core.Logging;
 using BrokenWheel.Core.Settings;
 
@@ -8,15 +10,20 @@ namespace BrokenWheel.Core.Time.Implementation
     {
         private readonly ILogger _logger;
         private readonly TimeSettings _timeSettings;
+        private readonly IEventSubject<TimeChangeEvent> _timeChangeSubject;
 
         private TimeFunction _tickTimeFxs;
         private TimeFunction _realTimeFxs;
         private TimeFunction _calendarTimeFxs;
 
-        public FullTimeService(ILogger logger, TimeSettings timeSettings)
+        public FullTimeService(
+            ILogger logger,
+            TimeSettings timeSettings,
+            IEventAggregator eventAggregator)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _timeSettings = timeSettings ?? throw new ArgumentNullException(nameof(timeSettings));
+            _timeChangeSubject = eventAggregator?.GetSubject<TimeChangeEvent>() ?? throw new ArgumentNullException(nameof(eventAggregator));
 
             ResetTimeScale();
             ResetCalendarScale();
