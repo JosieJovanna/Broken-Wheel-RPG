@@ -38,31 +38,31 @@ namespace BrokenWheel.Core.Events.Observables.Implementation
 
         /// <inheritdoc/>
         public void SubscribeToAllHandledEvents(object handler)
-            => HandleAllHandledEvents(handler, true);
+            => SubscribeToAllHandledEvents(handler, true);
 
         /// <inheritdoc/>
         public void UnsubscribeFromAllHandledEvents(object handler)
-            => HandleAllHandledEvents(handler, false);
+            => SubscribeToAllHandledEvents(handler, false);
 
         /// <summary>
         /// Gets all implemented handler interfaces and extracts the generic methods 
         /// in order to programatically subscribe to all handled event types.
         /// </summary>
-        private void HandleAllHandledEvents(object handler, bool isSubscribing)
+        private void SubscribeToAllHandledEvents(object handler, bool isSubscribing)
         {
             foreach (var @interface in handler.GetType().GetInterfaces())
                 if (typeof(IEventHandler<GameEvent>).Name == @interface.Name)
-                    HandleByGenericEventType(handler, @interface, isSubscribing);
+                    SubscribeToGenericEventType(handler, @interface, isSubscribing);
         }
 
-        private void HandleByGenericEventType(object handler, Type @interface, bool isSubscribing)
+        private void SubscribeToGenericEventType(object handler, Type interfaceType, bool isSubscribing)
         {
-            foreach (var generic in @interface.GetGenericArguments())
+            foreach (var generic in interfaceType.GetGenericArguments())
                 if (typeof(GameEvent).IsAssignableFrom(generic))
-                    HandleEventType(handler, generic, isSubscribing);
+                    SubscribeToEventType(handler, generic, isSubscribing);
         }
 
-        private void HandleEventType(object handler, Type eventType, bool isSubscribing)
+        private void SubscribeToEventType(object handler, Type eventType, bool isSubscribing)
         {
             var method = GetType().GetMethod(nameof(CastHandlerAndSubOrUnsub),
                 BindingFlags.NonPublic | BindingFlags.Instance);

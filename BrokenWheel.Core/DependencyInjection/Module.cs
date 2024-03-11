@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
+using BrokenWheel.Core.Events;
+using BrokenWheel.Core.Events.Handling;
+using BrokenWheel.Core.Events.Observables;
 using BrokenWheel.Core.Logging;
 using BrokenWheel.Core.Settings;
 
@@ -55,7 +59,7 @@ namespace BrokenWheel.Core.DependencyInjection
         private void RegisterServiceInstanceFromFunction<TService>(Type type, Func<IModule, object> function)
         {
             HandleLoopLogic(type);
-            var serviceImpl = CallInjectionFunction<TService>(function, type);
+            var serviceImpl = CallInjectionFunction<TService>(type, function);
             UnregisterFunction(type);
             RegisterService(serviceImpl);
         }
@@ -71,7 +75,7 @@ namespace BrokenWheel.Core.DependencyInjection
                 LogAndThrow($"Circular dependency injection logic for {type.Name}.");
         }
 
-        private TService CallInjectionFunction<TService>(Func<IModule, object> function, Type type)
+        private TService CallInjectionFunction<TService>(Type type, Func<IModule, object> function)
         {
             var implementation = Cast<TService>(function.Invoke(this));
             UnregisterFunction(type);
@@ -120,39 +124,11 @@ namespace BrokenWheel.Core.DependencyInjection
         {
             var method = GetType().GetMethod(nameof(RegisterServiceInstanceFromFunction),
                 BindingFlags.NonPublic | BindingFlags.Instance);
-
             foreach (var kvp in _immediateServiceFunctions)
             {
                 var genericMethod = method.MakeGenericMethod(kvp.Key);
                 genericMethod.Invoke(this, new object[] { kvp.Key, kvp.Value });
             }
-        }
-
-        /// <inheritdoc/>
-        public IModule RegisterService<TService>(TService implementation)
-        {
-            var type = typeof(TService);
-            if (_serviceRegistry.ContainsKey(type))
-                LogAndThrow($"Service `{type.Name}` already has a registered instance.");
-
-            RegisterImplementationToType(implementation, type);
-            return this;
-        }
-
-        private void RegisterImplementationToType<TService>(TService implementation, Type type)
-        {
-            RegisterType(type, implementation);
-            var implementationType = implementation.GetType();
-            if (type != implementationType)
-                RegisterType(implementationType, implementation);
-        }
-
-        private void RegisterType(Type type, object implementation)
-        {
-            if (_serviceRegistry.ContainsKey(type))
-                return;
-            _serviceRegistry.Add(type, implementation);
-            _logger.LogCategory(LogCategory.DEPENDENCY_INJECTION, $"Registered `{type.Name}` to instance of {implementation.GetType().FullName}.");
         }
 
         /// <inheritdoc/>
@@ -202,6 +178,43 @@ namespace BrokenWheel.Core.DependencyInjection
         {
             _immediateServiceFunctions.Add(type, serviceConstructor);
             _logger.LogCategory(LogCategory.DEPENDENCY_INJECTION, $"Registered and will call injection function for {type.Name}");
+        }
+
+        /// <inheritdoc/>
+        public IModule RegisterService<TService>(TService implementation)
+        {
+            var type = typeof(TService);
+            if (_serviceRegistry.ContainsKey(type))
+                LogAndThrow($"Service `{type.Name}` already has a registered instance.");
+
+            RegisterImplementationToType(implementation, type);
+            return this;
+        }
+
+        private void RegisterImplementationToType<TService>(TService implementation, Type type)
+        {
+            RegisterType(implementation, type);
+            var implementationType = implementation.GetType();
+            if (type != implementationType)
+                RegisterType(implementation, implementationType);
+            SubscribeToHandledEvents(implementation, implementationType);
+        }
+
+        private void RegisterType(object implementation, Type type)
+        {
+            if (_serviceRegistry.ContainsKey(type))
+                return;
+            _serviceRegistry.Add(type, implementation);
+            _logger.LogCategory(LogCategory.DEPENDENCY_INJECTION, $"Registered `{type.Name}` to instance of {implementation.GetType().FullName}.");
+        }
+
+        private void SubscribeToHandledEvents<TService>(TService implementation, Type implementationType)
+        {
+            if (!string.Join("", implementationType.GetInterfaces().Select(_ => _.Name)).Contains(typeof(IEventHandler<GameEvent>).Name))
+                return; // implements no event handlers
+            var eventAggregator = GetService<IEventAggregator>();
+            eventAggregator.SubscribeToAllHandledEvents(implementation);
+            _logger.LogCategory(LogCategory.DEPENDENCY_INJECTION, $"Subscribed {implementationType.Name} service to all handled events.");
         }
 
         #endregion
