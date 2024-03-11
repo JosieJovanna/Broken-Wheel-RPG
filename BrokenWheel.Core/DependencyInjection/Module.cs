@@ -54,9 +54,16 @@ namespace BrokenWheel.Core.DependencyInjection
 
         private void RegisterServiceIfTypeHasFunction<TService>(Type type)
         {
-            if (!_serviceFunctions.ContainsKey(type))
+            Func<IModule, object> function;
+            if (_serviceFunctions.ContainsKey(type))
+                function = _serviceFunctions[type];
+            else if (_immediateServiceFunctions.ContainsKey(type))
+                function = _immediateServiceFunctions[type];
+            else
+            {
                 LogAndThrow($"Service `{type.Name}` does not have a registered instance or injection function.");
-            var function = _serviceFunctions[type];
+                return;
+            }
             RegisterServiceInstanceFromFunction<TService>(type, function);
         }
 
@@ -90,7 +97,8 @@ namespace BrokenWheel.Core.DependencyInjection
 
         private void UnregisterFunction(Type type)
         {
-            _serviceFunctions.Remove(type);
+            if (_serviceFunctions.ContainsKey(type))
+                _serviceFunctions.Remove(type);
             if (_immediateServiceFunctions.ContainsKey(type))
                 _immediateServiceFunctions.Remove(type);
         }
@@ -188,21 +196,22 @@ namespace BrokenWheel.Core.DependencyInjection
         public IModule RegisterService<TService>(TService implementation)
         {
             var type = typeof(TService);
+            var implementationType = implementation.GetType();
             if (_serviceRegistry.ContainsKey(type))
-                LogAndThrow($"Service `{type.Name}` already has a registered instance.");
-
-            RegisterImplementationToType(implementation, type);
+                _logger.LogCategoryWarning(LogCategory.DEPENDENCY_INJECTION, $"Service `{type.Name}` already has a registered instance.");
+            else
+                RegisterInterfaceAndImplTypes(implementation, type);
+            SubscribeToHandledEvents(implementation, implementationType);
+            SubscribeToTimeEvents(implementation, implementationType);
             return this;
         }
 
-        private void RegisterImplementationToType<TService>(TService implementation, Type type)
+        private void RegisterInterfaceAndImplTypes<TService>(TService implementation, Type type)
         {
             RegisterType(implementation, type);
             var implementationType = implementation.GetType();
             if (type != implementationType)
                 RegisterType(implementation, implementationType);
-            SubscribeToHandledEvents(implementation, implementationType);
-            SubscribeToTimeEvents(implementation, implementationType);
         }
 
         private void RegisterType(object implementation, Type type)
@@ -232,12 +241,19 @@ namespace BrokenWheel.Core.DependencyInjection
 
         private void SubscribeToTimeEvents(object implementation, Type implementationType)
         {
-            if (_timeHandled.Contains(implementationType))
+            if (_timeHandled.Contains(implementationType) || !IsImplementationTimeListener(implementation))
                 return;
             var timeService = GetService<ITimeService>();
             AddTimeEventListeners(implementation, timeService);
             _timeHandled.Add(implementationType);
             _logger.LogCategory(LogCategory.DEPENDENCY_INJECTION, $"Subscribed {implementationType.Name} service to all time events.");
+        }
+
+        private static bool IsImplementationTimeListener(object implementation)
+        {
+            return implementation is IOnTickTime
+                || implementation is IOnRealTime
+                || implementation is IOnCalendarTime;
         }
 
         private static void AddTimeEventListeners(object implementation, ITimeService timeService)

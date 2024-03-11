@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BrokenWheel.Core.Events
+﻿namespace BrokenWheel.Core.Events
 {
     public abstract class UncategorizedGameEvent : GameEvent
     {
