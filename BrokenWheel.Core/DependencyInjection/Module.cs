@@ -7,6 +7,8 @@ using BrokenWheel.Core.Events.Handling;
 using BrokenWheel.Core.Events.Observables;
 using BrokenWheel.Core.Logging;
 using BrokenWheel.Core.Settings;
+using BrokenWheel.Core.Time;
+using BrokenWheel.Core.Time.Listeners;
 
 namespace BrokenWheel.Core.DependencyInjection
 {
@@ -17,6 +19,8 @@ namespace BrokenWheel.Core.DependencyInjection
         private readonly IDictionary<Type, object> _serviceRegistry = new Dictionary<Type, object>();
         private readonly IDictionary<Type, Func<IModule, object>> _serviceFunctions = new Dictionary<Type, Func<IModule, object>>();
         private readonly IDictionary<Type, Func<IModule, object>> _immediateServiceFunctions = new Dictionary<Type, Func<IModule, object>>();
+        private readonly IList<Type> _eventHandled = new List<Type>();
+        private readonly IList<Type> _timeHandled = new List<Type>();
 
         private bool _isCompleted = false;
         private bool _isConstructing = false;
@@ -198,6 +202,7 @@ namespace BrokenWheel.Core.DependencyInjection
             if (type != implementationType)
                 RegisterType(implementation, implementationType);
             SubscribeToHandledEvents(implementation, implementationType);
+            SubscribeToTimeEvents(implementation, implementationType);
         }
 
         private void RegisterType(object implementation, Type type)
@@ -210,11 +215,39 @@ namespace BrokenWheel.Core.DependencyInjection
 
         private void SubscribeToHandledEvents<TService>(TService implementation, Type implementationType)
         {
-            if (!string.Join("", implementationType.GetInterfaces().Select(_ => _.Name)).Contains(typeof(IEventHandler<GameEvent>).Name))
+            if (!DoesTypeImplement<IEventHandler<GameEvent>>(implementationType) || _eventHandled.Contains(implementationType))
                 return; // implements no event handlers
             var eventAggregator = GetService<IEventAggregator>();
             eventAggregator.SubscribeToAllHandledEvents(implementation);
+            _eventHandled.Add(implementationType);
             _logger.LogCategory(LogCategory.DEPENDENCY_INJECTION, $"Subscribed {implementationType.Name} service to all handled events.");
+        }
+
+        private static bool DoesTypeImplement<TInterface>(Type implementationType)
+        {
+            var implInterfaceNames = implementationType.GetInterfaces().Select(_ => _.Name);
+            var allNames = string.Join("", implInterfaceNames);
+            return allNames.Contains(typeof(TInterface).Name);
+        }
+
+        private void SubscribeToTimeEvents(object implementation, Type implementationType)
+        {
+            if (_timeHandled.Contains(implementationType))
+                return;
+            var timeService = GetService<ITimeService>();
+            AddTimeEventListeners(implementation, timeService);
+            _timeHandled.Add(implementationType);
+            _logger.LogCategory(LogCategory.DEPENDENCY_INJECTION, $"Subscribed {implementationType.Name} service to all time events.");
+        }
+
+        private static void AddTimeEventListeners(object implementation, ITimeService timeService)
+        {
+            if (implementation is IOnTickTime tickTime)
+                timeService.AddTickTimeFx(tickTime.OnTickTime);
+            if (implementation is IOnRealTime realTime)
+                timeService.AddRealTimeFx(realTime.OnRealTime);
+            if (implementation is IOnCalendarTime calendarTime)
+                timeService.AddCalendarTimeFx(calendarTime.OnCalendarTime);
         }
 
         #endregion

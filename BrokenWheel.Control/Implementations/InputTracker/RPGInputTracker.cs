@@ -15,8 +15,8 @@ using BrokenWheel.UI.Settings;
 namespace BrokenWheel.Control.Implementations.InputTracker
 {
     public class RPGInputTracker
-        : IRPGInputTracker,
-        IEventHandler<GameModeUpdateEvent>
+        : IRPGInputTracker
+        , IEventHandler<GameModeUpdateEvent>
     {
         private readonly ILogger _logger;
         private readonly DisplaySettings _displaySettings;
@@ -54,7 +54,6 @@ namespace BrokenWheel.Control.Implementations.InputTracker
             _moveSubject = eventAggregator.GetSubject<MoveInputEvent>();
             _lookSubject = eventAggregator.GetSubject<LookInputEvent>();
             _cursorSubject = eventAggregator.GetSubject<CursorInputEvent>();
-            eventAggregator.Subscribe<GameModeUpdateEvent>(HandleEvent);
             // trackers
             _moveTracker = new MoveInputDataTracker(this);
             _lookCursorTracker = new LookCursorInputDataTracker(this);
