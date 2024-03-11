@@ -17,6 +17,9 @@ namespace BrokenWheel.Core.Time.Implementation
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _timeSettings = timeSettings ?? throw new ArgumentNullException(nameof(timeSettings));
+
+            ResetTimeScale();
+            ResetCalendarScale();
         }
 
         public void Tick(double delta)
