@@ -19,7 +19,6 @@
 
   <ItemGroup>
     <Folder Include="Equipment\" />
-    <Folder Include="Extensions\" />
     <Folder Include="Stats\Implementation\" />
   </ItemGroup>
 

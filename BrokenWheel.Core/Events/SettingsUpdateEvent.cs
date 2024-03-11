@@ -1,7 +1,6 @@
-﻿using BrokenWheel.Core.Events;
-using BrokenWheel.Core.Settings;
+﻿using BrokenWheel.Core.Settings;
 
-namespace BrokenWheel.Core.Settings.Events
+namespace BrokenWheel.Core.Events
 {
     public class SettingsUpdateEvent<TSettings> : GameEvent where TSettings : class, ISettings
     {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using BrokenWheel.Core.Logging;
 using BrokenWheel.Core.Settings;
 
@@ -11,7 +12,9 @@ namespace BrokenWheel.Core.DependencyInjection
         private readonly IDictionary<Type, ISettings> _settingsRegistry = new Dictionary<Type, ISettings>();
         private readonly IDictionary<Type, object> _serviceRegistry = new Dictionary<Type, object>();
         private readonly IDictionary<Type, Func<IModule, object>> _serviceFunctions = new Dictionary<Type, Func<IModule, object>>();
+        private readonly IDictionary<Type, Func<IModule, object>> _immediateServiceFunctions = new Dictionary<Type, Func<IModule, object>>();
 
+        private bool _isCompleted = false;
         private bool _isConstructing = false;
         private Type _constructRoot = null;
 
@@ -27,38 +30,34 @@ namespace BrokenWheel.Core.DependencyInjection
         }
 
         /// <inheritdoc/>
-        public ILogger GetLogger()
-        {
-            return _logger;
-        }
+        public ILogger GetLogger() => _logger;
+
+        #region Get Service
 
         /// <inheritdoc/>
         public TService GetService<TService>()
         {
             var type = typeof(TService);
             if (!_serviceRegistry.ContainsKey(type))
-                return GetServiceFromFunction<TService>(type);
+                RegisterServiceIfTypeHasFunction<TService>(type);
 
             return Cast<TService>(_serviceRegistry[type]);
         }
 
-        private TService GetServiceFromFunction<TService>(Type type)
+        private void RegisterServiceIfTypeHasFunction<TService>(Type type)
         {
             if (!_serviceFunctions.ContainsKey(type))
                 LogAndThrow($"Service `{type.Name}` does not have a registered instance or injection function.");
-            HandleLoopLogic(type);
-            return CallInjectionFunction<TService>(type);
+            var function = _serviceFunctions[type];
+            RegisterServiceInstanceFromFunction<TService>(type, function);
         }
 
-        private TService CallInjectionFunction<TService>(Type type)
+        private void RegisterServiceInstanceFromFunction<TService>(Type type, Func<IModule, object> function)
         {
-            var function = _serviceFunctions[type];
-            var implementation = Cast<TService>(function.Invoke(this));
-            RegisterService(implementation);
-            _serviceFunctions.Remove(type);
-            _isConstructing = false;
-            _constructRoot = null;
-            return implementation;
+            HandleLoopLogic(type);
+            var serviceImpl = CallInjectionFunction<TService>(function, type);
+            UnregisterFunction(type);
+            RegisterService(serviceImpl);
         }
 
         private void HandleLoopLogic(Type type)
@@ -70,6 +69,63 @@ namespace BrokenWheel.Core.DependencyInjection
             }
             else if (_constructRoot == type)
                 LogAndThrow($"Circular dependency injection logic for {type.Name}.");
+        }
+
+        private TService CallInjectionFunction<TService>(Func<IModule, object> function, Type type)
+        {
+            var implementation = Cast<TService>(function.Invoke(this));
+            UnregisterFunction(type);
+            _isConstructing = false;
+            _constructRoot = null;
+            return implementation;
+        }
+
+        private void UnregisterFunction(Type type)
+        {
+            _serviceFunctions.Remove(type);
+            if (_immediateServiceFunctions.ContainsKey(type))
+                _immediateServiceFunctions.Remove(type);
+        }
+
+        /// <summary>
+        /// Tries casting the given object to the specified type. Wraps exception and logs if cannot cast.
+        /// </summary>
+        private TCast Cast<TCast>(object instance)
+        {
+            try
+            {
+                return (TCast)instance;
+            }
+            catch (Exception e)
+            {
+                LogAndThrow($"Could not cast {instance.GetType().Name} to {typeof(TCast).Name}.", e);
+                throw;
+            }
+        }
+
+        #endregion
+
+        #region Register Service
+
+        /// <inheritdoc/>
+        public void CompleteInitialRegistration()
+        {
+            if (_isCompleted)
+                return;
+            _isCompleted = true;
+            BuildAllImmediates();
+        }
+
+        private void BuildAllImmediates()
+        {
+            var method = GetType().GetMethod(nameof(RegisterServiceInstanceFromFunction),
+                BindingFlags.NonPublic | BindingFlags.Instance);
+
+            foreach (var kvp in _immediateServiceFunctions)
+            {
+                var genericMethod = method.MakeGenericMethod(kvp.Key);
+                genericMethod.Invoke(this, new object[] { kvp.Key, kvp.Value });
+            }
         }
 
         /// <inheritdoc/>
@@ -93,6 +149,8 @@ namespace BrokenWheel.Core.DependencyInjection
 
         private void RegisterType(Type type, object implementation)
         {
+            if (_serviceRegistry.ContainsKey(type))
+                return;
             _serviceRegistry.Add(type, implementation);
             _logger.LogCategory(LogCategory.DEPENDENCY_INJECTION, $"Registered `{type.Name}` to instance of {implementation.GetType().FullName}.");
         }
@@ -106,6 +164,8 @@ namespace BrokenWheel.Core.DependencyInjection
                 LogAndThrow($"Service `{type.Name}` already has a registered instance.");
             if (_serviceFunctions.ContainsKey(type))
                 LogAndThrow($"Service `{type.Name}` already has a registered injection function.");
+            if (_immediateServiceFunctions.ContainsKey(type))
+                LogAndThrow($"Service `{type.Name}` already has a registered immediate injection function.");
             return RegisterServiceFunction<TService, TImpl>(serviceConstructor, shouldBuildImmediately);
         }
 
@@ -114,20 +174,39 @@ namespace BrokenWheel.Core.DependencyInjection
         {
             var type = typeof(TService);
             if (shouldBuildImmediately)
-                return BuildImmediatelyAndReturnModule<TService, TImpl>(serviceConstructor, type);
-            _serviceFunctions.Add(type, serviceConstructor);
+                RegisterImmediateServiceFunction<TService, TImpl>(serviceConstructor, type);
+            else
+                _serviceFunctions.Add(type, serviceConstructor);
             _logger.LogCategory(LogCategory.DEPENDENCY_INJECTION, $"Registered injection function for {type.Name}");
             return this;
         }
+        private void RegisterImmediateServiceFunction<TService, TImpl>(Func<IModule, TImpl> serviceConstructor, Type type)
+            where TImpl : class, TService
+        {
+            if (_isCompleted)
+                BuildImmediatelyAndReturnModule<TService, TImpl>(serviceConstructor, type);
+            else
+                BuildOnComplete<TService, TImpl>(serviceConstructor, type);
+        }
 
-        private IModule BuildImmediatelyAndReturnModule<TService, TImpl>(Func<IModule, TImpl> serviceConstructor, Type type)
+        private void BuildImmediatelyAndReturnModule<TService, TImpl>(Func<IModule, TImpl> serviceConstructor, Type type)
             where TImpl : class, TService
         {
             var instance = Cast<TImpl>(serviceConstructor.Invoke(this));
             _serviceRegistry.Add(type, instance);
             _logger.LogCategory(LogCategory.DEPENDENCY_INJECTION, $"Registered and called injection function for {type.Name}");
-            return this;
         }
+
+        private void BuildOnComplete<TService, TImpl>(Func<IModule, TImpl> serviceConstructor, Type type)
+            where TImpl : class, TService
+        {
+            _immediateServiceFunctions.Add(type, serviceConstructor);
+            _logger.LogCategory(LogCategory.DEPENDENCY_INJECTION, $"Registered and will call injection function for {type.Name}");
+        }
+
+        #endregion
+
+        #region Settings
 
         /// <inheritdoc/>
         public TSettings GetSettings<TSettings>() where TSettings : class, ISettings
@@ -162,21 +241,7 @@ namespace BrokenWheel.Core.DependencyInjection
             return this;
         }
 
-        /// <summary>
-        /// Tries casting the given object to the specified type. Wraps exception and logs if cannot cast.
-        /// </summary>
-        private TCast Cast<TCast>(object instance)
-        {
-            try
-            {
-                return (TCast)instance;
-            }
-            catch (Exception e)
-            {
-                LogAndThrow($"Could not cast {instance.GetType().Name} to {typeof(TCast).Name}.", e);
-                throw;
-            }
-        }
+        #endregion
 
         /// <summary>
         /// Throws an exception after logging it.

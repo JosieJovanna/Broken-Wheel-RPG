@@ -37,7 +37,8 @@ namespace BrokenWheel.Core.DependencyInjection
         /// </summary>
         /// <typeparam name="TService"> The interface of the service being implemented. </typeparam>
         /// <typeparam name="shouldBuildImmediately"> 
-        /// False by default. If true, calls the function immediately. 
+        /// False by default. If true, calls the function immediately after registration is complete -
+        /// or, if registration is already completed, will call it without delay.
         /// Used for services which operate purely off of listening. 
         /// </typeparam>
         /// <param name="serviceConstructor"> The function for constructing the service. </param>
@@ -63,5 +64,10 @@ namespace BrokenWheel.Core.DependencyInjection
         /// <exception cref="ArgumentNullException"> If settings are null. </exception>
         IModule RegisterSettings<TSettings>(TSettings settings)
             where TSettings : class, ISettings;
+
+        /// <summary>
+        /// Instantiates all services marked for immediate building.
+        /// </summary>
+        void CompleteInitialRegistration();
     }
 }
