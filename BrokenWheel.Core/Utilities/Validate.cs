@@ -6,6 +6,13 @@ namespace BrokenWheel.Core.Utilities
 {
     internal static class Validate
     {
+        public static int ValidatedInRange(this int val, int min, int max, string name = null)
+        {
+            if (val < min || val > max)
+                throw new ArgumentException($"{name ?? "Value"} is not within [{min},{max}].");
+            return val;
+        }
+
         public static object ThrowIfNull(object value, string nameOfValue = "Value")
         {
             return value ?? throw new ArgumentNullException($"{nameOfValue} cannot be null.");

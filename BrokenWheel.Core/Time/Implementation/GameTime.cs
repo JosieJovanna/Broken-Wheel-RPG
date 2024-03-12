@@ -8,7 +8,7 @@ namespace BrokenWheel.Core.Time.Implementation
 
         static GameTime()
         {
-            _service = Injection.GetModule().GetService<ITimeService>();
+            _service = Injection.GetModule().GetTimeService();
         }
 
         public static float TimeScale => _service.TimeScale;
