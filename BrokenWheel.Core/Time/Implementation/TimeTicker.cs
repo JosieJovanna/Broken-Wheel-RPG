@@ -44,13 +44,13 @@ namespace BrokenWheel.Core.Time.Implementation
         private void RealTime(double delta)
         {
             var realDelta = delta * TimeScale;
-            _realTimeFxs?.Invoke(delta);
+            _realTimeFxs?.Invoke(realDelta);
         }
 
         private void CalendarTime(double delta)
         {
             var calendarDelta = delta * EffectiveCalendarTimeScale;
-            _calendarTimeFxs?.Invoke(delta);
+            _calendarTimeFxs?.Invoke(calendarDelta);
         }
     }
 }
