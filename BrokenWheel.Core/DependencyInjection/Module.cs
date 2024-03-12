@@ -47,12 +47,12 @@ namespace BrokenWheel.Core.DependencyInjection
         {
             var type = typeof(TService);
             if (!_serviceRegistry.ContainsKey(type))
-                RegisterServiceIfTypeHasFunction<TService>(type);
+                GetFunctionServiceAndRegisterInstance<TService>(type);
 
             return Cast<TService>(_serviceRegistry[type]);
         }
 
-        private void RegisterServiceIfTypeHasFunction<TService>(Type type)
+        private void GetFunctionServiceAndRegisterInstance<TService>(Type type)
         {
             Func<IModule, object> function;
             if (_serviceFunctions.ContainsKey(type))
@@ -193,7 +193,7 @@ namespace BrokenWheel.Core.DependencyInjection
         }
 
         /// <inheritdoc/>
-        public IModule RegisterService<TService>(TService implementation)
+        private IModule RegisterService<TService>(TService implementation)
         {
             var type = typeof(TService);
             var implementationType = implementation.GetType();

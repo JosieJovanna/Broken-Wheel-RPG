@@ -20,16 +20,6 @@ namespace BrokenWheel.Core.DependencyInjection
         TService GetService<TService>();
 
         /// <summary>
-        /// Registers a singleton service to a concrete implementation.
-        /// The service should be registered as an interface, but can be any type.
-        /// </summary>
-        /// <typeparam name="TService"> The interface (or class) that the implementation inherits. </typeparam>
-        /// <param name="implementation"> The object to be registered. </param>
-        /// <exception cref="DependencyException"> If service is already registered. </exception>
-        /// <exception cref="ArgumentException"> If the generic type is not an interface, or if implementation is null. </exception>
-        IModule RegisterService<TService>(TService implementation);
-
-        /// <summary>
         /// Registers a singleton service when needed via a passed function.
         /// This function takes the module as an argument, and returns an object inheriting/equalling the given type.
         /// Will not be called until the service is needed for injection.
