@@ -1,5 +1,7 @@
 ﻿using System;
+using BrokenWheel.Core.Events.Observables;
 using BrokenWheel.Core.Logging;
+using BrokenWheel.Core.Time;
 
 namespace BrokenWheel.Core.DependencyInjection.Implementation
 {
@@ -18,8 +20,10 @@ namespace BrokenWheel.Core.DependencyInjection.Implementation
             _logger.LogCategory(LogCategory.DEPENDENCY_INJECTION, $"Initialized {typeof(Module)}.");
         }
 
-        /// <inheritdoc/>
+
         public ILogger GetLogger() => _logger;
+        public IEventAggregator GetEventAggregator() => GetService<IEventAggregator>();
+        public ITimeService GetTimeService() => GetService<ITimeService>();
 
         /// <summary>
         /// Tries casting the given object to the specified type. Wraps exception and logs if cannot cast.

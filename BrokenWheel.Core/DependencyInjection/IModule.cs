@@ -1,15 +1,18 @@
 ﻿using System;
+using BrokenWheel.Core.Events.Observables;
 using BrokenWheel.Core.Logging;
 using BrokenWheel.Core.Settings;
+using BrokenWheel.Core.Time;
 
 namespace BrokenWheel.Core.DependencyInjection
 {
     public interface IModule //TODO: parameterized services/modules
     {
-        /// <summary>
-        /// Gets the <see cref="ILogger"/>.
-        /// </summary>
         ILogger GetLogger();
+
+        IEventAggregator GetEventAggregator();
+
+        ITimeService GetTimeService();
 
         /// <summary>
         /// Gets a singleton service.

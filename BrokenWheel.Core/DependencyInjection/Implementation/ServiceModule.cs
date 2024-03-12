@@ -196,7 +196,7 @@ namespace BrokenWheel.Core.DependencyInjection.Implementation
         {
             if (!DoesTypeImplement<IEventHandler<GameEvent>>(implementationType) || _eventHandled.Contains(implementationType))
                 return; // implements no event handlers
-            var eventAggregator = GetService<IEventAggregator>();
+            var eventAggregator = GetEventAggregator();
             eventAggregator.SubscribeToAllHandledEvents(implementation);
             _eventHandled.Add(implementationType);
             _logger.LogCategory(LogCategory.DEPENDENCY_INJECTION, $"Subscribed `{implementationType.Name}` service to all handled events");
@@ -213,7 +213,7 @@ namespace BrokenWheel.Core.DependencyInjection.Implementation
         {
             if (_timeHandled.Contains(implementationType) || !IsImplementationTimeListener(implementation))
                 return;
-            var timeService = GetService<ITimeService>();
+            var timeService = GetTimeService();
             AddTimeEventListeners(implementation, timeService);
             _timeHandled.Add(implementationType);
             _logger.LogCategory(LogCategory.DEPENDENCY_INJECTION, $"Subscribed `{implementationType.Name}` service to all time events.");
