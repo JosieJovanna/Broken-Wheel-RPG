@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using BrokenWheel.Core.Events;
 using BrokenWheel.Core.Logging;
 using BrokenWheel.Core.Settings;
@@ -12,16 +13,17 @@ using BrokenWheel.UI.Settings.StatBar;
 
 namespace BrokenWheel.UI.HUD.StatBar.Implementation
 {
-    public class StatBarSuite : IStatBarSuite
+    public class StatBarSuite
+        : IStatBarSuite
+        , IEventHandler<SettingsUpdateEvent<StatBarSettings>>
     {
         private const string CATEGORY = "Display";
 
         private readonly ILogger _logger;
-        private readonly StatBarSettings _settings;
+        private readonly StatBarSettings _statBarSettings;
         private readonly IDisplayTool _displayTool;
-        private readonly IEventObservable<SettingsUpdateEvent<StatBarSettings>> _settingsUpdates;
-        private readonly IEventObservable<StatUpdatedEvent> _simpleListener;
-        private readonly IEventObservable<ComplexStatUpdatedEvent> _complexListener;
+        private readonly IEventObservable<StatUpdatedEvent> @_simpleObservable;
+        private readonly IEventObservable<ComplexStatUpdatedEvent> @_complexObservable;
         private readonly IStatBarSuiteDisplay _groupDisplay;
         private readonly IList<StatBar> _statBars = new List<StatBar>();
 
@@ -44,16 +46,15 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
             IStatBarSuiteDisplay suiteDisplay)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _settings = displaySettings ?? throw new ArgumentNullException(nameof(displaySettings));
+            _statBarSettings = displaySettings ?? throw new ArgumentNullException(nameof(displaySettings));
             _displayTool = displayTool ?? throw new ArgumentNullException(nameof(displayTool));
             _groupDisplay = suiteDisplay ?? throw new ArgumentNullException(nameof(suiteDisplay));
-            _simpleListener = simpleListener ?? throw new ArgumentNullException(nameof(simpleListener));
-            _complexListener = complexListener ?? throw new ArgumentNullException(nameof(complexListener));
+            @_simpleObservable = simpleListener ?? throw new ArgumentNullException(nameof(simpleListener));
+            @_complexObservable = complexListener ?? throw new ArgumentNullException(nameof(complexListener));
 
-            for (var i = 0; i < _settings.MainStatsInOrder.Count; i++)
-                AddStatBar(StatInfoFactory.FromEnum(_settings.MainStatsInOrder[i].Stat), i);
+            for (var i = 0; i < _statBarSettings.MainStatsInOrder.Count; i++)
+                AddStatBar(StatInfoFactory.FromEnum(_statBarSettings.MainStatsInOrder[i].Stat), i);
             RepositionDisplays();
-            _settingsUpdates.Subscribe((settingUpdate) => UpdateFromSettings(settingUpdate));
             _logger.LogCategory(CATEGORY, $"{nameof(StatBarSuite)} subscribed to {nameof(SettingsUpdateEvent<StatBarSettings>)}s");
         }
 
@@ -82,7 +83,7 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
             _isHiding = true;
         }
 
-        public void UpdateFromSettings(SettingsUpdateEvent<StatBarSettings> gameEvent)
+        public void HandleEvent(SettingsUpdateEvent<StatBarSettings> gameEvent)
         {
             _logger.LogCategory(CATEGORY, $"{nameof(StatBarSettings)} updated - repositioning and recoloring...");
             RepositionDisplays();
@@ -112,7 +113,7 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
         {
             if (statInfo.Stat == Stat.Custom)
                 return ColorSettingsForStat(statInfo.Code);
-            return _settings?.MainStatsInOrder?
+            return _statBarSettings?.MainStatsInOrder?
                 .FirstOrDefault(_ => _.Stat == statInfo.Stat)?
                 .ColorSettings
                 ?? ColorSettingsForStat(statInfo.Code);
@@ -120,9 +121,9 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
 
         private StatBarColorSettings ColorSettingsForStat(string customStatCode)
         {
-            return _settings.ColorsByCode.Any(kvp => kvp.Key == customStatCode)
-                ? _settings.ColorsByCode.First(kvp => kvp.Key == customStatCode).Value
-                : _settings.DefaultColors;
+            return _statBarSettings.ColorsByCode.Any(kvp => kvp.Key == customStatCode)
+                ? _statBarSettings.ColorsByCode.First(kvp => kvp.Key == customStatCode).Value
+                : _statBarSettings.DefaultColors;
         }
 
         #region Remove
@@ -170,9 +171,9 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
         {
             _groupDisplay.RemoveStatBarElement(statBar.Display);
             if (statBar.Info.IsComplex)
-                _complexListener.UnsubscribeFromCategory(statBar.Info.Id(), ((ComplexStatBar)statBar).HandleEvent);
+                @_complexObservable.UnsubscribeConditional(statBar.HandlerID);
             else
-                _simpleListener.UnsubscribeFromCategory(statBar.Info.Id(), ((SimpleStatBar)statBar).HandleEvent);
+                @_simpleObservable.UnsubscribeConditional(statBar.HandlerID);
             _statBars.Remove(statBar);
             _logger.LogCategory(CATEGORY, $"{nameof(StatBarSuite)} removed {statBar.Info.Code}");
         }
@@ -222,16 +223,18 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
         private void AddComplexStatBar(StatInfo statInfo, StatBarColorSettings colors, int order)
         {
             var display = _groupDisplay.CreateStatBarElement<IComplexStatBarDisplay>(statInfo.Name, colors);
-            var statBar = new ComplexStatBar(_settings, _displayTool, display, statInfo, ReportPpp, HighestPpp, order);
-            _complexListener.SubscribeToCategory(statInfo.Id(), statBar.HandleEvent);
+            var statBar = new ComplexStatBar(_statBarSettings, _displayTool, display, statInfo, ReportPpp, HighestPpp, order);
+            var handler = @_complexObservable.SubscribeConditional(statBar.HandleEvent, _ => _.StatInfo.Id() == statInfo.Id());
+            statBar.HandlerID = handler;
             _statBars.Add(statBar);
         }
 
         private void AddSimpleStatBar(StatInfo statInfo, StatBarColorSettings colors, int order)
         {
             var display = _groupDisplay.CreateStatBarElement<IStatBarDisplay>(statInfo.Name, colors);
-            var statBar = new SimpleStatBar(_settings, _displayTool, display, statInfo, ReportPpp, HighestPpp, order);
-            _simpleListener.SubscribeToCategory(statInfo.Id(), statBar.HandleEvent);
+            var statBar = new SimpleStatBar(_statBarSettings, _displayTool, display, statInfo, ReportPpp, HighestPpp, order);
+            var handler = @_simpleObservable.SubscribeConditional(statBar.HandleEvent, _ => _.StatInfo.Id() == statInfo.Id());
+            statBar.HandlerID = handler;
             _statBars.Add(statBar);
         }
 

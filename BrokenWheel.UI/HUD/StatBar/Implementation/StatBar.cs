@@ -9,7 +9,7 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
     /// <summary>
     /// An object which controls the GUI elements conveying a statistic.
     /// </summary>
-    internal abstract class StatBar
+    internal abstract partial class StatBar
     {
         private readonly IDisplayTool _display;
 
@@ -22,6 +22,11 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
 
         protected int X;
         protected int Y;
+
+        public StatInfo Info { get; }
+        public IStatBarDisplay Display { get; }
+        public int Order { get; set; }
+        public int HandlerID { get; set; }
 
         protected StatBar(
             StatBarSettings statBarSettings,
@@ -40,10 +45,6 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
             HighestPpp = highestPointsPerPixel ?? throw new ArgumentNullException(nameof(highestPointsPerPixel));
             Order = order;
         }
-
-        public StatInfo Info { get; }
-        public IStatBarDisplay Display { get; }
-        public int Order { get; set; }
 
         /// <summary>
         /// Sets the position of the bar then updates the display according to its statistic.

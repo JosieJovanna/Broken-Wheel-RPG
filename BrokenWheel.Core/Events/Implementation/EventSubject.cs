@@ -7,12 +7,11 @@ using BrokenWheel.Core.Events.Attributes;
 
 namespace BrokenWheel.Core.Events.Implementation
 {
-    internal partial class EventSubject<TEvent> : IEventSubject<TEvent>
+    public partial class EventSubject<TEvent> : IEventSubject<TEvent>
     {
-        private readonly IDictionary<string, EventHandlerFunction<TEvent>> _handlersByCategory
-            = new Dictionary<string, EventHandlerFunction<TEvent>>();
-
+        private readonly IList<ConditionalHandler> _conditionalHandlers = new List<ConditionalHandler>();
         private EventHandlerFunction<TEvent> _handlersForAllEvents;
+        private int _currentID = 0;
 
         public TEvent Last { get; protected set; }
 
@@ -59,45 +58,49 @@ namespace BrokenWheel.Core.Events.Implementation
             Last = Current;
             Current = @event;
             _handlersForAllEvents?.Invoke(@event);
+            EmitConditionals(@event);
+        }
+
+        private void EmitConditionals(TEvent @event)
+        {
+            foreach (var conditional in _conditionalHandlers)
+                if (conditional.Predicate.Invoke(@event))
+                    conditional.Handler.Invoke(@event);
         }
 
         /// <inheritdoc/>
         public IEventObservable<TEvent> AsObservable() => this;
 
         /// <inheritdoc/>
-        public void Subscribe(IEventHandler<TEvent> handler) => _handlersForAllEvents += handler.HandleEvent;
-
-        /// <inheritdoc/>
-        public void Subscribe(EventHandlerFunction<TEvent> function) => _handlersForAllEvents += function;
-
-        /// <inheritdoc/>
-        public void Unsubscribe(IEventHandler<TEvent> handler) => _handlersForAllEvents -= handler.HandleEvent;
-
-        /// <inheritdoc/>
-        public void Unsubscribe(EventHandlerFunction<TEvent> function) => _handlersForAllEvents -= function;
-
-        /// <inheritdoc/>
-        public void SubscribeToCategory(string category, IEventHandler<TEvent> handler)
-            => SubscribeToCategory(@category, handler.HandleEvent);
-
-        /// <inheritdoc/>
-        public void SubscribeToCategory(string category, EventHandlerFunction<TEvent> function)
+        public void Subscribe(EventHandlerFunction<TEvent> function)
         {
-            if (_handlersByCategory.ContainsKey(category))
-                _handlersByCategory[category] += function;
-            else
-                _handlersByCategory.Add(category, function);
+            _handlersForAllEvents += function;
         }
 
         /// <inheritdoc/>
-        public void UnsubscribeFromCategory(string category, IEventHandler<TEvent> handler)
-            => UnsubscribeFromCategory(category, handler.HandleEvent);
+        public void Unsubscribe(EventHandlerFunction<TEvent> function)
+        {
+            _handlersForAllEvents -= function;
+            foreach (var condHandler in _conditionalHandlers)
+                condHandler.Handler -= function;
+        }
 
         /// <inheritdoc/>
-        public void UnsubscribeFromCategory(string category, EventHandlerFunction<TEvent> function)
+        public int SubscribeConditional(EventHandlerFunction<TEvent> function, Func<TEvent, bool> predicate)
         {
-            if (_handlersByCategory.ContainsKey(category))
-                _handlersByCategory[category] -= function;
+            _currentID++;
+            _conditionalHandlers.Add(new ConditionalHandler(
+                predicate: predicate,
+                handler: function,
+                id: _currentID));
+            return _currentID;
+        }
+
+        /// <inheritdoc/>
+        public void UnsubscribeConditional(int id)
+        {
+            var conditionalHandler = _conditionalHandlers.FirstOrDefault(_ => _.ID == id);
+            _conditionalHandlers.Remove(conditionalHandler);
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace BrokenWheel.Core.Events
+﻿using System;
+
+namespace BrokenWheel.Core.Events
 {
     /// <summary>
     /// A class which allows its consumer to subscribe and unsubscribe any number of handlers for game events
@@ -12,31 +14,29 @@
 
         /// <summary>
         /// Adds an event handler function, if not already subscribed.
-        /// If the event is categorized, any value will trigger this handler.
         /// </summary>
         /// <param name="function"> The event handler function. </param>
         void Subscribe(EventHandlerFunction<TEvent> function);
 
         /// <summary>
         /// Removes an event handler function, if already subscribed.
-        /// If the handler is subscribed to categorized/custom category events, will not unsubscribe from those.
+        /// If the function handles events conditionally, then unsubscribes from <b>all</b> conditions.
         /// </summary>
         /// <param name="function"> The event handler function. </param>
         void Unsubscribe(EventHandlerFunction<TEvent> function);
 
         /// <summary>
-        /// Subscribes a handler function to events of a certain category, if not already subscribed.
+        /// Adds an event handler function, which is called if the given predicate is met.
         /// </summary>
-        /// <param name="category"> The category of event. </param>
         /// <param name="function"> The event handler function. </param>
-        void SubscribeToCategory(string category, EventHandlerFunction<TEvent> function);
+        /// <param name="predicate"> The predicate which must be true to call the function. </param>
+        /// <returns> The ID of the conditional handler, to be used for specific removals. </returns>
+        int SubscribeConditional(EventHandlerFunction<TEvent> function, Func<TEvent, bool> predicate);
 
         /// <summary>
-        /// Unsubscribes a handler function from events of a certain category, if subscribed.
-        /// If there are handlers registered for all categories, will not unsubscribe from those.
+        /// Unsubscribes from the specific condition.
         /// </summary>
-        /// <param name="category"> The category of event. </param>
-        /// <param name="function"> The event handler function. </param>
-        void UnsubscribeFromCategory(string category, EventHandlerFunction<TEvent> function);
+        /// <param name="id"> The specific ID of the conditional handler, returned by <see cref="SubscribeWhen"/>. </param>
+        void UnsubscribeConditional(int id);
     }
 }
