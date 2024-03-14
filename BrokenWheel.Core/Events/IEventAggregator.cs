@@ -27,26 +27,6 @@
         IEventSubject<TEvent> GetSubject<TEvent>(string category);
 
         /// <summary>
-        /// Subscribes an event handling function to the given event type.
-        /// </summary>
-        void Subscribe<TEvent>(EventHandlerFunction<TEvent> function);
-
-        /// <summary>
-        /// Subscribes an event handling function to the given event type in the given category.
-        /// </summary>
-        void Subscribe<TEvent>(EventHandlerFunction<TEvent> function, string category);
-
-        /// <summary>
-        /// Unsubscribes an event handling function from the given event type.
-        /// </summary>
-        void Unsubscribe<TEvent>(EventHandlerFunction<TEvent> function);
-
-        /// <summary>
-        /// Unsubscribes an event handling function from the given event type in the given category.
-        /// </summary>
-        void Unsubscribe<TEvent>(EventHandlerFunction<TEvent> function, string category);
-
-        /// <summary>
         /// Automatically subscribes to all events that the given object can handle.
         /// Does so for all events specified in implemented <see cref="IEventHandler{TEvent}"/> interfaces.
         /// </summary>

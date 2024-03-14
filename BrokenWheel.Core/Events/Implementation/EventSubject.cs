@@ -47,7 +47,7 @@ namespace BrokenWheel.Core.Events.Implementation
             }
             catch (Exception e)
             {
-                Injection.GetModule().GetLogger().LogWarning($"Event type default method {typeof(TEvent).Name}.{defaultGetter.Name} throws an exception despite being decorated with the {nameof(DefaultEventGetterAttribute)} - {e.Message}");
+                Injection.GetModule().GetLogger()?.LogWarning($"Event type default method `{typeof(TEvent).Name}.{defaultGetter.Name}` throws an exception despite being decorated with the `{nameof(DefaultEventGetterAttribute)}` - {e.Message}");
                 return default;
             }
         }
