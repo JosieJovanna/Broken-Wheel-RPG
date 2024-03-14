@@ -8,14 +8,6 @@ namespace BrokenWheel.Core.Events.Implementation
         private readonly IDictionary<Type, IDictionary<string, object>> _subjectsByCategoryByType = new Dictionary<Type, IDictionary<string, object>>();
 
         /// <inheritdoc/>
-        public void Subscribe<TEvent>(EventHandlerFunction<TEvent> function, string category)
-            => GetObservable<TEvent>(category).Subscribe(function);
-
-        /// <inheritdoc/>
-        public void Unsubscribe<TEvent>(EventHandlerFunction<TEvent> function, string category)
-            => GetObservable<TEvent>(category).Unsubscribe(function);
-
-        /// <inheritdoc/>
         public IEventObservable<TEvent> GetObservable<TEvent>(string category)
             => GetSubject<TEvent>(category).AsObservable();
 

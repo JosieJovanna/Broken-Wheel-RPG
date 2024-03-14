@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using BrokenWheel.Core.Logging;
+using BrokenWheel.Math;
 
 namespace BrokenWheel.Core.Events.Implementation
 {
@@ -14,14 +15,6 @@ namespace BrokenWheel.Core.Events.Implementation
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
-
-        /// <inheritdoc/>
-        public void Subscribe<TEvent>(EventHandlerFunction<TEvent> function)
-            => GetObservable<TEvent>().Subscribe(function);
-
-        /// <inheritdoc/>
-        public void Unsubscribe<TEvent>(EventHandlerFunction<TEvent> function)
-            => GetObservable<TEvent>().Unsubscribe(function);
 
         /// <inheritdoc/>
         public IEventObservable<TEvent> GetObservable<TEvent>()
@@ -63,9 +56,9 @@ namespace BrokenWheel.Core.Events.Implementation
         {
             var eventHandler = (IEventHandler<TEvent>)handler;
             if (isSubscribing)
-                Subscribe<TEvent>(eventHandler.HandleEvent);
+                GetObservable<TEvent>().Subscribe(eventHandler.HandleEvent);
             else
-                Unsubscribe<TEvent>(eventHandler.HandleEvent);
+                GetObservable<TEvent>().Unsubscribe(eventHandler.HandleEvent);
         }
 
         /// <summary>
