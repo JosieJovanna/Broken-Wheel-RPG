@@ -170,9 +170,9 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
         {
             _groupDisplay.RemoveStatBarElement(statBar.Display);
             if (statBar.Info.IsComplex)
-                _complexListener.UnsubscribeFromCategory(statBar.Info.Id(), (ComplexStatBar)statBar);
+                _complexListener.UnsubscribeFromCategory(statBar.Info.Id(), ((ComplexStatBar)statBar).HandleEvent);
             else
-                _simpleListener.UnsubscribeFromCategory(statBar.Info.Id(), (SimpleStatBar)statBar);
+                _simpleListener.UnsubscribeFromCategory(statBar.Info.Id(), ((SimpleStatBar)statBar).HandleEvent);
             _statBars.Remove(statBar);
             _logger.LogCategory(CATEGORY, $"{nameof(StatBarSuite)} removed {statBar.Info.Code}");
         }
@@ -223,7 +223,7 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
         {
             var display = _groupDisplay.CreateStatBarElement<IComplexStatBarDisplay>(statInfo.Name, colors);
             var statBar = new ComplexStatBar(_settings, _displayTool, display, statInfo, ReportPpp, HighestPpp, order);
-            _complexListener.SubscribeToCategory(statInfo.Id(), statBar);
+            _complexListener.SubscribeToCategory(statInfo.Id(), statBar.HandleEvent);
             _statBars.Add(statBar);
         }
 
@@ -231,7 +231,7 @@ namespace BrokenWheel.UI.HUD.StatBar.Implementation
         {
             var display = _groupDisplay.CreateStatBarElement<IStatBarDisplay>(statInfo.Name, colors);
             var statBar = new SimpleStatBar(_settings, _displayTool, display, statInfo, ReportPpp, HighestPpp, order);
-            _simpleListener.SubscribeToCategory(statInfo.Id(), statBar);
+            _simpleListener.SubscribeToCategory(statInfo.Id(), statBar.HandleEvent);
             _statBars.Add(statBar);
         }
 

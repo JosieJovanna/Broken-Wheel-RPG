@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using BrokenWheel.Core.Events.Handling;
-using BrokenWheel.Core.Events.Observables;
-using BrokenWheel.Core.Events;
 using BrokenWheel.Core.Logging;
 using BrokenWheel.Core.Time.Listeners;
 using BrokenWheel.Core.Time;

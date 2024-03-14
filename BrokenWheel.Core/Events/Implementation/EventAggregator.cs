@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Reflection;
 using BrokenWheel.Core.Logging;
-using BrokenWheel.Core.Events.Observables.Implementation;
 
 namespace BrokenWheel.Core.Events.Implementation
 {
@@ -100,6 +99,26 @@ namespace BrokenWheel.Core.Events.Implementation
             var subject = new EventSubject<TEvent>();
             _subjectsByEventType.Add(typeof(TEvent), subject);
             return subject;
+        }
+
+        public IEventObservable<TEvent> GetObservable<TEvent>(string category)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEventSubject<TEvent> GetSubject<TEvent>(string category)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Subscribe<TEvent>(EventHandlerFunction<TEvent> function, string category)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Unsubscribe<TEvent>(EventHandlerFunction<TEvent> function, string category)
+        {
+            throw new NotImplementedException();
         }
     }
 }
