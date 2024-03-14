@@ -27,6 +27,16 @@
         void ResetCalendarScale();
 
         /// <summary>
+        /// Pauses all time. When resumed, any time scales paused before this call will still be paused, unless they were resumed in the meantime.
+        /// </summary>
+        void PauseTimeflow();
+
+        /// <summary>
+        /// Resumes all time. Any time scales previously paused will remain paused.
+        /// </summary>
+        void ResumeTimeflow();
+
+        /// <summary>
         /// Pauses all realtime-based processing, including movement, physics, and any non-UI based gameplay.
         /// </summary>
         void PauseRealTime();

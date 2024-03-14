@@ -37,6 +37,12 @@
         /// </summary>
         bool IsCalendarPaused { get; }
 
+        /// <summary>
+        /// Whether all time flow is paused, independent of other Is-X-Paused booleans.
+        /// If true, no time will flow, no matter if individual time scales are paused.
+        /// </summary>
+        bool IsAllTimeflowPaused { get; }
+
 
         /// <summary>
         /// Adds a function to be called every game tick, which passes IRL tick delta time.

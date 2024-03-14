@@ -7,6 +7,9 @@
     /// <typeparam name="TEvent"> The type of <see cref="GameEvent"/> being listened to. </typeparam>
     public interface IEventObservable<out TEvent>
     {
+        TEvent LastValue { get; }
+        TEvent Current { get; }
+
         /// <summary>
         /// Adds an event handler function, if not already subscribed.
         /// If the event is categorized, any value will trigger this handler.

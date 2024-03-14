@@ -37,18 +37,23 @@ namespace BrokenWheel.Core.Time.Implementation
 
         private void TickTime(double delta)
         {
+            // TODO: does all time flow include tick time???
             _tickTimeFxs?.Invoke(delta);
         }
 
         private void RealTime(double delta)
         {
-            var realDelta = delta * TimeScale;
+            var realDelta = IsAllTimeflowPaused || IsRealTimePaused
+                ? 0
+                : delta * TimeScale;
             _realTimeFxs?.Invoke(realDelta);
         }
 
         private void CalendarTime(double delta)
         {
-            var calendarDelta = delta * EffectiveCalendarTimeScale;
+            var calendarDelta = IsAllTimeflowPaused || IsCalendarPaused
+                ? 0
+                : delta * EffectiveCalendarTimeScale;
             _calendarTimeFxs?.Invoke(calendarDelta);
         }
     }

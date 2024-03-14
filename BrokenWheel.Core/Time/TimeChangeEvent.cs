@@ -2,20 +2,21 @@
 {
     public partial class TimeChangeEvent
     {
-        /// <summary>
-        /// Real time scale.
-        /// </summary>
         public float RealTimeScale { get; }
-
-        /// <summary>
-        /// Effective calendar time scale.
-        /// </summary>
         public float CalendarScale { get; }
+        public bool IsRealTimePaused { get; }
+        public bool IsCalendarPaused { get; }
 
-        public TimeChangeEvent(float realTimeScale, float calendarTimeScale)
+        public TimeChangeEvent(
+            float realTimeScale,
+            float calendarTimeScale,
+            bool isRealTimePaused,
+            bool isCalendarPaused)
         {
             RealTimeScale = realTimeScale;
             CalendarScale = calendarTimeScale;
+            IsRealTimePaused = isRealTimePaused;
+            IsCalendarPaused = isCalendarPaused;
         }
     }
 }

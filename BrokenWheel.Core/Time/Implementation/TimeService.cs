@@ -14,6 +14,8 @@
 
         public bool IsPhysicsPaused { get; private set; }
 
+        public bool IsAllTimeflowPaused { get; private set; }
+
         public void AddTickTimeFx(TimeFunction timeFx)
         {
             _tickTimeFxs += timeFx;

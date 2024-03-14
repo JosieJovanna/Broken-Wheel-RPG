@@ -11,12 +11,14 @@ namespace BrokenWheel.Core.GameModes
             return new GameModeUpdateEvent(DebugConstants.GAMEMODE_AT_START);
         }
 
-
         public GameMode GameMode { get; }
+
+        public bool IsUI { get; }
 
         public GameModeUpdateEvent(GameMode gameMode)
         {
             GameMode = gameMode;
+            IsUI = GameMode != GameMode.Gameplay;
         }
     }
 }

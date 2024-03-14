@@ -1,21 +1,54 @@
-﻿using BrokenWheel.Core.Events;
-
-namespace BrokenWheel.Core.Time.Implementation
+﻿namespace BrokenWheel.Core.Time.Implementation
 {
     public sealed partial class FullTimeService : ITimeScaler
     {
-        public void PauseRealTime() => IsRealTimePaused = true;
+        public void PauseRealTime()
+        {
+            IsRealTimePaused = true;
+            EmitChangeEvent();
+        }
 
-        public void PauseCalendar() => IsCalendarPaused = true;
+        public void PauseCalendar()
+        {
+            IsCalendarPaused = true;
+            EmitChangeEvent();
+        }
 
-        public void ResumeRealTime() => IsRealTimePaused = false;
+        public void ResumeRealTime()
+        {
+            IsRealTimePaused = false;
+            EmitChangeEvent();
+        }
 
-        public void ResumeCalendar() => IsCalendarPaused = false;
+        public void ResumeCalendar()
+        {
+            IsCalendarPaused = false;
+            EmitChangeEvent();
+        }
 
-        public void PausePhysics() => IsPhysicsPaused = true;
+        public void PausePhysics()
+        {
+            IsPhysicsPaused = true;
+            EmitChangeEvent();
+        }
 
-        public void ResumePhysics() => IsPhysicsPaused = false;
+        public void ResumePhysics()
+        {
+            IsPhysicsPaused = false;
+            EmitChangeEvent();
+        }
 
+        public void PauseTimeflow()
+        {
+            IsAllTimeflowPaused = true;
+            EmitChangeEvent();
+        }
+
+        public void ResumeTimeflow()
+        {
+            IsAllTimeflowPaused = false;
+            EmitChangeEvent();
+        }
 
         public void SetTimeScale(float timeScale)
         {
@@ -53,6 +86,12 @@ namespace BrokenWheel.Core.Time.Implementation
             => EffectiveCalendarTimeScale = CalendarTimeScale * TimeScale;
 
         private void EmitChangeEvent()
-            => _timeChangeSubject.Emit(new TimeChangeEvent(TimeScale, EffectiveCalendarTimeScale));
+        {
+            _timeChangeSubject.Emit(new TimeChangeEvent(
+                realTimeScale: TimeScale,
+                calendarTimeScale: EffectiveCalendarTimeScale,
+                isRealTimePaused: IsRealTimePaused,
+                isCalendarPaused: IsCalendarPaused)); ; // TODO: physics paused?
+        }
     }
 }
