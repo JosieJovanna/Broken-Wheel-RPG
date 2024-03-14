@@ -7,7 +7,7 @@
     /// <typeparam name="TEvent"> The type of <see cref="GameEvent"/> being listened to. </typeparam>
     public interface IEventObservable<out TEvent>
     {
-        TEvent LastValue { get; }
+        TEvent Last { get; }
         TEvent Current { get; }
 
         /// <summary>

@@ -14,7 +14,7 @@ namespace BrokenWheel.Core.Events.Implementation
 
         private EventHandlerFunction<TEvent> _handlersForAllEvents;
 
-        public TEvent LastValue { get; protected set; }
+        public TEvent Last { get; protected set; }
 
         public TEvent Current { get; protected set; }
 
@@ -56,7 +56,7 @@ namespace BrokenWheel.Core.Events.Implementation
         /// <inheritdoc/>
         public virtual void Emit(TEvent @event)
         {
-            LastValue = Current;
+            Last = Current;
             Current = @event;
             _handlersForAllEvents?.Invoke(@event);
         }

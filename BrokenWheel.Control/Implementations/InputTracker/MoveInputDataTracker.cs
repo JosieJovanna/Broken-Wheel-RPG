@@ -7,7 +7,7 @@ namespace BrokenWheel.Control.Implementations.InputTracker
         public double VelocityX { get; set; } = 0.0;
         public double VelocityY { get; set; } = 0.0;
 
-        protected override MoveInputEvent GetEvent(double delta)
+        public override MoveInputEvent GetEvent(double delta)
         {
             var heldTime = GetHeldTime();
             return new MoveInputEvent(delta, heldTime, VelocityX, VelocityY);

@@ -20,10 +20,11 @@ namespace BrokenWheel.Control.Implementations.InputTracker
         private readonly ILogger _logger;
         private readonly DisplaySettings _displaySettings;
 
-        private readonly IEventSubject<ButtonInputEvent> _buttonSubject;
-        private readonly IEventSubject<MoveInputEvent> _moveSubject;
-        private readonly IEventSubject<LookInputEvent> _lookSubject;
-        private readonly IEventSubject<CursorInputEvent> _cursorSubject;
+        private readonly IEventSubject<ButtonInputEvent> @_buttonSubject;
+        private readonly IEventSubject<MoveInputEvent> @_moveSubject;
+        private readonly IEventSubject<LookInputEvent> @_lookSubject;
+        private readonly IEventSubject<CursorInputEvent> @_cursorSubject;
+        private readonly IEventObservable<GameModeUpdateEvent> @_gameMode;
 
         private readonly IDictionary<RPGInput, ButtonInputDataTracker> _buttonTrackersByInput;
         private readonly IList<ButtonInputDataTracker> _activeInputs = new List<ButtonInputDataTracker>();
@@ -31,8 +32,6 @@ namespace BrokenWheel.Control.Implementations.InputTracker
         private readonly IList<ButtonInputDataTracker> _uiInputs;
         private readonly LookCursorInputDataTracker _lookCursorTracker = new LookCursorInputDataTracker();
         private readonly MoveInputDataTracker _moveTracker = new MoveInputDataTracker();
-
-        private bool _isUI = DebugConstants.DOES_GAME_START_IN_MENU;
 
         /// <summary>
         /// The default implementation of <see cref="IRPGInputTracker"/>.
@@ -49,10 +48,11 @@ namespace BrokenWheel.Control.Implementations.InputTracker
             // subjects
             if (eventAggregator == null)
                 throw new ArgumentNullException(nameof(eventAggregator));
-            _buttonSubject = eventAggregator.GetSubject<ButtonInputEvent>();
-            _moveSubject = eventAggregator.GetSubject<MoveInputEvent>();
-            _lookSubject = eventAggregator.GetSubject<LookInputEvent>();
-            _cursorSubject = eventAggregator.GetSubject<CursorInputEvent>();
+            @_buttonSubject = eventAggregator.GetSubject<ButtonInputEvent>();
+            @_moveSubject = eventAggregator.GetSubject<MoveInputEvent>();
+            @_lookSubject = eventAggregator.GetSubject<LookInputEvent>();
+            @_cursorSubject = eventAggregator.GetSubject<CursorInputEvent>();
+            @_gameMode = eventAggregator.GetObservable<GameModeUpdateEvent>();
             // trackers
             _buttonTrackersByInput = EnumUtil.GetAllEnumValues<RPGInput>().ToDictionary(_ => _, _ => new ButtonInputDataTracker(_));
             _nonUiInputs = _buttonTrackersByInput.Values.Where(_ => !_.Input.IsUIInput()).ToList();
@@ -64,16 +64,16 @@ namespace BrokenWheel.Control.Implementations.InputTracker
         /// </summary>
         public void HandleEvent(GameModeUpdateEvent gameEvent)
         {
-            _isUI = gameEvent.GameMode != GameMode.Gameplay;
-            _logger.LogCategory("Input", $"Is UI = {_isUI}");
-            PauseInputTrackingForNonCurrentInputType(); // TODO: active input swapping?
+            var isUI = gameEvent.IsUI;
+            _logger.LogCategory("Input", $"Is UI = {isUI}");
+            PauseInputTrackingForNonCurrentInputType(isUI); // TODO: active input swapping?
         }
 
-        private void PauseInputTrackingForNonCurrentInputType()
+        private void PauseInputTrackingForNonCurrentInputType(bool isUI)
         {
-            foreach (var buttonTracker in _isUI ? _uiInputs : _nonUiInputs)
+            foreach (var buttonTracker in isUI ? _uiInputs : _nonUiInputs)
                 buttonTracker.Reset();
-            if (_isUI)
+            if (isUI)
                 _moveTracker.Pause();
             else
                 _moveTracker.Resume();
@@ -84,7 +84,7 @@ namespace BrokenWheel.Control.Implementations.InputTracker
         /// <inheritdoc/>
         public void TrackMoveInput(double vX, double vY)
         {
-            if (_isUI)
+            if (_gameMode.Current.IsUI)
                 return;
             _moveTracker.VelocityX = vX;
             _moveTracker.VelocityY = vY;
@@ -102,7 +102,7 @@ namespace BrokenWheel.Control.Implementations.InputTracker
         /// <inheritdoc/>
         public void TrackButtonInput(RPGInput input, bool isPressed) // TODO: add support for custom input
         {
-            if (!input.IsDebugInput() && (_isUI ^ input.IsUIInput()))
+            if (!input.IsDebugInput() && (_gameMode.Current.IsUI ^ input.IsUIInput()))
                 return;
             var tracker = _buttonTrackersByInput[input];
             tracker.PressThisTick(GetNextPressType(isPressed, tracker.PressType));
@@ -158,10 +158,10 @@ namespace BrokenWheel.Control.Implementations.InputTracker
 
         private void EmitLookOrCursorEvent(double delta)
         {
-            if (_isUI)
-                _cursorSubject.Emit(_lookCursorTracker.GetCursorEvent(_displaySettings.UIScale));
+            if (_gameMode.Current.IsUI)
+                @_cursorSubject.Emit(_lookCursorTracker.GetCursorEvent(_displaySettings.UIScale));
             else
-                _lookCursorTracker.EmitEvent(_lookSubject, delta);
+                _lookSubject.Emit(_lookCursorTracker.GetEvent(delta));
         }
 
         /// <summary>
@@ -169,8 +169,8 @@ namespace BrokenWheel.Control.Implementations.InputTracker
         /// </summary>
         private void ProcessMoveInput(double delta)
         {
-            if (!_moveTracker.IsDeadInput() && !_isUI)
-                _moveTracker.EmitEvent(_moveSubject, delta);
+            if (!_moveTracker.IsDeadInput() && !_gameMode.Current.IsUI)
+                @_moveSubject.Emit(_moveTracker.GetEvent(delta));
             _moveTracker.Tick();
         }
 
@@ -203,7 +203,7 @@ namespace BrokenWheel.Control.Implementations.InputTracker
 
         private void EmitButtonInput(double delta, ButtonInputDataTracker tracker)
         {
-            _buttonSubject.Emit(tracker.GetEvent(delta));
+            @_buttonSubject.Emit(tracker.GetEvent(delta));
         }
 
         #endregion

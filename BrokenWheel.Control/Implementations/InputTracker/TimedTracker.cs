@@ -10,7 +10,7 @@ namespace BrokenWheel.Control.Implementations.InputTracker
         private bool _isStopped = true;
         private bool _wasStopped = true;
 
-        protected abstract TEvent GetEvent(double delta);
+        public abstract TEvent GetEvent(double delta);
 
         public void Pause()
         {
@@ -20,12 +20,6 @@ namespace BrokenWheel.Control.Implementations.InputTracker
         public void Resume()
         {
             _timer.Start();
-        }
-
-        public void EmitEvent(IEventSubject<TEvent> subject, double delta)
-        {
-            var @event = GetEvent(delta);
-            subject.Emit(@event);
         }
 
         public void SetIsStopped(bool isStopped)

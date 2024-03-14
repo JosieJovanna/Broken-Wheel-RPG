@@ -14,7 +14,7 @@ namespace BrokenWheel.Control.Implementations.InputTracker
             return new CursorInputEvent(PositionX, PositionY, scale);
         }
 
-        protected override LookInputEvent GetEvent(double delta)
+        public override LookInputEvent GetEvent(double delta)
         {
             var heldTime = GetHeldTime();
             return new LookInputEvent(delta, heldTime, VelocityX, VelocityY);
