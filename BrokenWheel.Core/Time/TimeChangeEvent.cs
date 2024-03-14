@@ -1,4 +1,4 @@
-﻿namespace BrokenWheel.Core.Events
+﻿namespace BrokenWheel.Core.Time
 {
     public partial class TimeChangeEvent
     {

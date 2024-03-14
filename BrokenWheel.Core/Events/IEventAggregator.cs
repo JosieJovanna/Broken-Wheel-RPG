@@ -1,6 +1,4 @@
-﻿using BrokenWheel.Core.Events.Handling;
-
-namespace BrokenWheel.Core.Events.Observables
+﻿namespace BrokenWheel.Core.Events
 {
     /// <summary>
     /// An object responsible for tracking event subjects and observables.

@@ -1,6 +1,4 @@
-﻿using BrokenWheel.Core.Events.Handling;
-
-namespace BrokenWheel.Core.Events.Observables
+﻿namespace BrokenWheel.Core.Events
 {
     /// <summary>
     /// A class which allows its consumer to subscribe and unsubscribe any number of handlers for game events
