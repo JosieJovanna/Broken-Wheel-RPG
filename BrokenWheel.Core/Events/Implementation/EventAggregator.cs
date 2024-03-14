@@ -26,33 +26,33 @@ namespace BrokenWheel.Core.Events.Implementation
 
         /// <inheritdoc/>
         public void SubscribeToAllHandledEvents(object handler)
-            => SubscribeToAllHandledEvents(handler, true);
+            => SubOrUnsubHandlerToAllHandledEvents(handler, true);
 
         /// <inheritdoc/>
         public void UnsubscribeFromAllHandledEvents(object handler)
-            => SubscribeToAllHandledEvents(handler, false);
+            => SubOrUnsubHandlerToAllHandledEvents(handler, false);
 
         /// <summary>
         /// Gets all implemented handler interfaces and extracts the generic methods 
         /// in order to programatically subscribe to all handled event types.
         /// </summary>
-        private void SubscribeToAllHandledEvents(object handler, bool isSubscribing)
+        private void SubOrUnsubHandlerToAllHandledEvents(object handler, bool isSubscribing)
         {
             foreach (var interfaceType in handler.GetType().GetInterfaces())
                 if (typeof(IEventHandler<object>).Name == interfaceType.Name)
                     foreach (var generic in interfaceType.GetGenericArguments())
-                        SubscribeToEventType(handler, generic, isSubscribing);
+                        SubOrUnsubHandlerToEvent(handler, generic, isSubscribing);
         }
 
-        private void SubscribeToEventType(object handler, Type eventType, bool isSubscribing)
+        private void SubOrUnsubHandlerToEvent(object handler, Type eventType, bool isSubscribing)
         {
-            var method = GetType().GetMethod(nameof(CastHandlerAndSubOrUnsub),
+            var method = GetType().GetMethod(nameof(SubOrUnsubHandler),
                 BindingFlags.NonPublic | BindingFlags.Instance);
             var generic = method.MakeGenericMethod(eventType);
             generic.Invoke(this, new object[] { handler, isSubscribing });
         }
 
-        private void CastHandlerAndSubOrUnsub<TEvent>(object handler, bool isSubscribing)
+        private void SubOrUnsubHandler<TEvent>(object handler, bool isSubscribing)
         {
             var eventHandler = (IEventHandler<TEvent>)handler;
             if (isSubscribing)
