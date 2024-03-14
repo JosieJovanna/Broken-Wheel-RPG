@@ -1,4 +1,6 @@
-﻿namespace BrokenWheel.Core.Time.Implementation
+﻿using BrokenWheel.Core.Events;
+
+namespace BrokenWheel.Core.Time.Implementation
 {
     public sealed partial class FullTimeService : ITimeScaler
     {
@@ -51,6 +53,6 @@
             => EffectiveCalendarTimeScale = CalendarTimeScale * TimeScale;
 
         private void EmitChangeEvent()
-            => _timeChangeSubject.Emit(new Events.TimeChangeEvent(this, TimeScale, EffectiveCalendarTimeScale));
+            => _timeChangeSubject.Emit(new TimeChangeEvent(TimeScale, EffectiveCalendarTimeScale));
     }
 }

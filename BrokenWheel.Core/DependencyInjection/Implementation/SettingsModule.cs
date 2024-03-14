@@ -23,7 +23,7 @@ namespace BrokenWheel.Core.DependencyInjection.Implementation
 
         private TSettings CreateNewSettings<TSettings>() where TSettings : class, ISettings
         {
-            var type = typeof(TSettings);
+            var type = typeof(TSettings); // TODO: try loading existing settings
             _logger.LogCategory(LogCategory.DEPENDENCY_INJECTION, $"Creating default {type.Name} as there is no existing settings file...");
             var settings = ConstructSettings<TSettings>();
             RegisterSettings(settings); // TODO: recursively find children settings that are registered

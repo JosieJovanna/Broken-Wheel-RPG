@@ -1,6 +1,6 @@
 ﻿namespace BrokenWheel.Core.Events
 {
-    public partial class TimeChangeEvent : UncategorizedGameEvent
+    public partial class TimeChangeEvent
     {
         /// <summary>
         /// Real time scale.
@@ -12,8 +12,7 @@
         /// </summary>
         public float CalendarScale { get; }
 
-        public TimeChangeEvent(object sender, float realTimeScale, float calendarTimeScale)
-            : base(sender)
+        public TimeChangeEvent(float realTimeScale, float calendarTimeScale)
         {
             RealTimeScale = realTimeScale;
             CalendarScale = calendarTimeScale;

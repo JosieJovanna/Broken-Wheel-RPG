@@ -1,6 +1,6 @@
 ﻿namespace BrokenWheel.Core.Events.Observables
 {
-    public interface IEventSubject<TEvent> : IEventObservable<TEvent> where TEvent : GameEvent
+    public interface IEventSubject<TEvent> : IEventObservable<TEvent>
     {
         /// <summary>
         /// Gets the subject as an observable with no emit capability.

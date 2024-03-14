@@ -1,13 +1,20 @@
-﻿using BrokenWheel.Core.Events;
+﻿using BrokenWheel.Core.Constants;
+using BrokenWheel.Core.Events.Attributes;
 
 namespace BrokenWheel.Core.GameModes
 {
-    public class GameModeUpdateEvent : GameEvent
+    public class GameModeUpdateEvent
     {
-        public GameMode GameMode { get; } // TODO: make subjects use structs and have default starting values...
+        [DefaultEventGetter]
+        public static GameModeUpdateEvent Default()
+        {
+            return new GameModeUpdateEvent(DebugConstants.GAMEMODE_AT_START);
+        }
 
-        public GameModeUpdateEvent(object sender, GameMode gameMode)
-            : base(sender, gameMode.ToString())
+
+        public GameMode GameMode { get; }
+
+        public GameModeUpdateEvent(GameMode gameMode)
         {
             GameMode = gameMode;
         }

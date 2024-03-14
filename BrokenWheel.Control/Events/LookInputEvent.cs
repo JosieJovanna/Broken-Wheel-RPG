@@ -1,19 +1,43 @@
-﻿using BrokenWheel.Control.Models.InputData;
-using BrokenWheel.Core.Events;
-
-namespace BrokenWheel.Control.Events
+﻿namespace BrokenWheel.Control.Events
 {
-    public class LookInputEvent : GameEvent
+    public partial class LookInputEvent
     {
-        public const string CATEGORY_STOPPED = "Stopped";
-        public const string CATEGORY_MOVING = "Moving";
+        /// <summary>
+        /// The amount of time since the last tick.
+        /// </summary>
+        public double DeltaTime { get; }
 
-        public LookInputData Data { get; }
+        /// <summary>
+        /// Total time the button was held.
+        /// Does not reset until the tick after release.
+        /// </summary>
+        public double HeldTime { get; }
 
-        public LookInputEvent(object sender, LookInputData data)
-            : base(sender, data.IsStopped ? CATEGORY_STOPPED : CATEGORY_MOVING)
+        /// <summary>
+        /// The X velocity of the analog input.
+        /// </summary>
+        public double VelocityX { get; }
+
+        /// <summary>
+        /// The Y velocity of the analog input.
+        /// </summary>
+        public double VelocityY { get; }
+
+        public bool IsStopped { get; }
+
+        public LookInputEvent(double delta, double held, double vX, double vY)
         {
-            Data = data;
+            DeltaTime = delta;
+            HeldTime = held;
+            VelocityX = vX;
+            VelocityY = vY;
+            IsStopped = vX == 0.0 && vY == 0.0;
+        }
+
+        /// <inheritdoc/>
+        public override string ToString()
+        {
+            return $"LI[Look:{HeldTime}s|v({VelocityX},{VelocityY})|d{DeltaTime}]";
         }
     }
 }

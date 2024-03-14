@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using BrokenWheel.Core.DependencyInjection;
 using BrokenWheel.Core.Events;
 using BrokenWheel.Core.Events.Observables;
 using BrokenWheel.Core.Logging;

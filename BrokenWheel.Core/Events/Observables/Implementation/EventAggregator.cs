@@ -18,22 +18,18 @@ namespace BrokenWheel.Core.Events.Observables.Implementation
 
         /// <inheritdoc/>
         public IEventObservable<TEvent> GetObservable<TEvent>()
-            where TEvent : GameEvent
             => GetSubject<TEvent>().AsObservable();
 
         /// <inheritdoc/>
         public IEventSubject<TEvent> GetSubject<TEvent>()
-            where TEvent : GameEvent
             => FindOrCreateSubject<TEvent>();
 
         /// <inheritdoc/>
         public void Subscribe<TEvent>(EventHandlerFunction<TEvent> function)
-            where TEvent : GameEvent
             => GetObservable<TEvent>().Subscribe(function);
 
         /// <inheritdoc/>
         public void Unsubscribe<TEvent>(EventHandlerFunction<TEvent> function)
-            where TEvent : GameEvent
             => GetObservable<TEvent>().Unsubscribe(function);
 
         /// <inheritdoc/>
@@ -50,16 +46,10 @@ namespace BrokenWheel.Core.Events.Observables.Implementation
         /// </summary>
         private void SubscribeToAllHandledEvents(object handler, bool isSubscribing)
         {
-            foreach (var @interface in handler.GetType().GetInterfaces())
-                if (typeof(IEventHandler<GameEvent>).Name == @interface.Name)
-                    SubscribeToGenericEventType(handler, @interface, isSubscribing);
-        }
-
-        private void SubscribeToGenericEventType(object handler, Type interfaceType, bool isSubscribing)
-        {
-            foreach (var generic in interfaceType.GetGenericArguments())
-                if (typeof(GameEvent).IsAssignableFrom(generic))
-                    SubscribeToEventType(handler, generic, isSubscribing);
+            foreach (var interfaceType in handler.GetType().GetInterfaces())
+                if (typeof(IEventHandler<object>).Name == interfaceType.Name)
+                    foreach (var generic in interfaceType.GetGenericArguments())
+                        SubscribeToEventType(handler, generic, isSubscribing);
         }
 
         private void SubscribeToEventType(object handler, Type eventType, bool isSubscribing)
@@ -71,7 +61,6 @@ namespace BrokenWheel.Core.Events.Observables.Implementation
         }
 
         private void CastHandlerAndSubOrUnsub<TEvent>(object handler, bool isSubscribing)
-            where TEvent : GameEvent
         {
             var eventHandler = (IEventHandler<TEvent>)handler;
             if (isSubscribing)
@@ -84,7 +73,6 @@ namespace BrokenWheel.Core.Events.Observables.Implementation
         /// Gets a subject for the given type if it exists.
         /// </summary>
         private IEventSubject<TEvent> FindOrCreateSubject<TEvent>()
-            where TEvent : GameEvent
         {
             if (TryGetSubject<TEvent>(out var subject))
                 return subject;
@@ -93,7 +81,6 @@ namespace BrokenWheel.Core.Events.Observables.Implementation
         }
 
         private bool TryGetSubject<TEvent>(out IEventSubject<TEvent> subject)
-            where TEvent : GameEvent
         {
             subject = default;
             try
@@ -108,7 +95,6 @@ namespace BrokenWheel.Core.Events.Observables.Implementation
         }
 
         private IEventSubject<TEvent> CreateAndKeepSubject<TEvent>()
-            where TEvent : GameEvent
         {
             _logger.LogCategory("Events", $"Creating subject for event {typeof(TEvent).Name}...");
             var subject = new EventSubject<TEvent>();

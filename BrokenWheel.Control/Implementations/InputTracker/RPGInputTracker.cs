@@ -27,11 +27,11 @@ namespace BrokenWheel.Control.Implementations.InputTracker
         private readonly IEventSubject<CursorInputEvent> _cursorSubject;
 
         private readonly IDictionary<RPGInput, ButtonInputDataTracker> _buttonTrackersByInput;
-        private readonly IList<ButtonInputDataTracker> _activeInputs;
+        private readonly IList<ButtonInputDataTracker> _activeInputs = new List<ButtonInputDataTracker>();
         private readonly IList<ButtonInputDataTracker> _nonUiInputs;
         private readonly IList<ButtonInputDataTracker> _uiInputs;
-        private readonly LookCursorInputDataTracker _lookCursorTracker;
-        private readonly MoveInputDataTracker _moveTracker;
+        private readonly LookCursorInputDataTracker _lookCursorTracker = new LookCursorInputDataTracker();
+        private readonly MoveInputDataTracker _moveTracker = new MoveInputDataTracker();
 
         private bool _isUI = DebugConstants.DOES_GAME_START_IN_MENU;
 
@@ -55,10 +55,7 @@ namespace BrokenWheel.Control.Implementations.InputTracker
             _lookSubject = eventAggregator.GetSubject<LookInputEvent>();
             _cursorSubject = eventAggregator.GetSubject<CursorInputEvent>();
             // trackers
-            _moveTracker = new MoveInputDataTracker(this);
-            _lookCursorTracker = new LookCursorInputDataTracker(this);
             _buttonTrackersByInput = EnumUtil.GetAllEnumValues<RPGInput>().ToDictionary(_ => _, _ => new ButtonInputDataTracker(_));
-            _activeInputs = new List<ButtonInputDataTracker>();
             _nonUiInputs = _buttonTrackersByInput.Values.Where(_ => !_.Input.IsUIInput()).ToList();
             _uiInputs = _buttonTrackersByInput.Values.Where(_ => _.Input.IsUIInput()).ToList();
         }
@@ -163,7 +160,7 @@ namespace BrokenWheel.Control.Implementations.InputTracker
         private void EmitLookOrCursorEvent(double delta)
         {
             if (_isUI)
-                _cursorSubject.Emit(_lookCursorTracker.GetCursorEvent(this, _displaySettings.UIScale));
+                _cursorSubject.Emit(_lookCursorTracker.GetCursorEvent(_displaySettings.UIScale));
             else
                 _lookCursorTracker.EmitEvent(_lookSubject, delta);
         }
@@ -207,9 +204,7 @@ namespace BrokenWheel.Control.Implementations.InputTracker
 
         private void EmitButtonInput(double delta, ButtonInputDataTracker tracker)
         {
-            var inputData = tracker.GetData(delta);
-            var buttonEvent = new ButtonInputEvent(this, inputData);
-            _buttonSubject.Emit(buttonEvent);
+            _buttonSubject.Emit(tracker.GetEvent(delta));
         }
 
         #endregion

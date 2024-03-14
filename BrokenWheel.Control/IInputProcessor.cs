@@ -1,9 +1,9 @@
-﻿using BrokenWheel.Control.Models.InputData;
+﻿using BrokenWheel.Control.Events;
 
 namespace BrokenWheel.Control
 {
     public interface IInputProcessor
     {
-        void ProcessInput(ButtonInputData data);
+        void ProcessInput(ButtonInputEvent data);
     }
 }

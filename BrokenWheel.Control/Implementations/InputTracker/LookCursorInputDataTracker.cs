@@ -1,5 +1,4 @@
 ﻿using BrokenWheel.Control.Events;
-using BrokenWheel.Control.Models.InputData;
 
 namespace BrokenWheel.Control.Implementations.InputTracker
 {
@@ -10,26 +9,15 @@ namespace BrokenWheel.Control.Implementations.InputTracker
         public int PositionX { get; set; } = 0;
         public int PositionY { get; set; } = 0;
 
-        public LookCursorInputDataTracker(IRPGInputTracker rpgTracker)
-            : base(rpgTracker)
-        { }
-
-        public CursorInputEvent GetCursorEvent(object sender, int scale)
+        public CursorInputEvent GetCursorEvent(int scale)
         {
-            var data = new CursorInputData(PositionX, PositionY, scale);
-            return new CursorInputEvent(sender, data);
+            return new CursorInputEvent(PositionX, PositionY, scale);
         }
 
-        protected override LookInputEvent GetEvent(object sender, double delta)
-        {
-            var data = GetData(delta);
-            return new LookInputEvent(sender, data);
-        }
-
-        private LookInputData GetData(double delta)
+        protected override LookInputEvent GetEvent(double delta)
         {
             var heldTime = GetHeldTime();
-            return new LookInputData(delta, heldTime, VelocityX, VelocityY);
+            return new LookInputEvent(delta, heldTime, VelocityX, VelocityY);
         }
     }
 }

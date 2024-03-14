@@ -1,4 +1,4 @@
-﻿using BrokenWheel.Control.Models.InputData;
+﻿using BrokenWheel.Control.Events;
 
 namespace BrokenWheel.Control.Actions
 {
@@ -17,7 +17,7 @@ namespace BrokenWheel.Control.Actions
         /// </summary>
         /// <param name="data"> Button input data for this frame. </param>
         /// <param name="isModified"> Whether the modifier is held. False by default. </param>
-        void Execute(ButtonInputData data, bool isModified = false);
+        void Execute(ButtonInputEvent data, bool isModified = false);
 
         /// <summary>
         /// Action behavior settings may be changed while in the menu.

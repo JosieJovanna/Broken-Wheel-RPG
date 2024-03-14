@@ -1,7 +1,7 @@
 ﻿using System;
 using BrokenWheel.Control.Actions;
 using BrokenWheel.Control.Enum;
-using BrokenWheel.Control.Models.InputData;
+using BrokenWheel.Control.Events;
 
 namespace BrokenWheel.Control.Behaviors
 {
@@ -78,7 +78,7 @@ namespace BrokenWheel.Control.Behaviors
             _holdTime = _holdTimeGetter();
         }
 
-        public void Execute(ButtonInputData data, bool isModified = false)
+        public void Execute(ButtonInputEvent data, bool isModified = false)
         {
             HeldTime = data.HeldTime;
 
@@ -87,7 +87,7 @@ namespace BrokenWheel.Control.Behaviors
             SwitchPress(data);
         }
 
-        private void SwitchPress(ButtonInputData data)
+        private void SwitchPress(ButtonInputEvent data)
         {
             switch (data.PressType)
             {

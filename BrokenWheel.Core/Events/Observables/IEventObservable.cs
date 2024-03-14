@@ -7,7 +7,7 @@ namespace BrokenWheel.Core.Events.Observables
     /// of the specified type.
     /// </summary>
     /// <typeparam name="TEvent"> The type of <see cref="GameEvent"/> being listened to. </typeparam>
-    public interface IEventObservable<out TEvent> where TEvent : GameEvent
+    public interface IEventObservable<out TEvent>
     {
         /// <summary>
         /// Adds an event handler object, if not already subscribed.

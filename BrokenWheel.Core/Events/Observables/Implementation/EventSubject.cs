@@ -3,9 +3,7 @@ using BrokenWheel.Core.Events.Handling;
 
 namespace BrokenWheel.Core.Events.Observables.Implementation
 {
-    internal class EventSubject<TEvent>
-        : IEventSubject<TEvent>
-        where TEvent : GameEvent
+    internal partial class EventSubject<TEvent> : IEventSubject<TEvent>
     {
         private readonly IDictionary<string, EventHandlerFunction<TEvent>> _handlersByCategory
             = new Dictionary<string, EventHandlerFunction<TEvent>>();
@@ -15,15 +13,12 @@ namespace BrokenWheel.Core.Events.Observables.Implementation
         /// <inheritdoc/>
         public virtual void Emit(TEvent @event)
         {
-            EmitUncategorizedEvent(@event);
-            EmitCategorizedEvent(@event);
+            _handlersForAllEvents?.Invoke(@event);
         }
 
-        protected void EmitUncategorizedEvent(TEvent @event) => _handlersForAllEvents?.Invoke(@event);
-
-        protected void EmitCategorizedEvent(TEvent @event)
+        public virtual void EmitCategorizedEvent(TEvent @event, string category)
         {
-            if (_handlersByCategory.TryGetValue(@event.Category, out var handlers))
+            if (_handlersByCategory.TryGetValue(category, out var handlers)) // TODO: change this to be separate class? 
                 handlers.Invoke(@event);
         }
 
@@ -49,10 +44,10 @@ namespace BrokenWheel.Core.Events.Observables.Implementation
         /// <inheritdoc/>
         public void SubscribeToCategory(string category, EventHandlerFunction<TEvent> function)
         {
-            if (IsEventUncategorized())
-                Subscribe(function);
+            if (_handlersByCategory.ContainsKey(category))
+                _handlersByCategory[category] += function;
             else
-                CategorySubscribe(category, function);
+                _handlersByCategory.Add(category, function);
         }
 
         /// <inheritdoc/>
@@ -61,27 +56,6 @@ namespace BrokenWheel.Core.Events.Observables.Implementation
 
         /// <inheritdoc/>
         public void UnsubscribeFromCategory(string category, EventHandlerFunction<TEvent> function)
-        {
-            if (IsEventUncategorized())
-                Unsubscribe(function);
-            else
-                CategoryUnsubscribe(category, function);
-        }
-
-        private bool IsEventUncategorized()
-        {
-            return typeof(UncategorizedGameEvent).IsAssignableFrom(typeof(TEvent));
-        }
-
-        private void CategorySubscribe(string category, EventHandlerFunction<TEvent> function)
-        {
-            if (_handlersByCategory.ContainsKey(category))
-                _handlersByCategory[category] += function;
-            else
-                _handlersByCategory.Add(category, function);
-        }
-
-        private void CategoryUnsubscribe(string category, EventHandlerFunction<TEvent> function)
         {
             if (_handlersByCategory.ContainsKey(category))
                 _handlersByCategory[category] -= function;

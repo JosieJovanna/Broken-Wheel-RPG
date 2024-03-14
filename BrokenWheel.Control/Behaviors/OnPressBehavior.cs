@@ -1,7 +1,7 @@
 ﻿using System;
 using BrokenWheel.Control.Actions;
 using BrokenWheel.Control.Enum;
-using BrokenWheel.Control.Models.InputData;
+using BrokenWheel.Control.Events;
 
 namespace BrokenWheel.Control.Behaviors
 {
@@ -14,7 +14,7 @@ namespace BrokenWheel.Control.Behaviors
             OnInitialPress = onInitialPress;
         }
 
-        public virtual void Execute(ButtonInputData data, bool isModified = false)
+        public virtual void Execute(ButtonInputEvent data, bool isModified = false)
         {
             if (data.PressType == PressType.Clicked)
                 OnInitialPress?.Invoke(); // TODO: differentiate by modifier?

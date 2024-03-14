@@ -11,26 +11,22 @@ namespace BrokenWheel.Core.Events.Observables
         /// <summary>
         /// Gets the readonly observable for the given event type, to subscibe/unsubscribe.
         /// </summary>
-        IEventObservable<TEvent> GetObservable<TEvent>()
-            where TEvent : GameEvent;
+        IEventObservable<TEvent> GetObservable<TEvent>();
 
         /// <summary>
         /// Gets the subject for the given event type, to subscribe/unsubscribe and emit.
         /// </summary>
-        IEventSubject<TEvent> GetSubject<TEvent>()
-            where TEvent : GameEvent;
+        IEventSubject<TEvent> GetSubject<TEvent>();
 
         /// <summary>
         /// Subscribes an event handling function to the given event type.
         /// </summary>
-        void Subscribe<TEvent>(EventHandlerFunction<TEvent> function)
-            where TEvent : GameEvent;
+        void Subscribe<TEvent>(EventHandlerFunction<TEvent> function);
 
         /// <summary>
         /// Unsubscribes an event handling function from the given event type.
         /// </summary>
-        void Unsubscribe<TEvent>(EventHandlerFunction<TEvent> function)
-            where TEvent : GameEvent;
+        void Unsubscribe<TEvent>(EventHandlerFunction<TEvent> function);
 
         /// <summary>
         /// Automatically subscribes to all events that the given object can handle.

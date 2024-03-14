@@ -89,25 +89,24 @@ namespace BrokenWheel.Control.Puppeteering.Implementation
         public void HandleEvent(MoveInputEvent gameEvent)
         {
             _marionetteCtrl.Move(
-                horizontal: (float)gameEvent.Data.VelocityX,
-                vertical: (float)gameEvent.Data.VelocityY,
-                delta: (float)gameEvent.Data.DeltaTime);
+                horizontal: (float)gameEvent.VelocityX,
+                vertical: (float)gameEvent.VelocityY,
+                delta: (float)gameEvent.DeltaTime);
         }
 
         public void HandleEvent(LookInputEvent gameEvent)
         {
             _marionetteCtrl.Look(
-                horizontal: (float)gameEvent.Data.VelocityX,
-                vertical: (float)gameEvent.Data.VelocityY,
-                delta: (float)gameEvent.Data.DeltaTime);
+                horizontal: (float)gameEvent.VelocityX,
+                vertical: (float)gameEvent.VelocityY,
+                delta: (float)gameEvent.DeltaTime);
         }
 
-        public void HandleEvent(ButtonInputEvent gameEvent)
+        public void HandleEvent(ButtonInputEvent data)
         {
-            var data = gameEvent.Data;
             if (data.Input == RPGInput.Modifier)
                 _isModified = data.PressType == PressType.Clicked || data.PressType == PressType.Held;
-            if (data.Input == RPGInput.Action && gameEvent.Data.PressType is PressType.Released)
+            if (data.Input == RPGInput.Action && data.PressType is PressType.Released)
             {
                 // TODO: additional logic for strength
                 _marionetteCtrl.Jump((float)data.HeldTime); // TODO: generalize input and use behavior

@@ -1,24 +1,16 @@
-﻿using System;
-using System.Diagnostics;
-using BrokenWheel.Core.Events;
+﻿using System.Diagnostics;
 using BrokenWheel.Core.Events.Observables;
 
 namespace BrokenWheel.Control.Implementations.InputTracker
 {
-    internal abstract class TimedTracker<TEvent> where TEvent : GameEvent
+    internal abstract class TimedTracker<TEvent>
     {
-        private readonly IRPGInputTracker _tracker;
         private readonly Stopwatch _timer = new Stopwatch();
 
         private bool _isStopped = true;
         private bool _wasStopped = true;
 
-        public TimedTracker(IRPGInputTracker rpgTracker)
-        {
-            _tracker = rpgTracker ?? throw new ArgumentNullException(nameof(rpgTracker));
-        }
-
-        protected abstract TEvent GetEvent(object sender, double delta);
+        protected abstract TEvent GetEvent(double delta);
 
         public void Pause()
         {
@@ -32,7 +24,7 @@ namespace BrokenWheel.Control.Implementations.InputTracker
 
         public void EmitEvent(IEventSubject<TEvent> subject, double delta)
         {
-            var @event = GetEvent(_tracker, delta);
+            var @event = GetEvent(delta);
             subject.Emit(@event);
         }
 

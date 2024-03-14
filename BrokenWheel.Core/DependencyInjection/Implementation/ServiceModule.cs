@@ -194,7 +194,7 @@ namespace BrokenWheel.Core.DependencyInjection.Implementation
 
         private void SubscribeToHandledEvents<TService>(TService implementation, Type implementationType)
         {
-            if (!DoesTypeImplement<IEventHandler<GameEvent>>(implementationType) || _eventHandled.Contains(implementationType))
+            if (!IsEventHandler(implementationType) || _eventHandled.Contains(implementationType))
                 return; // implements no event handlers
             var eventAggregator = GetEventAggregator();
             eventAggregator.SubscribeToAllHandledEvents(implementation);
@@ -202,11 +202,11 @@ namespace BrokenWheel.Core.DependencyInjection.Implementation
             _logger.LogCategory(LogCategory.DEPENDENCY_INJECTION, $"Subscribed `{implementationType.Name}` service to all handled events");
         }
 
-        private static bool DoesTypeImplement<TInterface>(Type implementationType)
+        private static bool IsEventHandler(Type implementationType)
         {
             var implInterfaceNames = implementationType.GetInterfaces().Select(_ => _.Name);
             var allNames = string.Join("", implInterfaceNames);
-            return allNames.Contains(typeof(TInterface).Name);
+            return allNames.Contains(typeof(EventHandler<object>).Name);
         }
 
         private void SubscribeToTimeEvents(object implementation, Type implementationType)
