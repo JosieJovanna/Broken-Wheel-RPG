@@ -3,6 +3,7 @@ using BrokenWheel.Control.Actions;
 using BrokenWheel.Control.Extensions;
 using BrokenWheel.Control.Interfaces;
 using BrokenWheel.Control.Models;
+using BrokenWheel.Core.Events;
 
 namespace BrokenWheel.Control.Implementations
 {
@@ -16,7 +17,7 @@ namespace BrokenWheel.Control.Implementations
         private IOneHandControl _interactControl;
         private IOneHandControl _grabControl;
 
-        public ActionController(Core.Events.Observables.IEventAggregator eventAggregator, EquipmentControl equipmentControl)
+        public ActionController(IEventAggregator eventAggregator, EquipmentControl equipmentControl)
         {
             _equipment = equipmentControl ?? throw new ArgumentNullException(nameof(equipmentControl));
             _reloadOrReadyController = new ReloadOrReadyController(_equipment);

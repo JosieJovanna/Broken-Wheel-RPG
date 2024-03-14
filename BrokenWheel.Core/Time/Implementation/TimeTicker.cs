@@ -1,6 +1,5 @@
 ﻿using System;
 using BrokenWheel.Core.Events;
-using BrokenWheel.Core.Events.Observables;
 using BrokenWheel.Core.Logging;
 using BrokenWheel.Core.Settings;
 

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Reflection;
 using BrokenWheel.Core.Logging;
-using BrokenWheel.Core.Events.Handling;
+using BrokenWheel.Core.Events.Observables.Implementation;
 
-namespace BrokenWheel.Core.Events.Observables.Implementation
+namespace BrokenWheel.Core.Events.Implementation
 {
     public class EventAggregator : IEventAggregator
     {

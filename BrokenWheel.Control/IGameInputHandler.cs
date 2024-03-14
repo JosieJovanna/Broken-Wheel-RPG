@@ -1,4 +1,4 @@
-﻿using BrokenWheel.Core.Events.Handling;
+﻿using BrokenWheel.Core.Events;
 using BrokenWheel.Core.GameModes;
 using BrokenWheel.Core.Time.Listeners;
 

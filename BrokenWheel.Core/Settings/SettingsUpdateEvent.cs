@@ -1,8 +1,7 @@
 ﻿using BrokenWheel.Core.DependencyInjection;
 using BrokenWheel.Core.Events.Attributes;
-using BrokenWheel.Core.Settings;
 
-namespace BrokenWheel.Core.Events
+namespace BrokenWheel.Core.Settings
 {
     public partial class SettingsUpdateEvent<TSettings> where TSettings : class, ISettings
     {

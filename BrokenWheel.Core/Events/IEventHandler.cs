@@ -1,4 +1,4 @@
-﻿namespace BrokenWheel.Core.Events.Handling
+﻿namespace BrokenWheel.Core.Events
 {
     /// <summary>
     /// Any object that automatically listens to events of the given type.

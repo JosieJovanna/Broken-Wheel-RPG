@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using BrokenWheel.Core.Events.Handling;
 
-namespace BrokenWheel.Core.Events.Observables.Implementation
+namespace BrokenWheel.Core.Events.Implementation
 {
     internal partial class EventSubject<TEvent> : IEventSubject<TEvent>
     {

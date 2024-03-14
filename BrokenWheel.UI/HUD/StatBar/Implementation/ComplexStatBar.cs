@@ -1,5 +1,5 @@
 ﻿using System;
-using BrokenWheel.Core.Events.Handling;
+using BrokenWheel.Core.Events;
 using BrokenWheel.Core.Stats;
 using BrokenWheel.Core.Stats.Events;
 using BrokenWheel.Core.Stats.Info;

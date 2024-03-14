@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics;
-using BrokenWheel.Core.Events.Observables;
+using BrokenWheel.Core.Events;
 
 namespace BrokenWheel.Control.Implementations.InputTracker
 {

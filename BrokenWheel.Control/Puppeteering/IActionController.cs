@@ -1,5 +1,5 @@
 ﻿using BrokenWheel.Control.Events;
-using BrokenWheel.Core.Events.Handling;
+using BrokenWheel.Core.Events;
 using BrokenWheel.Core.GameModes;
 
 namespace BrokenWheel.Control.Puppeteering

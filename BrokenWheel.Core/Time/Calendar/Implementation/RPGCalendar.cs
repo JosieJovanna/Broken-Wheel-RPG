@@ -1,5 +1,5 @@
 ﻿using System;
-using BrokenWheel.Core.Events.Handling;
+using BrokenWheel.Core.Events;
 using BrokenWheel.Core.GameModes;
 using BrokenWheel.Core.Logging;
 using BrokenWheel.Core.Time.Enum;

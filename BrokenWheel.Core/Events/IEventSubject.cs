@@ -1,4 +1,4 @@
-﻿namespace BrokenWheel.Core.Events.Observables
+﻿namespace BrokenWheel.Core.Events
 {
     public interface IEventSubject<TEvent> : IEventObservable<TEvent>
     {

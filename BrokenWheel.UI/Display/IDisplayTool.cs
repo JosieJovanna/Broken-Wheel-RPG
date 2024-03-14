@@ -1,6 +1,6 @@
 ﻿using BrokenWheel.Core.Events;
-using BrokenWheel.Core.Events.Handling;
 using BrokenWheel.Core.GameModes;
+using BrokenWheel.Core.Settings;
 using BrokenWheel.UI.Settings;
 
 namespace BrokenWheel.UI.Display
