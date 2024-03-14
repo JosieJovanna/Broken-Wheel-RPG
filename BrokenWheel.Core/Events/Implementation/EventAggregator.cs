@@ -5,7 +5,7 @@ using BrokenWheel.Core.Logging;
 
 namespace BrokenWheel.Core.Events.Implementation
 {
-    public class EventAggregator : IEventAggregator
+    public partial class EventAggregator : IEventAggregator
     {
         private readonly ILogger _logger;
         private readonly IDictionary<Type, object> _subjectsByEventType = new Dictionary<Type, object>();
@@ -16,20 +16,20 @@ namespace BrokenWheel.Core.Events.Implementation
         }
 
         /// <inheritdoc/>
-        public IEventObservable<TEvent> GetObservable<TEvent>()
-            => GetSubject<TEvent>().AsObservable();
-
-        /// <inheritdoc/>
-        public IEventSubject<TEvent> GetSubject<TEvent>()
-            => FindOrCreateSubject<TEvent>();
-
-        /// <inheritdoc/>
         public void Subscribe<TEvent>(EventHandlerFunction<TEvent> function)
             => GetObservable<TEvent>().Subscribe(function);
 
         /// <inheritdoc/>
         public void Unsubscribe<TEvent>(EventHandlerFunction<TEvent> function)
             => GetObservable<TEvent>().Unsubscribe(function);
+
+        /// <inheritdoc/>
+        public IEventObservable<TEvent> GetObservable<TEvent>()
+            => GetSubject<TEvent>().AsObservable();
+
+        /// <inheritdoc/>
+        public IEventSubject<TEvent> GetSubject<TEvent>()
+            => FindOrCreateSubject<TEvent>();
 
         /// <inheritdoc/>
         public void SubscribeToAllHandledEvents(object handler)
@@ -95,30 +95,10 @@ namespace BrokenWheel.Core.Events.Implementation
 
         private IEventSubject<TEvent> CreateAndKeepSubject<TEvent>()
         {
-            _logger.LogCategory("Events", $"Creating subject for event {typeof(TEvent).Name}...");
+            _logger.LogCategory("Events", $"Creating subject for event `{typeof(TEvent).Name}`...");
             var subject = new EventSubject<TEvent>();
             _subjectsByEventType.Add(typeof(TEvent), subject);
             return subject;
-        }
-
-        public IEventObservable<TEvent> GetObservable<TEvent>(string category)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEventSubject<TEvent> GetSubject<TEvent>(string category)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Subscribe<TEvent>(EventHandlerFunction<TEvent> function, string category)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Unsubscribe<TEvent>(EventHandlerFunction<TEvent> function, string category)
-        {
-            throw new NotImplementedException();
         }
     }
 }
