@@ -32,7 +32,7 @@ namespace BrokenWheel.Core.DependencyInjection.Implementation
                 RegisterImmediateServiceFunction<TService, TImpl>(serviceConstructor, type);
             else
                 _serviceFunctions.Add(type, serviceConstructor);
-            _logger.LogCategory(LogCategory.DEPENDENCY_INJECTION, $"Registered injection function for {type.Name}");
+            _logger.LogCategory(LogCategory.DEPENDENCY_INJECTION, $"Registered injection function for `{type.Name}`");
             return this;
         }
 
@@ -53,7 +53,7 @@ namespace BrokenWheel.Core.DependencyInjection.Implementation
                 InvokeFunctionAndRegisterType<TService, TImpl>(serviceConstructor, type);
             else
                 _immediateServiceFunctions.Add(type, serviceConstructor);
-            _logger.LogCategory(LogCategory.DEPENDENCY_INJECTION, $"Registered injection function for {type.Name}");
+            _logger.LogCategory(LogCategory.DEPENDENCY_INJECTION, $"Registered injection function for `{type.Name}`");
         }
 
         private void InvokeFunctionAndRegisterType<TService, TImpl>(Func<IModule, TImpl> serviceConstructor, Type type)
@@ -67,16 +67,6 @@ namespace BrokenWheel.Core.DependencyInjection.Implementation
         #endregion
 
         #region Get Services
-
-        /// <inheritdoc/>
-        public TService GetService<TService>()
-        {
-            var type = typeof(TService);
-            if (!_serviceRegistry.ContainsKey(type))
-                RegisterServiceInstanceFromFunction<TService>(type);
-
-            return Cast<TService>(_serviceRegistry[type]);
-        }
 
         /// <inheritdoc/>
         public void CompleteInitialRegistration()
@@ -98,15 +88,19 @@ namespace BrokenWheel.Core.DependencyInjection.Implementation
             }
         }
 
+        /// <inheritdoc/>
+        public TService GetService<TService>()
+        {
+            var type = typeof(TService);
+            if (!_serviceRegistry.ContainsKey(type))
+                CallConstructorAndRegisterInstance<TService>(GetServiceFunction(type), type);
+
+            return Cast<TService>(_serviceRegistry[type]);
+        }
+
         #endregion
 
         #region Injection Function Service
-
-        private void RegisterServiceInstanceFromFunction<TService>(Type type)
-        {
-            var function = GetServiceFunction(type);
-            CallConstructorAndRegisterInstance<TService>(function, type);
-        }
 
         private Func<IModule, object> GetServiceFunction(Type type)
         {
@@ -134,7 +128,7 @@ namespace BrokenWheel.Core.DependencyInjection.Implementation
                 _constructRoot = type;
             }
             else if (_constructRoot == type)
-                LogAndThrow($"Circular dependency injection logic for {type.Name}.");
+                LogAndThrow($"Circular dependency injection logic for `{type.Name}`.");
         }
 
         private TService CallInjectionFunction<TService>(Type type, Func<IModule, object> function)
@@ -186,7 +180,7 @@ namespace BrokenWheel.Core.DependencyInjection.Implementation
             if (_serviceRegistry.ContainsKey(type))
                 return;
             _serviceRegistry.Add(type, implementation);
-            _logger.LogCategory(LogCategory.DEPENDENCY_INJECTION, $"Registered instance of `{implementation.GetType().FullName}` to ``{type.Name}``");
+            _logger.LogCategory(LogCategory.DEPENDENCY_INJECTION, $"Registered instance of `{implementation.GetType().FullName}` to `{type.Name}`");
         }
 
         private void SubscribeToHandledEvents<TService>(TService implementation, Type implementationType)

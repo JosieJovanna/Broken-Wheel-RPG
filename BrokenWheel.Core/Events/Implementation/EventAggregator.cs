@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Reflection;
 using BrokenWheel.Core.Logging;
-using BrokenWheel.Math;
 
 namespace BrokenWheel.Core.Events.Implementation
 {
