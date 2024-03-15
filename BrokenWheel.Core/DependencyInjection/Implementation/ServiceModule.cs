@@ -32,7 +32,7 @@ namespace BrokenWheel.Core.DependencyInjection.Implementation
                 RegisterImmediateServiceFunction<TService, TImpl>(serviceConstructor, type);
             else
                 _serviceFunctions.Add(type, serviceConstructor);
-            _logger.LogCategory(LogCategory.DEPENDENCY_INJECTION, $"Registered injection function for `{type.Name}`");
+            Logger.LogCategory(LogCategory.DEPENDENCY_INJECTION, $"Registered injection function for `{type.Name}`");
             return this;
         }
 
@@ -53,7 +53,7 @@ namespace BrokenWheel.Core.DependencyInjection.Implementation
                 InvokeFunctionAndRegisterType<TService, TImpl>(serviceConstructor, type);
             else
                 _immediateServiceFunctions.Add(type, serviceConstructor);
-            _logger.LogCategory(LogCategory.DEPENDENCY_INJECTION, $"Registered injection function for `{type.Name}`");
+            Logger.LogCategory(LogCategory.DEPENDENCY_INJECTION, $"Registered injection function for `{type.Name}`");
         }
 
         private void InvokeFunctionAndRegisterType<TService, TImpl>(Func<IModule, TImpl> serviceConstructor, Type type)
@@ -61,7 +61,7 @@ namespace BrokenWheel.Core.DependencyInjection.Implementation
         {
             var instance = Cast<TImpl>(serviceConstructor.Invoke(this));
             _serviceRegistry.Add(type, instance);
-            _logger.LogCategory(LogCategory.DEPENDENCY_INJECTION, $"Registered and called injection function for `{type.Name}`");
+            Logger.LogCategory(LogCategory.DEPENDENCY_INJECTION, $"Registered and called injection function for `{type.Name}`");
         }
 
         #endregion
@@ -159,7 +159,7 @@ namespace BrokenWheel.Core.DependencyInjection.Implementation
             var type = typeof(TService);
             var implementationType = implementation.GetType();
             if (_serviceRegistry.ContainsKey(type))
-                _logger.LogCategoryWarning(LogCategory.DEPENDENCY_INJECTION, $"Service `{type.Name}` already has a registered instance");
+                Logger.LogCategoryWarning(LogCategory.DEPENDENCY_INJECTION, $"Service `{type.Name}` already has a registered instance");
             else
                 RegisterInterfaceAndImplTypes(implementation, type);
             SubscribeToHandledEvents(implementation, implementationType);
@@ -180,7 +180,7 @@ namespace BrokenWheel.Core.DependencyInjection.Implementation
             if (_serviceRegistry.ContainsKey(type))
                 return;
             _serviceRegistry.Add(type, implementation);
-            _logger.LogCategory(LogCategory.DEPENDENCY_INJECTION, $"Registered instance of `{implementation.GetType().FullName}` to `{type.Name}`");
+            Logger.LogCategory(LogCategory.DEPENDENCY_INJECTION, $"Registered instance of `{implementation.GetType().FullName}` to `{type.Name}`");
         }
 
         private void SubscribeToHandledEvents<TService>(TService implementation, Type implementationType)
@@ -190,7 +190,7 @@ namespace BrokenWheel.Core.DependencyInjection.Implementation
             var eventAggregator = GetEventAggregator();
             eventAggregator.SubscribeToAllHandledEvents(implementation);
             _eventHandled.Add(implementationType);
-            _logger.LogCategory(LogCategory.DEPENDENCY_INJECTION, $"Subscribed `{implementationType.Name}` service to all handled events");
+            Logger.LogCategory(LogCategory.DEPENDENCY_INJECTION, $"Subscribed `{implementationType.Name}` service to all handled events");
         }
 
         private static bool IsEventHandler(Type implementationType)
@@ -207,7 +207,7 @@ namespace BrokenWheel.Core.DependencyInjection.Implementation
             var timeService = GetTimeService();
             AddTimeEventListeners(implementation, timeService);
             _timeHandled.Add(implementationType);
-            _logger.LogCategory(LogCategory.DEPENDENCY_INJECTION, $"Subscribed `{implementationType.Name}` service to all time events.");
+            Logger.LogCategory(LogCategory.DEPENDENCY_INJECTION, $"Subscribed `{implementationType.Name}` service to all time events.");
         }
 
         private static bool IsImplementationTimeListener(object implementation)

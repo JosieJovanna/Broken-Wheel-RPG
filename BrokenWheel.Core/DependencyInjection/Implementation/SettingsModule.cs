@@ -24,9 +24,9 @@ namespace BrokenWheel.Core.DependencyInjection.Implementation
         private TSettings CreateNewSettings<TSettings>() where TSettings : class, ISettings
         {
             var type = typeof(TSettings); // TODO: try loading existing settings
-            _logger.LogCategory(LogCategory.DEPENDENCY_INJECTION, $"Creating default {type.Name} as there is no existing settings file...");
+            Logger.LogCategory(LogCategory.DEPENDENCY_INJECTION, $"Creating default {type.Name} as there is no existing settings file...");
             var settings = ConstructSettings<TSettings>();
-            RegisterSettings(settings); // TODO: recursively find children settings that are registered
+            RegisterSettings(settings);
             return settings;
         }
 
@@ -71,7 +71,7 @@ namespace BrokenWheel.Core.DependencyInjection.Implementation
         private void Register(Type type, ISettings settings)
         {
             _settingsRegistry.Add(type, settings);
-            _logger.LogCategory(LogCategory.DEPENDENCY_INJECTION, $"Registered `{type.FullName}`.");
+            Logger.LogCategory(LogCategory.DEPENDENCY_INJECTION, $"Registered `{type.FullName}`.");
             RecursiveRegister(settings);
         }
 

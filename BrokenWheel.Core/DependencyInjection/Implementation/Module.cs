@@ -7,7 +7,7 @@ namespace BrokenWheel.Core.DependencyInjection.Implementation
 {
     public partial class Module : IModule
     {
-        private readonly ILogger _logger;
+        protected readonly ILogger Logger;
 
         /// <summary>
         /// The default implementation for <see cref="IModule"/> which only needs a <see cref="ILogger"/>.
@@ -15,13 +15,13 @@ namespace BrokenWheel.Core.DependencyInjection.Implementation
         /// <exception cref="ArgumentNullException"> If logger is null. </exception>
         public Module(ILogger logger)
         {
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _serviceRegistry.Add(typeof(ILogger), _logger);
-            _logger.LogCategory(LogCategory.DEPENDENCY_INJECTION, $"Initialized {typeof(Module)}.");
+            Logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _serviceRegistry.Add(typeof(ILogger), Logger);
+            Logger.LogCategory(LogCategory.DEPENDENCY_INJECTION, $"Initialized {typeof(Module)}.");
         }
 
 
-        public ILogger GetLogger() => _logger;
+        public ILogger GetLogger() => Logger;
         public IEventAggregator GetEventAggregator() => GetService<IEventAggregator>();
         public ITimeService GetTimeService() => GetService<ITimeService>();
 
@@ -46,7 +46,7 @@ namespace BrokenWheel.Core.DependencyInjection.Implementation
         /// </summary>
         private void LogAndThrow(string message, Exception innerException = null)
         {
-            _logger.LogCategoryError(LogCategory.DEPENDENCY_INJECTION, message);
+            Logger.LogCategoryError(LogCategory.DEPENDENCY_INJECTION, message);
             throw new DependencyException(message, innerException);
         }
     }
