@@ -2,6 +2,6 @@
 {
     public static class LogCategory
     {
-        public const string DEPENDENCY_INJECTION = "Dependency Injection";
+        public const string DI = "Dependency Injection";
     }
 }

@@ -12,7 +12,7 @@ namespace BrokenWheel.Core.DependencyInjection
         {
             _module = module ?? throw new ArgumentNullException(nameof(module));
             _logger = module.GetLogger();
-            _logger.LogCategory(LogCategory.DEPENDENCY_INJECTION, "Static Dependency Injection Initialized.");
+            _logger.LogCategory(LogCategory.DI, "Static Dependency Injection Initialized.");
         }
 
         public static IModule GetModule()

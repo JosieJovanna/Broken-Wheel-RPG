@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using BrokenWheel.Core.Logging;
 using BrokenWheel.Core.Time.Listeners;
 using BrokenWheel.Core.Time;
@@ -10,187 +9,86 @@ namespace BrokenWheel.Core.DependencyInjection.Implementation
 {
     public partial class Module
     {
-        private readonly IDictionary<Type, object> _serviceRegistry = new Dictionary<Type, object>();
-        private readonly IDictionary<Type, Func<IModule, object>> _serviceFunctions = new Dictionary<Type, Func<IModule, object>>();
-        private readonly IDictionary<Type, Func<IModule, object>> _immediateServiceFunctions = new Dictionary<Type, Func<IModule, object>>();
-        private readonly IList<Type> _eventHandled = new List<Type>();
-        private readonly IList<Type> _timeHandled = new List<Type>();
-
+        private readonly IDictionary<Type, ModuleServiceRegister> _registry = new Dictionary<Type, ModuleServiceRegister>();
+        private readonly IList<string> _typeAndParamIsAutoHandled = new List<string>();
         private bool _isCompleted = false;
-        private bool _isConstructing = false;
-        private Type _constructRoot = null;
-
-        #region Function Registration
 
         /// <inheritdoc/>
-        public IModule RegisterService<TService, TImpl>(Func<IModule, TImpl> serviceConstructor, bool shouldBuildImmediately = false)
+        public IModule RegisterService<TService, TImpl>(
+            Func<IModule, TImpl> serviceConstructor,
+            bool shouldBuildImmediately = false,
+            string parameter = null)
             where TImpl : class, TService
         {
+            parameter = NormalizeParameter(parameter);
             var type = typeof(TService);
-            ThrowExceptionTServiceAlreadyRegistered(type);
-            if (shouldBuildImmediately)
-                RegisterImmediateServiceFunction<TService, TImpl>(serviceConstructor, type);
-            else
-                _serviceFunctions.Add(type, serviceConstructor);
-            Logger.LogCategory(LogCategory.DEPENDENCY_INJECTION, $"Registered injection function for `{type.Name}`");
+            var register = GetServiceRegister(type);
+            register.RegisterConstructionFunction(serviceConstructor, parameter, shouldBuildImmediately);
             return this;
         }
 
-        private void ThrowExceptionTServiceAlreadyRegistered(Type type)
+        private ModuleServiceRegister GetServiceRegister(Type type)
         {
-            if (_serviceRegistry.ContainsKey(type))
-                LogAndThrow($"Service `{type.Name}` already has a registered instance.");
-            if (_serviceFunctions.ContainsKey(type))
-                LogAndThrow($"Service `{type.Name}` already has a registered injection function.");
-            if (_immediateServiceFunctions.ContainsKey(type))
-                LogAndThrow($"Service `{type.Name}` already has a registered immediate injection function.");
+            if (_registry.ContainsKey(type))
+                return _registry[type];
+
+            var register = new ModuleServiceRegister(this, Logger, type);
+            _registry.Add(type, register);
+            return register;
         }
-
-        private void RegisterImmediateServiceFunction<TService, TImpl>(Func<IModule, TImpl> serviceConstructor, Type type)
-            where TImpl : class, TService
-        {
-            if (_isCompleted)
-                InvokeFunctionAndRegisterType<TService, TImpl>(serviceConstructor, type);
-            else
-                _immediateServiceFunctions.Add(type, serviceConstructor);
-            Logger.LogCategory(LogCategory.DEPENDENCY_INJECTION, $"Registered injection function for `{type.Name}`");
-        }
-
-        private void InvokeFunctionAndRegisterType<TService, TImpl>(Func<IModule, TImpl> serviceConstructor, Type type)
-            where TImpl : class, TService
-        {
-            var instance = Cast<TImpl>(serviceConstructor.Invoke(this));
-            _serviceRegistry.Add(type, instance);
-            Logger.LogCategory(LogCategory.DEPENDENCY_INJECTION, $"Registered and called injection function for `{type.Name}`");
-        }
-
-        #endregion
-
-        #region Get Services
 
         /// <inheritdoc/>
         public void CompleteInitialRegistration()
         {
             if (_isCompleted)
                 return;
+            foreach (var regByType in _registry)
+                regByType.Value.BuildImmediates();
             _isCompleted = true;
-            BuildAllImmediates();
-        }
-
-        private void BuildAllImmediates()
-        {
-            var method = GetType().GetMethod(nameof(CallConstructorAndRegisterInstance),
-                BindingFlags.NonPublic | BindingFlags.Instance);
-            foreach (var kvp in _immediateServiceFunctions)
-            {
-                var genericMethod = method.MakeGenericMethod(kvp.Key);
-                genericMethod.Invoke(this, new object[] { kvp.Value, kvp.Key });
-            }
+            Logger.LogCategoryGood(LogCategory.DI, $"Built and registered all immediate services");
         }
 
         /// <inheritdoc/>
-        public TService GetService<TService>()
+        public TService GetService<TService>(string parameter = null)
         {
+            parameter = NormalizeParameter(parameter);
             var type = typeof(TService);
-            if (!_serviceRegistry.ContainsKey(type))
-                CallConstructorAndRegisterInstance<TService>(GetServiceFunction(type), type);
+            if (!_registry.ContainsKey(type))
+                throw new DependencyException($"Type `{type.Name}` has no registered services.");
 
-            return Cast<TService>(_serviceRegistry[type]);
+            return GetService<TService>(parameter, type);
         }
 
-        #endregion
-
-        #region Injection Function Service
-
-        private Func<IModule, object> GetServiceFunction(Type type)
+        private TService GetService<TService>(string parameter, Type type)
         {
-            if (_serviceFunctions.ContainsKey(type))
-                return _serviceFunctions[type];
-            else if (_immediateServiceFunctions.ContainsKey(type))
-                return _immediateServiceFunctions[type];
-            LogAndThrow($"Service `{type.Name}` does not have a registered instance or injection function.");
-            return null;
+            var instance = _registry[type].GetInstance(parameter);
+            Logger.LogCategory(LogCategory.DI, $"Got instance of type `{type.Name}` param `{parameter}`");
+            HandleTimeAndEvents(instance, parameter);
+            return Cast<TService>(instance);
         }
 
-        private void CallConstructorAndRegisterInstance<TService>(Func<IModule, object> function, Type type)
+        private void HandleTimeAndEvents(object instance, string parameter)
         {
-            HandleLoopLogic(type);
-            var serviceImpl = CallInjectionFunction<TService>(type, function);
-            UnregisterFunction(type);
-            RegisterService(serviceImpl);
-        }
-
-        private void HandleLoopLogic(Type type)
-        {
-            if (!_isConstructing)
-            {
-                _isConstructing = true;
-                _constructRoot = type;
-            }
-            else if (_constructRoot == type)
-                LogAndThrow($"Circular dependency injection logic for `{type.Name}`.");
-        }
-
-        private TService CallInjectionFunction<TService>(Type type, Func<IModule, object> function)
-        {
-            var implementation = Cast<TService>(function.Invoke(this));
-            _isConstructing = false;
-            _constructRoot = null;
-            return implementation;
-        }
-
-        private void UnregisterFunction(Type type)
-        {
-            if (_serviceFunctions.ContainsKey(type))
-                _serviceFunctions.Remove(type);
-            if (_immediateServiceFunctions.ContainsKey(type))
-                _immediateServiceFunctions.Remove(type);
-        }
-
-        #endregion
-
-        #region Instance Registration
-
-        /// <summary>
-        /// Registers an instance of the service and automatically subscribes it to any relevant services.
-        /// </summary>
-        private IModule RegisterService<TService>(TService implementation)
-        {
-            var type = typeof(TService);
-            var implementationType = implementation.GetType();
-            if (_serviceRegistry.ContainsKey(type))
-                Logger.LogCategoryWarning(LogCategory.DEPENDENCY_INJECTION, $"Service `{type.Name}` already has a registered instance");
-            else
-                RegisterInterfaceAndImplTypes(implementation, type);
-            SubscribeToHandledEvents(implementation, implementationType);
-            SubscribeToTimeEvents(implementation, implementationType);
-            return this;
-        }
-
-        private void RegisterInterfaceAndImplTypes<TService>(TService implementation, Type type)
-        {
-            RegisterType(implementation, type);
-            var implementationType = implementation.GetType();
-            if (type != implementationType)
-                RegisterType(implementation, implementationType);
-        }
-
-        private void RegisterType(object implementation, Type type)
-        {
-            if (_serviceRegistry.ContainsKey(type))
+            var typeAndParam = $"{instance.GetType().FullName}.'{parameter}'";
+            if (_typeAndParamIsAutoHandled.Contains(typeAndParam))
                 return;
-            _serviceRegistry.Add(type, implementation);
-            Logger.LogCategory(LogCategory.DEPENDENCY_INJECTION, $"Registered instance of `{implementation.GetType().FullName}` to `{type.Name}`");
+            HandleTimeAndEvents(instance);
+            _typeAndParamIsAutoHandled.Add(typeAndParam);
+        }
+
+        private void HandleTimeAndEvents(object instance)
+        {
+            var implType = instance.GetType();
+            SubscribeToHandledEvents(instance, implType);
+            SubscribeToTimeEvents(instance, implType);
         }
 
         private void SubscribeToHandledEvents<TService>(TService implementation, Type implementationType)
         {
-            if (!IsEventHandler(implementationType) || _eventHandled.Contains(implementationType))
+            if (!IsEventHandler(implementationType))
                 return; // implements no event handlers
-            var eventAggregator = GetEventAggregator();
-            eventAggregator.SubscribeToAllHandledEvents(implementation);
-            _eventHandled.Add(implementationType);
-            Logger.LogCategory(LogCategory.DEPENDENCY_INJECTION, $"Subscribed `{implementationType.Name}` service to all handled events");
+            GetEventAggregator().SubscribeToAllHandledEvents(implementation);
+            Logger.LogCategory(LogCategory.DI, $"Subscribed `{implementationType.Name}` service to all handled events");
         }
 
         private static bool IsEventHandler(Type implementationType)
@@ -202,12 +100,10 @@ namespace BrokenWheel.Core.DependencyInjection.Implementation
 
         private void SubscribeToTimeEvents(object implementation, Type implementationType)
         {
-            if (_timeHandled.Contains(implementationType) || !IsImplementationTimeListener(implementation))
+            if (!IsImplementationTimeListener(implementation))
                 return;
-            var timeService = GetTimeService();
-            AddTimeEventListeners(implementation, timeService);
-            _timeHandled.Add(implementationType);
-            Logger.LogCategory(LogCategory.DEPENDENCY_INJECTION, $"Subscribed `{implementationType.Name}` service to all time events.");
+            AddTimeEventListeners(implementation, GetTimeService());
+            Logger.LogCategory(LogCategory.DI, $"Subscribed `{implementationType.Name}` service to all time events.");
         }
 
         private static bool IsImplementationTimeListener(object implementation)
@@ -227,6 +123,11 @@ namespace BrokenWheel.Core.DependencyInjection.Implementation
                 timeService.AddCalendarTimeFx(calendarTime.OnCalendarTime);
         }
 
-        #endregion
+        private static string NormalizeParameter(string parameter)
+        {
+            if (string.IsNullOrWhiteSpace(parameter))
+                return string.Empty;
+            return parameter.Trim();
+        }
     }
 }

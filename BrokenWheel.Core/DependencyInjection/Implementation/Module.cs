@@ -16,13 +16,16 @@ namespace BrokenWheel.Core.DependencyInjection.Implementation
         public Module(ILogger logger)
         {
             Logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _serviceRegistry.Add(typeof(ILogger), Logger);
-            Logger.LogCategory(LogCategory.DEPENDENCY_INJECTION, $"Initialized {typeof(Module)}.");
+            Logger.LogCategory(LogCategory.DI, $"Initialized {typeof(Module)}.");
         }
 
-
+        /// <inheritdoc/>
         public ILogger GetLogger() => Logger;
+
+        /// <inheritdoc/>
         public IEventAggregator GetEventAggregator() => GetService<IEventAggregator>();
+
+        /// <inheritdoc/>
         public ITimeService GetTimeService() => GetService<ITimeService>();
 
         /// <summary>
@@ -46,7 +49,7 @@ namespace BrokenWheel.Core.DependencyInjection.Implementation
         /// </summary>
         private void LogAndThrow(string message, Exception innerException = null)
         {
-            Logger.LogCategoryError(LogCategory.DEPENDENCY_INJECTION, message);
+            Logger.LogCategoryError(LogCategory.DI, message);
             throw new DependencyException(message, innerException);
         }
     }
