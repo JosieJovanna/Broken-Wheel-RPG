@@ -42,14 +42,19 @@ namespace BrokenWheel.Core.DependencyInjection.Implementation
         /// <summary>
         /// Calls all constructors set to instantiate right away.
         /// </summary>
-        public void BuildImmediates()
+        /// <returns>
+        /// A dictionary of immediately-built instances by their parameters.
+        /// </returns>
+        public Dictionary<string, object> BuildImmediates()
         {
+            var builtInstancesByParam = new Dictionary<string, object>();
             if (_areImmediatesBuilt || _parameterizedImmediateFxs.Count < 1)
-                return;
+                return builtInstancesByParam;
             foreach (var fxByParam in _parameterizedImmediateFxs)
-                BuildAndRegister(fxByParam.Key, fxByParam.Value);
+                builtInstancesByParam.Add(fxByParam.Key, BuildAndRegister(fxByParam.Key, fxByParam.Value));
             _areImmediatesBuilt = true;
             _logger.LogCategory(LogCategory.DI, $"Built all immediate instances of `{Type.Name}`");
+            return builtInstancesByParam;
         }
 
         /// <summary>

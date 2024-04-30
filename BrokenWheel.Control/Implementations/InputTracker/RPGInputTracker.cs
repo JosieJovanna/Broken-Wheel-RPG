@@ -160,7 +160,7 @@ namespace BrokenWheel.Control.Implementations.InputTracker
             if (_gameMode.Current.IsUI)
                 @_cursorSubject.Emit(_lookCursorTracker.GetCursorEvent(_displaySettings.UIScale));
             else
-                _lookSubject.Emit(_lookCursorTracker.GetEvent(delta));
+                @_lookSubject.Emit(_lookCursorTracker.GetEvent(delta));
         }
 
         /// <summary>

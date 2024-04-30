@@ -43,9 +43,16 @@ namespace BrokenWheel.Core.DependencyInjection.Implementation
             if (_isCompleted)
                 return;
             foreach (var regByType in _registry)
-                regByType.Value.BuildImmediates();
+                BuildRegistryAndRegisterImmediates(regByType.Key, regByType.Value);
             _isCompleted = true;
             Logger.LogCategoryGood(LogCategory.DI, $"Built and registered all immediate services");
+        }
+
+        private void BuildRegistryAndRegisterImmediates(Type serviceType, ModuleServiceRegister registry)
+        {
+            var immediates = registry.BuildImmediates();
+            foreach (var serviceByParam in immediates)
+                HandleTimeAndEvents(serviceByParam.Value, serviceByParam.Key);
         }
 
         /// <inheritdoc/>
