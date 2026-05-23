@@ -23,12 +23,12 @@
         public double TimeToJump { get; set; } = 5;
 
         public float JumpBaseSpeed { get; set; } = 7.0f;
-        public float JumpPowerMultiplier { get; set; } = 1.5f;
+        public float JumpPowerMultiplier { get; set; } = 3;//1.5f;
         public float JumpMaxSpeed { get; set; } = 20.0f;
         public float DirectionChangeAcceleration { get; set; } = 50.0f;
 
-        public SpeedMeta BaseStandingSpeeds { get; set; } = new SpeedMeta { Fast = 4.0f, Normal = 3.0f, Slow = 1.5f };
-        public SpeedMeta BaseCrouchingSpeeds { get; set; } = new SpeedMeta { Fast = 3.0f, Normal = 1.8f, Slow = 1.0f };
-        public SpeedMeta BaseCrawlingSpeeds { get; set; } = new SpeedMeta { Fast = 1.0f, Normal = 0.8f, Slow = 0.5f };
+        public SpeedMeta BaseStandingSpeeds { get; set; }  = new SpeedMeta { Fast = 10.0f, Normal = 6.0f, Slow = 3f }; // { Fast = 4.0f, Normal = 3.0f, Slow = 1.5f }
+        public SpeedMeta BaseCrouchingSpeeds { get; set; } = new SpeedMeta { Fast = 3.0f, Normal = 1.8f, Slow = 1.0f }; // { Fast = 3.0f, Normal = 1.8f, Slow = 1.0f }
+        public SpeedMeta BaseCrawlingSpeeds { get; set; }  = new SpeedMeta { Fast = 1.0f, Normal = 0.8f, Slow = 0.5f }; // { Fast = 1.0f, Normal = 0.8f, Slow = 0.5f }
     }
 }
